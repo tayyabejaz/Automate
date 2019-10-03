@@ -2,29 +2,23 @@ package com.innovidio.androidbootstrap.repository;
 
 import android.util.Log;
 
-import com.innovidio.androidbootstrap.models.CarModel;
+import com.innovidio.androidbootstrap.model.CarModel;
 import com.innovidio.androidbootstrap.network.CarQueryAPIService;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 import com.squareup.moshi.Types;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 @Singleton
 public class CarQueryRepository {
@@ -47,7 +41,7 @@ public class CarQueryRepository {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response != null) {
                         List<CarModel> carsList = parseResponseObject(response);
-                        Log.d(TAG, "onResponse: " + carsList.get(0).getModel_make_id() +" size "+carsList.size());
+                        Log.d(TAG, "onResponse: " + carsList.get(0).getMakeid() +" size "+carsList.size());
                 } else {
                     Log.d(TAG, "onResponse: not found");
                 }
