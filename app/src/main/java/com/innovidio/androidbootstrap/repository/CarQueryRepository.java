@@ -2,7 +2,7 @@ package com.innovidio.androidbootstrap.repository;
 
 import android.util.Log;
 
-import com.innovidio.androidbootstrap.model.CarModel;
+import com.innovidio.androidbootstrap.entity.CarModel;
 import com.innovidio.androidbootstrap.network.CarQueryAPIService;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -41,7 +41,7 @@ public class CarQueryRepository {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response != null) {
                         List<CarModel> carsList = parseResponseObject(response);
-                        Log.d(TAG, "onResponse: " + carsList.get(0).getMakeid() +" size "+carsList.size());
+                       // Log.d(TAG, "onResponse: " + carsList.get(0).getMakeid() +" size "+carsList.size());
                 } else {
                     Log.d(TAG, "onResponse: not found");
                 }

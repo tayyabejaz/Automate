@@ -1,6 +1,5 @@
-package com.innovidio.androidbootstrap.entity;
+package com.innovidio.androidbootstrap.entity.models;
 
-import androidx.lifecycle.OnLifecycleEvent;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 

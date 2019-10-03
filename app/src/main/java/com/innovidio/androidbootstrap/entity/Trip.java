@@ -1,11 +1,19 @@
-package com.innovidio.androidbootstrap.model;
+package com.innovidio.androidbootstrap.entity;
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 /**
  * Created by MuhammadSalman on 12/6/2018.
  */
 
+@Entity
 public class Trip {
 
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    private String tripTitle;
     private String tripdate;
     private String carname;
     private String triptype;
@@ -18,12 +26,12 @@ public class Trip {
     private String fueleconomypertrip;
 
 
-    public Trip()
-    {
+    public Trip(){
 
     }
 
-    public Trip(String carname, String triptype, String starttime, String endtime, String maxspeed, String avgspeed, String distancecovered, String tripdate , long datetimeinmillis , String fueleconomypertrip) {
+    public Trip(String tripTitle, String carname, String triptype, String starttime, String endtime, String maxspeed, String avgspeed, String distancecovered, String tripdate , long datetimeinmillis , String fueleconomypertrip) {
+        this.tripTitle =  tripTitle;
         this.carname = carname;
         this.triptype = triptype;
         this.starttime = starttime;
@@ -36,6 +44,9 @@ public class Trip {
         this.fueleconomypertrip = fueleconomypertrip;
     }
 
+    public int getId() {
+        return this.id;
+    }
     public String getcarname() {
         return carname;
     }
@@ -74,5 +85,9 @@ public class Trip {
 
     public String getFueleconomypertrip() {
         return fueleconomypertrip;
+    }
+
+    public String getTripTitle() {
+        return tripTitle;
     }
 }

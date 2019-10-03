@@ -7,7 +7,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.innovidio.androidbootstrap.entity.Feed;
+import com.innovidio.androidbootstrap.entity.models.Feed;
 
 import java.util.List;
 

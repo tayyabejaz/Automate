@@ -1,9 +1,25 @@
-package com.innovidio.androidbootstrap.model;
+package com.innovidio.androidbootstrap.entity;
 
 
-import com.google.gson.annotations.SerializedName;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+import com.squareup.moshi.Json;
+
+
+@Entity
 public class CarModel {
+
+    @PrimaryKey(autoGenerate = true)
+    private Integer id;
+
+    public Integer getId() {
+        return this.id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getMakeid() {
         return makeid;
@@ -13,7 +29,7 @@ public class CarModel {
         this.makeid = makeid;
     }
 
-    @SerializedName("make_id")
+    @Json(name = "make_id")
     private String makeid;
 
     public String getModelname() {
@@ -24,7 +40,7 @@ public class CarModel {
         this.modelname = modelname;
     }
 
-    @SerializedName("model_name")
+    @Json(name = "model_name")
     private String modelname;
 
     public String getTrim() {
@@ -36,7 +52,7 @@ public class CarModel {
     }
 
     //
-    @SerializedName("model_trim")
+    @Json(name = "model_trim")
     private String trim;
 
     public String getEnginefuel() {
@@ -47,7 +63,7 @@ public class CarModel {
         this.enginefuel = enginefuel;
     }
 
-    @SerializedName("model_engine_fuel")
+    @Json(name = "model_engine_fuel")
     private String enginefuel;
 
     public String getEnginecc() {
@@ -58,7 +74,7 @@ public class CarModel {
         this.enginecc = enginecc;
     }
 
-    @SerializedName("model_engine_cc")
+    @Json(name = "model_engine_cc")
     private String enginecc;
 
     public CarModel() {
@@ -78,7 +94,7 @@ public class CarModel {
         this.fueleconomycityper100km = fueleconomycityper100km;
     }
 
-    @SerializedName("model_lkm_city")
+    @Json(name = "model_lkm_city")
     private String fueleconomycityper100km;
 
     public String getFueleconomymixedper100km() {
@@ -89,7 +105,7 @@ public class CarModel {
         this.fueleconomymixedper100km = fueleconomymixedper100km;
     }
 
-    @SerializedName("model_lkm_mixed")
+    @Json(name = "model_lkm_mixed")
     private String fueleconomymixedper100km;
 
     public String getFuelcapacityinliters() {
@@ -100,7 +116,7 @@ public class CarModel {
         this.fuelcapacityinliters = fuelcapacityinliters;
     }
 
-    @SerializedName("model_fuel_cap_l")
+    @Json(name = "model_fuel_cap_l")
 
     private String fuelcapacityinliters;
 
@@ -112,7 +128,7 @@ public class CarModel {
         this.modeldrive = modeldrive;
     }
 
-    @SerializedName("model_drive")
+    @Json(name = "model_drive")
     private String modeldrive;
 
 }

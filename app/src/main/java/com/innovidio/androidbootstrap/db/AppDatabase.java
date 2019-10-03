@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.innovidio.androidbootstrap.entity.Feed;
+import com.innovidio.androidbootstrap.entity.models.Feed;
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
 import com.innovidio.androidbootstrap.db.converters.IntegerListConverter;
 import com.innovidio.androidbootstrap.db.converters.StringListConverter;

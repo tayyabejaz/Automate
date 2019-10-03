@@ -1,10 +1,10 @@
-package com.innovidio.androidbootstrap.model;
+package com.innovidio.androidbootstrap.entity.models;
 
 /**
  * Created by MuhammadSalman on 11/19/2018.
  */
+public class UserSettings {
 
-public class UserInformation {
     private String id;
    // private String name;
     private String email;
@@ -53,12 +53,11 @@ public class UserInformation {
 
     private String distance;
 
-    public UserInformation() {
+    public UserSettings() {
 
     }
 
-    public UserInformation(String id/* , String name */, String email , String userid, String drivinglicense/*, String userlicensenumber*/, String licenseexpirydate, String violation, String numberofviolations, String country, String currency, String fuelunits, String distance, String drivedetect, String speedunits, String perunitfuelprice)
-    {
+    public UserSettings(String id/* , String name */, String email , String userid, String drivinglicense/*, String userlicensenumber*/, String licenseexpirydate, String violation, String numberofviolations, String country, String currency, String fuelunits, String distance, String drivedetect, String speedunits, String perunitfuelprice) {
         this.drivinglicense = drivinglicense;
        // this.userlicensenumber = userlicensenumber;
         this.licenseexpirydate = licenseexpirydate;

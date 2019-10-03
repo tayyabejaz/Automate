@@ -1,24 +1,29 @@
-package com.innovidio.androidbootstrap.model;
+package com.innovidio.androidbootstrap.entity;
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
+@Entity
 public class AlarmModel {
+
+
+    @PrimaryKey(autoGenerate = true)
     private int alarmID;
     private String alarmMessage;
+
     /* INFO
     Alarm type defines that which alarm is going to sound. there are two types of alarms:
     1- Alarm for the service
     2- Alarm for Reminders */
+
     private String alarmType;
     private Date creationDate;
     private Date executionTIme;
 
     public int getAlarmID() {
         return alarmID;
-    }
-
-    public void setAlarmID(int alarmID) {
-        this.alarmID = alarmID;
     }
 
     public String getAlarmMessage() {
