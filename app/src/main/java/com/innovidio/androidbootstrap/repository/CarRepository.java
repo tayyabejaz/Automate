@@ -31,8 +31,8 @@ public class CarRepository {
         return allCars;
     }
 
-    public LiveData<CarModel> getCarByMakerIdLiveData(String makerId) {
-        LiveData<CarModel> car = carDao.getCarByMakerId(makerId);
+    public LiveData<List<CarModel>> getCarByMakerIdLiveData(String makerId) {
+        LiveData<List<CarModel>> car = carDao.getCarByMakerId(makerId);
         return car;
     }
 

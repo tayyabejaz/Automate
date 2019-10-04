@@ -2,6 +2,9 @@ package com.innovidio.androidbootstrap.entity;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.innovidio.androidbootstrap.db.converters.TimestampConverter;
 
 /**
  * Created by MuhammadSalman on 12/6/2018.
@@ -17,6 +20,7 @@ public class Trip {
     private String tripdate;
     private String carname;
     private String triptype;
+    @TypeConverters({TimestampConverter.class})
     private String starttime;
     private String endtime;
     private String maxspeed;

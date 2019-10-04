@@ -11,6 +11,7 @@ public class AlarmModel {
 
     @PrimaryKey(autoGenerate = true)
     private int alarmID;
+    private int maintenanceId;
     private String alarmMessage;
 
     /* INFO
@@ -22,8 +23,21 @@ public class AlarmModel {
     private Date creationDate;
     private Date executionTIme;
 
+    private AlarmModel(){
+
+    }
+
     public int getAlarmID() {
         return alarmID;
+    }
+
+
+    public int getMaintenanceId() {
+        return maintenanceId;
+    }
+
+    public void setMaintenanceId(int maintenanceId) {
+        this.maintenanceId = maintenanceId;
     }
 
     public String getAlarmMessage() {
@@ -57,4 +71,5 @@ public class AlarmModel {
     public void setExecutionTIme(Date executionTIme) {
         this.executionTIme = executionTIme;
     }
+
 }

@@ -10,16 +10,16 @@ import java.util.List;
 public abstract class FuelDao extends BaseDao<FuelDao> {
 
     @Query("SELECT * FROM CarFuelUp ORDER BY id desc")
-    public abstract LiveData<List<CarFuelUp>> getFuelUpById();
-
-
+    public abstract LiveData<List<CarFuelUp>> getFuelUpsOrderById();
 
     @Query("SELECT * FROM CarFuelUp")
-    public abstract LiveData<CarFuelUp> getAllCars(int makeid);
+    public abstract LiveData<List<CarFuelUp>> getAllFuelUps();
+
+    @Query("SELECT * FROM CarFuelUp WHERE carname =:id")
+    public abstract LiveData<CarFuelUp> getFuelUpbyId(int id);
 
 
-    // todo ask by sir sajjad relation
-    @Query("SELECT * FROM CarFuelUp WHERE id =:id")
-    public abstract LiveData<CarFuelUp> getCardByTripId(int id);
+    @Query("SELECT * FROM CarFuelUp WHERE carname =:carName")
+    public abstract LiveData<List<CarFuelUp>> getFuelUpById(String carName);
 }
 
