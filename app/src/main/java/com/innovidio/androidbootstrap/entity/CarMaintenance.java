@@ -2,6 +2,9 @@ package com.innovidio.androidbootstrap.entity;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.innovidio.androidbootstrap.db.converters.DateConverter;
 
 /**
  * Created by MuhammadSalman on 12/6/2018.
@@ -13,32 +16,29 @@ public class CarMaintenance {
     private int id;
 
 
-    private String maintenancename;
-    private String maintenanceprice;
-    private String maintenancelifetime;
-    //  private String maintenancealerts;
-    private int maintenancealerts;
-    private int alarmid;
-    //  private long alarmtimeinmillis;
-    private boolean alarmon;
-    private String maintenancetype;
-    private String date;
-    //  private long dateinmillis;
+    private String maintenanceName;
+    private String maintenanceCost;
+    private String maintenanceLife;
+    private int maintenanceAlerts;
+    private int alarmID;
+    private boolean alarmON;
+    private String maintenanceType;
+
+    @TypeConverters(DateConverter.class)
+    private String maintenanceDate;
 
     public CarMaintenance() {
 
     }
 
-    public CarMaintenance(String maintenancename, String maintenanceprice, String maintenancelifetime, /*String maintenancealerts*/ int maintenancealerts, int alarmid, long alarmtimeinmillis, String maintenancetype, String date, long dateinmillis) {
-        this.maintenancename = maintenancename;
-        this.maintenanceprice = maintenanceprice;
-        this.maintenancelifetime = maintenancelifetime;
-        this.maintenancealerts = maintenancealerts;
-        this.alarmid = alarmid;
-        //   this.alarmtimeinmillis = alarmtimeinmillis;
-        this.maintenancetype = maintenancetype;
-        this.date = date;
-        //    this.dateinmillis = dateinmillis;
+    public CarMaintenance(String maintenancename, String maintenanceprice, String maintenancelifetime, int maintenancealerts, int alarmid, String maintenancetype, String date) {
+        this.maintenanceName = maintenancename;
+        this.maintenanceCost = maintenanceprice;
+        this.maintenanceLife = maintenancelifetime;
+        this.maintenanceAlerts = maintenancealerts;
+        this.alarmID = alarmid;
+        this.maintenanceType = maintenancetype;
+        this.maintenanceDate = date;
     }
 
     public int getId() {
@@ -46,51 +46,44 @@ public class CarMaintenance {
     }
 
 
-    public String getmaintenancename() {
-        return maintenancename;
+    public String getMaintenanceName() {
+        return maintenanceName;
     }
 
-    public String getmaintenanceprice() {
-        return maintenanceprice;
+    public String getMaintenanceCost() {
+        return maintenanceCost;
     }
 
-    public String getmaintenancelifetime() {
-        return maintenancelifetime;
+    public String getMaintenanceLife() {
+        return maintenanceLife;
     }
 
-    public int getmaintenancealerts() {
-        return maintenancealerts;
+    public int getMaintenanceAlerts() {
+        return maintenanceAlerts;
     }
 
-    public int getAlarmid() {
-        return alarmid;
+    public int getAlarmID() {
+        return alarmID;
     }
 
-    public void setAlarmid(int alarmid) {
-        this.alarmid = alarmid;
+    public void setAlarmID(int alarmid) {
+        this.alarmID = alarmid;
     }
 
-//    public long getAlarmtimeinmillis() {
-//        return alarmtimeinmillis;
-//    }
-
-    public boolean isAlarmon() {
-        return alarmon;
+    public boolean isAlarmON() {
+        return alarmON;
     }
 
     public void setAlarmon(boolean alarmon) {
-        this.alarmon = alarmon;
+        this.alarmON = alarmon;
     }
 
-    public String getMaintenancetype() {
-        return maintenancetype;
+    public String getMaintenanceType() {
+        return maintenanceType;
     }
 
-    public String getDate() {
-        return date;
+    public String getMaintenanceDate() {
+        return maintenanceDate;
     }
 
-//    public long getDateinmillis() {
-//        return dateinmillis;
-//    }
 }
