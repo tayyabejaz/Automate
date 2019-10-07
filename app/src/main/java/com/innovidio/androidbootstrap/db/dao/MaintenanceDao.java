@@ -3,7 +3,6 @@ package com.innovidio.androidbootstrap.db.dao;
 import androidx.lifecycle.LiveData;
 import androidx.room.Query;
 
-import com.innovidio.androidbootstrap.entity.AlarmModel;
 import com.innovidio.androidbootstrap.entity.CarMaintenance;
 import com.innovidio.androidbootstrap.entity.MaintenanceWithAlarms;
 

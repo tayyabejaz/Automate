@@ -8,14 +8,14 @@ import java.util.List;
 public class MaintenanceWithAlarms {
     @Embedded
     public CarMaintenance carMaintenance;
-    @Relation(parentColumn = "id", entityColumn = "maintenanceId", entity = AlarmModel.class)
-    public List<AlarmModel> alarmModelList;
+    @Relation(parentColumn = "id", entityColumn = "maintenanceId", entity = Alarm.class)
+    public List<Alarm> alarmModelList;
 
-    public List<AlarmModel> getAlarmsList() {
+    public List<Alarm> getAlarmsList() {
         return alarmModelList;
     }
 
-    public void setMovieList(List<AlarmModel> alarmModelList) {
+    public void setMovieList(List<Alarm> alarmModelList) {
         this.alarmModelList = alarmModelList;
     }
 }

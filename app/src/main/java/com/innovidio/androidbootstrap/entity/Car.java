@@ -7,7 +7,7 @@ import com.squareup.moshi.Json;
 
 
 @Entity
-public class CarModel {
+public class Car {
 
     @PrimaryKey(autoGenerate = true)
     private Integer id;
@@ -76,7 +76,7 @@ public class CarModel {
     @Json(name = "model_engine_cc")
     private String enginecc;
 
-    public CarModel() {
+    public Car() {
     }
 
     @Override

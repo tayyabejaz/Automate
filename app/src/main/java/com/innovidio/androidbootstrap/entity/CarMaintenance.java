@@ -16,6 +16,7 @@ public class CarMaintenance {
     private int id;
 
 
+    private int formId;
     private String maintenanceName;
     private String maintenanceCost;
     private String maintenanceLife;
@@ -31,8 +32,9 @@ public class CarMaintenance {
 
     }
 
-    public CarMaintenance(String maintenancename, String maintenanceprice, String maintenancelifetime, int maintenancealerts, int alarmid, String maintenancetype, String date) {
+    public CarMaintenance(int formId, String maintenancename, String maintenanceprice, String maintenancelifetime, int maintenancealerts, int alarmid, String maintenancetype, String date) {
         this.maintenanceName = maintenancename;
+        this.formId = formId;
         this.maintenanceCost = maintenanceprice;
         this.maintenanceLife = maintenancelifetime;
         this.maintenanceAlerts = maintenancealerts;
@@ -45,6 +47,9 @@ public class CarMaintenance {
         return this.id;
     }
 
+    public int getFormId() {
+        return formId;
+    }
 
     public String getMaintenanceName() {
         return maintenanceName;

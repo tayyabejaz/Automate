@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 import java.util.Date;
 
 @Entity
-public class AlarmModel {
+public class Alarm {
 
 
     @PrimaryKey(autoGenerate = true)
@@ -23,7 +23,7 @@ public class AlarmModel {
     private Date creationDate;
     private Date executionTIme;
 
-    private AlarmModel(){
+    private Alarm(){
 
     }
 

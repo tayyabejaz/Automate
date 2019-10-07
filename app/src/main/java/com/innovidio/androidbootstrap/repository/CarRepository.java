@@ -6,7 +6,7 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 
 import com.innovidio.androidbootstrap.db.dao.CarDao;
-import com.innovidio.androidbootstrap.entity.CarModel;
+import com.innovidio.androidbootstrap.entity.Car;
 
 import java.util.List;
 
@@ -26,18 +26,18 @@ public class CarRepository {
         this.carDao = carDao;
     }
 
-    public LiveData<List<CarModel>> getAllCardWithLiveData() {
-        LiveData<List<CarModel>> allCars = carDao.getAllCars();
+    public LiveData<List<Car>> getAllCardWithLiveData() {
+        LiveData<List<Car>> allCars = carDao.getAllCars();
         return allCars;
     }
 
-    public LiveData<List<CarModel>> getCarByMakerIdLiveData(String makerId) {
-        LiveData<List<CarModel>> car = carDao.getCarByMakerId(makerId);
+    public LiveData<List<Car>> getCarByMakerIdLiveData(String makerId) {
+        LiveData<List<Car>> car = carDao.getCarByMakerId(makerId);
         return car;
     }
 
-    public LiveData<CarModel> getCardByIdLiveData(int id) {
-        LiveData<CarModel> car = carDao.getCardById(id);
+    public LiveData<Car> getCardByIdLiveData(int id) {
+        LiveData<Car> car = carDao.getCardById(id);
         return car;
     }
 }
