@@ -45,7 +45,7 @@ public class MainActivity extends DaggerAppCompatActivity {
 
      //   myViewModel.getCarModels("2019", "Acura");
 
-        myViewModel.getResponseObserver(this,"2019", "Acura" ).observe(this, new Observer<List<CarModelName>>() {
+        myViewModel.getCarModels("2019", "Acura" ).observe(this, new Observer<List<CarModelName>>() {
             @Override
             public void onChanged(List<CarModelName> carModelNames) {
                 if (carModelNames!=null){

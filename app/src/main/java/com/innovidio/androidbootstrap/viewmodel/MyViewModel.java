@@ -21,18 +21,25 @@ public class MyViewModel extends ViewModel {
     }
 
 
-    public MutableLiveData<List<CarModelName>> getResponseObserver(MainActivity mainActivity, String year, String make) {
-        carQueryRepository.getCarModelNamesLiveData().observe(mainActivity, new Observer<List<CarModelName>>() {
-            @Override
-            public void onChanged(List<CarModelName> carModelNames) {
-                if (carModelNames!=null){
-                    responseObserver.setValue(carModelNames);
-                }
 
-            }
-        });
-        this.carQueryRepository.getCarModels(year, make);
-        return responseObserver;
+
+    public MutableLiveData<List<CarModelName>>  getCarModels(String year, String make){
+        return this.carQueryRepository.getCarModels(year, make);
     }
+
+
+//    public MutableLiveData<List<CarModelName>> getResponseObserver(MainActivity mainActivity, String year, String make) {
+//        carQueryRepository.getCarModelNamesLiveData().observe(mainActivity, new Observer<List<CarModelName>>() {
+//            @Override
+//            public void onChanged(List<CarModelName> carModelNames) {
+//                if (carModelNames!=null){
+//                    responseObserver.setValue(carModelNames);
+//                }
+//
+//            }
+//        });
+//        this.carQueryRepository.getCarModels(year, make);
+//        return responseObserver;
+//    }
 
 }
