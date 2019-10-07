@@ -1,6 +1,7 @@
 package com.innovidio.androidbootstrap.db.dao;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Query;
 
 import com.innovidio.androidbootstrap.entity.Trip;
@@ -14,7 +15,7 @@ public abstract class TripDao extends BaseDao<TripDao> {
 
 
     @Query("SELECT * FROM Trip")
-    public abstract LiveData<List<Trip>> getAllTrips();
+    public abstract MutableLiveData<List<Trip>> getAllTrips();
 
     @Query("SELECT * FROM Trip WHERE id =:id")
     public abstract LiveData<Trip> getTripById(int id);
