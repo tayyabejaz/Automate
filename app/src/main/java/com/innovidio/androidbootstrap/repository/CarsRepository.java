@@ -4,6 +4,7 @@ package com.innovidio.androidbootstrap.repository;
 import android.content.Context;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 
 import com.innovidio.androidbootstrap.db.dao.CarDao;
 import com.innovidio.androidbootstrap.entity.Car;
@@ -14,30 +15,25 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class CarRepository {
+public class CarsRepository {
 
     private final CarDao carDao;
-    private Context context;
 
 
     @Inject
-    public CarRepository(Context context, CarDao carDao) {
-        this.context = context;
+    public CarsRepository(CarDao carDao) {
         this.carDao = carDao;
     }
 
     public LiveData<List<Car>> getAllCardWithLiveData() {
-        LiveData<List<Car>> allCars = carDao.getAllCars();
-        return allCars;
+        return carDao.getAllCars();
     }
 
     public LiveData<List<Car>> getCarByMakerIdLiveData(String makerId) {
-        LiveData<List<Car>> car = carDao.getCarByMakerId(makerId);
-        return car;
+        return carDao.getCarByMakerId(makerId);
     }
 
     public LiveData<Car> getCardByIdLiveData(int id) {
-        LiveData<Car> car = carDao.getCardById(id);
-        return car;
+        return carDao.getCardById(id);
     }
 }

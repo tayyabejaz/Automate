@@ -3,7 +3,9 @@ package com.innovidio.androidbootstrap.entity;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
+import com.innovidio.androidbootstrap.db.converters.DateConverter;
 import com.squareup.moshi.Json;
 
 import java.util.Date;
@@ -14,12 +16,16 @@ public class Form {
 
     @PrimaryKey(autoGenerate = true)
     private int Id;
-
     private String title;
     private String carId;
     private String location;
+    @TypeConverters(DateConverter.class)
     private Date startDate;
-    private String endDate;
+    @TypeConverters(DateConverter.class)
+    private Date endDate;
+    // todo is save date added here or not?
+    @TypeConverters(DateConverter.class)
+    private Date saveDate;
 
 
     public Form(){
@@ -63,11 +69,19 @@ public class Form {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public Date setEndDate(Date endDate) {
+       return this.endDate = endDate;
+    }
+
+    public Date getSaveDate() {
+        return saveDate;
+    }
+
+    public void setSaveDate(Date saveDate) {
+        this.saveDate = saveDate;
     }
 }

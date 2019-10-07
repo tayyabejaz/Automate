@@ -2,6 +2,9 @@ package com.innovidio.androidbootstrap.entity;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.innovidio.androidbootstrap.db.converters.DateConverter;
 
 import java.util.Date;
 
@@ -20,7 +23,9 @@ public class Alarm {
     2- Alarm for Reminders */
 
     private String alarmType;
+    @TypeConverters(DateConverter.class)
     private Date creationDate;
+    @TypeConverters(DateConverter.class)
     private Date executionTIme;
 
     private Alarm(){

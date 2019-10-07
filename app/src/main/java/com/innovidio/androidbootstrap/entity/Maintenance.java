@@ -6,15 +6,16 @@ import androidx.room.TypeConverters;
 
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
 
+import java.util.Date;
+
 /**
- * Created by MuhammadSalman on 12/6/2018.
+ * Created by Adnan Naeem on 10/09/2019.
  */
 
 @Entity
-public class CarMaintenance {
+public class Maintenance {
     @PrimaryKey(autoGenerate = true)
     private int id;
-
 
     private int formId;
     private String maintenanceName;
@@ -28,11 +29,15 @@ public class CarMaintenance {
     @TypeConverters(DateConverter.class)
     private String maintenanceDate;
 
-    public CarMaintenance() {
+    // todo is save date added here or not?
+    @TypeConverters(DateConverter.class)
+    private Date saveDate;
+
+    public Maintenance() {
 
     }
 
-    public CarMaintenance(int formId, String maintenancename, String maintenanceprice, String maintenancelifetime, int maintenancealerts, int alarmid, String maintenancetype, String date) {
+    public Maintenance(int formId, String maintenancename, String maintenanceprice, String maintenancelifetime, int maintenancealerts, int alarmid, String maintenancetype, String date,Date saveDate) {
         this.maintenanceName = maintenancename;
         this.formId = formId;
         this.maintenanceCost = maintenanceprice;
@@ -41,6 +46,7 @@ public class CarMaintenance {
         this.alarmID = alarmid;
         this.maintenanceType = maintenancetype;
         this.maintenanceDate = date;
+        this.saveDate =  saveDate;
     }
 
     public int getId() {
@@ -91,4 +97,7 @@ public class CarMaintenance {
         return maintenanceDate;
     }
 
+    public Date getSaveDate() {
+        return saveDate;
+    }
 }

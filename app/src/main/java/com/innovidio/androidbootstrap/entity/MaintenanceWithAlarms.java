@@ -7,7 +7,7 @@ import java.util.List;
 
 public class MaintenanceWithAlarms {
     @Embedded
-    public CarMaintenance carMaintenance;
+    public Maintenance carMaintenance;
     @Relation(parentColumn = "id", entityColumn = "maintenanceId", entity = Alarm.class)
     public List<Alarm> alarmModelList;
 

@@ -2,7 +2,7 @@ package com.innovidio.androidbootstrap.network.dto;
 
 import com.squareup.moshi.Json;
 
-public class CarModelInfo {
+public class CarTrimsInfo {
     @Json(name = "model_id")
     private String modelId;
     @Json(name = "model_make_id")

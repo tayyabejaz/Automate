@@ -36,7 +36,7 @@ public class NetworkModule {
     @Provides
     static Retrofit provideRetrofitInstance(OkHttpClient okHttpClient){
         return new Retrofit.Builder()
-                .baseUrl(Constants.URL_BASE_MUSIC)
+                .baseUrl(Constants.URL_BASE_API)
                 .addConverterFactory(MoshiConverterFactory.create())
             //    .addConverterFactory(ScalarsConverterFactory.create())
                 .client(okHttpClient)

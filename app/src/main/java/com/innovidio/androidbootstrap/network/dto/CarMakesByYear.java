@@ -2,7 +2,7 @@ package com.innovidio.androidbootstrap.network.dto;
 
 import com.squareup.moshi.Json;
 
-public class CarMakes {
+public class CarMakesByYear {
 
     @Json(name = "make_id")
     private String makeId;

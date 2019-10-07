@@ -1,6 +1,7 @@
 package com.innovidio.androidbootstrap.db.dao;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Query;
 
 import com.innovidio.androidbootstrap.entity.Car;

@@ -2,13 +2,18 @@ package com.innovidio.androidbootstrap.entity;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.innovidio.androidbootstrap.db.converters.DateConverter;
+
+import java.util.Date;
 
 /**
  * Created by MuhammadSalman on 1/24/2019.
  */
 
 @Entity
-public class CarFuelUp {
+public class FuelUp {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String carname;
@@ -19,8 +24,11 @@ public class CarFuelUp {
     private String perunitfuelprice;
     private String totalprice;
     private String location;
+    // todo is save date added here or not?
+    @TypeConverters(DateConverter.class)
+    private Date saveDate;
 
-    public CarFuelUp(String carname, String odometerreading, int tripId, String liters, String perunitfuelprice, String totalprice, String location) {
+    public FuelUp(String carname, String odometerreading, int tripId, String liters, String perunitfuelprice, String totalprice, String location, Date saveDate) {
         this.carname = carname;
         this.odometerreading = odometerreading;
         this.liters = liters;
@@ -28,9 +36,10 @@ public class CarFuelUp {
         this.totalprice = totalprice;
         this.location = location;
         this.tripId = tripId;
+        this.saveDate =  saveDate;
     }
 
-    public CarFuelUp() {
+    public FuelUp() {
 
     }
 

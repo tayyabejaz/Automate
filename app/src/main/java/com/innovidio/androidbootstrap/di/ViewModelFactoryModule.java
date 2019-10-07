@@ -3,7 +3,7 @@ package com.innovidio.androidbootstrap.di;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.innovidio.androidbootstrap.viewmodel.MyViewModel;
+import com.innovidio.androidbootstrap.viewmodel.CarQueryViewModel;
 import com.innovidio.androidbootstrap.di.viewmodel.ViewModelKey;
 import com.innovidio.androidbootstrap.di.viewmodel.ViewModelProviderFactory;
 
@@ -21,6 +21,6 @@ public abstract class ViewModelFactoryModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MyViewModel.class)
-    abstract ViewModel bindAuthViewModel( MyViewModel myViewModel);
+    @ViewModelKey(CarQueryViewModel.class)
+    abstract ViewModel bindAuthViewModel( CarQueryViewModel carQueryViewModel);
 }

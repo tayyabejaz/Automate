@@ -4,7 +4,10 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.innovidio.androidbootstrap.db.converters.DateConverter;
 import com.innovidio.androidbootstrap.db.converters.TimestampConverter;
+
+import java.util.Date;
 
 /**
  * Created by MuhammadSalman on 12/6/2018.
@@ -17,35 +20,44 @@ public class Trip {
     private int id;
 
     private String tripTitle;
+    private String destination;
     private String tripdate;
     private String carname;
     private String triptype;
-    @TypeConverters({TimestampConverter.class})
-    private String starttime;
-    private String endtime;
     private String maxspeed;
     private String avgspeed;
     private String distancecovered;
-    private long datetimeinmillis;
     private String fueleconomypertrip;
+    @TypeConverters(DateConverter.class)
+    private Date datetimeinmillis;
+    @TypeConverters({TimestampConverter.class})
+    private Date starttime;
+    @TypeConverters({TimestampConverter.class})
+    private Date endtime;
+    // todo is save date added here or not?
+    @TypeConverters(DateConverter.class)
+    private Date saveDate;
 
 
     public Trip(){
 
     }
 
-    public Trip(String tripTitle, String carname, String triptype, String starttime, String endtime, String maxspeed, String avgspeed, String distancecovered, String tripdate , long datetimeinmillis , String fueleconomypertrip) {
+    public Trip(String tripTitle,String destination, String carname, String triptype, Date starttime, Date endtime, String maxspeed, String avgspeed, String distancecovered, String tripdate , Date datetimeinmillis , String fueleconomypertrip, Date saveDate) {
         this.tripTitle =  tripTitle;
+        this.destination = destination;
         this.carname = carname;
         this.triptype = triptype;
-        this.starttime = starttime;
-        this.endtime = endtime;
+
         this.maxspeed = maxspeed;
         this.avgspeed = avgspeed;
         this.distancecovered = distancecovered;
         this.tripdate = tripdate;
+        this.starttime = starttime;
+        this.endtime = endtime;
         this.datetimeinmillis = datetimeinmillis;
         this.fueleconomypertrip = fueleconomypertrip;
+        this.saveDate = saveDate;
     }
 
     public int getId() {
@@ -59,11 +71,11 @@ public class Trip {
         return triptype;
     }
 
-    public String getStarttime() {
+    public Date getStarttime() {
         return starttime;
     }
 
-    public String getEndtime() {
+    public Date getEndtime() {
         return endtime;
     }
 
@@ -83,7 +95,7 @@ public class Trip {
         return tripdate;
     }
 
-    public long getDatetimeinmillis() {
+    public Date getDatetimeinmillis() {
         return datetimeinmillis;
     }
 
@@ -93,5 +105,13 @@ public class Trip {
 
     public String getTripTitle() {
         return tripTitle;
+    }
+
+    public Date getSaveDate() {
+        return saveDate;
+    }
+
+    public String getDestination() {
+        return destination;
     }
 }

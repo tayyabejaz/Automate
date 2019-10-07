@@ -1,8 +1,11 @@
 package com.innovidio.androidbootstrap.repository;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.innovidio.androidbootstrap.db.dao.CarDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
+import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.network.dto.CarModelName;
 
@@ -21,9 +24,9 @@ public class TripRepository {
         this.tripDao = tripDao;
     }
 
-    public MutableLiveData<List<Trip>> getTrips(){
+    public LiveData<List<Trip>> getAllTrips(){
 
         return this.tripDao.getAllTrips();
-
     }
+    
 }
