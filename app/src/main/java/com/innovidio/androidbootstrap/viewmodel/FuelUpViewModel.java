@@ -11,6 +11,7 @@ import com.innovidio.androidbootstrap.repository.AlarmRepository;
 import com.innovidio.androidbootstrap.repository.FuelUpRepository;
 import com.innovidio.androidbootstrap.repository.MaintenanceRepository;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -28,10 +29,20 @@ public class FuelUpViewModel extends ViewModel {
         return this.fuelUpRepository.getAllFuelUps();
     }
 
-    public MutableLiveData<Float> getFeulAverage(){
+
+    public MutableLiveData<Float> getFeulAverage() {
         //TODO Adnan - please provide feul average
         MutableLiveData<Float> floatLiveData = new MutableLiveData<>();
         floatLiveData.postValue(0.6f);
         return floatLiveData;
+    }
+    public LiveData<List<FuelUp>> getMonthlyFuelUp(Date month){
+        Date startDate=null;
+        Date endDate=null;
+        return this.fuelUpRepository.getMonthlyFuelUp(startDate, endDate);
+    }
+
+    public LiveData<FuelUp> getRecentFuelUp(){
+        return this.fuelUpRepository.getRecentFuelUp();
     }
 }

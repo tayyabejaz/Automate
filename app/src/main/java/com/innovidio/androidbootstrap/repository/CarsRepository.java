@@ -25,15 +25,15 @@ public class CarsRepository {
         this.carDao = carDao;
     }
 
-    public LiveData<List<Car>> getAllCardWithLiveData() {
+    public LiveData<List<Car>> getAllCars() {
         return carDao.getAllCars();
     }
 
-    public LiveData<List<Car>> getCarByMakerIdLiveData(String makerId) {
-        return carDao.getCarByMakerId(makerId);
+    public LiveData<List<Car>> getAllCarsOrderById() {
+        return carDao.getAllCarsOrderById();
     }
 
-    public LiveData<Car> getCardByIdLiveData(int id) {
-        return carDao.getCardById(id);
+    public LiveData<Car> getCarById(int id) {
+        return carDao.getCarById(id);
     }
 }

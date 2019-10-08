@@ -23,4 +23,12 @@ public class AlarmRepository {
     public LiveData<List<Alarm>> getAllAlarms(){
         return this.alarmDao.getAllAlarms();
     }
+
+    public LiveData<Alarm> getAlarmById(int id){
+        return this.alarmDao.getAlarmByAlarmId(id);
+    }
+
+    public LiveData<List<Alarm>> getAlarmByType(int type){
+        return this.alarmDao.getAlarmByType(type);
+    }
 }

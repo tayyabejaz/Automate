@@ -22,4 +22,12 @@ public class AlarmViewModel extends ViewModel {
     public LiveData<List<Alarm>> getAllAlarms(){
         return this.alarmRepository.getAllAlarms();
     }
+
+    public LiveData<Alarm> getAlarmById(int id){
+        return this.alarmRepository.getAlarmById(id);
+    }
+
+    public LiveData<List<Alarm>> getAlarmByType(int type){
+        return this.alarmRepository.getAlarmByType(type);
+    }
 }

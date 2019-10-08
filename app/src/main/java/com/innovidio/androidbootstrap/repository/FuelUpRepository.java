@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,8 +22,14 @@ public class FuelUpRepository {
     }
 
     public LiveData<List<FuelUp>> getAllFuelUps(){
-
         return this.fuelDao.getAllFuelUps();
+    }
 
+    public LiveData<List<FuelUp>> getMonthlyFuelUp(Date startDate, Date endDate){
+        return this.fuelDao.getMonthlyFuelConsume(startDate, endDate);
+    }
+
+    public LiveData<FuelUp> getRecentFuelUp(){
+        return this.fuelDao.getRecentFuelUp();
     }
 }

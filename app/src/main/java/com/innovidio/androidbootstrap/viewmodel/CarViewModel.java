@@ -19,7 +19,15 @@ public class CarViewModel extends ViewModel {
     }
 
 
+    public LiveData<Car> getCarById(int id){
+        return this.carRepository.getCarById(id);
+    }
+
     public LiveData<List<Car>> getAllCars(){
-        return this.carRepository.getAllCardWithLiveData();
+        return this.carRepository.getAllCars();
+    }
+
+    public LiveData<List<Car>> getAllCarsOrderById(){
+        return this.carRepository.getAllCarsOrderById();
     }
 }
