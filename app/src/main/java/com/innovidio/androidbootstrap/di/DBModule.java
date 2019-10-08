@@ -5,7 +5,13 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 
 import com.innovidio.androidbootstrap.db.AppDatabase;
+import com.innovidio.androidbootstrap.db.dao.AlarmDao;
+import com.innovidio.androidbootstrap.db.dao.CarDao;
 import com.innovidio.androidbootstrap.db.dao.FeedDao;
+import com.innovidio.androidbootstrap.db.dao.FormDao;
+import com.innovidio.androidbootstrap.db.dao.FuelDao;
+import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
+import com.innovidio.androidbootstrap.db.dao.TripDao;
 
 
 import javax.inject.Singleton;
@@ -27,11 +33,49 @@ public class DBModule {
 //                .allowMainThreadQueries().build();
     }
 
+
+    // todo add providers for dao here #Adnan
+
     @Provides
     @Singleton
-    FeedDao provideSongDao(@NonNull AppDatabase appDatabase) {
+    FeedDao provideFeedDao(@NonNull AppDatabase appDatabase) {
         return appDatabase.getFeedDao();
     }
 
+    @Provides
+    @Singleton
+    AlarmDao provideAlarmDao(@NonNull AppDatabase appDatabase) {
+        return appDatabase.getAlarmDao();
+    }
+
+    @Provides
+    @Singleton
+    CarDao provideCarDao(@NonNull AppDatabase appDatabase) {
+        return appDatabase.getCarDao();
+    }
+
+    @Provides
+    @Singleton
+    FormDao provideFormDao(@NonNull AppDatabase appDatabase) {
+        return appDatabase.getFormDao();
+    }
+
+    @Provides
+    @Singleton
+    FuelDao provideFuelDao(@NonNull AppDatabase appDatabase) {
+        return appDatabase.getFuelDao();
+    }
+
+    @Provides
+    @Singleton
+    MaintenanceDao provideMaintenanceDao(@NonNull AppDatabase appDatabase) {
+        return appDatabase.getMaintenanceDao();
+    }
+
+    @Provides
+    @Singleton
+    TripDao provideTripDao(@NonNull AppDatabase appDatabase) {
+        return appDatabase.getTripDao();
+    }
 
 }

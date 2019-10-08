@@ -28,6 +28,11 @@ public class TimeLineViewModel extends ViewModel {
     public static final String MAINTENANCE = "Maintenance";
     public static final String NONE = "none";
 
+
+    LiveData<List<FuelUp>> fuelUpsLiveData = null;
+    LiveData<List<Maintenance>> maintenanceLiveData = null;
+    LiveData<List<Trip>> tripsLiveData = null;
+
     MediatorLiveData liveDataMerger = new MediatorLiveData<>();
 
     @Inject
@@ -38,7 +43,8 @@ public class TimeLineViewModel extends ViewModel {
     }
 
     public LiveData<List<Trip>> getTrips() {
-        return this.tripRepository.getAllTrips();
+        this.tripsLiveData =   this.tripRepository.getAllTrips();
+        return this.tripsLiveData;
     }
 
     public LiveData<List<FuelUp>> getAllFuelUps() {
@@ -49,6 +55,15 @@ public class TimeLineViewModel extends ViewModel {
         return this.maintenanceRepository.getAllMaintenanceService();
     }
 
+    public void getAllTimeline(){
+        this.tripsLiveData =   this.tripRepository.getAllTrips();
+        this.maintenanceLiveData =   this.maintenanceRepository.getAllMaintenanceService();
+        this.fuelUpsLiveData =   this.fuelUpRepository.getAllFuelUps();
 
+
+       // MediatorLiveData liveDataMerger = new MediatorLiveData<>();
+//        liveDataMerger.addSource(liveData1, value -> liveDataMerger.setValue(value));
+//        liveDataMerger.addSource(liveData2, value -> liveDataMerger.setValue(value));
+    }
 
 }

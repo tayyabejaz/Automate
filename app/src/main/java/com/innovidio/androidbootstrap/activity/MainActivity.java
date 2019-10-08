@@ -51,24 +51,24 @@ public class MainActivity extends DaggerAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         carQueryViewModel =  new ViewModelProvider(this, providerFactory).get(CarQueryViewModel.class);
-        timeLineViewModel =  new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
-        fuelUpViewModel =  new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
-        carViewModel =  new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
+//        timeLineViewModel =  new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
+//        fuelUpViewModel =  new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
+//        carViewModel =  new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
     //    appPreferences.put(AppPreferences.Key.SAMPLE_INT,100);
 
         carApiQueries();
-        timeLineData();
-        fuelUpData();
+        //timeLineData();
+        //fuelUpData();
 
 
-        carViewModel.getAllCars().observe(this, new Observer<List<Car>>() {
-            @Override
-            public void onChanged(List<Car> cars) {
-                if (cars!=null){
-                    Log.d(TAG, "cars: "+cars.size());
-                }
-            }
-        });
+//        carViewModel.getAllCars().observe(this, new Observer<List<Car>>() {
+//            @Override
+//            public void onChanged(List<Car> cars) {
+//                if (cars!=null){
+//                    Log.d(TAG, "cars: "+cars.size());
+//                }
+//            }
+//        });
 
     }
 

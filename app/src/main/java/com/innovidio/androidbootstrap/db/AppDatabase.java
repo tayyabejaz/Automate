@@ -10,6 +10,18 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.innovidio.androidbootstrap.db.dao.AlarmDao;
+import com.innovidio.androidbootstrap.db.dao.CarDao;
+import com.innovidio.androidbootstrap.db.dao.FormDao;
+import com.innovidio.androidbootstrap.db.dao.FuelDao;
+import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
+import com.innovidio.androidbootstrap.db.dao.TripDao;
+import com.innovidio.androidbootstrap.entity.Alarm;
+import com.innovidio.androidbootstrap.entity.Car;
+import com.innovidio.androidbootstrap.entity.Form;
+import com.innovidio.androidbootstrap.entity.FuelUp;
+import com.innovidio.androidbootstrap.entity.Maintenance;
+import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.entity.models.Feed;
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
 import com.innovidio.androidbootstrap.db.converters.IntegerListConverter;
@@ -23,13 +35,20 @@ import java.io.InputStream;
         entities = {
                 //@TODO add your Entity classes here
                 Feed.class,
+                Alarm.class,
+                Car.class,
+                Form.class,
+                FuelUp.class,
+                Maintenance.class,
+                Trip.class
+
         },
         version = 1,
         exportSchema = false
 )
 @TypeConverters(
         {
-                //TODO add you typeConnverters here
+                //TODO add you typeConverters here
                 IntegerListConverter.class, DateConverter.class, StringListConverter.class
         }
 )
@@ -38,6 +57,12 @@ public abstract class AppDatabase extends RoomDatabase {
 
     //TODO define you DAO against Entity here
     public abstract FeedDao getFeedDao();
+    public abstract AlarmDao getAlarmDao();
+    public abstract CarDao getCarDao();
+    public abstract FormDao getFormDao();
+    public abstract FuelDao getFuelDao();
+    public abstract MaintenanceDao getMaintenanceDao();
+    public abstract TripDao getTripDao();
 
 
     private static final String TAG = "AppDatabase";

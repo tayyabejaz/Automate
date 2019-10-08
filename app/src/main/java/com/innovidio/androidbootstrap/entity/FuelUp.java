@@ -83,6 +83,6 @@ public class FuelUp implements TimeLineItem {
 
     @Override
     public Type getType() {
-        return Type.FEUL;
+        return Type.FUEL;
     }
 }

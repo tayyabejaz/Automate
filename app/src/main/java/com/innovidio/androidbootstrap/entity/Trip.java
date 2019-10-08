@@ -6,6 +6,7 @@ import androidx.room.TypeConverters;
 
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
 import com.innovidio.androidbootstrap.db.converters.TimestampConverter;
+import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
 import java.util.Date;
 
@@ -14,7 +15,7 @@ import java.util.Date;
  */
 
 @Entity
-public class Trip {
+public class Trip implements TimeLineItem {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -26,7 +27,7 @@ public class Trip {
     private String triptype;
     private String maxspeed;
     private String avgspeed;
-    private String distancecovered;
+    private String distanceCovered;
     private String fueleconomypertrip;
     @TypeConverters(DateConverter.class)
     private Date datetimeinmillis;
@@ -43,7 +44,7 @@ public class Trip {
 
     }
 
-    public Trip(String tripTitle,String destination, String carname, String triptype, Date starttime, Date endtime, String maxspeed, String avgspeed, String distancecovered, String tripdate , Date datetimeinmillis , String fueleconomypertrip, Date saveDate) {
+    public Trip(String tripTitle, String destination, String carname, String triptype, Date starttime, Date endtime, String maxspeed, String avgspeed, String distanceCovered, String tripdate , Date datetimeinmillis , String fueleconomypertrip, Date saveDate) {
         this.tripTitle =  tripTitle;
         this.destination = destination;
         this.carname = carname;
@@ -51,7 +52,7 @@ public class Trip {
 
         this.maxspeed = maxspeed;
         this.avgspeed = avgspeed;
-        this.distancecovered = distancecovered;
+        this.distanceCovered = distanceCovered;
         this.tripdate = tripdate;
         this.starttime = starttime;
         this.endtime = endtime;
@@ -87,8 +88,8 @@ public class Trip {
         return avgspeed;
     }
 
-    public String getDistancecovered() {
-        return distancecovered;
+    public String getDistanceCovered() {
+        return distanceCovered;
     }
 
     public String getTripdate() {
@@ -113,5 +114,15 @@ public class Trip {
 
     public String getDestination() {
         return destination;
+    }
+
+    @Override
+    public Date getInsertDateTime() {
+        return this.saveDate;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.TRIP;
     }
 }
