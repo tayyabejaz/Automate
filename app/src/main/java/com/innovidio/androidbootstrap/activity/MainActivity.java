@@ -4,14 +4,12 @@ package com.innovidio.androidbootstrap.activity;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.adapter.SpinnerAdapter;
-import com.innovidio.androidbootstrap.databinding.ActivityMainBinding;
 import com.innovidio.androidbootstrap.di.viewmodel.ViewModelProviderFactory;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.FuelUp;
@@ -44,6 +42,8 @@ public class MainActivity extends DaggerAppCompatActivity {
     @Inject
     AppPreferences appPreferences;
 
+    private ArrayList<SpinnerDataModel> dataList;
+    private SpinnerAdapter mAdapter;
 
     CarViewModel carViewModel = null;
     CarQueryViewModel carQueryViewModel = null;
@@ -54,16 +54,24 @@ public class MainActivity extends DaggerAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        super.setContentView( R.layout.activity_main);
+
+       // mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+     //   mainBinding.setMainSpinnerData(this);
+
         carQueryViewModel =  new ViewModelProvider(this, providerFactory).get(CarQueryViewModel.class);
-//        timeLineViewModel =  new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
-//        fuelUpViewModel =  new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
-//        carViewModel =  new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
-    //    appPreferences.put(AppPreferences.Key.SAMPLE_INT,100);
+
+//	timeLineViewModel =  new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
+    //    fuelUpViewModel =  new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
+    //    carViewModel =  new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
+     //   appPreferences.put(AppPreferences.Key.SAMPLE_INT,100);
 
         carApiQueries();
-        //timeLineData();
-        //fuelUpData();
+//        timeLineData();
+//        fuelUpData();
+
+
+
 
 
 //        carViewModel.getAllCars().observe(this, new Observer<List<Car>>() {
@@ -76,11 +84,6 @@ public class MainActivity extends DaggerAppCompatActivity {
 //        });
 
 
-        initList();
-        mAdapter = new SpinnerAdapter(this, dataList);
-        mainBinding.mainActivitySpinner.setAdapter(mAdapter);
-
-        mainBinding.mainActivitySpinner.setAdapter(mAdapter);
     }
 
     private void fuelUpData() {
@@ -172,15 +175,4 @@ public class MainActivity extends DaggerAppCompatActivity {
         }
     }
 
-
-    private void initList() {
-        dataList = new ArrayList<SpinnerDataModel>();
-        dataList.add(new SpinnerDataModel("Honda Civic"));
-        dataList.add(new SpinnerDataModel("Toyota Corolla"));
-        dataList.add(new SpinnerDataModel("Suzuki Ciaz"));
-        dataList.add(new SpinnerDataModel("Daihatsu Move"));
-        dataList.add(new SpinnerDataModel("Nissan Juke"));
-        dataList.add(new SpinnerDataModel("Ford Focus"));
-
-    }
 }
