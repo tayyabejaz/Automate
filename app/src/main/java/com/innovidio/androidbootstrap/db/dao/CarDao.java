@@ -11,7 +11,7 @@ import java.util.List;
 public abstract class CarDao extends BaseDao<CarDao> {
 
     @Query("SELECT * FROM Car ORDER BY id desc")
-    public abstract LiveData<List<Car>> fetchAllCarsOrderById();
+    public abstract LiveData<List<Car>> getAllCarsOrderById();
 
 
     @Query("SELECT * FROM Car WHERE makeid =:makeid")
@@ -22,6 +22,6 @@ public abstract class CarDao extends BaseDao<CarDao> {
     public abstract LiveData<List<Car>> getAllCars();
 
     @Query("SELECT * FROM Car WHERE id =:id")
-    public abstract LiveData<Car> getCardById(int id);
+    public abstract LiveData<Car> getCarById(int id);
 }
 

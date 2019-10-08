@@ -22,4 +22,12 @@ public class TripViewModel extends ViewModel {
     public LiveData<List<Trip>> getTrips() {
         return this.tripRepository.getAllTrips();
     }
+
+    public LiveData<List<Trip>> getTripByType(String type) {
+        return this.tripRepository.getTripByType(type);
+    }
+
+    public LiveData<Trip> getTripById(int id) {
+        return this.tripRepository.getTripById(id);
+    }
 }

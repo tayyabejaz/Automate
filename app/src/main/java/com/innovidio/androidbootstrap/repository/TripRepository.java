@@ -28,5 +28,16 @@ public class TripRepository {
 
         return this.tripDao.getAllTrips();
     }
+
+
+    public LiveData<Trip> getTripById(int id){
+
+        return this.tripDao.getTripById(id);
+    }
+
+    public LiveData<List<Trip>> getTripByType(String  type){
+
+        return this.tripDao.getTripByTripType(type);
+    }
     
 }
