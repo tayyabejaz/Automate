@@ -1,6 +1,7 @@
 package com.innovidio.androidbootstrap.viewmodel;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.innovidio.androidbootstrap.entity.FuelUp;
@@ -27,6 +28,8 @@ public class TimeLineViewModel extends ViewModel {
     public static final String MAINTENANCE = "Maintenance";
     public static final String NONE = "none";
 
+    MediatorLiveData liveDataMerger = new MediatorLiveData<>();
+
     @Inject
     public TimeLineViewModel(TripRepository tripRepository, FuelUpRepository fuelUpRepository, MaintenanceRepository maintenanceRepository) {
         this.tripRepository = tripRepository;
@@ -45,4 +48,7 @@ public class TimeLineViewModel extends ViewModel {
     public LiveData<List<Maintenance>> getAllMaintenanceService() {
         return this.maintenanceRepository.getAllMaintenanceService();
     }
+
+
+
 }

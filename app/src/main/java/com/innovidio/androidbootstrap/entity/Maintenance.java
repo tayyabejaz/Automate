@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
+import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
 import java.util.Date;
 
@@ -13,7 +14,7 @@ import java.util.Date;
  */
 
 @Entity
-public class Maintenance {
+public class Maintenance implements TimeLineItem {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -99,5 +100,15 @@ public class Maintenance {
 
     public Date getSaveDate() {
         return saveDate;
+    }
+
+    @Override
+    public Date getInsertDateTime() {
+        return saveDate;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.MAINTENANCE;
     }
 }

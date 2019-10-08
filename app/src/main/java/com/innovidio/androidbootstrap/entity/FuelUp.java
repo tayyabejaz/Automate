@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
+import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
 import java.util.Date;
 
@@ -13,7 +14,7 @@ import java.util.Date;
  */
 
 @Entity
-public class FuelUp {
+public class FuelUp implements TimeLineItem {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String carname;
@@ -73,5 +74,15 @@ public class FuelUp {
 
     public int getTripId() {
         return tripId;
+    }
+
+    @Override
+    public Date getInsertDateTime() {
+        return saveDate;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.FEUL;
     }
 }
