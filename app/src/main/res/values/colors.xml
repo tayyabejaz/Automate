@@ -3,4 +3,19 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="primaryLight"> #2196f3  </color>
+    <color name="primaryDark"> #9d21f3  </color>
+
+    <color name="whiteColor"> #FFFFFF </color>
+    <color name="blackColor"> #000000 </color>
+
+    <color name="blueDark"> #0a44a6 </color>
+    <color name="blueLight"> #31b8ea</color>
+
+    <color name="redDark"> #a60a0a </color>
+    <color name="redLight"> #f04867 </color>
+
+    <color name="purpleDark"> #8903c8 </color>
+    <color name="purpleLight"> #e632b9 </color>
 </resources>
