@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/mainDashboardFragment">
+
+    <fragment
+        android:id="@+id/mainDashboardFragment"
+        android:name="com.innovidio.androidbootstrap.fragment.MainDashboardFragment"
+        android:label="fragment_main_dashboard"
+        tools:layout="@layout/fragment_main_dashboard" />
+</navigation>
