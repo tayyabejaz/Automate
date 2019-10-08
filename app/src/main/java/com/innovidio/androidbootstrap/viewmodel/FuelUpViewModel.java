@@ -1,6 +1,7 @@
 package com.innovidio.androidbootstrap.viewmodel;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.innovidio.androidbootstrap.entity.Alarm;
@@ -25,5 +26,12 @@ public class FuelUpViewModel extends ViewModel {
 
     public LiveData<List<FuelUp>> getAllFuelUps(){
         return this.fuelUpRepository.getAllFuelUps();
+    }
+
+    public MutableLiveData<Float> getFeulAverage(){
+        //TODO Adnan - please provide feul average
+        MutableLiveData<Float> floatLiveData = new MutableLiveData<>();
+        floatLiveData.postValue(0.6f);
+        return floatLiveData;
     }
 }
