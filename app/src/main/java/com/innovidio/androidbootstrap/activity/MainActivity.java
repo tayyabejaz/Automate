@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
@@ -19,8 +20,11 @@ import com.innovidio.androidbootstrap.network.dto.CarTrimsInfo;
 import com.innovidio.androidbootstrap.viewmodel.CarQueryViewModel;
 import com.innovidio.androidbootstrap.db.dao.FeedDao;
 import com.innovidio.androidbootstrap.di.viewmodel.ViewModelProviderFactory;
+import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
+import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -36,9 +40,10 @@ public class MainActivity extends DaggerAppCompatActivity {
     AppPreferences appPreferences;
 
 
-
+    CarViewModel carViewModel = null;
     CarQueryViewModel carQueryViewModel = null;
     TimeLineViewModel timeLineViewModel = null;
+    FuelUpViewModel fuelUpViewModel = null;
     List<TimeLine> timeLineList = null;
 
     @Override
@@ -47,12 +52,43 @@ public class MainActivity extends DaggerAppCompatActivity {
         setContentView(R.layout.activity_main);
         carQueryViewModel =  new ViewModelProvider(this, providerFactory).get(CarQueryViewModel.class);
         timeLineViewModel =  new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
+        fuelUpViewModel =  new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
+        carViewModel =  new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
     //    appPreferences.put(AppPreferences.Key.SAMPLE_INT,100);
-
 
         carApiQueries();
         timeLineData();
+        fuelUpData();
 
+
+        carViewModel.getAllCars().observe(this, new Observer<List<Car>>() {
+            @Override
+            public void onChanged(List<Car> cars) {
+                if (cars!=null){
+                    Log.d(TAG, "cars: "+cars.size());
+                }
+            }
+        });
+
+    }
+
+    private void fuelUpData(){
+        Date currentMonth =  null;
+        fuelUpViewModel.getMonthlyFuelUp(currentMonth).observe(this, new Observer<List<FuelUp>>() {
+            @Override
+            public void onChanged(List<FuelUp> fuelUps) {
+
+            }
+        });
+
+        fuelUpViewModel.getRecentFuelUp().observe(this, new Observer<FuelUp>() {
+            @Override
+            public void onChanged(FuelUp fuelUp) {
+                if (fuelUp!=null){
+                    Log.d(TAG, "Litters: "+fuelUp.getLiters());
+                }
+            }
+        });
     }
 
     private void timeLineData(){
