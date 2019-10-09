@@ -2,7 +2,6 @@ package com.innovidio.androidbootstrap;
 
 import com.facebook.stetho.Stetho;
 import com.innovidio.androidbootstrap.di.AppComponent;
-import com.innovidio.androidbootstrap.di.DaggerAppComponent;
 
 
 import dagger.android.AndroidInjector;

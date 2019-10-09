@@ -1,5 +1,6 @@
 package com.innovidio.androidbootstrap.entity;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -22,13 +23,19 @@ public class Alarm {
     1- Alarm for the service
     2- Alarm for Reminders */
 
+    public void setAlarmID(int alarmID) {
+        this.alarmID = alarmID;
+    }
+
     private String alarmType;
+    @ColumnInfo(name = "creationDate")
     @TypeConverters(DateConverter.class)
     private Date creationDate;
+    @ColumnInfo(name = "executionTIme")
     @TypeConverters(DateConverter.class)
     private Date executionTIme;
 
-    private Alarm(){
+    public Alarm(){
 
     }
 

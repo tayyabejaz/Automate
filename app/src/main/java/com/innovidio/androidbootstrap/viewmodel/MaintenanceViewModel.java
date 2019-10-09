@@ -24,7 +24,7 @@ public class MaintenanceViewModel extends ViewModel {
         return this.maintenanceRepository.getAllMaintenanceService();
     }
 
-    public LiveData<List<TimeLine>> getAllMaintenanceTripsAndFuelUps(){
-        return this.maintenanceRepository.getAllMaintenanceTripsAndFuelUps();
-    }
+//    public LiveData<List<TimeLine>> getAllMaintenanceTripsAndFuelUps(){
+//        return this.maintenanceRepository.getAllMaintenanceTripsAndFuelUps();
+//    }
 }

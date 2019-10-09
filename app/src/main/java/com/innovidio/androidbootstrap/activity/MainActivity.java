@@ -21,6 +21,7 @@ import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.entity.models.SpinnerDataModel;
 import com.innovidio.androidbootstrap.entity.models.TimeLine;
+import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.network.dto.CarMakesByYear;
 import com.innovidio.androidbootstrap.network.dto.CarModelName;
 import com.innovidio.androidbootstrap.network.dto.CarTrimsInfo;
@@ -54,7 +55,6 @@ public class MainActivity extends DaggerAppCompatActivity {
     CarQueryViewModel carQueryViewModel = null;
     TimeLineViewModel timeLineViewModel = null;
     FuelUpViewModel fuelUpViewModel = null;
-    List<TimeLine> timeLineList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,42 +62,16 @@ public class MainActivity extends DaggerAppCompatActivity {
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mainBinding.setMainSpinnerData(this);
 
-       // mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-     //   mainBinding.setMainSpinnerData(this);
-
-        carQueryViewModel =  new ViewModelProvider(this, providerFactory).get(CarQueryViewModel.class);
-
-//	timeLineViewModel =  new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
-    //    fuelUpViewModel =  new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
-    //    carViewModel =  new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
-     //   appPreferences.put(AppPreferences.Key.SAMPLE_INT,100);
-
-        carApiQueries();
-
-
-        //ViewModel
-//        carQueryViewModel = new ViewModelProvider(this, providerFactory).get(CarQueryViewModel.class);
-//        timeLineViewModel = new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
+        carQueryViewModel = new ViewModelProvider(this, providerFactory).get(CarQueryViewModel.class);
+        timeLineViewModel = new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
 //        fuelUpViewModel = new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
 //        carViewModel = new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
-        //    appPreferences.put(AppPreferences.Key.SAMPLE_INT,100);
+//        appPreferences.put(AppPreferences.Key.SAMPLE_INT,100);
 
-//        carApiQueries();
-//        timeLineData();
+        carApiQueries();
+        timeLineData();
 //        fuelUpData();
-
-
-
-
-
-//        carViewModel.getAllCars().observe(this, new Observer<List<Car>>() {
-//            @Override
-//            public void onChanged(List<Car> cars) {
-//                if (cars!=null){
-//                    Log.d(TAG, "cars: "+cars.size());
-//                }
-//            }
-//        });
+//        getCarsData();
 
         initList();
         mAdapter = new SpinnerAdapter(this, dataList);
@@ -122,36 +96,6 @@ public class MainActivity extends DaggerAppCompatActivity {
                 }
             }
         });
-    }
-
-    private void timeLineData() {
-        timeLineViewModel.getAllFuelUps().observe(this, new Observer<List<FuelUp>>() {
-            @Override
-            public void onChanged(List<FuelUp> fuelUps) {
-                if (fuelUps != null) {
-
-                }
-            }
-        });
-
-        timeLineViewModel.getTrips().observe(this, new Observer<List<Trip>>() {
-            @Override
-            public void onChanged(List<Trip> trips) {
-                if (trips != null) {
-                    setAllTripsValues(trips);
-                }
-            }
-        });
-
-        timeLineViewModel.getAllMaintenanceService().observe(this, new Observer<List<Maintenance>>() {
-            @Override
-            public void onChanged(List<Maintenance> maintenances) {
-                if (maintenances != null) {
-
-                }
-            }
-        });
-
     }
 
     private void carApiQueries() {
@@ -183,17 +127,37 @@ public class MainActivity extends DaggerAppCompatActivity {
         });
     }
 
-    private void setAllTripsValues(List<Trip> tripList) {
-        for (int i = 0; i < tripList.size(); i++) {
-            Trip trip = tripList.get(i);
-            // parameters --> int id, Date saveDate, String location, long totalPayment,String type, long meterStart, long meterEnd, Date meterCurrentValue, String serviceDetails){
-            TimeLine timeLine = new TimeLine(trip.getId(), trip.getSaveDate(), trip.getDestination(), -1, TimeLineViewModel.TRIP,
-                    -1, -1, -1, TimeLineViewModel.NONE);
-
-            timeLineList.add(timeLine);
-        }
+    private void getCarsData(){
+        carViewModel.getAllCars().observe(this, new Observer<List<Car>>() {
+            @Override
+            public void onChanged(List<Car> cars) {
+                if (cars!=null){
+                    Log.d(TAG, "cars: "+cars.size());
+                }
+            }
+        });
     }
 
+    private void timeLineData() {
+        timeLineViewModel.getAllTimelineMergerData().observe(this, new Observer<List<TimeLineItem>>() {
+            @Override
+            public void onChanged(List<TimeLineItem> timeLineItems) {
+                if (timeLineItems!=null){
+                    Log.d(TAG, "timeLine: "+timeLineItems.get(0).getType().name());
+                    if (timeLineItems.get(0).getType()== TimeLineItem.Type.FUEL){
+                        FuelUp fuelUp = (FuelUp) timeLineItems.get(0);
+                        Log.d(TAG, "FuelUp: "+fuelUp.getCarname());
+                    }else if (timeLineItems.get(0).getType()== TimeLineItem.Type.MAINTENANCE){
+                        Maintenance maintenance = (Maintenance) timeLineItems.get(0);
+                        Log.d(TAG, "Maintenance: "+maintenance.getMaintenanceName());
+                    } else if (timeLineItems.get(0).getType()== TimeLineItem.Type.TRIP){
+                        Trip trip = (Trip) timeLineItems.get(0);
+                        Log.d(TAG, "Trip: "+trip.getTripTitle());
+                    }
+                }
+            }
+        });
+    }
 
     private void initList() {
         dataList = new ArrayList<SpinnerDataModel>();

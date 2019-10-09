@@ -1,15 +1,19 @@
 package com.innovidio.androidbootstrap.db.dao;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.room.Dao;
 import androidx.room.Query;
 
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.MaintenanceWithAlarms;
 import com.innovidio.androidbootstrap.entity.models.TimeLine;
+import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
 import java.util.Date;
 import java.util.List;
 
+@Dao
 public abstract class MaintenanceDao extends BaseDao<Maintenance>{
 
     @Query("SELECT * FROM Maintenance WHERE maintenancetype =:type")
@@ -31,14 +35,14 @@ public abstract class MaintenanceDao extends BaseDao<Maintenance>{
     public abstract LiveData<MaintenanceWithAlarms> getMaintenanceWithAlarms(int maintenanaceID);
 
     // Todo how to get data from all tables discus with sir sajjad
-    @Query("SELECT * FROM Maintenance UNION" +
-            " SELECT * FROM FuelUp UNION" +
-            " SELECT * FROM Trip UNION" +
-            " ORDER BY date ASC")
-    public abstract LiveData<List<TimeLine>> getAllFromMaintenanceTripsAndFuelUp();
+//    @Query("SELECT * FROM Maintenance UNION" +
+//            " SELECT * FROM FuelUp UNION" +
+//            " SELECT * FROM Trip UNION" +
+//            " ORDER BY date ASC")
+//    public abstract LiveData<List<TimeLine>> getAllFromMaintenanceTripsAndFuelUp();
 
 
     @Query("SELECT * FROM Maintenance")
-    public abstract  LiveData<List<Maintenance>> getAllMaintenanceForTimeline();
+    public abstract MutableLiveData<List<Maintenance>> getAllMaintenanceForTimeline();
 
 }

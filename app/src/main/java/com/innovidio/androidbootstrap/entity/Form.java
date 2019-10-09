@@ -1,6 +1,7 @@
 package com.innovidio.androidbootstrap.entity;
 
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -19,19 +20,25 @@ public class Form {
     private String title;
     private String carId;
     private String location;
+    @ColumnInfo(name = "startDate")
     @TypeConverters(DateConverter.class)
     private Date startDate;
+
+    @ColumnInfo(name = "endDate")
     @TypeConverters(DateConverter.class)
     private Date endDate;
     // todo is save date added here or not?
+    @ColumnInfo(name = "saveDate")
     @TypeConverters(DateConverter.class)
     private Date saveDate;
 
-
-    public Form(){
+    public Form() {
 
     }
 
+    public void setId(int id) {
+        Id = id;
+    }
 
     public int getId() {
         return Id;
@@ -73,8 +80,8 @@ public class Form {
         return endDate;
     }
 
-    public Date setEndDate(Date endDate) {
-       return this.endDate = endDate;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public Date getSaveDate() {

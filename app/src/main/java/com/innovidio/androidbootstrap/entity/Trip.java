@@ -1,5 +1,6 @@
 package com.innovidio.androidbootstrap.entity;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -29,23 +30,87 @@ public class Trip implements TimeLineItem {
     private String avgspeed;
     private String distanceCovered;
     private String fueleconomypertrip;
+    @ColumnInfo(name = "datetimeinmillis")
     @TypeConverters(DateConverter.class)
     private Date datetimeinmillis;
+    @ColumnInfo(name = "starttime")
     @TypeConverters({TimestampConverter.class})
     private Date starttime;
+    @ColumnInfo(name = "endtime")
     @TypeConverters({TimestampConverter.class})
     private Date endtime;
     // todo is save date added here or not?
+    @ColumnInfo(name = "saveDate")
     @TypeConverters(DateConverter.class)
     private Date saveDate;
 
 
-    public Trip(){
+    public Trip() {
 
     }
 
-    public Trip(String tripTitle, String destination, String carname, String triptype, Date starttime, Date endtime, String maxspeed, String avgspeed, String distanceCovered, String tripdate , Date datetimeinmillis , String fueleconomypertrip, Date saveDate) {
-        this.tripTitle =  tripTitle;
+    public String getCarname() {
+        return carname;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTripTitle(String tripTitle) {
+        this.tripTitle = tripTitle;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public void setTripdate(String tripdate) {
+        this.tripdate = tripdate;
+    }
+
+    public void setCarname(String carname) {
+        this.carname = carname;
+    }
+
+    public void setTriptype(String triptype) {
+        this.triptype = triptype;
+    }
+
+    public void setMaxspeed(String maxspeed) {
+        this.maxspeed = maxspeed;
+    }
+
+    public void setAvgspeed(String avgspeed) {
+        this.avgspeed = avgspeed;
+    }
+
+    public void setDistanceCovered(String distanceCovered) {
+        this.distanceCovered = distanceCovered;
+    }
+
+    public void setFueleconomypertrip(String fueleconomypertrip) {
+        this.fueleconomypertrip = fueleconomypertrip;
+    }
+
+    public void setDatetimeinmillis(Date datetimeinmillis) {
+        this.datetimeinmillis = datetimeinmillis;
+    }
+
+    public void setStarttime(Date starttime) {
+        this.starttime = starttime;
+    }
+
+    public void setEndtime(Date endtime) {
+        this.endtime = endtime;
+    }
+
+    public void setSaveDate(Date saveDate) {
+        this.saveDate = saveDate;
+    }
+
+    public Trip(String tripTitle, String destination, String carname, String triptype, Date starttime, Date endtime, String maxspeed, String avgspeed, String distanceCovered, String tripdate, Date datetimeinmillis, String fueleconomypertrip, Date saveDate) {
+        this.tripTitle = tripTitle;
         this.destination = destination;
         this.carname = carname;
         this.triptype = triptype;
@@ -64,6 +129,7 @@ public class Trip implements TimeLineItem {
     public int getId() {
         return this.id;
     }
+
     public String getcarname() {
         return carname;
     }

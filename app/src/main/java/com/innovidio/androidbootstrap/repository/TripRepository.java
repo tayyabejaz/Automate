@@ -7,6 +7,7 @@ import com.innovidio.androidbootstrap.db.dao.CarDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.Trip;
+import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.network.dto.CarModelName;
 
 import java.util.List;
@@ -39,5 +40,10 @@ public class TripRepository {
 
         return this.tripDao.getTripByTripType(type);
     }
-    
+
+
+    public MutableLiveData<List<Trip>> getAllTripsTimeline(){
+
+        return this.tripDao.getAllTripsForTimeline();
+    }
 }

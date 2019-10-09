@@ -1,5 +1,6 @@
 package com.innovidio.androidbootstrap.entity;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -26,18 +27,59 @@ public class FuelUp implements TimeLineItem {
     private String totalprice;
     private String location;
     // todo is save date added here or not?
+    @ColumnInfo(name = "saveDate")
     @TypeConverters(DateConverter.class)
     private Date saveDate;
 
-    public FuelUp(String carname, String odometerreading, int tripId, String liters, String perunitfuelprice, String totalprice, String location, Date saveDate) {
+//    public FuelUp(String carname, String odometerreading, int tripId, String liters, String perunitfuelprice, String totalprice, String location, Date saveDate) {
+//        this.carname = carname;
+//        this.odometerreading = odometerreading;
+//        this.liters = liters;
+//        this.perunitfuelprice = perunitfuelprice;
+//        this.totalprice = totalprice;
+//        this.location = location;
+//        this.tripId = tripId;
+//        this.saveDate =  saveDate;
+//    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setCarname(String carname) {
         this.carname = carname;
-        this.odometerreading = odometerreading;
-        this.liters = liters;
-        this.perunitfuelprice = perunitfuelprice;
-        this.totalprice = totalprice;
-        this.location = location;
+    }
+
+    public void setTripId(int tripId) {
         this.tripId = tripId;
-        this.saveDate =  saveDate;
+    }
+
+    public void setOdometerreading(String odometerreading) {
+        this.odometerreading = odometerreading;
+    }
+
+    public void setLiters(String liters) {
+        this.liters = liters;
+    }
+
+    public void setPerunitfuelprice(String perunitfuelprice) {
+        this.perunitfuelprice = perunitfuelprice;
+    }
+
+    public void setTotalprice(String totalprice) {
+        this.totalprice = totalprice;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Date getSaveDate() {
+        return saveDate;
+    }
+
+    public void setSaveDate(Date saveDate) {
+        this.saveDate = saveDate;
     }
 
     public FuelUp() {
