@@ -11,6 +11,7 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.innovidio.androidbootstrap.db.dao.AlarmDao;
+import com.innovidio.androidbootstrap.db.dao.BaseDao;
 import com.innovidio.androidbootstrap.db.dao.CarDao;
 import com.innovidio.androidbootstrap.db.dao.FormDao;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
@@ -35,12 +36,12 @@ import java.io.InputStream;
         entities = {
                 //@TODO add your Entity classes here
                 Feed.class,
-//                Alarm.class,
-//                Car.class,
-//                Form.class,
-//                FuelUp.class,
-//                Maintenance.class,
-//                Trip.class
+                Alarm.class,
+                Car.class,
+                Form.class,
+                FuelUp.class,
+                Maintenance.class,
+                Trip.class
 
         },
         version = 1,
@@ -57,12 +58,18 @@ public abstract class AppDatabase extends RoomDatabase {
 
     //TODO define you DAO against Entity here
     public abstract FeedDao getFeedDao();
-//    public abstract AlarmDao getAlarmDao();
-//    public abstract CarDao getCarDao();
-//    public abstract FormDao getFormDao();
-//    public abstract FuelDao getFuelDao();
-//    public abstract MaintenanceDao getMaintenanceDao();
-//    public abstract TripDao getTripDao();
+
+    public abstract AlarmDao getAlarmDao();
+//
+    public abstract CarDao getCarDao();
+
+    public abstract FormDao getFormDao();
+
+    public abstract FuelDao getFuelDao();
+
+    public abstract MaintenanceDao getMaintenanceDao();
+
+    public abstract TripDao getTripDao();
 
 
     private static final String TAG = "AppDatabase";

@@ -1,9 +1,11 @@
 package com.innovidio.androidbootstrap.repository;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
 import com.innovidio.androidbootstrap.entity.FuelUp;
+import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
 import java.util.Date;
 import java.util.List;
@@ -31,5 +33,10 @@ public class FuelUpRepository {
 
     public LiveData<FuelUp> getRecentFuelUp(){
         return this.fuelDao.getRecentFuelUp();
+    }
+
+
+    public LiveData<List<FuelUp>> getAllFuelUpsForTimeLine(){
+        return this.fuelDao.getAllFuelUpsForTimeline();
     }
 }

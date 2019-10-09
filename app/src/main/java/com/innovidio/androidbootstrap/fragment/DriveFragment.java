@@ -1,6 +1,7 @@
 package com.innovidio.androidbootstrap.fragment;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,7 +15,8 @@ import com.innovidio.androidbootstrap.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DriveFragment extends BaseFragment {
+public class DriveFragment extends Fragment {
+
 
 
     public DriveFragment() {
@@ -28,5 +30,6 @@ public class DriveFragment extends BaseFragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_drive, container, false);
     }
+
 
 }

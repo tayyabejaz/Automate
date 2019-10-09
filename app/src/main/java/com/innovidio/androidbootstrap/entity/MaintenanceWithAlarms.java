@@ -11,11 +11,11 @@ public class MaintenanceWithAlarms {
     @Relation(parentColumn = "id", entityColumn = "maintenanceId", entity = Alarm.class)
     public List<Alarm> alarmModelList;
 
-    public List<Alarm> getAlarmsList() {
+    public List<Alarm> getAlarmModelList() {
         return alarmModelList;
     }
 
-    public void setMovieList(List<Alarm> alarmModelList) {
+    public void setAlarmModelList(List<Alarm> alarmModelList) {
         this.alarmModelList = alarmModelList;
     }
 }

@@ -3,18 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_graph"
-    app:startDestination="@id/mainDashboardFragment">
-
-    <fragment
-        android:id="@+id/mainDashboardFragment"
-        android:name="com.innovidio.androidbootstrap.fragment.MainDashboardFragment"
-        android:label="fragment_main_dashboard"
-        tools:layout="@layout/fragment_main_dashboard" />
+    app:startDestination="@id/navigationStartingFragment">
     <fragment
         android:id="@+id/driveFragment"
         android:name="com.innovidio.androidbootstrap.fragment.DriveFragment"
         android:label="fragment_drive"
         tools:layout="@layout/fragment_drive" />
+    <fragment
+        android:id="@+id/mainDashboardFragment"
+        android:name="com.innovidio.androidbootstrap.fragment.MainDashboardFragment"
+        android:label="fragment_main_dashboard"
+        tools:layout="@layout/fragment_main_dashboard" />
     <fragment
         android:id="@+id/maintainFragment"
         android:name="com.innovidio.androidbootstrap.fragment.MaintainFragment"
@@ -26,21 +25,26 @@
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/myFragment"
-        android:name="com.innovidio.androidbootstrap.fragment.BaseFragment"
-        android:label="fragment_my"
-        tools:layout="@layout/fragment_my" >
+        android:id="@+id/navigationStartingFragment"
+        android:name="com.innovidio.androidbootstrap.fragment.NavigationStartingFragment"
+        android:label="fragment_navigation_starting"
+        tools:layout="@layout/fragment_navigation_starting">
+
         <action
-            android:id="@+id/action_myFragment_to_mainDashboardFragment"
-            app:destination="@id/mainDashboardFragment" />
+            android:id="@+id/action_navigationStartingFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="false" />
         <action
-            android:id="@+id/action_myFragment_to_driveFragment"
-            app:destination="@id/driveFragment" />
+            android:id="@+id/action_navigationStartingFragment_to_mainDashboardFragment"
+            app:destination="@id/mainDashboardFragment"
+            app:launchSingleTop="true"
+            app:popUpToInclusive="false" />
         <action
-            android:id="@+id/action_myFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-        <action
-            android:id="@+id/action_myFragment_to_maintainFragment"
+            android:id="@+id/action_navigationStartingFragment_to_maintainFragment"
             app:destination="@id/maintainFragment" />
+        <action
+            android:id="@+id/action_navigationStartingFragment_to_driveFragment"
+            app:destination="@id/driveFragment" />
     </fragment>
 </navigation>

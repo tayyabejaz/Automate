@@ -1,5 +1,6 @@
 package com.innovidio.androidbootstrap.entity;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -16,20 +17,25 @@ public class Alarm {
     private int alarmID;
     private int maintenanceId;
     private String alarmMessage;
+    private String alarmType;
+    @ColumnInfo(name = "creationDate")
+    @TypeConverters(DateConverter.class)
+    private Date creationDate;
+    @ColumnInfo(name = "executionTIme")
+    @TypeConverters(DateConverter.class)
+    private Date executionTIme;
+
+    public Alarm(){
+
+    }
 
     /* INFO
     Alarm type defines that which alarm is going to sound. there are two types of alarms:
     1- Alarm for the service
     2- Alarm for Reminders */
 
-    private String alarmType;
-    @TypeConverters(DateConverter.class)
-    private Date creationDate;
-    @TypeConverters(DateConverter.class)
-    private Date executionTIme;
-
-    private Alarm(){
-
+    public void setAlarmID(int alarmID) {
+        this.alarmID = alarmID;
     }
 
     public int getAlarmID() {

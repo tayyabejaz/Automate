@@ -1,12 +1,12 @@
 package com.innovidio.androidbootstrap.di.viewmodel;
 
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 
 public class ViewModelProviderFactory implements ViewModelProvider.Factory {

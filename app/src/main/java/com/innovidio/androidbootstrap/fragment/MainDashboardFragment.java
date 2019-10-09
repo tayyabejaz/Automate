@@ -1,6 +1,7 @@
 package com.innovidio.androidbootstrap.fragment;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +32,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainDashboardFragment extends BaseFragment {
+public class MainDashboardFragment extends Fragment {
 
     private TimelineAdapter timelineAdapter;
     private FragmentMainDashboardBinding binding;

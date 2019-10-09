@@ -42,40 +42,40 @@ public class DBModule {
         return appDatabase.getFeedDao();
     }
 
-//    @Provides
-//    @Singleton
-//    AlarmDao provideAlarmDao(@NonNull AppDatabase appDatabase) {
-//        return appDatabase.getAlarmDao();
-//    }
+    @Provides
+    @Singleton
+    AlarmDao provideAlarmDao(@NonNull AppDatabase appDatabase) {
+        return appDatabase.getAlarmDao();
+    }
 //
-//    @Provides
-//    @Singleton
-//    CarDao provideCarDao(@NonNull AppDatabase appDatabase) {
-//        return appDatabase.getCarDao();
-//    }
-//
-//    @Provides
-//    @Singleton
-//    FormDao provideFormDao(@NonNull AppDatabase appDatabase) {
-//        return appDatabase.getFormDao();
-//    }
-//
-//    @Provides
-//    @Singleton
-//    FuelDao provideFuelDao(@NonNull AppDatabase appDatabase) {
-//        return appDatabase.getFuelDao();
-//    }
-//
-//    @Provides
-//    @Singleton
-//    MaintenanceDao provideMaintenanceDao(@NonNull AppDatabase appDatabase) {
-//        return appDatabase.getMaintenanceDao();
-//    }
-//
-//    @Provides
-//    @Singleton
-//    TripDao provideTripDao(@NonNull AppDatabase appDatabase) {
-//        return appDatabase.getTripDao();
-//    }
+    @Provides
+    @Singleton
+    CarDao provideCarDao(@NonNull AppDatabase appDatabase) {
+        return appDatabase.getCarDao();
+    }
+
+    @Provides
+    @Singleton
+    FormDao provideFormDao(@NonNull AppDatabase appDatabase) {
+        return appDatabase.getFormDao();
+    }
+
+    @Provides
+    @Singleton
+    FuelDao provideFuelDao(@NonNull AppDatabase appDatabase) {
+        return appDatabase.getFuelDao();
+    }
+
+    @Provides
+    @Singleton
+    MaintenanceDao provideMaintenanceDao(@NonNull AppDatabase appDatabase) {
+        return appDatabase.getMaintenanceDao();
+    }
+
+    @Provides
+    @Singleton
+    TripDao provideTripDao(@NonNull AppDatabase appDatabase) {
+        return appDatabase.getTripDao();
+    }
 
 }

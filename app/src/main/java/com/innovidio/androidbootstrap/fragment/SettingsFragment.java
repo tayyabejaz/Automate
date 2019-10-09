@@ -1,6 +1,7 @@
 package com.innovidio.androidbootstrap.fragment;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.innovidio.androidbootstrap.R;
 
-public class SettingsFragment extends BaseFragment {
+public class SettingsFragment extends Fragment {
 
 
     public SettingsFragment() {

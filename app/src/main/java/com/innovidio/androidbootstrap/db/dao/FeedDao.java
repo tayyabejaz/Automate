@@ -12,7 +12,6 @@ import com.innovidio.androidbootstrap.entity.models.Feed;
 import java.util.List;
 
 @Dao
-
 public abstract class  FeedDao extends BaseDao<Feed>{
 
     @Insert

@@ -5,6 +5,7 @@ import com.innovidio.androidbootstrap.fragment.BaseFragment;
 import com.innovidio.androidbootstrap.fragment.DriveFragment;
 import com.innovidio.androidbootstrap.fragment.MainDashboardFragment;
 import com.innovidio.androidbootstrap.fragment.MaintainFragment;
+import com.innovidio.androidbootstrap.fragment.NavigationStartingFragment;
 import com.innovidio.androidbootstrap.fragment.SettingsFragment;
 
 import dagger.Module;
@@ -19,14 +20,16 @@ public abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector
     abstract BaseFragment contributeBaseFragment();
-    @ContributesAndroidInjector
-    abstract DriveFragment contributeDriveFragment();
-    @ContributesAndroidInjector
-    abstract MainDashboardFragment contributeMainDashboardFragment();
-    @ContributesAndroidInjector
-    abstract MaintainFragment contributeMaintainFragment();
-    @ContributesAndroidInjector
-    abstract SettingsFragment contributeSettingsFragment();
+//    @ContributesAndroidInjector
+//    abstract DriveFragment contributeDriveFragment();
+//    @ContributesAndroidInjector
+//    abstract MainDashboardFragment contributeMainDashboardFragment();
+//    @ContributesAndroidInjector
+//    abstract MaintainFragment contributeMaintainFragment();
+//    @ContributesAndroidInjector
+//    abstract SettingsFragment contributeSettingsFragment();
+//    @ContributesAndroidInjector
+//    abstract NavigationStartingFragment contributeNavigationStartFragment();
 
     @Provides
     static String firstInjectionString(){

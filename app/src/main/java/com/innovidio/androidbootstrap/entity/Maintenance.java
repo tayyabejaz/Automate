@@ -1,5 +1,6 @@
 package com.innovidio.androidbootstrap.entity;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -23,14 +24,16 @@ public class Maintenance implements TimeLineItem {
     private String maintenanceCost;
     private String maintenanceLife;
     private int maintenanceAlerts;
-    private int alarmID;
+   // private int alarmID;
     private boolean alarmON;
     private String maintenanceType;
 
+    @ColumnInfo(name = "maintenanceDate")
     @TypeConverters(DateConverter.class)
     private String maintenanceDate;
 
     // todo is save date added here or not?
+    @ColumnInfo(name = "saveDate")
     @TypeConverters(DateConverter.class)
     private Date saveDate;
 
@@ -38,13 +41,53 @@ public class Maintenance implements TimeLineItem {
 
     }
 
-    public Maintenance(int formId, String maintenancename, String maintenanceprice, String maintenancelifetime, int maintenancealerts, int alarmid, String maintenancetype, String date,Date saveDate) {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setFormId(int formId) {
+        this.formId = formId;
+    }
+
+    public void setMaintenanceName(String maintenanceName) {
+        this.maintenanceName = maintenanceName;
+    }
+
+    public void setMaintenanceCost(String maintenanceCost) {
+        this.maintenanceCost = maintenanceCost;
+    }
+
+    public void setMaintenanceLife(String maintenanceLife) {
+        this.maintenanceLife = maintenanceLife;
+    }
+
+    public void setMaintenanceAlerts(int maintenanceAlerts) {
+        this.maintenanceAlerts = maintenanceAlerts;
+    }
+
+    public void setAlarmON(boolean alarmON) {
+        this.alarmON = alarmON;
+    }
+
+    public void setMaintenanceType(String maintenanceType) {
+        this.maintenanceType = maintenanceType;
+    }
+
+    public void setMaintenanceDate(String maintenanceDate) {
+        this.maintenanceDate = maintenanceDate;
+    }
+
+    public void setSaveDate(Date saveDate) {
+        this.saveDate = saveDate;
+    }
+
+    public Maintenance(int formId, String maintenancename, String maintenanceprice, String maintenancelifetime, int maintenancealerts, String maintenancetype, String date, Date saveDate) {
         this.maintenanceName = maintenancename;
         this.formId = formId;
         this.maintenanceCost = maintenanceprice;
         this.maintenanceLife = maintenancelifetime;
         this.maintenanceAlerts = maintenancealerts;
-        this.alarmID = alarmid;
+
         this.maintenanceType = maintenancetype;
         this.maintenanceDate = date;
         this.saveDate =  saveDate;
@@ -72,14 +115,6 @@ public class Maintenance implements TimeLineItem {
 
     public int getMaintenanceAlerts() {
         return maintenanceAlerts;
-    }
-
-    public int getAlarmID() {
-        return alarmID;
-    }
-
-    public void setAlarmID(int alarmid) {
-        this.alarmID = alarmid;
     }
 
     public boolean isAlarmON() {
