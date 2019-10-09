@@ -24,6 +24,12 @@ public class MaintenanceViewModel extends ViewModel {
         return this.maintenanceRepository.getAllMaintenanceService();
     }
 
+
+    public void addMaintenanceService(Maintenance maintenance){
+        this.maintenanceRepository.addMaintenanceService(maintenance);
+    }
+
+
 //    public LiveData<List<TimeLine>> getAllMaintenanceTripsAndFuelUps(){
 //        return this.maintenanceRepository.getAllMaintenanceTripsAndFuelUps();
 //    }

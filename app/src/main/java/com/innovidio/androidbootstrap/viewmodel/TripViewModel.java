@@ -19,6 +19,10 @@ public class TripViewModel extends ViewModel {
         this.tripRepository = tripRepository;
     }
 
+    public void addTrip(Trip trip) {
+        this.tripRepository.addTrip(trip);
+    }
+
     public LiveData<List<Trip>> getTrips() {
         return this.tripRepository.getAllTrips();
     }

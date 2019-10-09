@@ -1,5 +1,7 @@
 package com.innovidio.androidbootstrap.repository;
 
+import android.os.AsyncTask;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -24,7 +26,13 @@ public class FuelUpRepository {
     }
 
     public void addFuelUp(FuelUp fuelUp){
-        this.fuelDao.insert(fuelUp);
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                fuelDao.insert(fuelUp);
+                return null;
+            }
+        }.execute();
     }
 
     public LiveData<List<FuelUp>> getAllFuelUps(){

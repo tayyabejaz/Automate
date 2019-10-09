@@ -20,12 +20,12 @@ import dagger.android.support.DaggerFragment;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MyFragment.OnFragmentInteractionListener} interface
+ * {@link BaseFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link MyFragment#newInstance} factory method to
+ * Use the {@link BaseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyFragment extends DaggerFragment {
+public class BaseFragment extends DaggerFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,7 +40,7 @@ public class MyFragment extends DaggerFragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public MyFragment() {
+    public BaseFragment() {
         // Required empty public constructor
     }
 
@@ -50,11 +50,11 @@ public class MyFragment extends DaggerFragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MyFragment.
+     * @return A new instance of fragment BaseFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MyFragment newInstance(String param1, String param2) {
-        MyFragment fragment = new MyFragment();
+    public static BaseFragment newInstance(String param1, String param2) {
+        BaseFragment fragment = new BaseFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -101,6 +101,7 @@ public class MyFragment extends DaggerFragment {
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

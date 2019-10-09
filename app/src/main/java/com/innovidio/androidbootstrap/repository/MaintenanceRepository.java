@@ -1,5 +1,7 @@
 package com.innovidio.androidbootstrap.repository;
 
+import android.os.AsyncTask;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -26,6 +28,17 @@ public class MaintenanceRepository {
 
     public LiveData<List<Maintenance>> getAllMaintenanceService(){
         return this.maintenanceDao.getAllMaintenanceService();
+    }
+
+
+    public void addMaintenanceService(Maintenance maintenance){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                maintenanceDao.insert(maintenance);
+                return null;
+            }
+        }.execute();
     }
 
 //    public LiveData<List<MaintenanceWithAlarms>> getAllMaintenanceTripsAndFuelUps(){

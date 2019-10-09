@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+    <color name="mainDashboardGray"> #f9f9f9 </color>
+
     <color name="primaryLight"> #2196f3  </color>
     <color name="primaryDark"> #9d21f3  </color>
 
@@ -18,4 +20,11 @@
 
     <color name="purpleDark"> #8903c8 </color>
     <color name="purpleLight"> #e632b9 </color>
+
+    <color name="fuel_up"> #ff5400 </color>
+    <color name="service"> #0090ff </color>
+    <color name="trip"> #c600ff </color>
+    <color name="car_wash"> #00afad </color>
+    <color name="trip_rec"> #d7272b </color>
+    <color name="speedometer"> #f7750d </color>
 </resources>

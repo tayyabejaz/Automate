@@ -1,5 +1,7 @@
 package com.innovidio.androidbootstrap.repository;
 
+import android.os.AsyncTask;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -23,6 +25,17 @@ public class TripRepository {
     @Inject
     public TripRepository(TripDao tripDao) {
         this.tripDao = tripDao;
+    }
+
+
+    public void addTrip(Trip trip){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                tripDao.insert(trip);
+                return null;
+            }
+        }.execute();
     }
 
     public LiveData<List<Trip>> getAllTrips(){

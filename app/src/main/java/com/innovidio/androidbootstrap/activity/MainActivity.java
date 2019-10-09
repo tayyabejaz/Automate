@@ -4,17 +4,22 @@ package com.innovidio.androidbootstrap.activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Switch;
-
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.innovidio.androidbootstrap.AppPreferences;
+import com.innovidio.androidbootstrap.BottomDialog;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.adapter.SpinnerAdapter;
-
+import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
 import com.innovidio.androidbootstrap.databinding.ActivityMainBinding;
 import com.innovidio.androidbootstrap.di.viewmodel.ViewModelProviderFactory;
 import com.innovidio.androidbootstrap.entity.Car;
@@ -23,6 +28,7 @@ import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.entity.models.SpinnerDataModel;
 import com.innovidio.androidbootstrap.entity.models.TimeLine;
+import com.innovidio.androidbootstrap.fragment.MainDashboardFragment;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.network.dto.CarMakesByYear;
 import com.innovidio.androidbootstrap.network.dto.CarModelName;
@@ -30,7 +36,9 @@ import com.innovidio.androidbootstrap.network.dto.CarTrimsInfo;
 import com.innovidio.androidbootstrap.viewmodel.CarQueryViewModel;
 import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
 import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
+import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
+import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,7 +54,7 @@ import static com.innovidio.androidbootstrap.interfaces.TimeLineItem.*;
 import static com.innovidio.androidbootstrap.interfaces.TimeLineItem.Type.*;
 
 
-public class MainActivity extends DaggerAppCompatActivity {
+public class MainActivity extends DaggerAppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MainActivityLog";
 
     @Inject
@@ -57,8 +65,16 @@ public class MainActivity extends DaggerAppCompatActivity {
     private ActivityMainBinding mainBinding;
     private ArrayList<SpinnerDataModel> dataList;
     private SpinnerAdapter mAdapter;
+    private TimelineAdapter timelineAdapter;
+    private List<TimeLine> data;
+    private NavController navigationController;
+    private boolean isUp;
+    private BottomDialog bottomDialog;
+
 
     CarViewModel carViewModel = null;
+    MaintenanceViewModel maintenanceViewModel =  null;
+    TripViewModel tripViewModel =  null;
     CarQueryViewModel carQueryViewModel = null;
     TimeLineViewModel timeLineViewModel = null;
     FuelUpViewModel fuelUpViewModel = null;
@@ -69,10 +85,24 @@ public class MainActivity extends DaggerAppCompatActivity {
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mainBinding.setMainSpinnerData(this);
 
+        navigationController = Navigation.findNavController(MainActivity.this,R.id.nav_main_host);
+        mainBinding.bottomNav.ivAdd.setOnClickListener(this::onClick);
+        mainBinding.bottomNav.llDashboard.setOnClickListener(this::onClick);
+        mainBinding.bottomNav.llDrive.setOnClickListener(this::onClick);
+        mainBinding.bottomNav.llMaintain.setOnClickListener(this::onClick);
+        mainBinding.bottomNav.llSettings.setOnClickListener(this::onClick);
+        mainBinding.animatedLayout.setVisibility(View.GONE);
+        initList();
+        mAdapter = new SpinnerAdapter(this, dataList);
+        mainBinding.mainActivitySpinner.setAdapter(mAdapter);
+
         carQueryViewModel = new ViewModelProvider(this, providerFactory).get(CarQueryViewModel.class);
         timeLineViewModel = new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
         fuelUpViewModel = new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
         carViewModel = new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
+        maintenanceViewModel = new ViewModelProvider(this, providerFactory).get(MaintenanceViewModel.class);
+        tripViewModel = new ViewModelProvider(this, providerFactory).get(TripViewModel.class);
+
 //        appPreferences.put(AppPreferences.Key.SAMPLE_INT,100);
 
         carApiQueries();
@@ -80,16 +110,23 @@ public class MainActivity extends DaggerAppCompatActivity {
         fuelUpData();
         getCarsData();
 
-        initList();
-        mAdapter = new SpinnerAdapter(this, dataList);
-        mainBinding.mainActivitySpinner.setAdapter(mAdapter);
-
+//        initList();
+//        mAdapter = new SpinnerAdapter(this, dataList);
+//        mainBinding.mainActivitySpinner.setAdapter(mAdapter);
     }
 
-    private void fuelUpData() {
+    private void addDummyValues(){
         FuelUp fuelUp = new FuelUp();
         fuelUpViewModel.addFuelUp(fuelUp);
 
+        Maintenance maintenance = new Maintenance();
+        maintenanceViewModel.addMaintenanceService(maintenance);
+
+        Trip trip =  new Trip();
+        tripViewModel.addTrip(trip);
+    }
+
+    private void fuelUpData() {
         Date currentMonth = null;
         fuelUpViewModel.getMonthlyFuelUp(currentMonth).observe(this, new Observer<List<FuelUp>>() {
             @Override
@@ -137,12 +174,12 @@ public class MainActivity extends DaggerAppCompatActivity {
         });
     }
 
-    private void getCarsData(){
+    private void getCarsData() {
         carViewModel.getAllCars().observe(this, new Observer<List<Car>>() {
             @Override
             public void onChanged(List<Car> cars) {
-                if (cars!=null){
-                    Log.d(TAG, "cars: "+cars.size());
+                if (cars != null) {
+                    Log.d(TAG, "cars: " + cars.size());
                 }
             }
         });
@@ -152,36 +189,72 @@ public class MainActivity extends DaggerAppCompatActivity {
         timeLineViewModel.getAllTimelineMergerData().observe(this, new Observer<List<? extends TimeLineItem>>() {
             @Override
             public void onChanged(List<? extends TimeLineItem> timeLineItems) {
-                if (timeLineItems!=null && timeLineItems.size()>0){
+                if (timeLineItems!=null && timeLineItems.size()>0) {
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         timeLineItems.sort(Comparator.comparing(o -> o.getInsertDateTime()));
-                    }else{
+                    } else {
                         Collections.sort(timeLineItems, new Comparator<TimeLineItem>() {
                             public int compare(TimeLineItem obj1, TimeLineItem obj2) {
                                 return obj1.getInsertDateTime().compareTo(obj2.getInsertDateTime());
                             }
                         });
                     }
-                    switch(timeLineItems.get(0).getType()){
+                    switch (timeLineItems.get(0).getType()) {
                         case FUEL:
                             FuelUp fuelUp = (FuelUp) timeLineItems.get(0);
-                            Log.d(TAG, "FuelUp: "+fuelUp.getCarname());
+                            Log.d(TAG, "FuelUp: " + fuelUp.getCarname());
                             break;
 
                         case MAINTENANCE:
                             Maintenance maintenance = (Maintenance) timeLineItems.get(0);
-                            Log.d(TAG, "Maintenance: "+maintenance.getMaintenanceName());
+                            Log.d(TAG, "Maintenance: " + maintenance.getMaintenanceName());
                             break;
 
                         case TRIP:
                             Trip trip = (Trip) timeLineItems.get(0);
-                            Log.d(TAG, "Trip: "+trip.getTripTitle());
+                            Log.d(TAG, "Trip: " + trip.getTripTitle());
                             break;
                     }
                 }
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.ll_dashboard:
+                navigationController.navigate(R.id.mainDashboardFragment);
+                break;
+
+            case R.id.ll_drive:
+                navigationController.navigate(R.id.driveFragment);
+                break;
+
+            case R.id.ll_maintain:
+                navigationController.navigate(R.id.maintainFragment);
+                break;
+
+            case R.id.ll_settings:
+                navigationController.navigate(R.id.settingsFragment);
+                break;
+
+            case R.id.iv_add:
+//                bottomDialog.show();
+
+                if (isUp) {
+                    mainBinding.bottomNavigationLayout.bringToFront();
+                    slideDown(mainBinding.animatedLayout, 500);
+                    // myButton.setText("Slide up");
+                } else {
+                    mainBinding.bottomNavigationLayout.bringToFront();
+                    slideUp(mainBinding.animatedLayout);
+                    // myButton.setText("Slide down");
+                }
+                isUp = !isUp;
+                break;
+        }
     }
 
     private void initList() {
@@ -194,4 +267,46 @@ public class MainActivity extends DaggerAppCompatActivity {
         dataList.add(new SpinnerDataModel("Ford Focus"));
 
     }
+
+    public void slideUp(View view){
+        startAnimation();
+        // reference link https://stackoverflow.com/questions/19765938/show-and-hide-a-view-with-a-slide-up-down-animation
+        view.setVisibility(View.VISIBLE);
+        TranslateAnimation animate = new TranslateAnimation(
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                view.getHeight(),  // fromYDelta
+                0);                // toYDelta
+        animate.setDuration(500);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+    }
+
+    // slide the view from its current position to below itself
+    public void slideDown(View view, int duration){
+        stopAnimation();
+        TranslateAnimation animate = new TranslateAnimation(
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                0,                 // fromYDelta
+                view.getHeight()+150); // toYDelta
+
+        animate.setDuration(duration);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+    }
+
+    private void startAnimation(){
+        Animation rotation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.rotation);
+        rotation.setFillAfter(true);
+        mainBinding.bottomNav.ivAdd.startAnimation(rotation);
+    }
+
+    private void stopAnimation(){
+        Animation rotation = AnimationUtils.loadAnimation(MainActivity.this, R.anim.rotation2);
+        rotation.setFillAfter(true);
+        mainBinding.bottomNav.ivAdd.startAnimation(rotation);
+    }
+
+
 }
