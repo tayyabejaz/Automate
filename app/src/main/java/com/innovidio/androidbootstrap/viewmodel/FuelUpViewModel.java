@@ -4,12 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.innovidio.androidbootstrap.entity.Alarm;
-import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.FuelUp;
-import com.innovidio.androidbootstrap.repository.AlarmRepository;
 import com.innovidio.androidbootstrap.repository.FuelUpRepository;
-import com.innovidio.androidbootstrap.repository.MaintenanceRepository;
+
 
 import java.util.Date;
 import java.util.List;
@@ -24,6 +21,10 @@ public class FuelUpViewModel extends ViewModel {
         this.fuelUpRepository = fuelUpRepository ;
     }
 
+
+    public void addFuelUp(FuelUp fuelUp){
+        fuelUpRepository.addFuelUp(fuelUp);
+    }
 
     public LiveData<List<FuelUp>> getAllFuelUps(){
         return this.fuelUpRepository.getAllFuelUps();

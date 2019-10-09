@@ -23,6 +23,10 @@ public class FuelUpRepository {
         this.fuelDao = fuelDao;
     }
 
+    public void addFuelUp(FuelUp fuelUp){
+        this.fuelDao.insert(fuelUp);
+    }
+
     public LiveData<List<FuelUp>> getAllFuelUps(){
         return this.fuelDao.getAllFuelUps();
     }

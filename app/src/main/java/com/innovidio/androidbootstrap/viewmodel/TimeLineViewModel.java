@@ -32,6 +32,8 @@ public class TimeLineViewModel extends ViewModel {
 //    public static final String MAINTENANCE = "Maintenance";
 //    public static final String NONE = "none";
 
+    // ? extends for generic data type with same parent
+
 
     LiveData<List<FuelUp>> fuelUpsLiveData = null;
     LiveData<List<Maintenance>> maintenanceLiveData = null;

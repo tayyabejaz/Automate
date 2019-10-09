@@ -1,8 +1,10 @@
 package com.innovidio.androidbootstrap.activity;
 
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Switch;
 
 
 import androidx.databinding.DataBindingUtil;
@@ -31,12 +33,17 @@ import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
+
+import static com.innovidio.androidbootstrap.interfaces.TimeLineItem.*;
+import static com.innovidio.androidbootstrap.interfaces.TimeLineItem.Type.*;
 
 
 public class MainActivity extends DaggerAppCompatActivity {
@@ -64,14 +71,14 @@ public class MainActivity extends DaggerAppCompatActivity {
 
         carQueryViewModel = new ViewModelProvider(this, providerFactory).get(CarQueryViewModel.class);
         timeLineViewModel = new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
-//        fuelUpViewModel = new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
-//        carViewModel = new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
+        fuelUpViewModel = new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
+        carViewModel = new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
 //        appPreferences.put(AppPreferences.Key.SAMPLE_INT,100);
 
         carApiQueries();
         timeLineData();
-//        fuelUpData();
-//        getCarsData();
+        fuelUpData();
+        getCarsData();
 
         initList();
         mAdapter = new SpinnerAdapter(this, dataList);
@@ -80,6 +87,9 @@ public class MainActivity extends DaggerAppCompatActivity {
     }
 
     private void fuelUpData() {
+        FuelUp fuelUp = new FuelUp();
+        fuelUpViewModel.addFuelUp(fuelUp);
+
         Date currentMonth = null;
         fuelUpViewModel.getMonthlyFuelUp(currentMonth).observe(this, new Observer<List<FuelUp>>() {
             @Override
@@ -142,17 +152,32 @@ public class MainActivity extends DaggerAppCompatActivity {
         timeLineViewModel.getAllTimelineMergerData().observe(this, new Observer<List<? extends TimeLineItem>>() {
             @Override
             public void onChanged(List<? extends TimeLineItem> timeLineItems) {
-                if (timeLineItems!=null){
-                    Log.d(TAG, "timeLine: "+timeLineItems.get(0).getType().name());
-                    if (timeLineItems.get(0).getType()== TimeLineItem.Type.FUEL){
-                        FuelUp fuelUp = (FuelUp) timeLineItems.get(0);
-                        Log.d(TAG, "FuelUp: "+fuelUp.getCarname());
-                    }else if (timeLineItems.get(0).getType()== TimeLineItem.Type.MAINTENANCE){
-                        Maintenance maintenance = (Maintenance) timeLineItems.get(0);
-                        Log.d(TAG, "Maintenance: "+maintenance.getMaintenanceName());
-                    } else if (timeLineItems.get(0).getType()== TimeLineItem.Type.TRIP){
-                        Trip trip = (Trip) timeLineItems.get(0);
-                        Log.d(TAG, "Trip: "+trip.getTripTitle());
+                if (timeLineItems!=null && timeLineItems.size()>0){
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        timeLineItems.sort(Comparator.comparing(o -> o.getInsertDateTime()));
+                    }else{
+                        Collections.sort(timeLineItems, new Comparator<TimeLineItem>() {
+                            public int compare(TimeLineItem obj1, TimeLineItem obj2) {
+                                return obj1.getInsertDateTime().compareTo(obj2.getInsertDateTime());
+                            }
+                        });
+                    }
+                    switch(timeLineItems.get(0).getType()){
+                        case FUEL:
+                            FuelUp fuelUp = (FuelUp) timeLineItems.get(0);
+                            Log.d(TAG, "FuelUp: "+fuelUp.getCarname());
+                            break;
+
+                        case MAINTENANCE:
+                            Maintenance maintenance = (Maintenance) timeLineItems.get(0);
+                            Log.d(TAG, "Maintenance: "+maintenance.getMaintenanceName());
+                            break;
+
+                        case TRIP:
+                            Trip trip = (Trip) timeLineItems.get(0);
+                            Log.d(TAG, "Trip: "+trip.getTripTitle());
+                            break;
                     }
                 }
             }
