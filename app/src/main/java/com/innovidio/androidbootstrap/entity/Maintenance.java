@@ -24,7 +24,7 @@ public class Maintenance implements TimeLineItem {
     private String maintenanceCost;
     private String maintenanceLife;
     private int maintenanceAlerts;
-    private int alarmID;
+   // private int alarmID;
     private boolean alarmON;
     private String maintenanceType;
 
@@ -81,13 +81,13 @@ public class Maintenance implements TimeLineItem {
         this.saveDate = saveDate;
     }
 
-    public Maintenance(int formId, String maintenancename, String maintenanceprice, String maintenancelifetime, int maintenancealerts, int alarmid, String maintenancetype, String date, Date saveDate) {
+    public Maintenance(int formId, String maintenancename, String maintenanceprice, String maintenancelifetime, int maintenancealerts, String maintenancetype, String date, Date saveDate) {
         this.maintenanceName = maintenancename;
         this.formId = formId;
         this.maintenanceCost = maintenanceprice;
         this.maintenanceLife = maintenancelifetime;
         this.maintenanceAlerts = maintenancealerts;
-        this.alarmID = alarmid;
+
         this.maintenanceType = maintenancetype;
         this.maintenanceDate = date;
         this.saveDate =  saveDate;
@@ -115,14 +115,6 @@ public class Maintenance implements TimeLineItem {
 
     public int getMaintenanceAlerts() {
         return maintenanceAlerts;
-    }
-
-    public int getAlarmID() {
-        return alarmID;
-    }
-
-    public void setAlarmID(int alarmid) {
-        this.alarmID = alarmid;
     }
 
     public boolean isAlarmON() {

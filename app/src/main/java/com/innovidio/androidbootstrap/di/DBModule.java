@@ -47,7 +47,7 @@ public class DBModule {
     AlarmDao provideAlarmDao(@NonNull AppDatabase appDatabase) {
         return appDatabase.getAlarmDao();
     }
-
+//
     @Provides
     @Singleton
     CarDao provideCarDao(@NonNull AppDatabase appDatabase) {

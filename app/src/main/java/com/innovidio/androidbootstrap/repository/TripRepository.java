@@ -42,7 +42,7 @@ public class TripRepository {
     }
 
 
-    public MutableLiveData<List<Trip>> getAllTripsTimeline(){
+    public LiveData<List<Trip>> getAllTripsTimeline(){
 
         return this.tripDao.getAllTripsForTimeline();
     }

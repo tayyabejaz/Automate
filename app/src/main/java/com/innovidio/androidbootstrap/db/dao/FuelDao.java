@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @Dao
-public abstract class FuelDao extends BaseDao<FuelDao> {
+public abstract class FuelDao extends BaseDao<FuelUp> {
 
     @Query("SELECT * FROM FuelUp ORDER BY id desc")
     public abstract LiveData<List<FuelUp>> getFuelUpsOrderById();
@@ -27,7 +27,7 @@ public abstract class FuelDao extends BaseDao<FuelDao> {
     public abstract LiveData<List<FuelUp>> getFuelUpByCarName(String carName);
 
     @Query("SELECT * FROM FuelUp")
-    public abstract MutableLiveData<List<FuelUp>> getAllFuelUpsForTimeline();
+    public abstract LiveData<List<FuelUp>> getAllFuelUpsForTimeline();
 
     @Query("SELECT * FROM FuelUp WHERE saveDate BETWEEN :startDate AND :endDate")
     public abstract  LiveData<List<FuelUp>> getMonthlyFuelConsume(Date startDate, Date endDate);

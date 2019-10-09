@@ -17,16 +17,6 @@ public class Alarm {
     private int alarmID;
     private int maintenanceId;
     private String alarmMessage;
-
-    /* INFO
-    Alarm type defines that which alarm is going to sound. there are two types of alarms:
-    1- Alarm for the service
-    2- Alarm for Reminders */
-
-    public void setAlarmID(int alarmID) {
-        this.alarmID = alarmID;
-    }
-
     private String alarmType;
     @ColumnInfo(name = "creationDate")
     @TypeConverters(DateConverter.class)
@@ -37,6 +27,15 @@ public class Alarm {
 
     public Alarm(){
 
+    }
+
+    /* INFO
+    Alarm type defines that which alarm is going to sound. there are two types of alarms:
+    1- Alarm for the service
+    2- Alarm for Reminders */
+
+    public void setAlarmID(int alarmID) {
+        this.alarmID = alarmID;
     }
 
     public int getAlarmID() {

@@ -139,9 +139,9 @@ public class MainActivity extends DaggerAppCompatActivity {
     }
 
     private void timeLineData() {
-        timeLineViewModel.getAllTimelineMergerData().observe(this, new Observer<List<TimeLineItem>>() {
+        timeLineViewModel.getAllTimelineMergerData().observe(this, new Observer<List<? extends TimeLineItem>>() {
             @Override
-            public void onChanged(List<TimeLineItem> timeLineItems) {
+            public void onChanged(List<? extends TimeLineItem> timeLineItems) {
                 if (timeLineItems!=null){
                     Log.d(TAG, "timeLine: "+timeLineItems.get(0).getType().name());
                     if (timeLineItems.get(0).getType()== TimeLineItem.Type.FUEL){

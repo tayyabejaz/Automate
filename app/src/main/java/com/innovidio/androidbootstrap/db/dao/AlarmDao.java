@@ -10,7 +10,7 @@ import com.innovidio.androidbootstrap.entity.Alarm;
 import java.util.List;
 
 @Dao
-public abstract class AlarmDao extends BaseDao<AlarmDao> {
+public abstract class AlarmDao extends BaseDao<Alarm> {
 
 //    @Query("SELECT * FROM Alarm ORDER BY id desc")
 //    public abstract LiveData<List<Alarm>> fetchAllCars();

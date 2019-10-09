@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
+import androidx.room.Transaction;
 
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.MaintenanceWithAlarms;
@@ -23,14 +24,14 @@ public abstract class MaintenanceDao extends BaseDao<Maintenance>{
     @Query("SELECT * FROM Maintenance")
     public abstract LiveData<List<Maintenance>> getAllMaintenanceService();
 
-    @Query("SELECT * FROM Maintenance WHERE alarmID =:id")
-    public abstract LiveData<Maintenance> getMaintenanceByAlarmId(int id);
+//    @Query("SELECT * FROM Maintenance WHERE alarmID =:id")
+//    public abstract LiveData<Maintenance> getMaintenanceByAlarmId(int id);
 
     //ASK: Sir Sajjad about this
 
     @Query("SELECT * FROM Maintenance WHERE maintenanceDate=:date")
     public abstract LiveData<Maintenance> getMaintenanceByDate(Date date);
-
+    @Transaction
     @Query("SELECT * FROM Maintenance WHERE maintenanceDate=:maintenanaceID")
     public abstract LiveData<MaintenanceWithAlarms> getMaintenanceWithAlarms(int maintenanaceID);
 
@@ -43,6 +44,6 @@ public abstract class MaintenanceDao extends BaseDao<Maintenance>{
 
 
     @Query("SELECT * FROM Maintenance")
-    public abstract MutableLiveData<List<Maintenance>> getAllMaintenanceForTimeline();
+    public abstract LiveData<List<Maintenance>> getAllMaintenanceForTimeline();
 
 }

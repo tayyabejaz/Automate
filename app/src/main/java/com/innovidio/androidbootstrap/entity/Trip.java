@@ -49,6 +49,24 @@ public class Trip implements TimeLineItem {
 
     }
 
+//    public Trip(String tripTitle, String destination, String carname, String triptype, Date starttime, Date endtime, String maxspeed, String avgspeed, String distanceCovered, String tripdate, Date datetimeinmillis, String fueleconomypertrip, Date saveDate) {
+//        this.tripTitle = tripTitle;
+//        this.destination = destination;
+//        this.carname = carname;
+//        this.triptype = triptype;
+//
+//        this.maxspeed = maxspeed;
+//        this.avgspeed = avgspeed;
+//        this.distanceCovered = distanceCovered;
+//        this.tripdate = tripdate;
+//        this.starttime = starttime;
+//        this.endtime = endtime;
+//        this.datetimeinmillis = datetimeinmillis;
+//        this.fueleconomypertrip = fueleconomypertrip;
+//        this.saveDate = saveDate;
+//    }
+
+
     public String getCarname() {
         return carname;
     }
@@ -106,23 +124,6 @@ public class Trip implements TimeLineItem {
     }
 
     public void setSaveDate(Date saveDate) {
-        this.saveDate = saveDate;
-    }
-
-    public Trip(String tripTitle, String destination, String carname, String triptype, Date starttime, Date endtime, String maxspeed, String avgspeed, String distanceCovered, String tripdate, Date datetimeinmillis, String fueleconomypertrip, Date saveDate) {
-        this.tripTitle = tripTitle;
-        this.destination = destination;
-        this.carname = carname;
-        this.triptype = triptype;
-
-        this.maxspeed = maxspeed;
-        this.avgspeed = avgspeed;
-        this.distanceCovered = distanceCovered;
-        this.tripdate = tripdate;
-        this.starttime = starttime;
-        this.endtime = endtime;
-        this.datetimeinmillis = datetimeinmillis;
-        this.fueleconomypertrip = fueleconomypertrip;
         this.saveDate = saveDate;
     }
 

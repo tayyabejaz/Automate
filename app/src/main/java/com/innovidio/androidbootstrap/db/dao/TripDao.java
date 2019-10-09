@@ -12,7 +12,7 @@ import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import java.util.List;
 
 @Dao
-public abstract class TripDao extends BaseDao<TripDao> {
+public abstract class TripDao extends BaseDao<Trip> {
 
     @Query("SELECT * FROM Trip ORDER BY id desc")
     public abstract LiveData<List<Trip>> fetchAllTripsOrderById();
@@ -28,6 +28,6 @@ public abstract class TripDao extends BaseDao<TripDao> {
     public abstract LiveData<List<Trip>> getTripByTripType(String tripType);
 
     @Query("SELECT * FROM Trip")
-    public abstract  MutableLiveData<List<Trip>> getAllTripsForTimeline();
+    public abstract  LiveData<List<Trip>> getAllTripsForTimeline();
 }
 

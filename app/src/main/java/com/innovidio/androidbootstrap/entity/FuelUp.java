@@ -42,6 +42,10 @@ public class FuelUp implements TimeLineItem {
 //        this.saveDate =  saveDate;
 //    }
 
+    public FuelUp() {
+
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -82,9 +86,6 @@ public class FuelUp implements TimeLineItem {
         this.saveDate = saveDate;
     }
 
-    public FuelUp() {
-
-    }
 
     public int getId() {
         return id;

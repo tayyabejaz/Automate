@@ -32,7 +32,7 @@ public class MaintenanceRepository {
 //        return this.maintenanceDao.getAllFromMaintenanceTripsAndFuelUp();
 //    }
 
-    public MutableLiveData<List<Maintenance>> getAllMaintenanceForTimeLine(){
+    public LiveData<List<Maintenance>> getAllMaintenanceForTimeLine(){
         return this.maintenanceDao.getAllMaintenanceForTimeline();
     }
 }

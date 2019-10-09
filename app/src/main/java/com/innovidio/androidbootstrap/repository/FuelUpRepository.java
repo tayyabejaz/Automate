@@ -36,7 +36,7 @@ public class FuelUpRepository {
     }
 
 
-    public MutableLiveData<List<FuelUp>> getAllFuelUpsForTimeLine(){
+    public LiveData<List<FuelUp>> getAllFuelUpsForTimeLine(){
         return this.fuelDao.getAllFuelUpsForTimeline();
     }
 }

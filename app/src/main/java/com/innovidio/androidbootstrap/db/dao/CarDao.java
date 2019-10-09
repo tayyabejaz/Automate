@@ -10,7 +10,7 @@ import com.innovidio.androidbootstrap.entity.Car;
 import java.util.List;
 
 @Dao
-public abstract class CarDao extends BaseDao<CarDao> {
+public abstract class CarDao extends BaseDao<Car> {
 
     @Query("SELECT * FROM Car ORDER BY id desc")
     public abstract LiveData<List<Car>> getAllCarsOrderById();

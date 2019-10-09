@@ -1,9 +1,7 @@
 package com.innovidio.androidbootstrap.db.dao;
 
-
 import androidx.room.Dao;
 import androidx.room.Delete;
-import androidx.room.Entity;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Transaction;
@@ -14,8 +12,14 @@ import java.util.List;
 
 @Dao
 public abstract class BaseDao<T> {
+    /**
+     * Insert an object in the database.
+     *
+     * @param obj the object to be inserted.
+     * @return The SQLite row id
+     */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public abstract Long insert(T obj);
+    public abstract long insert(T obj);
 
     /**
      * Insert an array of objects in the database.
@@ -25,7 +29,6 @@ public abstract class BaseDao<T> {
      */
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public abstract List<Long> insert(List<T> obj);
-
 
     /**
      * Update an object from the database.
