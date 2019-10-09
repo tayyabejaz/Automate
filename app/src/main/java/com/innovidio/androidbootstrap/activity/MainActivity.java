@@ -1,26 +1,32 @@
 package com.innovidio.androidbootstrap.activity;
 
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-
+import android.view.View;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.adapter.SpinnerAdapter;
-
+import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
 import com.innovidio.androidbootstrap.databinding.ActivityMainBinding;
 import com.innovidio.androidbootstrap.di.viewmodel.ViewModelProviderFactory;
-import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.entity.models.SpinnerDataModel;
 import com.innovidio.androidbootstrap.entity.models.TimeLine;
+import com.innovidio.androidbootstrap.fragment.BaseFragment;
+import com.innovidio.androidbootstrap.fragment.DriveFragment;
+import com.innovidio.androidbootstrap.fragment.MainDashboardFragment;
+import com.innovidio.androidbootstrap.fragment.MaintainFragment;
+import com.innovidio.androidbootstrap.fragment.SettingsFragment;
 import com.innovidio.androidbootstrap.network.dto.CarMakesByYear;
 import com.innovidio.androidbootstrap.network.dto.CarModelName;
 import com.innovidio.androidbootstrap.network.dto.CarTrimsInfo;
@@ -38,7 +44,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerAppCompatActivity;
 
 
-public class MainActivity extends DaggerAppCompatActivity {
+public class MainActivity extends DaggerAppCompatActivity implements View.OnClickListener, BaseFragment.OnFragmentInteractionListener {
     private static final String TAG = "MainActivityLog";
 
     @Inject
@@ -49,6 +55,9 @@ public class MainActivity extends DaggerAppCompatActivity {
     private ActivityMainBinding mainBinding;
     private ArrayList<SpinnerDataModel> dataList;
     private SpinnerAdapter mAdapter;
+    private TimelineAdapter timelineAdapter;
+    private List<TimeLine> data;
+    private NavController navigationController;
 
     CarViewModel carViewModel = null;
     CarQueryViewModel carQueryViewModel = null;
@@ -61,16 +70,13 @@ public class MainActivity extends DaggerAppCompatActivity {
         super.onCreate(savedInstanceState);
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         mainBinding.setMainSpinnerData(this);
-
-       // mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-     //   mainBinding.setMainSpinnerData(this);
-
-        carQueryViewModel =  new ViewModelProvider(this, providerFactory).get(CarQueryViewModel.class);
+        getSupportFragmentManager().beginTransaction().replace(R.id.nav_main_host, new MainDashboardFragment()).addToBackStack(null).commit();
+        carQueryViewModel = new ViewModelProvider(this, providerFactory).get(CarQueryViewModel.class);
 
 //	timeLineViewModel =  new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
-    //    fuelUpViewModel =  new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
-    //    carViewModel =  new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
-     //   appPreferences.put(AppPreferences.Key.SAMPLE_INT,100);
+        //    fuelUpViewModel =  new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
+        //    carViewModel =  new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
+        //   appPreferences.put(AppPreferences.Key.SAMPLE_INT,100);
 
         carApiQueries();
 
@@ -87,9 +93,6 @@ public class MainActivity extends DaggerAppCompatActivity {
 //        fuelUpData();
 
 
-
-
-
 //        carViewModel.getAllCars().observe(this, new Observer<List<Car>>() {
 //            @Override
 //            public void onChanged(List<Car> cars) {
@@ -102,7 +105,6 @@ public class MainActivity extends DaggerAppCompatActivity {
         initList();
         mAdapter = new SpinnerAdapter(this, dataList);
         mainBinding.mainActivitySpinner.setAdapter(mAdapter);
-
     }
 
     private void fuelUpData() {
@@ -203,6 +205,39 @@ public class MainActivity extends DaggerAppCompatActivity {
         dataList.add(new SpinnerDataModel("Daihatsu Move"));
         dataList.add(new SpinnerDataModel("Nissan Juke"));
         dataList.add(new SpinnerDataModel("Ford Focus"));
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ll_dashboard:
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_main_host,new MainDashboardFragment()).addToBackStack(null).commit();
+                break;
+
+            case R.id.ll_drive:
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_main_host,new DriveFragment()).addToBackStack(null).commit();
+                break;
+
+            case R.id.ll_maintain:
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_main_host,new MaintainFragment()).addToBackStack(null).commit();
+                break;
+
+            case R.id.ll_settings:
+                getSupportFragmentManager().beginTransaction().replace(R.id.nav_main_host,new SettingsFragment()).addToBackStack(null).commit();
+                break;
+
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }

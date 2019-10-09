@@ -10,4 +10,37 @@
         android:name="com.innovidio.androidbootstrap.fragment.MainDashboardFragment"
         android:label="fragment_main_dashboard"
         tools:layout="@layout/fragment_main_dashboard" />
+    <fragment
+        android:id="@+id/driveFragment"
+        android:name="com.innovidio.androidbootstrap.fragment.DriveFragment"
+        android:label="fragment_drive"
+        tools:layout="@layout/fragment_drive" />
+    <fragment
+        android:id="@+id/maintainFragment"
+        android:name="com.innovidio.androidbootstrap.fragment.MaintainFragment"
+        android:label="fragment_maintain"
+        tools:layout="@layout/fragment_maintain" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.innovidio.androidbootstrap.fragment.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/myFragment"
+        android:name="com.innovidio.androidbootstrap.fragment.BaseFragment"
+        android:label="fragment_my"
+        tools:layout="@layout/fragment_my" >
+        <action
+            android:id="@+id/action_myFragment_to_mainDashboardFragment"
+            app:destination="@id/mainDashboardFragment" />
+        <action
+            android:id="@+id/action_myFragment_to_driveFragment"
+            app:destination="@id/driveFragment" />
+        <action
+            android:id="@+id/action_myFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_myFragment_to_maintainFragment"
+            app:destination="@id/maintainFragment" />
+    </fragment>
 </navigation>
