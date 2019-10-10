@@ -2,6 +2,7 @@ package com.innovidio.androidbootstrap.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -21,29 +22,30 @@ public class FuelUp implements TimeLineItem {
     private String carname;
     // optional for trips and without trip/ regular use
     private int tripId;
-    private String odometerreading;
-    private String liters;
-    private String perunitfuelprice;
-    private String totalprice;
+    private int odometerreading;
+    private int liters;
+    private int perunitfuelprice;
+    private int totalprice;
     private String location;
     // todo is save date added here or not?
     @ColumnInfo(name = "saveDate")
     @TypeConverters(DateConverter.class)
     private Date saveDate;
 
-//    public FuelUp(String carname, String odometerreading, int tripId, String liters, String perunitfuelprice, String totalprice, String location, Date saveDate) {
-//        this.carname = carname;
-//        this.odometerreading = odometerreading;
-//        this.liters = liters;
-//        this.perunitfuelprice = perunitfuelprice;
-//        this.totalprice = totalprice;
-//        this.location = location;
-//        this.tripId = tripId;
-//        this.saveDate =  saveDate;
-//    }
-
     public FuelUp() {
 
+    }
+
+    @Ignore
+    public FuelUp(String carname, int odometerreading, int tripId, int liters, int perunitfuelprice, int totalprice, String location, Date saveDate) {
+        this.carname = carname;
+        this.odometerreading = odometerreading;
+        this.liters = liters;
+        this.perunitfuelprice = perunitfuelprice;
+        this.totalprice = totalprice;
+        this.location = location;
+        this.tripId = tripId;
+        this.saveDate =  saveDate;
     }
 
     public void setId(int id) {
@@ -58,19 +60,19 @@ public class FuelUp implements TimeLineItem {
         this.tripId = tripId;
     }
 
-    public void setOdometerreading(String odometerreading) {
+    public void setOdometerreading(int odometerreading) {
         this.odometerreading = odometerreading;
     }
 
-    public void setLiters(String liters) {
+    public void setLiters(int liters) {
         this.liters = liters;
     }
 
-    public void setPerunitfuelprice(String perunitfuelprice) {
+    public void setPerunitfuelprice(int perunitfuelprice) {
         this.perunitfuelprice = perunitfuelprice;
     }
 
-    public void setTotalprice(String totalprice) {
+    public void setTotalprice(int totalprice) {
         this.totalprice = totalprice;
     }
 
@@ -95,19 +97,19 @@ public class FuelUp implements TimeLineItem {
         return carname;
     }
 
-    public String getOdometerreading() {
+    public int getOdometerreading() {
         return odometerreading;
     }
 
-    public String getLiters() {
+    public int getLiters() {
         return liters;
     }
 
-    public String getPerunitfuelprice() {
+    public int getPerunitfuelprice() {
         return perunitfuelprice;
     }
 
-    public String getTotalprice() {
+    public int getTotalprice() {
         return totalprice;
     }
 

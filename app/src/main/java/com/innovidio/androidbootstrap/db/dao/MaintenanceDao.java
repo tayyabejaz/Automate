@@ -29,11 +29,11 @@ public abstract class MaintenanceDao extends BaseDao<Maintenance>{
 
     //ASK: Sir Sajjad about this
 
-    @Query("SELECT * FROM Maintenance WHERE maintenanceDate=:date")
+    @Query("SELECT * FROM Maintenance WHERE saveDate=:date")
     public abstract LiveData<Maintenance> getMaintenanceByDate(Date date);
     @Transaction
-    @Query("SELECT * FROM Maintenance WHERE maintenanceDate=:maintenanaceID")
-    public abstract LiveData<MaintenanceWithAlarms> getMaintenanceWithAlarms(int maintenanaceID);
+    @Query("SELECT * FROM Maintenance")
+    public abstract LiveData<MaintenanceWithAlarms> getMaintenanceWithAlarms();
 
     // Todo how to get data from all tables discus with sir sajjad
 //    @Query("SELECT * FROM Maintenance UNION" +

@@ -46,6 +46,20 @@ public class TimeLineViewModel extends ViewModel {
         this.tripRepository = tripRepository;
         this.fuelUpRepository = fuelUpRepository;
         this.maintenanceRepository =  maintenanceRepository;
+        this.tripsLiveData =   this.tripRepository.getAllTripsTimeline();
+        this.maintenanceLiveData =   this.maintenanceRepository.getAllMaintenanceForTimeLine();
+        this.fuelUpsLiveData =   this.fuelUpRepository.getAllFuelUpsForTimeLine();
+
+
+
+        //MediatorLiveData liveDataMerger = new MediatorLiveData<>();
+//        timeLineLiveDataMerger.getValue().addAll(tripsLiveData.getValue());
+//        timeLineLiveDataMerger.getValue().addAll(maintenanceLiveData.getValue());
+//        timeLineLiveDataMerger.getValue().addAll(fuelUpsLiveData.getValue());
+
+        timeLineLiveDataMerger.addSource(tripsLiveData, value -> timeLineLiveDataMerger.setValue(value));
+        timeLineLiveDataMerger.addSource(maintenanceLiveData, value -> timeLineLiveDataMerger.setValue(value));
+        timeLineLiveDataMerger.addSource(fuelUpsLiveData, value -> timeLineLiveDataMerger.setValue(value));
     }
 
     public String getName(){
@@ -64,20 +78,7 @@ public class TimeLineViewModel extends ViewModel {
     }
 
     public MediatorLiveData<List<? extends TimeLineItem>> getAllTimelineMergerData(){
-        this.tripsLiveData =   this.tripRepository.getAllTripsTimeline();
-        this.maintenanceLiveData =   this.maintenanceRepository.getAllMaintenanceForTimeLine();
-        this.fuelUpsLiveData =   this.fuelUpRepository.getAllFuelUpsForTimeLine();
 
-
-
-        //MediatorLiveData liveDataMerger = new MediatorLiveData<>();
-//        timeLineLiveDataMerger.getValue().addAll(tripsLiveData.getValue());
-//        timeLineLiveDataMerger.getValue().addAll(maintenanceLiveData.getValue());
-//        timeLineLiveDataMerger.getValue().addAll(fuelUpsLiveData.getValue());
-
-        timeLineLiveDataMerger.addSource(tripsLiveData, value -> timeLineLiveDataMerger.setValue(value));
-        timeLineLiveDataMerger.addSource(maintenanceLiveData, value -> timeLineLiveDataMerger.setValue(value));
-        timeLineLiveDataMerger.addSource(fuelUpsLiveData, value -> timeLineLiveDataMerger.setValue(value));
         return timeLineLiveDataMerger;
     }
 
