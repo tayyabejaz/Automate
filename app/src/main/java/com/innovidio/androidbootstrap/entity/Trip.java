@@ -2,6 +2,7 @@ package com.innovidio.androidbootstrap.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -49,22 +50,22 @@ public class Trip implements TimeLineItem {
 
     }
 
-//    public Trip(String tripTitle, String destination, String carname, String triptype, Date starttime, Date endtime, String maxspeed, String avgspeed, String distanceCovered, String tripdate, Date datetimeinmillis, String fueleconomypertrip, Date saveDate) {
-//        this.tripTitle = tripTitle;
-//        this.destination = destination;
-//        this.carname = carname;
-//        this.triptype = triptype;
-//
-//        this.maxspeed = maxspeed;
-//        this.avgspeed = avgspeed;
-//        this.distanceCovered = distanceCovered;
-//        this.tripdate = tripdate;
-//        this.starttime = starttime;
-//        this.endtime = endtime;
-//        this.datetimeinmillis = datetimeinmillis;
-//        this.fueleconomypertrip = fueleconomypertrip;
-//        this.saveDate = saveDate;
-//    }
+    @Ignore
+    public Trip(String tripTitle, String destination, String carname, String triptype, Date starttime, Date endtime, String maxspeed, String avgspeed, String distanceCovered, String tripdate, Date datetimeinmillis, String fueleconomypertrip, Date saveDate) {
+        this.tripTitle = tripTitle;
+        this.destination = destination;
+        this.carname = carname;
+        this.triptype = triptype;
+        this.maxspeed = maxspeed;
+        this.avgspeed = avgspeed;
+        this.distanceCovered = distanceCovered;
+        this.tripdate = tripdate;
+        this.starttime = starttime;
+        this.endtime = endtime;
+        this.datetimeinmillis = datetimeinmillis;
+        this.fueleconomypertrip = fueleconomypertrip;
+        this.saveDate = saveDate;
+    }
 
 
     public String getCarname() {

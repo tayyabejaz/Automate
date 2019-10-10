@@ -2,6 +2,7 @@ package com.innovidio.androidbootstrap.entity;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -31,19 +32,20 @@ public class FuelUp implements TimeLineItem {
     @TypeConverters(DateConverter.class)
     private Date saveDate;
 
-//    public FuelUp(String carname, String odometerreading, int tripId, String liters, String perunitfuelprice, String totalprice, String location, Date saveDate) {
-//        this.carname = carname;
-//        this.odometerreading = odometerreading;
-//        this.liters = liters;
-//        this.perunitfuelprice = perunitfuelprice;
-//        this.totalprice = totalprice;
-//        this.location = location;
-//        this.tripId = tripId;
-//        this.saveDate =  saveDate;
-//    }
-
     public FuelUp() {
 
+    }
+
+    @Ignore
+    public FuelUp(String carname, String odometerreading, int tripId, String liters, String perunitfuelprice, String totalprice, String location, Date saveDate) {
+        this.carname = carname;
+        this.odometerreading = odometerreading;
+        this.liters = liters;
+        this.perunitfuelprice = perunitfuelprice;
+        this.totalprice = totalprice;
+        this.location = location;
+        this.tripId = tripId;
+        this.saveDate =  saveDate;
     }
 
     public void setId(int id) {
