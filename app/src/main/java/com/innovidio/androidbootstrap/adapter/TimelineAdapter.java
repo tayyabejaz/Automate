@@ -3,7 +3,6 @@ package com.innovidio.androidbootstrap.adapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -43,6 +42,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
         TimeLine item = dataList.get(position);
         holder.bind(item);
 
+        if (item.getType().equals("Fuel")) {
+            holder.itemBinding.imageIcon.setBackground(context.getDrawable(R.drawable.bottom_sheet_background_fuel));
+            holder.itemBinding.imageIcon.setImageResource(R.drawable.automate_add_fuelup_icon);
+        } else if(item.getType().equals("Service")){}
+
 //        if(position == dataList.size()-1){
 //            Toast.makeText(context,"This is position:" + position, Toast.LENGTH_LONG).show();
 //        }
@@ -61,7 +65,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
         public TimelineViewholder(MainDashboardRecyclerItemBinding itemView) {
             super(itemView.getRoot());
             this.itemBinding = itemView;
-    }
+        }
 
         public void bind(TimeLine item) {
             itemBinding.setTimeLineItem(item);

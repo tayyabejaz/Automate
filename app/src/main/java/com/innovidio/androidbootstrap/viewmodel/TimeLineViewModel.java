@@ -48,6 +48,9 @@ public class TimeLineViewModel extends ViewModel {
         this.maintenanceRepository =  maintenanceRepository;
     }
 
+    public String getName(){
+        return "hello";
+    }
     public LiveData<List<Trip>> getTrips() {
         return this.tripRepository.getAllTrips();
     }

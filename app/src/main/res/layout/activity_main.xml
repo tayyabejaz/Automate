@@ -90,6 +90,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <include
+                android:id="@+id/bottom_sheet"
                 layout="@layout/dialog_bottom_sheet"
                 app:layout_constraintBottom_toTopOf="@id/bottom_nav"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -108,9 +109,7 @@
                 android:id="@+id/bottom_nav"
                 layout="@layout/bottom_navigation_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_height="wrap_content" />
 
         </FrameLayout>
 
