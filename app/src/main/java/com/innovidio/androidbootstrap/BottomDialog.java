@@ -6,17 +6,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.innovidio.androidbootstrap.databinding.DialogBottomSheetBinding;
 
-public class BottomDialog extends Dialog implements View.OnClickListener {
+public class BottomDialog extends BottomSheetDialog implements View.OnClickListener {
     public Activity context;
 
     DialogBottomSheetBinding binding;
-
+//Botommdialog.show
     public BottomDialog(@NonNull Activity context) {
         super(context);
         this.context = context;
@@ -29,12 +31,6 @@ public class BottomDialog extends Dialog implements View.OnClickListener {
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.dialog_bottom_sheet, null, false);
         setContentView(binding.getRoot());
 
-        binding.ivAddCarwash.setOnClickListener(this);
-        binding.ivAddFuelup.setOnClickListener(this);
-        binding.ivAddService.setOnClickListener(this);
-        binding.ivAddSpeedometer.setOnClickListener(this);
-        binding.ivAddTrip.setOnClickListener(this);
-        binding.ivAddTriprec.setOnClickListener(this);
 //
 //        binding.fuelUpCardD.setOnClickListener(this);
 //        binding.addCarCardD.setOnClickListener(this);
@@ -44,20 +40,7 @@ public class BottomDialog extends Dialog implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-//            case R.id.fuel_up_card_d:
-////                
-//                dismiss();
-//                break;
-//
-//            case R.id.add_car_card_d:
-////                ((MainActivity)context).addCarMethod();
-//                dismiss();
-//                break;
-//
-//            case R.id.add_maintenance_card_d:
-////                ((MainActivity)context).addMaintenance();
-//                dismiss();
-//                break;
+
         }
     }
 }

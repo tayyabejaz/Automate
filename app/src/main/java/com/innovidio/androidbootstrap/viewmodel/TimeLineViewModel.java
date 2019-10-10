@@ -69,6 +69,9 @@ public class TimeLineViewModel extends ViewModel {
         timeLineLiveDataMerger.addSource(tripsLiveData, value -> timeLineLiveDataMerger.setValue(value));
     }
 
+    public String getName(){
+        return "hello";
+    }
     public LiveData<List<Trip>> getTrips() {
         return this.tripRepository.getAllTrips();
     }

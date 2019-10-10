@@ -3,15 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="5dp">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             app:cardBackgroundColor="@android:color/transparent"
             app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -21,6 +20,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:elevation="5dp"
                 android:background="@drawable/bottom_sheet_background">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,9 +39,7 @@
                         android:id="@+id/iv_add_carwash"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bottom_sheet_background_carwash"
                         android:scaleType="center"
-                        android:src="@drawable/automate_add_car_wash"
                         app:layout_constraintEnd_toStartOf="@id/iv_add_triprec"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -50,9 +48,7 @@
                         android:id="@+id/iv_add_triprec"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bottom_sheet_background_triprecord"
                         android:scaleType="center"
-                        android:src="@drawable/automate_trip_rec"
                         app:layout_constraintEnd_toStartOf="@id/iv_add_speedometer"
                         app:layout_constraintStart_toEndOf="@id/iv_add_carwash"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -61,9 +57,7 @@
                         android:id="@+id/iv_add_speedometer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bottom_sheet_background_speedometer"
                         android:scaleType="center"
-                        android:src="@drawable/automate_speedometer"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/iv_add_triprec"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -71,7 +65,7 @@
                     <TextView
                         android:id="@+id/tv_add_triprec"
                         style="@style/bottom_sheet_text"
-                        android:text="Trip Rec"
+                        android:text="@string/trip_rec"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/iv_add_triprec"
                         app:layout_constraintStart_toStartOf="@id/iv_add_triprec"
@@ -81,7 +75,7 @@
                     <TextView
                         android:id="@+id/tv_add_carwash"
                         style="@style/bottom_sheet_text"
-                        android:text="Car Wash"
+                        android:text="@string/car_wash"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/iv_add_carwash"
                         app:layout_constraintStart_toStartOf="@id/iv_add_carwash"
@@ -90,7 +84,7 @@
                     <TextView
                         android:id="@+id/tv_add_speedometer"
                         style="@style/bottom_sheet_text"
-                        android:text="Speedometer"
+                        android:text="@string/speedometer"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/iv_add_speedometer"
                         app:layout_constraintStart_toStartOf="@id/iv_add_speedometer"
@@ -114,9 +108,9 @@
                         android:id="@+id/iv_add_fuelup"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bottom_sheet_background_fuel"
+
                         android:scaleType="center"
-                        android:src="@drawable/automate_add_fuelup_icon"
+
                         app:layout_constraintBottom_toTopOf="@id/tv_add_fuelup"
                         app:layout_constraintEnd_toStartOf="@id/iv_add_service"
                         app:layout_constraintStart_toStartOf="parent"
@@ -127,9 +121,7 @@
                         android:id="@+id/iv_add_service"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bottom_sheet_background_service"
                         android:scaleType="center"
-                        android:src="@drawable/automate_add_service_icon"
                         app:layout_constraintBottom_toTopOf="@+id/tv_add_services"
                         app:layout_constraintEnd_toStartOf="@id/iv_add_trip"
                         app:layout_constraintStart_toEndOf="@id/iv_add_fuelup"
@@ -139,9 +131,7 @@
                         android:id="@+id/iv_add_trip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bottom_sheet_background_trip"
                         android:scaleType="center"
-                        android:src="@drawable/automate_add_trip_icon"
                         app:layout_constraintBottom_toTopOf="@id/tv_add_trip"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/iv_add_service"
@@ -150,7 +140,7 @@
                     <TextView
                         android:id="@+id/tv_add_services"
                         style="@style/bottom_sheet_text"
-                        android:text="Service"
+                        android:text="@string/service"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/iv_add_service"
                         app:layout_constraintStart_toStartOf="@id/iv_add_service"
@@ -160,7 +150,7 @@
                     <TextView
                         android:id="@+id/tv_add_fuelup"
                         style="@style/bottom_sheet_text"
-                        android:text="Fuel Up"
+                        android:text="@string/fuel_up"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/iv_add_fuelup"
                         app:layout_constraintStart_toStartOf="@id/iv_add_fuelup"
@@ -169,7 +159,7 @@
                     <TextView
                         android:id="@+id/tv_add_trip"
                         style="@style/bottom_sheet_text"
-                        android:text="Trip"
+                        android:text="@string/trip"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/iv_add_trip"
                         app:layout_constraintStart_toStartOf="@id/iv_add_trip"
@@ -177,158 +167,6 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="match_parent"-->
-            <!--                android:layout_gravity="center"-->
-            <!--                android:layout_marginTop="20dp"-->
-            <!--                android:layout_marginBottom="20dp"-->
-            <!--                android:visibility="gone"-->
-            <!--                android:background="@color/whiteColor"-->
-            <!--                android:gravity="center"-->
-            <!--                android:orientation="vertical"-->
-            <!--                android:paddingTop="20dp">-->
-
-
-            <!--                <androidx.cardview.widget.CardView-->
-            <!--                    android:id="@+id/drive_card_d"-->
-            <!--                    android:layout_width="250dp"-->
-            <!--                    android:layout_height="47dp"-->
-            <!--                    android:layout_centerInParent="true"-->
-            <!--                    android:layout_marginBottom="5dp"-->
-            <!--                    android:foreground="?selectableItemBackground"-->
-            <!--                    app:cardCornerRadius="15dp"-->
-            <!--                    app:cardElevation="7dp"-->
-            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    card_view:cardBackgroundColor="@color/blueDark">-->
-
-            <!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--                        android:layout_width="match_parent"-->
-            <!--                        android:layout_height="match_parent">-->
-
-            <!--                        <TextView-->
-            <!--                            android:layout_width="wrap_content"-->
-            <!--                            android:layout_height="wrap_content"-->
-            <!--                            android:gravity="center"-->
-            <!--                            android:text="Drive"-->
-            <!--                            android:textColor="@color/whiteColor"-->
-            <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                            app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                            app:layout_constraintStart_toStartOf="parent"-->
-            <!--                            app:layout_constraintTop_toTopOf="parent" />-->
-
-            <!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-            <!--                </androidx.cardview.widget.CardView>-->
-
-            <!--                <androidx.cardview.widget.CardView-->
-            <!--                    android:id="@+id/fuel_up_card_d"-->
-            <!--                    android:layout_width="250dp"-->
-            <!--                    android:layout_height="47dp"-->
-            <!--                    android:layout_centerInParent="true"-->
-            <!--                    android:layout_marginTop="10dp"-->
-            <!--                    android:layout_marginBottom="5dp"-->
-            <!--                    android:foreground="?selectableItemBackground"-->
-            <!--                    app:cardCornerRadius="15dp"-->
-            <!--                    app:cardElevation="7dp"-->
-            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    card_view:cardBackgroundColor="@color/fuel_up">-->
-
-            <!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--                        android:layout_width="match_parent"-->
-            <!--                        android:layout_height="match_parent">-->
-
-            <!--                        <TextView-->
-            <!--                            android:layout_width="wrap_content"-->
-            <!--                            android:layout_height="wrap_content"-->
-            <!--                            android:gravity="center"-->
-            <!--                            android:text="Fuel Up"-->
-            <!--                            android:textColor="@color/whiteColor"-->
-            <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                            app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                            app:layout_constraintStart_toStartOf="parent"-->
-            <!--                            app:layout_constraintTop_toTopOf="parent" />-->
-
-            <!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-            <!--                </androidx.cardview.widget.CardView>-->
-
-            <!--                <androidx.cardview.widget.CardView-->
-            <!--                    android:id="@+id/add_car_card_d"-->
-            <!--                    android:layout_width="250dp"-->
-            <!--                    android:layout_height="47dp"-->
-            <!--                    android:layout_centerInParent="true"-->
-            <!--                    android:layout_marginTop="10dp"-->
-            <!--                    android:layout_marginBottom="5dp"-->
-            <!--                    android:foreground="?selectableItemBackground"-->
-            <!--                    app:cardCornerRadius="15dp"-->
-            <!--                    app:cardElevation="7dp"-->
-            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    card_view:cardBackgroundColor="@color/car_wash">-->
-
-            <!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--                        android:layout_width="match_parent"-->
-            <!--                        android:layout_height="match_parent">-->
-
-            <!--                        <TextView-->
-            <!--                            android:layout_width="wrap_content"-->
-            <!--                            android:layout_height="wrap_content"-->
-            <!--                            android:gravity="center"-->
-            <!--                            android:text="Add Car"-->
-            <!--                            android:textColor="@color/whiteColor"-->
-            <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                            app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                            app:layout_constraintStart_toStartOf="parent"-->
-            <!--                            app:layout_constraintTop_toTopOf="parent" />-->
-
-            <!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-            <!--                </androidx.cardview.widget.CardView>-->
-
-            <!--                <androidx.cardview.widget.CardView-->
-            <!--                    android:id="@+id/add_maintenance_card_d"-->
-            <!--                    android:layout_width="250dp"-->
-            <!--                    android:layout_height="47dp"-->
-            <!--                    android:layout_centerInParent="true"-->
-            <!--                    android:layout_marginTop="10dp"-->
-            <!--                    android:layout_marginBottom="20dp"-->
-            <!--                    android:foreground="?selectableItemBackground"-->
-            <!--                    app:cardCornerRadius="15dp"-->
-            <!--                    app:cardElevation="7dp"-->
-            <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    card_view:cardBackgroundColor="@color/service">-->
-
-            <!--                    <androidx.constraintlayout.widget.ConstraintLayout-->
-            <!--                        android:layout_width="match_parent"-->
-            <!--                        android:layout_height="match_parent">-->
-
-            <!--                        <TextView-->
-            <!--                            android:layout_width="wrap_content"-->
-            <!--                            android:layout_height="wrap_content"-->
-            <!--                            android:gravity="center"-->
-            <!--                            android:text="Car Maintenance"-->
-            <!--                            android:textColor="@color/whiteColor"-->
-            <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--                            app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                            app:layout_constraintStart_toStartOf="parent"-->
-            <!--                            app:layout_constraintTop_toTopOf="parent" />-->
-
-            <!--                    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-            <!--                </androidx.cardview.widget.CardView>-->
-
-
-            <!--            </LinearLayout>-->
 
         </androidx.cardview.widget.CardView>
 
@@ -340,6 +178,5 @@
             name="activity"
             type="com.innovidio.androidbootstrap.databinding.DialogBottomSheetBinding" />
     </data>
-
 
 </layout>
