@@ -29,5 +29,8 @@ public abstract class TripDao extends BaseDao<Trip> {
 
     @Query("SELECT * FROM Trip")
     public abstract  LiveData<List<Trip>> getAllTripsForTimeline();
+
+    @Query("SELECT * FROM Trip")
+    public abstract  LiveData<List<Trip>> getAllTripsLiveDataForTimeline();
 }
 

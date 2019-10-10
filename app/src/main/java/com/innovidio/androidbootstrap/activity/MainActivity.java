@@ -111,7 +111,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         timeLineData();
         fuelUpData();
         getCarsData();
-       // addDummyValues();
+      //  addDummyValues();
 
 //        initList();
 //        mAdapter = new SpinnerAdapter(this, dataList);
@@ -119,20 +119,20 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     }
 
     private void addDummyValues(){
-        Date dateFuelUp = new Date("09/10/2019");
+        Date dateFuelUp = new Date("01/01/2009");
 
-        FuelUp fuelUp = new FuelUp("Audi",2500, -1, 10,  113, 1130, "Thokar",dateFuelUp );
+        FuelUp fuelUp = new FuelUp("Audi2",2500, -1, 10,  113, 1130, "Thokar",dateFuelUp );
        // FuelUp fuelUp = new FuelUp();
         fuelUpViewModel.addFuelUp(fuelUp);
 
-        Date dateMainteninence= new Date("08/10/2019");
-        Date dateMLife= new Date("08/12/2019");
-        Maintenance maintenance = new Maintenance(-1, "Fuel Change", 1100, dateMLife, true, "Tunning", dateMainteninence);
+        Date dateMainteninence= new Date("06/10/2019");
+        Date dateMLife= new Date("02/12/2019");
+        Maintenance maintenance = new Maintenance(-1, "Fuel Change2", 1100, dateMLife, true, "Tunning", dateMainteninence);
        // Maintenance maintenance = new Maintenance();
         maintenanceViewModel.addMaintenanceService(maintenance);
 
-        Date dateTrip= new Date("02/10/2019");
-        Trip trip =  new Trip("Summer tour", "Hunza", "Audi", "Personal", 100, 70, 1000, 13, dateTrip );
+        Date dateTrip= new Date("05/10/2019");
+        Trip trip =  new Trip("Summer tour2", "Hunza2", "Audi", "Personal", 100, 70, 1000, 13, dateTrip );
         //Trip trip =  new Trip();
         tripViewModel.addTrip(trip);
     }
@@ -202,10 +202,12 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             public void onChanged(List<? extends TimeLineItem> timeLineItems) {
 
                 timeLineItemsList.addAll(timeLineItems);
-                Log.e(TAG, "timeLine: "+ timeLineItems.size());
-                if (timeLineItemsList!=null && timeLineItemsList.size()>0) {
-                    timeLineItemsList = Sorting.SortList(timeLineItemsList);
-                    PrintLogs.printTimelineObjects(timeLineItemsList.get(0));
+                timeLineItemsList = Sorting.sortList(timeLineItemsList);
+                Log.e(TAG, "timeLine: "+ timeLineItemsList.size());
+                for (int i = 0; i < timeLineItemsList.size(); i++) {
+                    if (timeLineItemsList!=null && timeLineItemsList.size()>0) {
+                        PrintLogs.printTimelineObjects(timeLineItemsList.get(i));
+                    }
                 }
             }
         });
