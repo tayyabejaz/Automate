@@ -18,6 +18,8 @@ import androidx.navigation.Navigation;
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.BottomDialog;
 import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.Utils.PrintLogs;
+import com.innovidio.androidbootstrap.Utils.Sorting;
 import com.innovidio.androidbootstrap.adapter.SpinnerAdapter;
 import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
 import com.innovidio.androidbootstrap.databinding.ActivityMainBinding;
@@ -109,7 +111,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         timeLineData();
         fuelUpData();
         getCarsData();
-        addDummyValues();
+       // addDummyValues();
 
 //        initList();
 //        mAdapter = new SpinnerAdapter(this, dataList);
@@ -193,42 +195,22 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             }
         });
     }
-
+    List<TimeLineItem> timeLineItemsList  = new ArrayList<>();
     private void timeLineData() {
         timeLineViewModel.getAllTimelineMergerData().observe(this, new Observer<List<? extends TimeLineItem>>() {
             @Override
             public void onChanged(List<? extends TimeLineItem> timeLineItems) {
-                if (timeLineItems!=null && timeLineItems.size()>0) {
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        timeLineItems.sort(Comparator.comparing(o -> o.getInsertDateTime()));
-                    } else {
-                        Collections.sort(timeLineItems, new Comparator<TimeLineItem>() {
-                            public int compare(TimeLineItem obj1, TimeLineItem obj2) {
-                                return obj1.getInsertDateTime().compareTo(obj2.getInsertDateTime());
-                            }
-                        });
-                    }
-                    switch (timeLineItems.get(0).getType()) {
-                        case FUEL:
-                            FuelUp fuelUp = (FuelUp) timeLineItems.get(0);
-                            Log.d(TAG, "FuelUp: " + fuelUp.getCarname());
-                            break;
-
-                        case MAINTENANCE:
-                            Maintenance maintenance = (Maintenance) timeLineItems.get(0);
-                            Log.d(TAG, "Maintenance: " + maintenance.getMaintenanceName());
-                            break;
-
-                        case TRIP:
-                            Trip trip = (Trip) timeLineItems.get(0);
-                            Log.d(TAG, "Trip: " + trip.getTripTitle());
-                            break;
-                    }
+                timeLineItemsList.addAll(timeLineItems);
+                Log.e(TAG, "timeLine: "+ timeLineItems.size());
+                if (timeLineItemsList!=null && timeLineItemsList.size()>0) {
+                    timeLineItemsList = Sorting.SortList(timeLineItemsList);
+                    PrintLogs.printTimelineObjects(timeLineItemsList.get(0));
                 }
             }
         });
     }
+
 
     @Override
     public void onClick(View view) {
