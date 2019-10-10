@@ -109,6 +109,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         timeLineData();
         fuelUpData();
         getCarsData();
+        addDummyValues();
 
 //        initList();
 //        mAdapter = new SpinnerAdapter(this, dataList);
@@ -116,13 +117,21 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     }
 
     private void addDummyValues(){
-        FuelUp fuelUp = new FuelUp();
+        Date dateFuelUp = new Date("09/10/2019");
+
+        FuelUp fuelUp = new FuelUp("Audi",2500, -1, 10,  113, 1130, "Thokar",dateFuelUp );
+       // FuelUp fuelUp = new FuelUp();
         fuelUpViewModel.addFuelUp(fuelUp);
 
-        Maintenance maintenance = new Maintenance();
+        Date dateMainteninence= new Date("08/10/2019");
+        Date dateMLife= new Date("08/12/2019");
+        Maintenance maintenance = new Maintenance(-1, "Fuel Change", 1100, dateMLife, true, "Tunning", dateMainteninence);
+       // Maintenance maintenance = new Maintenance();
         maintenanceViewModel.addMaintenanceService(maintenance);
 
-        Trip trip =  new Trip();
+        Date dateTrip= new Date("02/10/2019");
+        Trip trip =  new Trip("Summer tour", "Hunza", "Audi", "Personal", 100, 70, 1000, 13, dateTrip );
+        //Trip trip =  new Trip();
         tripViewModel.addTrip(trip);
     }
 
