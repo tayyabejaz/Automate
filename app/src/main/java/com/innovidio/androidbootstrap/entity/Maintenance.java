@@ -33,13 +33,22 @@ public class Maintenance implements TimeLineItem {
     @ColumnInfo(name = "saveDate")
     @TypeConverters(DateConverter.class)
     private Date saveDate;
+    private String maintenanceLocation;
+
+    public String getMaintenanceLocation() {
+        return maintenanceLocation;
+    }
+
+    public void setMaintenanceLocation(String maintenanceLocation) {
+        this.maintenanceLocation = maintenanceLocation;
+    }
 
     public Maintenance() {
 
     }
 
     @Ignore
-    public Maintenance(int formId, String maintenancename, int maintenanceprice, Date maintenancelifetime, boolean alramOn, String maintenancetype, Date saveDate) {
+    public Maintenance(int formId, String maintenancename, int maintenanceprice, Date maintenancelifetime, boolean alramOn, String maintenancetype, Date saveDate, String location) {
         this.maintenanceName = maintenancename;
         this.formId = formId;
         this.maintenanceCost = maintenanceprice;
@@ -47,6 +56,7 @@ public class Maintenance implements TimeLineItem {
         this.alarmON = alramOn;
         this.maintenanceType = maintenancetype;
         this.saveDate =  saveDate;
+        this.maintenanceLocation = location;
     }
 
 

@@ -9,8 +9,13 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.Utils.IconProvider;
 import com.innovidio.androidbootstrap.databinding.MainDashboardRecyclerItemBinding;
+import com.innovidio.androidbootstrap.entity.FuelUp;
+import com.innovidio.androidbootstrap.entity.Maintenance;
+import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.entity.models.TimeLine;
+import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +24,10 @@ import java.util.List;
 public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.TimelineViewholder> {
 
     private Context context;
-    private List<TimeLine> dataList = new ArrayList<>();
+    private List<TimeLineItem> dataList = new ArrayList<>();
 
 
-    public TimelineAdapter(Context context, List<TimeLine> dataList) {
+    public TimelineAdapter(Context context, List<TimeLineItem> dataList) {
         this.context = context;
         this.dataList = dataList;
     }
@@ -39,13 +44,47 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
     @Override
     public void onBindViewHolder(@NonNull TimelineViewholder holder, int position) {
 
-        TimeLine item = dataList.get(position);
-        holder.bind(item);
+        TimeLineItem item = dataList.get(position);
+//        holder.bind(item);
+        TimeLine timeLine = new TimeLine();
+        switch (item.getType()) {
+            case FUEL:
+                holder.itemBinding.imageIcon.setBackground(IconProvider.getFuelUp(context).getBackground());
+                holder.itemBinding.imageIcon.setImageDrawable(IconProvider.getFuelUp(context).getDrawable());
+                FuelUp fuelUp = (FuelUp) item;
+                timeLine.setId(fuelUp.getId());
+                timeLine.setSaveDate(fuelUp.getSaveDate());
+                timeLine.setLocation(fuelUp.getLocation());
+                timeLine.setMeterCurrentValue(fuelUp.getOdometerreading() + "");
+                timeLine.setTotalPrice(fuelUp.getTotalprice());
+//                Log.d(TAG, "timeLine: FuelUp: " + fuelUp.getCarname());
+                break;
 
-        if (item.getType().equals("Fuel")) {
-            holder.itemBinding.imageIcon.setBackground(context.getDrawable(R.drawable.bottom_sheet_background_fuel));
-            holder.itemBinding.imageIcon.setImageResource(R.drawable.automate_add_fuelup_icon);
-        } else if(item.getType().equals("Service")){}
+            case MAINTENANCE:
+                holder.itemBinding.imageIcon.setBackground(IconProvider.getServices(context).getBackground());
+                holder.itemBinding.imageIcon.setImageDrawable(IconProvider.getServices(context).getDrawable());
+                Maintenance maintenance = (Maintenance) item;
+                timeLine.setId(maintenance.getId());
+                timeLine.setSaveDate(maintenance.getSaveDate());
+                timeLine.setLocation(maintenance.getMaintenanceLocation());
+                timeLine.setMeterCurrentValue(maintenance.getMaintenanceName());
+                timeLine.setTotalPrice(maintenance.getMaintenanceCost());
+//                Log.d(TAG, "timeLine: Maintenance: " + maintenance.getMaintenanceName());
+                break;
+
+            case TRIP:
+                holder.itemBinding.imageIcon.setBackground(IconProvider.getTrip(context).getBackground());
+                holder.itemBinding.imageIcon.setImageDrawable(IconProvider.getTrip(context).getDrawable());
+                Trip trip = (Trip) item;
+                timeLine.setId(trip.getId());
+                timeLine.setSaveDate(trip.getSaveDate());
+                timeLine.setLocation(trip.getDestination());
+                timeLine.setMeterCurrentValue(trip.getDistanceCovered() + "");
+                timeLine.setTotalPrice(trip.getFueleconomypertrip());
+//                Log.d(TAG, "timeLine: Trip: " + trip.getTripTitle());
+                break;
+        }
+
 
 //        if(position == dataList.size()-1){
 //            Toast.makeText(context,"This is position:" + position, Toast.LENGTH_LONG).show();
@@ -67,9 +106,9 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             this.itemBinding = itemView;
         }
 
-        public void bind(TimeLine item) {
-            itemBinding.setTimeLineItem(item);
-            itemBinding.executePendingBindings();
-        }
+//        public void bind(TimeLine item) {
+//            itemBinding.setTimeLineItem(item);
+//            itemBinding.executePendingBindings();
+//        }
     }
 }

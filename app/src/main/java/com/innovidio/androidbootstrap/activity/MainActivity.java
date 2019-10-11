@@ -190,7 +190,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             @Override
             public void onChanged(List<? extends TimeLineItem> timeLineItems) {
                 if (timeLineItems!=null && timeLineItems.size()>0) {
-
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         timeLineItems.sort(Comparator.comparing(o -> o.getInsertDateTime()));
                     } else {

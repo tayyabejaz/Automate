@@ -12,11 +12,50 @@ public class TimeLine {
     private String type;
     private long meterStart;
     private long meterEnd;
-    private long meterCurrentValue;
+    private String meterCurrentValue;
     private String serviceDetails;
 
+    public TimeLine() {
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setSaveDate(Date saveDate) {
+        this.saveDate = saveDate;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setTotalPrice(long totalPayment) {
+        this.totalPayment = totalPayment;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setMeterStart(long meterStart) {
+        this.meterStart = meterStart;
+    }
+
+    public void setMeterEnd(long meterEnd) {
+        this.meterEnd = meterEnd;
+    }
+
+    public void setMeterCurrentValue(String meterCurrentValue) {
+        this.meterCurrentValue = meterCurrentValue;
+    }
+
+    public void setServiceDetails(String serviceDetails) {
+        this.serviceDetails = serviceDetails;
+    }
+
     public TimeLine(int id, Date saveDate, String location, long totalPayment,
-                    String type, long meterStart, long meterEnd, long meterCurrentValue, String serviceDetails) {
+                    String type, long meterStart, long meterEnd, String meterCurrentValue, String serviceDetails) {
 
         this.id = id;
         this.saveDate = saveDate;
@@ -73,7 +112,7 @@ public class TimeLine {
         return meterEnd;
     }
 
-    public long getMeterCurrentValue() {
+    public String getMeterCurrentValue() {
         return meterCurrentValue;
     }
 
