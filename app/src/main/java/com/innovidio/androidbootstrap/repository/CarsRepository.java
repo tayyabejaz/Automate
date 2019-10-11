@@ -2,6 +2,7 @@ package com.innovidio.androidbootstrap.repository;
 
 
 import android.content.Context;
+import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.LiveData;
@@ -23,6 +24,39 @@ public class CarsRepository {
     @Inject
     public CarsRepository(CarDao carDao) {
         this.carDao = carDao;
+    }
+
+    public void addCar(Car car){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                carDao.insert(car);
+                return null;
+            }
+        }.execute();
+
+    }
+
+
+    public void deleteCar(Car car){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                carDao.delete(car);
+                return null;
+            }
+        }.execute();
+
+    }
+
+    public void updateCar(Car car){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                carDao.update(car);
+                return null;
+            }
+        }.execute();
     }
 
     public LiveData<List<Car>> getAllCars() {

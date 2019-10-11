@@ -1,6 +1,8 @@
 package com.innovidio.androidbootstrap.di;
 
+import com.innovidio.androidbootstrap.activity.FormActivity;
 import com.innovidio.androidbootstrap.activity.MainActivity;
+import com.innovidio.androidbootstrap.fragment.AddCarWash;
 import com.innovidio.androidbootstrap.fragment.BaseFragment;
 import com.innovidio.androidbootstrap.fragment.DriveFragment;
 import com.innovidio.androidbootstrap.fragment.MainDashboardFragment;
@@ -19,7 +21,13 @@ public abstract class ActivityBuilderModule {
     abstract MainActivity contributeMainActivity();
 
     @ContributesAndroidInjector
+    abstract FormActivity contributeFormActivity();
+
+    @ContributesAndroidInjector
     abstract BaseFragment contributeBaseFragment();
+
+    @ContributesAndroidInjector
+    abstract AddCarWash contributeAddCarWashFragment();
 //    @ContributesAndroidInjector
 //    abstract DriveFragment contributeDriveFragment();
 //    @ContributesAndroidInjector

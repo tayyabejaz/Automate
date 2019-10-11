@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.innovidio.androidbootstrap.entity.Alarm;
+import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.repository.AlarmRepository;
 
 import java.util.List;
@@ -18,6 +19,17 @@ public class AlarmViewModel extends ViewModel {
         this.alarmRepository = alarmRepository ;
     }
 
+    public void addAlarm(Alarm alarm){
+        alarmRepository.addAlarm(alarm);
+    }
+
+    public void deleteAlarm(Alarm alarm){
+        alarmRepository.deleteAlarm(alarm);
+    }
+
+    public void updateAlarm(Alarm alarm){
+        alarmRepository.updateAlarm(alarm);
+    }
 
     public LiveData<List<Alarm>> getAllAlarms(){
         return this.alarmRepository.getAllAlarms();

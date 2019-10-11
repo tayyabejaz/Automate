@@ -3,6 +3,7 @@ package com.innovidio.androidbootstrap.entity.models;
 import com.innovidio.androidbootstrap.R;
 
 public class SpinnerDataModel {
+
     int mFlag;
     String mName;
 

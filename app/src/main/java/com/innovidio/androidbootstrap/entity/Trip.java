@@ -10,6 +10,8 @@ import com.innovidio.androidbootstrap.db.converters.DateConverter;
 import com.innovidio.androidbootstrap.db.converters.TimestampConverter;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -167,6 +169,12 @@ public class Trip implements TimeLineItem {
 
     public Date getSaveDate() {
         return saveDate;
+    }
+
+    public String getSaveDateInString() {
+        DateFormat format = new SimpleDateFormat("MMM dd");
+        return format.format(this.saveDate);
+
     }
 
     public String getDestination() {

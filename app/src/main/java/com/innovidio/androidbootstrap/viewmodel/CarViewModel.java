@@ -3,6 +3,7 @@ package com.innovidio.androidbootstrap.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.innovidio.androidbootstrap.entity.Alarm;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.repository.CarsRepository;
 
@@ -18,6 +19,18 @@ public class CarViewModel extends ViewModel {
         this.carRepository = carRepository ;
     }
 
+
+    public void addCar(Car car){
+        carRepository.addCar(car);
+    }
+
+    public void deleteCar(Car car){
+        carRepository.deleteCar(car);
+    }
+
+    public void updateCar(Car car){
+        carRepository.updateCar(car);
+    }
 
     public LiveData<Car> getCarById(int id){
         return this.carRepository.getCarById(id);

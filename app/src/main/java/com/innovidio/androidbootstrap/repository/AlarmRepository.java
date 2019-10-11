@@ -1,5 +1,7 @@
 package com.innovidio.androidbootstrap.repository;
 
+import android.os.AsyncTask;
+
 import androidx.lifecycle.LiveData;
 
 import com.innovidio.androidbootstrap.db.dao.AlarmDao;
@@ -18,6 +20,40 @@ public class AlarmRepository {
     @Inject
     public AlarmRepository(AlarmDao alarmDao){
         this.alarmDao = alarmDao;
+    }
+
+    public void addAlarm(Alarm alarm){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                alarmDao.insert(alarm);
+                return null;
+            }
+        }.execute();
+
+    }
+
+
+    public void deleteAlarm(Alarm alarm){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                alarmDao.delete(alarm);
+                return null;
+            }
+        }.execute();
+
+    }
+
+    public void updateAlarm(Alarm alarm){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                alarmDao.update(alarm);
+                return null;
+            }
+        }.execute();
+
     }
 
     public LiveData<List<Alarm>> getAllAlarms(){

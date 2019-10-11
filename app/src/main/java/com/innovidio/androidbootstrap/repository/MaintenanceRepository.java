@@ -41,6 +41,26 @@ public class MaintenanceRepository {
         }.execute();
     }
 
+    public void deleteMaintenanceService(Maintenance maintenance){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                maintenanceDao.delete(maintenance);
+                return null;
+            }
+        }.execute();
+    }
+
+    public void updateMaintenanceService(Maintenance maintenance){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                maintenanceDao.update(maintenance);
+                return null;
+            }
+        }.execute();
+    }
+
 //    public LiveData<List<MaintenanceWithAlarms>> getAllMaintenanceTripsAndFuelUps(){
 //        return this.maintenanceDao.getAllFromMaintenanceTripsAndFuelUp();
 //    }

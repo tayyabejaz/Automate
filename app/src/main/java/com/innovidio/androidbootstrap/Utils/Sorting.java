@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Sorting {
 
-    public static List<TimeLineItem>  SortList(List<TimeLineItem> timeLineItemList){
+    public static List<TimeLineItem>  sortList(List<TimeLineItem> timeLineItemList){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             timeLineItemList.sort(Comparator.comparing(o -> o.getInsertDateTime()));
         } else {

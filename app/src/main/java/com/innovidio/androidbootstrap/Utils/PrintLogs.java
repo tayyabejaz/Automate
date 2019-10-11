@@ -15,16 +15,19 @@ public class PrintLogs {
             case FUEL:
                 FuelUp fuelUp = (FuelUp) item;
                 Log.d(TAG, "timeLine: FuelUp: " + fuelUp.getCarname());
+                Log.d(TAG, "timeLine: FuelUp: " + fuelUp.getSaveDateInString());
                 break;
 
             case MAINTENANCE:
                 Maintenance maintenance = (Maintenance) item;
                 Log.d(TAG, "timeLine: Maintenance: " + maintenance.getMaintenanceName());
+                Log.d(TAG, "timeLine: Maintenance: " + maintenance.getSaveDateInString());
                 break;
 
             case TRIP:
                 Trip trip = (Trip) item;
                 Log.d(TAG, "timeLine: Trip: " + trip.getTripTitle());
+                Log.d(TAG, "timeLine: Trip: " + trip.getSaveDateInString());
                 break;
         }
     }
