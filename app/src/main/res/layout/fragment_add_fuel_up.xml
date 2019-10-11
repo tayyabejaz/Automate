@@ -66,6 +66,7 @@
                 android:drawableLeft="@drawable/automate_price_form_icon"
                 android:hint="Add Car Wash Price"
                 android:inputType="number"
+                
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
