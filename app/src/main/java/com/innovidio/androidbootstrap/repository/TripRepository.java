@@ -54,6 +54,26 @@ public class TripRepository {
         }.execute();
     }
 
+    public void deleteTrip(Trip trip) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                tripDao.delete(trip);
+                return null;
+            }
+        }.execute();
+    }
+
+    public void updateTrip(Trip trip) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                tripDao.update(trip);
+                return null;
+            }
+        }.execute();
+    }
+
     public LiveData<List<Trip>> getAllTrips() {
         return this.tripDao.getAllTrips();
     }

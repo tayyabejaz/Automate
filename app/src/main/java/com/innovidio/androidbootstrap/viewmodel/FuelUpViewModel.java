@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.repository.FuelUpRepository;
 
@@ -24,6 +25,14 @@ public class FuelUpViewModel extends ViewModel {
 
     public void addFuelUp(FuelUp fuelUp){
         fuelUpRepository.addFuelUp(fuelUp);
+    }
+
+    public void deleteFuelUp(FuelUp fuelUp){
+        fuelUpRepository.deleteFuelUp(fuelUp);
+    }
+
+    public void updateFuelUp(FuelUp fuelUp){
+        fuelUpRepository.updateFuelUp(fuelUp);
     }
 
     public LiveData<List<FuelUp>> getAllFuelUps(){

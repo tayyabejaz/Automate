@@ -35,6 +35,28 @@ public class FuelUpRepository {
         }.execute();
     }
 
+    public void deleteFuelUp(FuelUp fuelUp){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                fuelDao.delete(fuelUp);
+                return null;
+            }
+        }.execute();
+    }
+
+
+    public void updateFuelUp(FuelUp fuelUp){
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                fuelDao.update(fuelUp);
+                return null;
+            }
+        }.execute();
+    }
+
+
     public LiveData<List<FuelUp>> getAllFuelUps(){
         return this.fuelDao.getAllFuelUps();
     }

@@ -23,6 +23,14 @@ public class TripViewModel extends ViewModel {
         this.tripRepository.addTrip(trip);
     }
 
+    public void deleteTrip(Trip trip) {
+        this.tripRepository.deleteTrip(trip);
+    }
+
+    public void updateTrip(Trip trip) {
+        this.tripRepository.updateTrip(trip);
+    }
+
     public LiveData<List<Trip>> getTrips() {
         return this.tripRepository.getAllTrips();
     }
