@@ -111,7 +111,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         timeLineData();
         fuelUpData();
         getCarsData();
-      //  addDummyValues();
+        addDummyValues();
 
 //        initList();
 //        mAdapter = new SpinnerAdapter(this, dataList);
@@ -127,7 +127,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
         Date dateMainteninence= new Date("06/10/2019");
         Date dateMLife= new Date("02/12/2019");
-        Maintenance maintenance = new Maintenance(-1, "Fuel Change2", 1100, dateMLife, true, "Tunning", dateMainteninence);
+        Maintenance maintenance = new Maintenance(-1, "Fuel Change2", 1100, dateMLife, true, MAINTENANCE, dateMainteninence);
        // Maintenance maintenance = new Maintenance();
         maintenanceViewModel.addMaintenanceService(maintenance);
 
