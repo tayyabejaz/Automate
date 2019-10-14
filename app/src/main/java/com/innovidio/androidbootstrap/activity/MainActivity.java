@@ -22,6 +22,9 @@ import com.innovidio.androidbootstrap.Utils.IconProvider;
 import com.innovidio.androidbootstrap.adapter.SpinnerAdapter;
 import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
 import com.innovidio.androidbootstrap.databinding.ActivityMainBinding;
+import com.innovidio.androidbootstrap.db.dao.FuelDao;
+import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
+import com.innovidio.androidbootstrap.db.dao.TripDao;
 import com.innovidio.androidbootstrap.di.viewmodel.ViewModelProviderFactory;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.FuelUp;
@@ -55,6 +58,14 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     private static final String TAG = "MainActivityLog";
 
     @Inject
+    FuelDao fuelDao;
+
+    @Inject
+    MaintenanceDao maintenanceDao;
+
+    @Inject
+    TripDao tripDao;
+    @Inject
     ViewModelProviderFactory providerFactory;
     @Inject
     AppPreferences appPreferences;
@@ -78,16 +89,38 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        mainBinding.setMainSpinnerData(this);
-
-        //INITIALIZE BOTTOM SHEET ICONS
-        initializeIcons();
         navigationController = Navigation.findNavController(MainActivity.this, R.id.nav_main_host);
-        mainBinding.bottomNav.ivAdd.setOnClickListener(this::onClick);
-        mainBinding.bottomNav.llDashboard.setOnClickListener(this::onClick);
-        mainBinding.bottomNav.llDrive.setOnClickListener(this::onClick);
-        mainBinding.bottomNav.llMaintain.setOnClickListener(this::onClick);
-        mainBinding.bottomNav.llSettings.setOnClickListener(this::onClick);
+
+        //Initialize icons for Bottom Sheet
+        initializeIcons();
+        initializeListeners();
+        initializeVIewModels();
+
+        initList();
+        addDummyValues();
+
+        carApiQueries();
+        timeLineData();
+        fuelUpData();
+        getCarsData();
+
+    }
+
+    private void initializeVIewModels() {
+        carQueryViewModel = new ViewModelProvider(this, providerFactory).get(CarQueryViewModel.class);
+        timeLineViewModel = new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
+        fuelUpViewModel = new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
+        carViewModel = new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
+        maintenanceViewModel = new ViewModelProvider(this, providerFactory).get(MaintenanceViewModel.class);
+        tripViewModel = new ViewModelProvider(this, providerFactory).get(TripViewModel.class);
+    }
+
+    private void initializeListeners() {
+        mainBinding.bottomNav.ivAdd.setOnClickListener(this);
+        mainBinding.bottomNav.llDashboard.setOnClickListener(this);
+        mainBinding.bottomNav.llDrive.setOnClickListener(this);
+        mainBinding.bottomNav.llMaintain.setOnClickListener(this);
+        mainBinding.bottomNav.llSettings.setOnClickListener(this);
         mainBinding.animatedLayout.setVisibility(View.GONE);
 
         mainBinding.bottomSheet.ivAddSpeedometer.setOnClickListener(this);
@@ -96,33 +129,53 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding.bottomSheet.ivAddCarwash.setOnClickListener(this);
         mainBinding.bottomSheet.ivAddTrip.setOnClickListener(this);
         mainBinding.bottomSheet.ivAddTriprec.setOnClickListener(this);
-        initList();
-//        mAdapter = new SpinnerAdapter(this, dataList);
-        mainBinding.mainActivitySpinner.setAdapter(mAdapter);
-
-        carQueryViewModel = new ViewModelProvider(this, providerFactory).get(CarQueryViewModel.class);
-        timeLineViewModel = new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
-        fuelUpViewModel = new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
-        carViewModel = new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
-        maintenanceViewModel = new ViewModelProvider(this, providerFactory).get(MaintenanceViewModel.class);
-        tripViewModel = new ViewModelProvider(this, providerFactory).get(TripViewModel.class);
-
-        carApiQueries();
-//        timeLineData();
-        fuelUpData();
-        getCarsData();
-
     }
 
     private void addDummyValues() {
         FuelUp fuelUp = new FuelUp();
-        fuelUpViewModel.addFuelUp(fuelUp);
+        fuelUp.setId(1);
+        fuelUp.setCarname("Honda");
+        fuelUp.setLiters(10);
+        fuelUp.setSaveDate(new Date());
+        fuelUp.setLocation("Lahore");
+        fuelUp.setOdometerreading(2520);
+        fuelUp.setPerunitfuelprice(113);
+        fuelUp.setTotalprice(1000);
+        fuelUp.setTripId(12);
+
+        fuelDao.insert(fuelUp);
+//        fuelUpViewModel.addFuelUp(fuelUp);
 
         Maintenance maintenance = new Maintenance();
-        maintenanceViewModel.addMaintenanceService(maintenance);
+        maintenance.setSaveDate(new Date());
+        maintenance.setCarId(1);
+        maintenance.setMaintenanceCost(1200);
+        maintenance.setMaintenanceLocation("Lahore");
+        maintenance.setMaintenanceOdometerReading("2520");
+        maintenance.setAlarmON(true);
+        maintenance.setFormId(10);
+        maintenance.setId(122);
+        maintenance.setMaintenanceLife(new Date());
+        maintenance.setMaintenanceName("Service");
+
+        maintenanceDao.insert(maintenance);
+//        maintenanceViewModel.addMaintenanceService(maintenance);
+
 
         Trip trip = new Trip();
-        tripViewModel.addTrip(trip);
+        trip.setAvgspeed(150);
+        trip.setCarname("Honda");
+        trip.setDestination("Islamabad");
+        trip.setDistanceCovered(100);
+        trip.setFueleconomypertrip(10);
+        trip.setMaxspeed(200);
+        trip.setId(22);
+        trip.setSaveDate(new Date());
+        trip.setTripTitle("lhr_to_islamabad");
+        trip.setTriptype("personal");
+
+        tripDao.insert(trip);
+//        tripViewModel.addTrip(trip);
     }
 
     private void fuelUpData() {
@@ -185,36 +238,34 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     }
 
     private void timeLineData() {
-        timeLineViewModel.getAllTimelineMergerData().observe(this, new Observer<List<? extends TimeLineItem>>() {
-            @Override
-            public void onChanged(List<? extends TimeLineItem> timeLineItems) {
-                if (timeLineItems != null && timeLineItems.size() > 0) {
+        timeLineViewModel.getAllTimelineMergerData().observe(this, timeLineItems -> {
+            if (timeLineItems != null && timeLineItems.size() > 0) {
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        timeLineItems.sort(Comparator.comparing(o -> o.getInsertDateTime()));
-                    } else {
-                        Collections.sort(timeLineItems, new Comparator<TimeLineItem>() {
-                            public int compare(TimeLineItem obj1, TimeLineItem obj2) {
-                                return obj1.getInsertDateTime().compareTo(obj2.getInsertDateTime());
-                            }
-                        });
-                    }
-                    switch (timeLineItems.get(0).getType()) {
-                        case FUEL:
-                            FuelUp fuelUp = (FuelUp) timeLineItems.get(0);
-                            Log.d(TAG, "FuelUp: " + fuelUp.getCarname());
-                            break;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    timeLineItems.sort(Comparator.comparing(o -> o.getInsertDateTime()));
+                } else {
+                    Collections.sort(timeLineItems, new Comparator<TimeLineItem>() {
+                        public int compare(TimeLineItem obj1, TimeLineItem obj2) {
+                            return obj1.getInsertDateTime().compareTo(obj2.getInsertDateTime());
+                        }
+                    });
+                }
 
-                        case MAINTENANCE:
-                            Maintenance maintenance = (Maintenance) timeLineItems.get(0);
-                            Log.d(TAG, "Maintenance: " + maintenance.getMaintenanceName());
-                            break;
+                switch (timeLineItems.get(0).getType()) {
+                    case FUEL:
+                        FuelUp fuelUp = (FuelUp) timeLineItems.get(0);
+                        Log.d(TAG, "FuelUp: " + fuelUp.getCarname());
+                        break;
 
-                        case TRIP:
-                            Trip trip = (Trip) timeLineItems.get(0);
-                            Log.d(TAG, "Trip: " + trip.getTripTitle());
-                            break;
-                    }
+                    case MAINTENANCE:
+                        Maintenance maintenance = (Maintenance) timeLineItems.get(0);
+                        Log.d(TAG, "Maintenance: " + maintenance.getMaintenanceName());
+                        break;
+
+                    case TRIP:
+                        Trip trip = (Trip) timeLineItems.get(0);
+                        Log.d(TAG, "Trip: " + trip.getTripTitle());
+                        break;
                 }
             }
         });

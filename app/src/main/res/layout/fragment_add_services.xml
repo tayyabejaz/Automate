@@ -19,26 +19,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_carwash_location" />
 
-        <EditText
-            android:id="@+id/et_carwash_date"
+        <TextView
+            android:id="@+id/tv_services_date"
             style="@style/formEditText"
             android:drawableLeft="@drawable/automate_set_date_form_icon"
             android:hint="Set Date"
-            app:layout_constraintBottom_toTopOf="@id/et_carwash_time"
+            app:layout_constraintBottom_toTopOf="@id/tv_services_time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_car_selection" />
 
 
-        <EditText
-            android:id="@+id/et_carwash_time"
+        <TextView
+            android:id="@+id/tv_services_time"
             style="@style/formEditText"
             android:drawableLeft="@drawable/automate_set_time_form_icon"
             android:hint="Time"
             app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_carwash_date" />
+            app:layout_constraintTop_toBottomOf="@id/tv_services_date" />
 
         <EditText
             android:id="@+id/et_odometer_reading"
@@ -49,38 +49,51 @@
             app:layout_constraintBottom_toTopOf="@id/et_carwash_cost"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_carwash_time" />
+            app:layout_constraintTop_toBottomOf="@id/tv_services_time" />
 
         <EditText
             android:id="@+id/et_carwash_location"
             style="@style/formEditText"
             android:drawableLeft="@drawable/automate_location_form_icon"
-            android:hint="Location"
+            android:hint="Enter Location"
             app:layout_constraintBottom_toTopOf="@id/et_additional_note"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_carwash_cost" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/blueDark"
+            android:textSize="10sp"
+            android:layout_marginEnd="15dp"
+            android:text="@string/form_get_location"
+            app:layout_constraintEnd_toEndOf="@id/et_carwash_location"
+            app:layout_constraintTop_toTopOf="@id/et_carwash_location"
+            app:layout_constraintBottom_toBottomOf="@id/et_carwash_location"
+            />
 
         <EditText
             android:id="@+id/et_carwash_cost"
             style="@style/formEditText"
             android:autofillHints="Add Car Wash Price"
             android:drawableLeft="@drawable/automate_select_services_form_icon"
-            android:hint="Select Services"
+            android:hint="@string/form_select_services"
             android:inputType="number"
             app:layout_constraintBottom_toTopOf="@id/et_carwash_location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_odometer_reading" />
 
-        <EditText
+        <TextView
             android:id="@+id/et_car_selection"
             style="@style/formEditText"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:drawableLeft="@drawable/automate_select_car_placeholder"
             android:hint="Select Your Car"
-            app:layout_constraintBottom_toTopOf="@id/et_carwash_date"
+            android:drawableRight="@drawable/automate_dropdown_icon"
+            app:layout_constraintBottom_toTopOf="@id/tv_services_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_selectcar" />
@@ -129,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Car Wash"
+                android:text="Services"
                 android:textAllCaps="true"
                 android:textColor="@color/whiteColor"
                 android:textSize="18sp"

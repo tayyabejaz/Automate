@@ -13,28 +13,29 @@
             android:id="@+id/et_additional_note"
             style="@style/formEditText"
             android:drawableLeft="@drawable/automate_additional_notes_form_icon"
-            android:hint="Any Additional Notes"
+            android:hint="@string/form_any_additional_notes"
+            android:inputType="text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_carwash_cost" />
 
-        <EditText
+        <TextView
             android:id="@+id/et_carwash_date"
             style="@style/formEditText"
             android:drawableLeft="@drawable/automate_set_date_form_icon"
-            android:hint="Set Date"
+            android:hint="@string/form_set_date"
             app:layout_constraintBottom_toTopOf="@id/et_carwash_time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_car_selection" />
+            app:layout_constraintTop_toBottomOf="@id/tv_car_selection" />
 
 
-        <EditText
+        <TextView
             android:id="@+id/et_carwash_time"
             style="@style/formEditText"
             android:drawableLeft="@drawable/automate_set_time_form_icon"
-            android:hint="Time"
+            android:hint="@string/form_set_time"
             app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +45,7 @@
             android:id="@+id/et_odometer_reading"
             style="@style/formEditText"
             android:drawableLeft="@drawable/automate_odometer_reading_form_icon"
-            android:hint="Odometer Reading"
+            android:hint="@string/enter_current_odometer_reading"
             android:inputType="number"
             app:layout_constraintBottom_toTopOf="@id/et_carwash_location"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,7 +56,10 @@
             android:id="@+id/et_carwash_location"
             style="@style/formEditText"
             android:drawableLeft="@drawable/automate_location_form_icon"
-            android:hint="Location"
+            android:hint="@string/enter_form_location"
+            android:inputType="text"
+            android:paddingEnd="80dp"
+            android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@id/et_carwash_cost"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,21 +68,22 @@
         <EditText
             android:id="@+id/et_carwash_cost"
             style="@style/formEditText"
-            android:autofillHints="Add Car Wash Price"
             android:drawableLeft="@drawable/automate_price_form_icon"
-            android:hint="Add Car Wash Price"
+            android:hint="@string/form_add_car_wash_price"
             android:inputType="number"
+            android:maxLength="6"
+            android:paddingEnd="30dp"
+            android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@id/et_additional_note"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_carwash_location" />
 
         <TextView
-            android:id="@+id/et_car_selection"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
+            android:id="@+id/tv_car_selection"
+            style="@style/formEditText"
+            android:hint="@string/select_your_car_hint"
+            android:gravity="center_vertical"
             android:background="@drawable/edittext_background"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
@@ -91,6 +96,7 @@
 
 
         <TextView
+            android:id="@+id/tv_carwash_get_locations"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="15dp"
@@ -123,7 +129,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginBottom="5dp"
             android:text="Select your Car"
-            app:layout_constraintBottom_toTopOf="@id/et_car_selection"
+            app:layout_constraintBottom_toTopOf="@id/tv_car_selection"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/topbar" />

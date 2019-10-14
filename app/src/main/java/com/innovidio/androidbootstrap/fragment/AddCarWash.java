@@ -1,8 +1,9 @@
 package com.innovidio.androidbootstrap.fragment;
 
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.databinding.FragmentAddCarWashBinding;
 import com.innovidio.androidbootstrap.di.viewmodel.ViewModelProviderFactory;
 import com.innovidio.androidbootstrap.entity.Maintenance;
@@ -24,11 +26,15 @@ import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
+
+import static com.innovidio.androidbootstrap.Utils.UtilClass.checkEmptyField;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,7 +48,7 @@ public class AddCarWash extends DaggerFragment {
 
     private FragmentAddCarWashBinding carWashBinding;
     private Maintenance maintenance = new Maintenance();
-    private String date, time;
+    private final Calendar todaysCalender = Calendar.getInstance();
 
 
     public AddCarWash() {
@@ -69,49 +75,45 @@ public class AddCarWash extends DaggerFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        DatePickerDialog.OnDateSetListener date = (datePicker, i, i1, i2) -> {
+            todaysCalender.set(Calendar.YEAR, i);
+            todaysCalender.set(Calendar.MONTH, i1);
+            todaysCalender.set(Calendar.DAY_OF_MONTH, i2);
+            updateDate();
+        };
 
-//        if (checkEntry(carWashBinding.etCarSelection)) {
-//            maintenance.setCarId(12);
-//        }
-        if (checkEntry(carWashBinding.etCarwashDate)) {
-            date = carWashBinding.etCarwashDate.getText().toString();
-        }
-//        else {
-//            carWashBinding.etCarwashDate.setError("Please Provide Date");
-//        }
+        carWashBinding.etCarwashDate.setOnClickListener(view1 -> {
+            new DatePickerDialog(getContext(), date, todaysCalender.get(Calendar.YEAR), todaysCalender.get(Calendar.MONTH), todaysCalender.get(Calendar.DAY_OF_MONTH)).show();
+        });
 
-        if (checkEntry(carWashBinding.etCarwashTime)) {
-            time = carWashBinding.etCarwashTime.getText().toString();
-        }
-//        else {
-//            carWashBinding.etCarwashTime.setError("Provide Time");
-//        }
+        carWashBinding.ivCarwashBack.setOnClickListener(view1 -> {
+            getActivity().onBackPressed();
+        });
 
-        if (checkEntry(carWashBinding.etOdometerReading)) {
+        TimePickerDialog.OnTimeSetListener time = (timePicker, i, i1) -> {
+            todaysCalender.set(Calendar.HOUR_OF_DAY,i);
+            todaysCalender.set(Calendar.MINUTE, i1);
+            updateTime();
+        };
+
+        carWashBinding.etCarwashTime.setOnClickListener(view1 ->{
+            new TimePickerDialog(getActivity(), time, todaysCalender.get(Calendar.HOUR_OF_DAY),todaysCalender.get(Calendar.MINUTE), false).show();
+        });
+
+        if (checkEmptyField(carWashBinding.etOdometerReading)) {
             maintenance.setMaintenanceOdometerReading(carWashBinding.etOdometerReading.getText().toString());
         }
-//        else {
-//            carWashBinding.etOdometerReading.setError("Provide Reading");
-//        }
 
-        if (checkEntry(carWashBinding.etCarwashLocation)) {
+        if (checkEmptyField(carWashBinding.etCarwashLocation)) {
             maintenance.setMaintenanceLocation(carWashBinding.etCarwashLocation.getText().toString());
         }
-//        else {
-//            carWashBinding.etCarwashLocation.setError("Provide Location");
-//        }
 
-        if (checkEntry(carWashBinding.etCarwashCost)) {
+        if (checkEmptyField(carWashBinding.etCarwashCost)) {
             maintenance.setMaintenanceCost(Integer.parseInt(carWashBinding.etCarwashCost.getText().toString()));
         }
-//        else {
-//            carWashBinding.etCarwashCost.setError("Enter the Maintenance Cost");
-//        }
 
-        if (date != null && time != null) {
-            String dateInString = date + "T" + time + "Z";
-            maintenance.setSaveDate(convertTODate(dateInString));
-        }
+        String dateInString = date + "T" + time + "Z";
+        maintenance.setSaveDate(convertToDate(dateInString));
 
         carWashBinding.btnSaveCarWashData.setOnClickListener(view1 -> {
             maintenanceViewModel.addMaintenanceService(maintenance);
@@ -119,14 +121,19 @@ public class AddCarWash extends DaggerFragment {
         });
     }
 
-    private boolean checkEntry(EditText field) {
-        if (field.getText().length() > 0) {
-            return true;
-        }
-        return false;
+    private void updateTime() {
+        String myFormat = "hh:mm"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        carWashBinding.etCarwashTime.setText(sdf.format(todaysCalender.getTime()));
     }
 
-    private Date convertTODate(String dateInString) {
+    private void updateDate() {
+        String myFormat = "MM/dd/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        carWashBinding.etCarwashDate.setText(sdf.format(todaysCalender.getTime()));
+    }
+
+    private Date convertToDate(String dateInString) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         try {
             Date date = format.parse(dateInString);
