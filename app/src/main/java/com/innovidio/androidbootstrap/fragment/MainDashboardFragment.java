@@ -50,7 +50,7 @@ public class MainDashboardFragment extends Fragment {
 
     private List<TimeLineItem> timeLineItemList =  new ArrayList<>();
 
-    public MainDashboardFragment() {
+    public MainDashboardFragment(){
         // Required empty public constructor
     }
 

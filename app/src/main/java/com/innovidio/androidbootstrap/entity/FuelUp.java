@@ -86,12 +86,6 @@ public class FuelUp implements TimeLineItem {
         return saveDate;
     }
 
-    public String getSaveDateInString() {
-        DateFormat format = new SimpleDateFormat("MMM dd");
-        return format.format(this.saveDate);
-
-    }
-
     public void setSaveDate(Date saveDate) {
         this.saveDate = saveDate;
     }
@@ -127,6 +121,17 @@ public class FuelUp implements TimeLineItem {
 
     public int getTripId() {
         return tripId;
+    }
+
+    public String getSaveDateInString() {
+        DateFormat format = new SimpleDateFormat("MMM dd");
+        return format.format(this.saveDate);
+
+    }
+
+    public String getSaveTimeInString() {
+        DateFormat format = new SimpleDateFormat("hh:mm");
+        return format.format(this.saveDate);
     }
 
     @Override

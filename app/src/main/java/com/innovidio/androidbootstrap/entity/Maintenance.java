@@ -162,6 +162,11 @@ public class Maintenance implements TimeLineItem {
 
     }
 
+    public String getSaveTimeInString() {
+        DateFormat format = new SimpleDateFormat("hh:mm");
+        return format.format(this.saveDate);
+    }
+
     @Override
     public Date getInsertDateTime() {
         return saveDate;

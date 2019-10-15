@@ -176,6 +176,12 @@ public class Trip implements TimeLineItem {
 
     }
 
+
+    public String getSaveTimeInString() {
+        DateFormat format = new SimpleDateFormat("hh:mm");
+        return format.format(this.saveDate);
+    }
+
     public String getDestination() {
         return destination;
     }

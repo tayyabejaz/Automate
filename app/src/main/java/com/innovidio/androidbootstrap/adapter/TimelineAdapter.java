@@ -12,117 +12,199 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.IconProvider;
-import com.innovidio.androidbootstrap.databinding.MainDashboardRecyclerItemBinding;
+import com.innovidio.androidbootstrap.databinding.ItemTimelineCarWashBinding;
+import com.innovidio.androidbootstrap.databinding.ItemTimelineFuelUpBinding;
+import com.innovidio.androidbootstrap.databinding.ItemTimelineMaintenanceBinding;
+import com.innovidio.androidbootstrap.databinding.ItemTimelineTripsBinding;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
-import com.innovidio.androidbootstrap.entity.models.TimeLine;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.TimelineViewholder> {
+public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<? extends TimeLineItem> dataList = new ArrayList<>();
+    private List<? extends TimeLineItem> timeLineItemList = new ArrayList<>();
+
+    private static final int FUEL_UP = 0;
+    private static final int TRIPS =  1;
+    private static final int MAINTENANCE =  2;
+    private static final int CAR_WASH =  3;
 
 
     public TimelineAdapter(Context context, List<? extends TimeLineItem> dataList) {
         this.context = context;
-        this.dataList = dataList;
+        this.timeLineItemList = dataList;
     }
 
     @NonNull
     @Override
-    public TimelineViewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        MainDashboardRecyclerItemBinding itemBinding = DataBindingUtil.inflate(layoutInflater, R.layout.main_dashboard_recycler_item, parent, false);
-        return new TimelineViewholder(itemBinding);
+        if (viewType == FUEL_UP){
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_fuel_up,
+                    parent, false);
+            return new FuelUpItemViewHolder(view);
+        }else if (viewType == MAINTENANCE){
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_maintenance,
+                    parent, false);
+            return new MaintenanceViewHolder(view);
+        }else if (viewType == CAR_WASH){
+            // same view Holder for maintenance and car wash
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_car_wash,
+                    parent, false);
+            return new MaintenanceViewHolder(view);
+        }else if (viewType == TRIPS){
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_trips,
+                    parent, false);
+            return new TripsViewHolder(view);
+        }
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TimelineViewholder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holderParent, int position) {
 
-        TimeLineItem item = dataList.get(position);
-//        holder.bind(item);
-        TimeLine timeLine = new TimeLine();
+        TimeLineItem item = timeLineItemList.get(position);
         switch (item.getType()) {
             case FUEL:
-                holder.itemBinding.imageIcon.setBackground(IconProvider.getFuelUp(context).getBackground());
-                holder.itemBinding.imageIcon.setImageDrawable(IconProvider.getFuelUp(context).getDrawable());
                 FuelUp fuelUp = (FuelUp) item;
-                timeLine.setId(fuelUp.getId());
-                timeLine.setSaveDate(fuelUp.getSaveDate());
-                timeLine.setLocation(fuelUp.getLocation());
-                timeLine.setMeterCurrentValue(fuelUp.getOdometerreading() + "");
-                timeLine.setTotalPrice(fuelUp.getTotalprice());
-//                Log.d(TAG, "timeLine: FuelUp: " + fuelUp.getCarname());
+                FuelUpItemViewHolder fuelUpItemViewHolder = (FuelUpItemViewHolder) holderParent;
+                fuelUpItemViewHolder.bind(fuelUp);
+
+                fuelUpItemViewHolder.itemBinding.imageIcon.setBackground(IconProvider.getFuelUp(context).getBackground());
+                fuelUpItemViewHolder.itemBinding.imageIcon.setImageDrawable(IconProvider.getFuelUp(context).getDrawable());
+
                 break;
 
             case MAINTENANCE:
-                holder.itemBinding.imageIcon.setBackground(IconProvider.getServices(context).getBackground());
-                holder.itemBinding.imageIcon.setImageDrawable(IconProvider.getServices(context).getDrawable());
                 Maintenance maintenance = (Maintenance) item;
-                timeLine.setId(maintenance.getId());
-                timeLine.setSaveDate(maintenance.getSaveDate());
-                timeLine.setLocation(maintenance.getMaintenanceLocation());
-                timeLine.setMeterCurrentValue(maintenance.getMaintenanceName());
-                timeLine.setTotalPrice(maintenance.getMaintenanceCost());
-//                Log.d(TAG, "timeLine: Maintenance: " + maintenance.getMaintenanceName());
+                MaintenanceViewHolder maintenanceViewHolder = (MaintenanceViewHolder) holderParent;
+                maintenanceViewHolder.bind(maintenance);
+
+                maintenanceViewHolder.itemBinding.imageIcon.setBackground(IconProvider.getServices(context).getBackground());
+                maintenanceViewHolder.itemBinding.imageIcon.setImageDrawable(IconProvider.getServices(context).getDrawable());
+
+                break;
+
+
+            case CAR_WASH:
+                Maintenance maintenanceCarWash = (Maintenance) item;
+                MaintenanceCarWashViewHolder maintenanceCarWashViewHolder = (MaintenanceCarWashViewHolder) holderParent;
+                maintenanceCarWashViewHolder.bind(maintenanceCarWash);
+
+                maintenanceCarWashViewHolder.itemBinding.imageIcon.setBackground(IconProvider.getServices(context).getBackground());
+                maintenanceCarWashViewHolder.itemBinding.imageIcon.setImageDrawable(IconProvider.getServices(context).getDrawable());
+
                 break;
 
             case TRIP:
-                holder.itemBinding.imageIcon.setBackground(IconProvider.getTrip(context).getBackground());
-                holder.itemBinding.imageIcon.setImageDrawable(IconProvider.getTrip(context).getDrawable());
                 Trip trip = (Trip) item;
-                timeLine.setId(trip.getId());
-                timeLine.setSaveDate(trip.getSaveDate());
-                timeLine.setLocation(trip.getDestination());
-                timeLine.setMeterCurrentValue(trip.getDistanceCovered() + "");
-                timeLine.setTotalPrice(trip.getFueleconomypertrip());
-//                Log.d(TAG, "timeLine: Trip: " + trip.getTripTitle());
+                TripsViewHolder tripsViewHolder = (TripsViewHolder) holderParent;
+                tripsViewHolder.bind(trip);
+
+                tripsViewHolder.itemBinding.imageIcon.setBackground(IconProvider.getTrip(context).getBackground());
+                tripsViewHolder.itemBinding.imageIcon.setImageDrawable(IconProvider.getTrip(context).getDrawable());
                 break;
         }
-        holder.bind(timeLine);
 
-
-        if(position == dataList.size()-1){
-           holder.itemBinding.ivRvItemCircle.setVisibility(View.VISIBLE);
-        }
-        else{
-            holder.itemBinding.ivRvItemCircle.setVisibility(View.GONE);
-        }
-
+//        if(position == timeLineItemList.size()-1){
+//            holderParent.itemBinding.ivRvItemCircle.setVisibility(View.VISIBLE);
+//        }
+//        else{
+//            holder.itemBinding.ivRvItemCircle.setVisibility(View.GONE);
+//        }
 
     }
 
     @Override
     public int getItemCount() {
-        Log.e("timeLine", "arrayListSize" + dataList.size());
-        return dataList.size();
+        Log.e("timeLine", "arrayListSize" + timeLineItemList.size());
+        return timeLineItemList.size();
     }
 
-    class TimelineViewholder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemViewType(int position) {
+        switch (timeLineItemList.get(position).getType()) {
+            case FUEL:
+                return FUEL_UP;
+            case TRIP:
+                return TRIPS;
+            case MAINTENANCE:
+                return MAINTENANCE;
+            case CAR_WASH:
+                return CAR_WASH;
+        }
+        return 0;
+    }
 
-        private final MainDashboardRecyclerItemBinding itemBinding;
+    public void updateData(List<TimeLineItem> updatedList) {
+        this.timeLineItemList = updatedList;
+        notifyDataSetChanged();
+    }
 
-        public TimelineViewholder(MainDashboardRecyclerItemBinding itemView) {
-            super(itemView.getRoot());
-            this.itemBinding = itemView;
+    class MaintenanceViewHolder extends RecyclerView.ViewHolder {
+
+        private final ItemTimelineMaintenanceBinding itemBinding;
+
+        public MaintenanceViewHolder(View itemView) {
+            super(itemView);
+            this.itemBinding = DataBindingUtil.bind(itemView);;
         }
 
-        public void bind(TimeLine item) {
-            itemBinding.setTimeLineItem(item);
+        public void bind(Maintenance item) {
+            itemBinding.setTimeLineMaintenanceItem(item);
             itemBinding.executePendingBindings();
         }
     }
 
 
-    public void updateData(List<TimeLineItem> updatedList) {
-        this.dataList = updatedList;
-        notifyDataSetChanged();
+    class MaintenanceCarWashViewHolder extends RecyclerView.ViewHolder {
+
+        private final ItemTimelineCarWashBinding itemBinding;
+
+        public MaintenanceCarWashViewHolder(View itemView) {
+            super(itemView);
+            this.itemBinding = DataBindingUtil.bind(itemView);;
+        }
+
+        public void bind(Maintenance item) {
+            itemBinding.setTimeLineCardWashItem(item);
+            itemBinding.executePendingBindings();
+        }
+    }
+
+    class TripsViewHolder extends RecyclerView.ViewHolder {
+
+        private final ItemTimelineTripsBinding itemBinding;
+
+        public TripsViewHolder(View itemView) {
+            super(itemView);
+            this.itemBinding = DataBindingUtil.bind(itemView);;
+        }
+
+        public void bind(Trip item) {
+            itemBinding.setTimeLineTripItem(item);
+            itemBinding.executePendingBindings();
+        }
+    }
+
+    class FuelUpItemViewHolder extends RecyclerView.ViewHolder {
+
+        private final ItemTimelineFuelUpBinding itemBinding;
+
+        public FuelUpItemViewHolder(View itemView) {
+            super(itemView);
+            this.itemBinding = DataBindingUtil.bind(itemView);
+        }
+
+        public void bind(FuelUp item) {
+            itemBinding.setTimeLineFuelUpItem(item);
+            itemBinding.executePendingBindings();
+        }
     }
 }
