@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/mainDashboardGray">
+
+        <EditText
+            android:id="@+id/et_additional_note"
+            style="@style/formEditText"
+            android:drawableLeft="@drawable/automate_additional_notes_form_icon"
+            android:hint="Any Additional Notes"
+            app:layout_constraintTop_toBottomOf="@id/et_carwash_cost"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/et_carwash_date"
+            style="@style/formEditText"
+            android:drawableLeft="@drawable/automate_set_date_form_icon"
+            android:hint="Set Date"
+            app:layout_constraintBottom_toTopOf="@id/et_carwash_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_car_selection" />
+
+
+        <EditText
+            android:id="@+id/et_carwash_time"
+            style="@style/formEditText"
+            android:drawableLeft="@drawable/automate_set_time_form_icon"
+            android:hint="Time"
+            app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_carwash_date" />
+
+        <EditText
+            android:id="@+id/et_odometer_reading"
+            style="@style/formEditText"
+            android:drawableLeft="@drawable/automate_odometer_reading_form_icon"
+            android:hint="Odometer Reading"
+            android:inputType="number"
+            app:layout_constraintBottom_toTopOf="@id/et_carwash_location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_carwash_time" />
+
+        <EditText
+            android:id="@+id/et_carwash_location"
+            style="@style/formEditText"
+            android:drawableLeft="@drawable/automate_location_form_icon"
+            android:hint="Location"
+            app:layout_constraintBottom_toTopOf="@id/et_carwash_cost"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_odometer_reading" />
+
+
+        <EditText
+            android:id="@+id/et_carwash_cost"
+            style="@style/formEditText"
+            android:autofillHints="Add Car Wash Price"
+            android:drawableLeft="@drawable/automate_price_form_icon"
+            android:hint="Add Car Wash Price"
+            android:inputType="number"
+            app:layout_constraintBottom_toTopOf="@id/et_additional_note"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_carwash_location" />
+
+        <EditText
+            android:id="@+id/et_car_selection"
+            style="@style/formEditText"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:drawableLeft="@drawable/automate_select_car_placeholder"
+            android:hint="Select Your Car"
+            app:layout_constraintBottom_toTopOf="@id/et_carwash_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_selectcar" />
+
+
+        <TextView
+            android:id="@+id/tv_selectcar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
+            android:text="Select your Car"
+            app:layout_constraintBottom_toTopOf="@id/et_car_selection"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/topbar" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/main_app_gradient"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_carwash_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/automate_back_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/btn_save_car_wash_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/automate_done_form_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Car Wash"
+                android:textAllCaps="true"
+                android:textColor="@color/whiteColor"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_save_car_wash_data"
+                app:layout_constraintStart_toEndOf="@id/iv_carwash_back"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <variable
+            name="carwashFormData"
+            type="com.innovidio.androidbootstrap.entity.Maintenance" />
+    </data>
+</layout>

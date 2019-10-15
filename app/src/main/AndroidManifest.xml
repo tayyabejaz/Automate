@@ -3,10 +3,6 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.innovidio.androidbootstrap">
 
-    <dist:module dist:instant="true" />
-
-    <uses-permission android:name="android.permission.INTERNET"/>
-
     <application
         android:name=".BaseApplication"
         android:allowBackup="false"
@@ -15,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.FormActivity"></activity>
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,5 +20,9 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <dist:module dist:instant="true" />
 
 </manifest>

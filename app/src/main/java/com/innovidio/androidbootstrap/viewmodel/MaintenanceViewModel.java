@@ -1,6 +1,10 @@
 package com.innovidio.androidbootstrap.viewmodel;
 
+import android.widget.Toast;
+
+import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.innovidio.androidbootstrap.entity.Maintenance;
@@ -18,7 +22,6 @@ public class MaintenanceViewModel extends ViewModel {
     public MaintenanceViewModel(MaintenanceRepository maintenanceRepository) {
         this.maintenanceRepository = maintenanceRepository ;
     }
-
 
     public LiveData<List<Maintenance>> getAllMaintenanceService(){
         return this.maintenanceRepository.getAllMaintenanceService();
@@ -41,4 +44,5 @@ public class MaintenanceViewModel extends ViewModel {
 //    public LiveData<List<TimeLine>> getAllMaintenanceTripsAndFuelUps(){
 //        return this.maintenanceRepository.getAllMaintenanceTripsAndFuelUps();
 //    }
+
 }

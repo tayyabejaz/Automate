@@ -12,14 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.innovidio.androidbootstrap.R;
-import com.innovidio.androidbootstrap.entity.models.SpinnerDataModel;
+import com.innovidio.androidbootstrap.entity.Car;
 
 import java.util.ArrayList;
 
-public class SpinnerAdapter extends ArrayAdapter<SpinnerDataModel> {
+public class SpinnerAdapter extends ArrayAdapter<Car> {
 
 
-    public SpinnerAdapter(@NonNull Context context, ArrayList<SpinnerDataModel> datalist) {
+    public SpinnerAdapter(@NonNull Context context, ArrayList<Car> datalist) {
         super(context, 0, datalist);
 
     }
@@ -32,11 +32,11 @@ public class SpinnerAdapter extends ArrayAdapter<SpinnerDataModel> {
         ImageView spinner_image = convertView.findViewById(R.id.ivFlag);
         TextView spinner_text = convertView.findViewById(R.id.tvName);
 
-        SpinnerDataModel item = getItem(position);
+        Car item = getItem(position);
 
         if (item != null) {
             spinner_image.setImageResource(R.drawable.automate_select_car_placeholder);
-            spinner_text.setText(item.getmName());
+            spinner_text.setText(item.getMakeid() + item.getModelname() + item.getModeldrive() + item.getTrim());
         }
         return convertView;
     }
@@ -45,7 +45,7 @@ public class SpinnerAdapter extends ArrayAdapter<SpinnerDataModel> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        return initView(position, convertView,parent);
+        return initView(position, convertView, parent);
     }
 
     @Override

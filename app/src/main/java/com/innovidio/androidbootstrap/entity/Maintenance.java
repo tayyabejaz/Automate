@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
-import com.innovidio.androidbootstrap.db.converters.EnumTypeConverters;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
 import java.text.DateFormat;
@@ -26,16 +25,11 @@ public class Maintenance implements TimeLineItem {
     private int formId;
     private String maintenanceName;
     private int maintenanceCost;
-
     @ColumnInfo(name = "maintenanceLife")
     @TypeConverters(DateConverter.class)
     private Date maintenanceLife;
-
     private boolean alarmON;
-
-    @ColumnInfo(name = "maintenanceType")
-    @TypeConverters(EnumTypeConverters.class)
-    private TimeLineItem.Type maintenanceType;
+    private String maintenanceType;
 
     // todo is save date added here or not?
     @ColumnInfo(name = "saveDate")
@@ -47,7 +41,7 @@ public class Maintenance implements TimeLineItem {
     }
 
     @Ignore
-    public Maintenance(int formId, String maintenancename, int maintenanceprice, Date maintenancelifetime, boolean alramOn, TimeLineItem.Type maintenancetype, Date saveDate) {
+    public Maintenance(int formId, String maintenancename, int maintenanceprice, Date maintenancelifetime, boolean alramOn, String maintenancetype, Date saveDate) {
         this.maintenanceName = maintenancename;
         this.formId = formId;
         this.maintenanceCost = maintenanceprice;
@@ -83,7 +77,7 @@ public class Maintenance implements TimeLineItem {
         this.alarmON = alarmON;
     }
 
-    public void setMaintenanceType(Type maintenanceType) {
+    public void setMaintenanceType(String maintenanceType) {
         this.maintenanceType = maintenanceType;
     }
 
@@ -120,7 +114,7 @@ public class Maintenance implements TimeLineItem {
         this.alarmON = alarmon;
     }
 
-    public TimeLineItem.Type getMaintenanceType() {
+    public String getMaintenanceType() {
         return maintenanceType;
     }
 
@@ -141,11 +135,6 @@ public class Maintenance implements TimeLineItem {
 
     @Override
     public Type getType() {
-       // return maintenanceType;
-
-//        if (this.maintenanceType.equals(Type.CAR_WASH)){
-//            return Type.CAR_WASH;
-//        }else
-            return this.maintenanceType;
+        return Type.MAINTENANCE;
     }
 }
