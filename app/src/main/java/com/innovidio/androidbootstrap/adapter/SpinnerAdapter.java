@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.innovidio.androidbootstrap.R;
-import com.innovidio.androidbootstrap.databinding.CustomSpinnerRowBinding;
+import com.innovidio.androidbootstrap.databinding.ItemCustomSpinnerBinding;
 import com.innovidio.androidbootstrap.entity.models.SpinnerDataModel;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class SpinnerAdapter extends RecyclerView.Adapter<SpinnerAdapter.SpinnerV
     public SpinnerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        CustomSpinnerRowBinding binding = DataBindingUtil.inflate(inflater, R.layout.custom_spinner_row, parent, false);
+        ItemCustomSpinnerBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_custom_spinner, parent, false);
         return new SpinnerViewHolder(binding);
     }
 
@@ -47,9 +47,9 @@ public class SpinnerAdapter extends RecyclerView.Adapter<SpinnerAdapter.SpinnerV
 
     class SpinnerViewHolder extends RecyclerView.ViewHolder {
 
-        private final CustomSpinnerRowBinding binding;
+        private final ItemCustomSpinnerBinding binding;
 
-        public SpinnerViewHolder(CustomSpinnerRowBinding itemView) {
+        public SpinnerViewHolder(ItemCustomSpinnerBinding itemView) {
             super(itemView.getRoot());
             this.binding = itemView;
         }

@@ -3,6 +3,7 @@ package com.innovidio.androidbootstrap.adapter;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -88,9 +89,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
         holder.bind(timeLine);
 
 
-//        if(position == dataList.size()-1){
-//            Toast.makeText(context,"This is position:" + position, Toast.LENGTH_LONG).show();
-//        }
+        if(position == dataList.size()-1){
+           holder.itemBinding.ivRvItemCircle.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.itemBinding.ivRvItemCircle.setVisibility(View.GONE);
+        }
+
 
     }
 

@@ -1,14 +1,17 @@
 package com.innovidio.androidbootstrap.activity;
 
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.widget.RadioGroup;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -104,7 +107,8 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         initializeAdapters();
 
         initList();
-    //    addDummyValues();
+//        addDummyValues();
+        showFuelTypeDialog();
 
 
         carApiQueries();
@@ -458,6 +462,25 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
         mainBinding.bottomSheet.ivAddSpeedometer.setImageDrawable(IconProvider.getSpeedometer(this).getDrawable());
         mainBinding.bottomSheet.ivAddSpeedometer.setBackground(IconProvider.getSpeedometer(this).getBackground());
+    }
+
+    private void showFuelTypeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Get the layout inflater
+        LayoutInflater inflater = (this.getLayoutInflater());
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the
+        // dialog layout
+
+        builder.setCancelable(false);
+        View view = inflater.inflate(R.layout.dialog_fuelup_details, null);
+
+        view.setBackgroundColor(this.getResources().getColor(android.R.color.transparent));
+        builder.setView(view);
+
+        builder.create();
+        builder.show();
+
     }
 
 }
