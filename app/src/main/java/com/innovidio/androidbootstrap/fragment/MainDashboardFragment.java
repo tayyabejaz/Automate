@@ -1,7 +1,7 @@
 package com.innovidio.androidbootstrap.fragment;
 
 
-import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,16 +20,15 @@ import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
 import com.innovidio.androidbootstrap.databinding.FragmentMainDashboardBinding;
 import com.innovidio.androidbootstrap.di.viewmodel.ViewModelProviderFactory;
-import com.innovidio.androidbootstrap.entity.models.TimeLine;
+import com.innovidio.androidbootstrap.entity.FuelUp;
+import com.innovidio.androidbootstrap.entity.Maintenance;
+import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -44,7 +43,7 @@ public class MainDashboardFragment extends Fragment {
     ViewModelProviderFactory providerFactory;
     private TimelineAdapter timelineAdapter;
     private FragmentMainDashboardBinding binding;
-    private List<TimeLineItem> dataList;
+    private List<TimeLineItem> dataList = new ArrayList<>();
 
     TimeLineViewModel timeLineViewModel = null;
 
@@ -52,36 +51,20 @@ public class MainDashboardFragment extends Fragment {
         // Required empty public constructor
     }
 
+    private void init() {
+        timeLineViewModel = new ViewModelProvider(getActivity(), providerFactory).get(TimeLineViewModel.class);
+        timeLineData();
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        timeLineViewModel = new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
-        initData();
         timelineAdapter = new TimelineAdapter(getContext(), dataList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         binding.rvMainFragment.setLayoutManager(layoutManager);
         binding.rvMainFragment.setAdapter(timelineAdapter);
-
     }
 
-    private void initData() {
-        Date currentTime = Calendar.getInstance().getTime();
-
-//        TimeLineItem tdata = new TimeLineItem(0, currentTime, "Lahore", 20000, "Fuel", 35200, 35220, "35250", "Washed the car") {
-//            @Override
-//            public Date getInsertDateTime() {
-//                return null;
-//            }
-//
-//            @Override
-//            public Type getType() {
-//                return null;
-//            }
-//        };
-//        dataList = new ArrayList<>();
-//        dataList.add(tdata);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        init();
     }
 
     @Override
@@ -91,8 +74,39 @@ public class MainDashboardFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main_dashboard, container, false);
         View v = binding.getRoot();
         binding.setFirstFragmentData(this);
-        // Inflate the layout for this fragment
         return v;
+    }
+
+    private void timeLineData() {
+        timeLineViewModel.getAllTimelineMergerData().observe(this, timeLineItems -> {
+            if (timeLineItems != null && timeLineItems.size() > 0) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    timeLineItems.sort(Comparator.comparing(o -> o.getInsertDateTime()));
+                } else {
+                    Collections.sort(timeLineItems, (Comparator<TimeLineItem>) (obj1, obj2) -> obj1.getInsertDateTime().compareTo(obj2.getInsertDateTime()));
+                }
+                //Adding a data To timeline
+//                dataList.addAll(timeLineItems);
+
+                switch (timeLineItems.get(0).getType()) {
+                    case FUEL:
+                        FuelUp fuelUp = (FuelUp) timeLineItems.get(0);
+                        Log.d("MainDashboardFragment", "FuelUp: " + fuelUp.getCarname());
+                        break;
+
+                    case MAINTENANCE:
+                        Maintenance maintenance = (Maintenance) timeLineItems.get(0);
+                        Log.d("MainDashboardFragment", "Maintenance: " + maintenance.getMaintenanceName());
+                        break;
+
+                    case TRIP:
+                        Trip trip = (Trip) timeLineItems.get(0);
+                        Log.d("MainDashboardFragment", "Trip: " + trip.getTripTitle());
+                        break;
+                }
+            }
+        });
     }
 
 }

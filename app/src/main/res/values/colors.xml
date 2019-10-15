@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#008577</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#31b8ea</color>
+    <color name="colorPrimaryDark">#4376f3</color>
+    <color name="colorAccent">#4376f3</color>
 
-    <color name="mainDashboardGray"> #f9f9f9 </color>
+    <color name="mainDashboardGray">#f9f9f9</color>
 
-    <color name="primaryLight"> #2196f3  </color>
-    <color name="primaryDark"> #9d21f3  </color>
+    <color name="primaryLight">#2196f3</color>
+    <color name="primaryDark">#9d21f3</color>
 
-    <color name="whiteColor"> #FFFFFF </color>
-    <color name="blackColor"> #000000 </color>
+    <color name="whiteColor">#FFFFFF</color>
+    <color name="blackColor">#000000</color>
 
-    <color name="blueDark"> #0a44a6 </color>
-    <color name="blueLight"> #31b8ea</color>
+    <color name="blueDark">#0a44a6</color>
+    <color name="blueLight">#31b8ea</color>
 
-    <color name="redDark"> #a60a0a </color>
-    <color name="redLight"> #f04867 </color>
+    <color name="redDark">#a60a0a</color>
+    <color name="redLight">#f04867</color>
 
-    <color name="purpleDark"> #8903c8 </color>
-    <color name="purpleLight"> #e632b9 </color>
+    <color name="purpleDark">#8903c8</color>
+    <color name="purpleLight">#e632b9</color>
 
-    <color name="fuel_up"> #ff5400 </color>
-    <color name="service"> #0090ff </color>
-    <color name="trip"> #c600ff </color>
-    <color name="car_wash"> #00afad </color>
-    <color name="trip_rec"> #d7272b </color>
-    <color name="speedometer"> #f7750d </color>
+    <color name="fuel_up">#ff5400</color>
+    <color name="service">#0090ff</color>
+    <color name="trip">#c600ff</color>
+    <color name="car_wash">#00afad</color>
+    <color name="trip_rec">#d7272b</color>
+    <color name="speedometer">#f7750d</color>
+
+    <color name="bottom_nav_unselected">#9ba2a6</color>
 </resources>

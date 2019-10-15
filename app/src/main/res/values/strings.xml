@@ -9,4 +9,19 @@
     <string name="speedometer">Speedometer</string>
     <string name="service">Service</string>
     <string name="trip">Trip</string>
+    <string name="form_any_additional_notes">Any Additional Notes</string>
+    <string name="form_add_car_wash_price">Add Car Wash Price</string>
+    <string name="enter_form_location">Enter Car Wash Location</string>
+    <string name="enter_current_odometer_reading">Enter Current Odometer Reading</string>
+    <string name="form_set_time">Set Time</string>
+    <string name="form_set_date">Set Date</string>
+    <string name="select_your_car_hint">Select your Car</string>
+    <string name="form_enter_no_of_litres">Enter No. of Litres</string>
+    <string name="form_enter_price_per_unit">Enter Price Per Unit</string>
+    <string name="form_select_fuel_type">Select Fuel Type</string>
+    <string name="litres">Litres</string>
+    <string name="rupees">Rupees</string>
+    <string name="form_total_price">Total Price</string>
+    <string name="form_select_services">Select Services</string>
+    <string name="form_get_location">Get Location?</string>
 </resources>

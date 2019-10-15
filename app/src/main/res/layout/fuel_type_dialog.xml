@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    >
+
+    <RadioGroup
+        android:id="@+id/rg_fuel_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:checkedButton="@id/rb_petrol"
+        android:background="@drawable/edittext_background">
+
+        <RadioButton
+            android:id="@+id/rb_petrol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Petrol"
+            android:padding="10dp"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_diesel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Diesel"
+            android:textColor="@color/blueDark"
+            android:padding="10dp"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_cng"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CNG"
+            android:padding="10dp"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_electric"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Electric"
+            android:padding="10dp"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_ethanol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ethanol"
+            android:padding="10dp"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_gasoline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gasoline"
+            android:padding="10dp"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_lpg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="LPG"
+            android:padding="10dp"
+            />
+
+    </RadioGroup>
+
+</LinearLayout>
