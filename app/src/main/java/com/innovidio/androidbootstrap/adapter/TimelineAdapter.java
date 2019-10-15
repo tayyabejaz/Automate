@@ -1,6 +1,7 @@
 package com.innovidio.androidbootstrap.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -95,6 +96,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
     @Override
     public int getItemCount() {
+        Log.e("timeLine", "arrayListSize" + dataList.size());
         return dataList.size();
     }
 
@@ -113,7 +115,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
         }
     }
 
-    public void updateData(List<?extends TimeLineItem> updatedList) {
+
+    public void updateData(List<TimeLineItem> updatedList) {
         this.dataList = updatedList;
         notifyDataSetChanged();
     }

@@ -61,6 +61,10 @@ public class FuelUpRepository {
         return this.fuelDao.getAllFuelUps();
     }
 
+    public List<FuelUp> getAllFuelUpsTimeLine(){
+        return this.fuelDao.getAllFuelUpsTimeline();
+    }
+
     public LiveData<List<FuelUp>> getMonthlyFuelUp(Date startDate, Date endDate){
         return this.fuelDao.getMonthlyFuelConsume(startDate, endDate);
     }

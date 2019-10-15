@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.Utils.Sorting;
 import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
 import com.innovidio.androidbootstrap.databinding.FragmentMainDashboardBinding;
 import com.innovidio.androidbootstrap.di.viewmodel.ViewModelProviderFactory;
@@ -46,6 +47,8 @@ public class MainDashboardFragment extends Fragment {
     private List<TimeLineItem> dataList = new ArrayList<>();
 
     TimeLineViewModel timeLineViewModel = null;
+
+    private List<TimeLineItem> timeLineItemList =  new ArrayList<>();
 
     public MainDashboardFragment() {
         // Required empty public constructor
@@ -81,14 +84,9 @@ public class MainDashboardFragment extends Fragment {
         timeLineViewModel.getAllTimelineMergerData().observe(this, timeLineItems -> {
             if (timeLineItems != null && timeLineItems.size() > 0) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    timeLineItems.sort(Comparator.comparing(o -> o.getInsertDateTime()));
-                } else {
-                    Collections.sort(timeLineItems, (Comparator<TimeLineItem>) (obj1, obj2) -> obj1.getInsertDateTime().compareTo(obj2.getInsertDateTime()));
-                }
-                //Adding a data To timeline
-//                dataList.addAll(timeLineItems);
-                timelineAdapter.updateData(timeLineItems);
+                timeLineItemList.addAll(timeLineItems);
+             //   timeLineItemList = Sorting.sortList(timeLineItemList);
+                timelineAdapter.updateData(timeLineItemList);
 
                 switch (timeLineItems.get(0).getType()) {
                     case FUEL:

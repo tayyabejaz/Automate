@@ -10,8 +10,8 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.innovidio.androidbootstrap.db.converters.EnumTypeConverters;
 import com.innovidio.androidbootstrap.db.dao.AlarmDao;
-import com.innovidio.androidbootstrap.db.dao.BaseDao;
 import com.innovidio.androidbootstrap.db.dao.CarDao;
 import com.innovidio.androidbootstrap.db.dao.FormDao;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
@@ -50,7 +50,7 @@ import java.io.InputStream;
 @TypeConverters(
         {
                 //TODO add you typeConverters here
-                IntegerListConverter.class, DateConverter.class, StringListConverter.class
+                IntegerListConverter.class, DateConverter.class, StringListConverter.class, EnumTypeConverters.class
         }
 )
 

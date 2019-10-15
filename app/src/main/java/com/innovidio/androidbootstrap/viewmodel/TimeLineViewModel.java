@@ -41,9 +41,9 @@ public class TimeLineViewModel extends ViewModel {
     LiveData<List<Maintenance>> maintenanceLiveData = null;
     LiveData<List<Trip>> tripsLiveData = null;
 
-    MutableLiveData<List<? extends TimeLineItem>> timeLineList = new MutableLiveData<>();
+   // MutableLiveData<List<? extends TimeLineItem>> timeLineList = new MutableLiveData<>();
 
-    MediatorLiveData<List<? extends TimeLineItem>> timeLineLiveDataMerger = new MediatorLiveData<>();
+    MediatorLiveData<List<TimeLineItem>> timeLineLiveDataMerger = new MediatorLiveData<>();
 
     @Inject
     public TimeLineViewModel(TripRepository tripRepository, FuelUpRepository fuelUpRepository, MaintenanceRepository maintenanceRepository) {
@@ -51,7 +51,7 @@ public class TimeLineViewModel extends ViewModel {
         this.fuelUpRepository = fuelUpRepository;
         this.maintenanceRepository = maintenanceRepository;
 
-        this.tripsLiveData = this.tripRepository.getAllTripsTimeline();
+        this.tripsLiveData = this.tripRepository.getAllTripsLiveDataTimeline();
         this.maintenanceLiveData = this.maintenanceRepository.getAllMaintenanceForTimeLine();
         this.fuelUpsLiveData = this.fuelUpRepository.getAllFuelUpsForTimeLine();
 
@@ -64,9 +64,11 @@ public class TimeLineViewModel extends ViewModel {
 //        timeLineLiveDataMerger.getValue().addAll(maintenanceLiveData.getValue());
 //        timeLineLiveDataMerger.getValue().addAll(fuelUpsLiveData.getValue());
 
-        timeLineLiveDataMerger.addSource(maintenanceLiveData, value -> timeLineLiveDataMerger.setValue(value));
-        timeLineLiveDataMerger.addSource(fuelUpsLiveData, value -> timeLineLiveDataMerger.setValue(value));
-        timeLineLiveDataMerger.addSource(tripsLiveData, value -> timeLineLiveDataMerger.setValue(value));
+
+     //   timeLineLiveDataMerger.addSource(maintenanceLiveData, value -> timeLineLiveDataMerger.setValue(value));
+     //   timeLineLiveDataMerger.addSource(fuelUpsLiveData, value -> timeLineLiveDataMerger.setValue(value));
+      //  timeLineLiveDataMerger.addSource(tripsLiveData, value -> timeLineLiveDataMerger.setValue(value));
+        getAllTimelineData();
     }
 
     public String getName(){
@@ -84,9 +86,23 @@ public class TimeLineViewModel extends ViewModel {
         return this.maintenanceRepository.getAllMaintenanceService();
     }
 
-    public MediatorLiveData<List<? extends TimeLineItem>> getAllTimelineMergerData() {
+    public MediatorLiveData<List<TimeLineItem>> getAllTimelineMergerData() {
 
         return timeLineLiveDataMerger;
     }
+
+    public void getAllTimelineData() {
+        List<Trip> trips = tripRepository.getAllTripsTimeline();
+        List<Maintenance> maintenances = maintenanceRepository.getAllMaintenanceTimeLine();
+        List<FuelUp> fuelUps = fuelUpRepository.getAllFuelUpsTimeLine();
+        List<TimeLineItem> timeLineItems =  new ArrayList<>();
+        timeLineItems.addAll(trips);
+        timeLineItems.addAll(maintenances);
+        timeLineItems.addAll(fuelUps);
+        timeLineItems = Sorting.sortList(timeLineItems);
+        List<TimeLineItem> finalTimeLineItems = timeLineItems;
+        timeLineLiveDataMerger.addSource(maintenanceLiveData, value -> timeLineLiveDataMerger.setValue(finalTimeLineItems));
+    }
+
 
 }

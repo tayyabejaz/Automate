@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
+import com.innovidio.androidbootstrap.db.converters.EnumTypeConverters;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
 import java.text.DateFormat;
@@ -29,7 +30,9 @@ public class Maintenance implements TimeLineItem {
     @TypeConverters(DateConverter.class)
     private Date maintenanceLife;
     private boolean alarmON;
-    private String maintenanceType;
+    @ColumnInfo(name = "maintenanceType")
+    @TypeConverters(EnumTypeConverters.class)
+    private Type maintenanceType;
 
     // todo is save date added here or not?
     @ColumnInfo(name = "saveDate")
@@ -69,7 +72,7 @@ public class Maintenance implements TimeLineItem {
     }
 
     @Ignore
-    public Maintenance(int formId, int carId, String maintenancename, int maintenanceprice, Date maintenancelifetime, boolean alramOn, String maintenancetype, Date saveDate, String location, String odometerReading) {
+    public Maintenance(int formId, int carId, String maintenancename, int maintenanceprice, Date maintenancelifetime, boolean alramOn, TimeLineItem.Type maintenancetype, Date saveDate, String location, String odometerReading) {
         this.maintenanceName = maintenancename;
         this.formId = formId;
         this.carId = carId;
@@ -108,7 +111,7 @@ public class Maintenance implements TimeLineItem {
         this.alarmON = alarmON;
     }
 
-    public void setMaintenanceType(String maintenanceType) {
+    public void setMaintenanceType(TimeLineItem.Type maintenanceType) {
         this.maintenanceType = maintenanceType;
     }
 
@@ -145,7 +148,7 @@ public class Maintenance implements TimeLineItem {
         this.alarmON = alarmon;
     }
 
-    public String getMaintenanceType() {
+    public TimeLineItem.Type getMaintenanceType() {
         return maintenanceType;
     }
 

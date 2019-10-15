@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
-import com.innovidio.androidbootstrap.db.converters.TimestampConverter;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
 import java.text.DateFormat;
@@ -28,7 +27,7 @@ public class Trip implements TimeLineItem {
     private String destination;
    // private String tripdate;
     private String carname;
-    private String triptype;
+    private String tripType;
     private int maxspeed;
     private int avgspeed;
     private int distanceCovered;
@@ -54,7 +53,7 @@ public class Trip implements TimeLineItem {
         this.tripTitle = tripTitle;
         this.destination = destination;
         this.carname = carname;
-        this.triptype = triptype;
+        this.tripType = triptype;
         this.maxspeed = maxspeed;
         this.avgspeed = avgspeed;
         this.distanceCovered = distanceCovered;
@@ -90,8 +89,8 @@ public class Trip implements TimeLineItem {
         this.carname = carname;
     }
 
-    public void setTriptype(String triptype) {
-        this.triptype = triptype;
+    public void setTripType(String  tripType) {
+        this.tripType = tripType;
     }
 
     public void setMaxspeed(int maxspeed) {
@@ -131,8 +130,8 @@ public class Trip implements TimeLineItem {
         return carname;
     }
 
-    public String getTriptype() {
-        return triptype;
+    public String  getTripType() {
+        return tripType;
     }
 
 //    public Date getStarttime() {
@@ -189,5 +188,10 @@ public class Trip implements TimeLineItem {
     @Override
     public Type getType() {
         return Type.TRIP;
+    }
+
+
+    public enum TripType {
+        PERSONAL, COMMERCIAL,CUSTOM, OFFICIAL;
     }
 }

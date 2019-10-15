@@ -29,6 +29,9 @@ public abstract class FuelDao extends BaseDao<FuelUp> {
     @Query("SELECT * FROM FuelUp")
     public abstract LiveData<List<FuelUp>> getAllFuelUpsForTimeline();
 
+    @Query("SELECT * FROM FuelUp")
+    public abstract List<FuelUp> getAllFuelUpsTimeline();
+
     @Query("SELECT * FROM FuelUp WHERE saveDate BETWEEN :startDate AND :endDate")
     public abstract  LiveData<List<FuelUp>> getMonthlyFuelConsume(Date startDate, Date endDate);
 

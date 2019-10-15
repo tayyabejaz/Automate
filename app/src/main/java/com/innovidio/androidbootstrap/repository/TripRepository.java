@@ -89,9 +89,9 @@ public class TripRepository {
     }
 
 
-    public LiveData<List<Trip>> getAllTripsTimeline() {
+    public List<Trip> getAllTripsTimeline() {
 
-        return this.tripDao.getAllTripsForTimeline();
+        return this.tripDao.getAllTripsTimeline();
     }
 
     public LiveData<List<Trip>> getAllTripsLiveDataTimeline() {
