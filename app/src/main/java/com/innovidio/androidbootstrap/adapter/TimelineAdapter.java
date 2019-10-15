@@ -24,10 +24,10 @@ import java.util.List;
 public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.TimelineViewholder> {
 
     private Context context;
-    private List<TimeLineItem> dataList = new ArrayList<>();
+    private List<? extends TimeLineItem> dataList = new ArrayList<>();
 
 
-    public TimelineAdapter(Context context, List<TimeLineItem> dataList) {
+    public TimelineAdapter(Context context, List<? extends TimeLineItem> dataList) {
         this.context = context;
         this.dataList = dataList;
     }
@@ -84,6 +84,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 //                Log.d(TAG, "timeLine: Trip: " + trip.getTripTitle());
                 break;
         }
+        holder.bind(timeLine);
 
 
 //        if(position == dataList.size()-1){
@@ -106,9 +107,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             this.itemBinding = itemView;
         }
 
-//        public void bind(TimeLine item) {
-//            itemBinding.setTimeLineItem(item);
-//            itemBinding.executePendingBindings();
-//        }
+        public void bind(TimeLine item) {
+            itemBinding.setTimeLineItem(item);
+            itemBinding.executePendingBindings();
+        }
+    }
+
+    public void updateData(List<?extends TimeLineItem> updatedList) {
+        this.dataList = updatedList;
+        notifyDataSetChanged();
     }
 }

@@ -15,6 +15,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
@@ -65,6 +67,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     @Inject
     TripDao tripDao;
+
     @Inject
     ViewModelProviderFactory providerFactory;
     @Inject
@@ -72,11 +75,11 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     private ActivityMainBinding mainBinding;
     private ArrayList<SpinnerDataModel> dataList;
-    private SpinnerAdapter mAdapter;
+    private SpinnerAdapter spinnerAdapter;
     private TimelineAdapter timelineAdapter;
     private List<TimeLine> data;
     private NavController navigationController;
-    private boolean isUp;
+    private boolean isUp, isDown = false;
 
     CarViewModel carViewModel = null;
     MaintenanceViewModel maintenanceViewModel = null;
@@ -95,8 +98,9 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         initializeIcons();
         initializeListeners();
         initializeVIewModels();
+        initializeAdapters();
 
-        initList();
+
         addDummyValues();
 
         carApiQueries();
@@ -104,6 +108,15 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         fuelUpData();
         getCarsData();
 
+    }
+
+    private void initializeAdapters() {
+        initList();
+        spinnerAdapter = new SpinnerAdapter(this, dataList);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+
+        mainBinding.spinnerCustomLayout.rvCarSpinnerLayout.setLayoutManager(layoutManager);
+        mainBinding.spinnerCustomLayout.rvCarSpinnerLayout.setAdapter(spinnerAdapter);
     }
 
     private void initializeVIewModels() {
@@ -121,7 +134,10 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding.bottomNav.llDrive.setOnClickListener(this);
         mainBinding.bottomNav.llMaintain.setOnClickListener(this);
         mainBinding.bottomNav.llSettings.setOnClickListener(this);
+
+        //Hide these two Menus initially
         mainBinding.animatedLayout.setVisibility(View.GONE);
+        mainBinding.flCustomSpinnerLayout.setVisibility(View.GONE);
 
         mainBinding.bottomSheet.ivAddSpeedometer.setOnClickListener(this);
         mainBinding.bottomSheet.ivAddService.setOnClickListener(this);
@@ -129,6 +145,9 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding.bottomSheet.ivAddCarwash.setOnClickListener(this);
         mainBinding.bottomSheet.ivAddTrip.setOnClickListener(this);
         mainBinding.bottomSheet.ivAddTriprec.setOnClickListener(this);
+
+        mainBinding.mainActivitySpinner.setOnClickListener(this);
+        mainBinding.spinnerCustomLayout.ivCancelLayout.setOnClickListener(this);
     }
 
     private void addDummyValues() {
@@ -293,11 +312,10 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             case R.id.iv_add:
 
                 if (isUp) {
-                    mainBinding.bottomNavigationLayout.bringToFront();
-                    slideDown(mainBinding.animatedLayout, 500);
+                    slideDown(mainBinding.animatedLayout, 700);
                     // myButton.setText("Slide up");
                 } else {
-                    mainBinding.bottomNavigationLayout.bringToFront();
+                    mainBinding.animatedLayout.bringToFront();
                     slideUp(mainBinding.animatedLayout);
                     // myButton.setText("Slide down");
                 }
@@ -327,18 +345,33 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 trip.putExtra("activity", "trip");
                 startActivity(trip);
                 break;
+
+            case R.id.main_activity_spinner:
+                if (isDown) {
+                    mainBinding.flCustomSpinnerLayout.bringToFront();
+                    slideBackToTop(mainBinding.flCustomSpinnerLayout, 500);
+                } else {
+                    mainBinding.flCustomSpinnerLayout.bringToFront();
+                    slideFromTop(mainBinding.flCustomSpinnerLayout, 500);
+                }
+                isDown = !isDown;
+                break;
+
+            case R.id.iv_cancel_layout:
+                if (isDown) {
+                    mainBinding.mainActivitySpinner.bringToFront();
+                    slideBackToTop(mainBinding.flCustomSpinnerLayout, 500);
+                    isDown = !isDown;
+                }
+                break;
         }
     }
 
     private void initList() {
-        dataList = new ArrayList<SpinnerDataModel>();
-        dataList.add(new SpinnerDataModel("Honda Civic"));
-        dataList.add(new SpinnerDataModel("Toyota Corolla"));
-        dataList.add(new SpinnerDataModel("Suzuki Ciaz"));
-        dataList.add(new SpinnerDataModel("Daihatsu Move"));
-        dataList.add(new SpinnerDataModel("Nissan Juke"));
-        dataList.add(new SpinnerDataModel("Ford Focus"));
-
+        dataList = new ArrayList<>();
+        dataList.add(new SpinnerDataModel("Honda Civic", "Honda", "CIVIC", "LRF 4567"));
+        dataList.add(new SpinnerDataModel("Toyota Corolla", "Toyota", "Corolla", "GAL 9510"));
+        dataList.add(new SpinnerDataModel("Suzuki CIAZ", "Suzuki", "Ciaz", "SLL 6541"));
     }
 
     public void slideUp(View view) {
@@ -350,7 +383,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 0,                 // toXDelta
                 view.getHeight(),  // fromYDelta
                 0);                // toYDelta
-        animate.setDuration(500);
+        animate.setDuration(700);
         animate.setFillAfter(true);
         view.startAnimation(animate);
     }
@@ -363,6 +396,34 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 0,                 // toXDelta
                 0,                 // fromYDelta
                 view.getHeight() + 150); // toYDelta
+
+        animate.setDuration(duration);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+    }
+
+    public void slideBackToTop(View view, int duration) {
+
+        view.setVisibility(View.INVISIBLE);
+        TranslateAnimation animate = new TranslateAnimation(
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                0,  // fromYDelta
+                -view.getHeight()-150);                // toYDelta
+
+        animate.setDuration(duration);
+        animate.setFillAfter(true);
+        view.startAnimation(animate);
+    }
+
+    public void slideFromTop(View view, int duration) {
+        view.setVisibility(View.VISIBLE);
+        TranslateAnimation animate = new TranslateAnimation(
+                0,                 // fromXDelta
+                0,                 // toXDelta
+                -view.getHeight(),
+                0                 // fromYDelta
+        ); // toYDelta
 
         animate.setDuration(duration);
         animate.setFillAfter(true);

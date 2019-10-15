@@ -88,6 +88,7 @@ public class MainDashboardFragment extends Fragment {
                 }
                 //Adding a data To timeline
 //                dataList.addAll(timeLineItems);
+                timelineAdapter.updateData(timeLineItems);
 
                 switch (timeLineItems.get(0).getType()) {
                     case FUEL:

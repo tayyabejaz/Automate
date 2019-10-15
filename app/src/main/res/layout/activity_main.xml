@@ -8,10 +8,63 @@
         android:layout_height="match_parent"
         tools:context=".activity.MainActivity">
 
-        <Spinner
-            android:id="@+id/main_activity_spinner"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:id="@+id/animated_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/bottom_navigation_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <include
+                android:id="@+id/bottom_sheet"
+                layout="@layout/dialog_bottom_sheet"
+                app:layout_constraintBottom_toTopOf="@id/bottom_nav"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/bottom_navigation_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <include
+                android:id="@+id/bottom_nav"
+                layout="@layout/bottom_navigation_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_custom_spinner_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <include
+                android:id="@+id/spinner_custom_layout"
+                layout="@layout/custom_spinner_layout" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/main_activity_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/custom_dropdown_background"
+            android:drawableStart="@drawable/automate_select_car_placeholder"
+            android:drawableEnd="@drawable/automate_dropdown_icon"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
             app:layout_constraintBottom_toTopOf="@id/nav_main_host"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -80,38 +133,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/main_activity_spinner"
             app:navGraph="@navigation/navigation_graph" />
-
-        <FrameLayout
-            android:id="@+id/animated_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/bottom_navigation_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <include
-                android:id="@+id/bottom_sheet"
-                layout="@layout/dialog_bottom_sheet"
-                app:layout_constraintBottom_toTopOf="@id/bottom_nav"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/bottom_navigation_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <include
-                android:id="@+id/bottom_nav"
-                layout="@layout/bottom_navigation_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
