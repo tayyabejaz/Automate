@@ -46,4 +46,7 @@ public abstract class MaintenanceDao extends BaseDao<Maintenance>{
     @Query("SELECT * FROM Maintenance")
     public abstract LiveData<List<Maintenance>> getAllMaintenanceForTimeline();
 
+    @Query("SELECT * FROM Maintenance")
+    public abstract List<Maintenance> getAllMaintenanceTimeline();
+
 }

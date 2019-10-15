@@ -1,6 +1,7 @@
 package com.innovidio.androidbootstrap.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -84,6 +85,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 //                Log.d(TAG, "timeLine: Trip: " + trip.getTripTitle());
                 break;
         }
+        holder.bind(timeLine);
 
 
 //        if(position == dataList.size()-1){
@@ -94,6 +96,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
 
     @Override
     public int getItemCount() {
+        Log.e("timeLine", "arrayListSize" + dataList.size());
         return dataList.size();
     }
 
@@ -106,9 +109,14 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.Timeli
             this.itemBinding = itemView;
         }
 
-//        public void bind(TimeLine item) {
-//            itemBinding.setTimeLineItem(item);
-//            itemBinding.executePendingBindings();
-//        }
+        public void bind(TimeLine item) {
+            itemBinding.setTimeLineItem(item);
+            itemBinding.executePendingBindings();
+        }
+    }
+
+    public void updateData(List<TimeLineItem> updatedList) {
+        this.dataList = updatedList;
+        notifyDataSetChanged();
     }
 }

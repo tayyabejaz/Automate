@@ -68,6 +68,10 @@ public class MaintenanceRepository {
     public LiveData<List<Maintenance>> getAllMaintenanceForTimeLine(){
         return this.maintenanceDao.getAllMaintenanceForTimeline();
     }
+
+    public List<Maintenance> getAllMaintenanceTimeLine(){
+        return this.maintenanceDao.getAllMaintenanceTimeline();
+    }
 }
 
 

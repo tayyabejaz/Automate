@@ -19,6 +19,7 @@ import androidx.navigation.Navigation;
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.IconProvider;
+import com.innovidio.androidbootstrap.Utils.Sorting;
 import com.innovidio.androidbootstrap.adapter.SpinnerAdapter;
 import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
 import com.innovidio.androidbootstrap.databinding.ActivityMainBinding;
@@ -85,6 +86,8 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     TimeLineViewModel timeLineViewModel = null;
     FuelUpViewModel fuelUpViewModel = null;
 
+    List<TimeLineItem> timeLineItemList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,10 +100,10 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         initializeVIewModels();
 
         initList();
-        addDummyValues();
+    //    addDummyValues();
 
         carApiQueries();
-        timeLineData();
+        //timeLineData();
         fuelUpData();
         getCarsData();
 
@@ -132,7 +135,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     private void addDummyValues() {
         FuelUp fuelUp = new FuelUp();
-        fuelUp.setId(1);
+     //   fuelUp.setId(1);
         fuelUp.setCarname("Honda");
         fuelUp.setLiters(10);
         fuelUp.setSaveDate(new Date());
@@ -142,10 +145,11 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         fuelUp.setTotalprice(1000);
         fuelUp.setTripId(12);
 
-        fuelDao.insert(fuelUp);
-//        fuelUpViewModel.addFuelUp(fuelUp);
+        //fuelDao.insert(fuelUp);
+        fuelUpViewModel.addFuelUp(fuelUp);
 
         Maintenance maintenance = new Maintenance();
+       // maintenance.setId(122);
         maintenance.setSaveDate(new Date());
         maintenance.setCarId(1);
         maintenance.setMaintenanceCost(1200);
@@ -153,27 +157,27 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         maintenance.setMaintenanceOdometerReading("2520");
         maintenance.setAlarmON(true);
         maintenance.setFormId(10);
-        maintenance.setId(122);
+        maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
         maintenance.setMaintenanceLife(new Date());
-        maintenance.setMaintenanceName("Service");
+        maintenance.setMaintenanceName("Service2");
 
-        maintenanceDao.insert(maintenance);
-//        maintenanceViewModel.addMaintenanceService(maintenance);
+        //maintenanceDao.insert(maintenance);
+        maintenanceViewModel.addMaintenanceService(maintenance);
 
         Trip trip = new Trip();
+       // trip.setId(22);
         trip.setAvgspeed(150);
-        trip.setCarname("Honda");
+        trip.setCarname("Honda2");
         trip.setDestination("Islamabad");
         trip.setDistanceCovered(100);
         trip.setFueleconomypertrip(10);
         trip.setMaxspeed(200);
-        trip.setId(22);
         trip.setSaveDate(new Date());
         trip.setTripTitle("lhr_to_islamabad");
-        trip.setTriptype("personal");
+        trip.setTripType("Personal");
 
-        tripDao.insert(trip);
-//        tripViewModel.addTrip(trip);
+       // tripDao.insert(trip);
+        tripViewModel.addTrip(trip);
     }
 
     private void fuelUpData() {
@@ -239,15 +243,8 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         timeLineViewModel.getAllTimelineMergerData().observe(this, timeLineItems -> {
             if (timeLineItems != null && timeLineItems.size() > 0) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    timeLineItems.sort(Comparator.comparing(o -> o.getInsertDateTime()));
-                } else {
-                    Collections.sort(timeLineItems, new Comparator<TimeLineItem>() {
-                        public int compare(TimeLineItem obj1, TimeLineItem obj2) {
-                            return obj1.getInsertDateTime().compareTo(obj2.getInsertDateTime());
-                        }
-                    });
-                }
+                timeLineItemList.addAll(timeLineItems);
+                timeLineItemList = Sorting.sortList(timeLineItemList);
 
                 switch (timeLineItems.get(0).getType()) {
                     case FUEL:
