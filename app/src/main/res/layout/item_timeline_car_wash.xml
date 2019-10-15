@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="TimeLineCardWashItem"
+            type="com.innovidio.androidbootstrap.entity.Maintenance" />
+    </data>
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -14,7 +21,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/automate_add_button_background"
             android:scaleType="center"
-            android:src="@drawable/automate_add_fuelup_icon"
+            android:src="@drawable/automate_add_car_wash"
             android:translationZ="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +77,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@{TimeLineItem.saveDateInString}"
+                        android:text="@{TimeLineCardWashItem.saveDateInString}"
                         android:textColor="@color/blackColor"
                         app:layout_constraintEnd_toStartOf="@id/tv_rv_item_title"
                         app:layout_constraintStart_toStartOf="parent"
@@ -85,13 +92,13 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto_black"
                         android:gravity="center"
-                        android:text="@{TimeLineItem.type}"
+                        android:text="Car Wash"
                         android:textColor="@color/blackColor"
                         android:textSize="16sp"
                         app:layout_constraintEnd_toStartOf="@id/tv_rv_item_time"
                         app:layout_constraintStart_toEndOf="@id/tv_rv_item_date"
                         app:layout_constraintTop_toBottomOf="@id/image_icon"
-                        tools:text="Fuel Up" />
+                        tools:text="Car Wash" />
 
                     <TextView
                         android:id="@+id/tv_rv_item_time"
@@ -99,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="end"
-                        android:text="@{TimeLineItem.saveTimeInString}"
+                        android:text="@{TimeLineCardWashItem.saveTimeInString}"
                         android:textColor="@color/blackColor"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/tv_rv_item_title"
@@ -128,7 +135,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@{TimeLineItem.location}"
+                        android:text="@{TimeLineCardWashItem.maintenanceLocation}"
                         android:textColor="@color/blackColor"
                         tools:text="Shell Petrol and CNG Station" />
 
@@ -155,7 +162,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@{TimeLineItem.meterCurrentValueinString}"
+                        android:text="@{String.valueOf(TimeLineCardWashItem.maintenanceOdometerReading)}"
                         android:textColor="@color/blackColor"
                         tools:text="35250" />
 
@@ -164,7 +171,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="end"
-                        android:text="@{TimeLineItem.totalPaymentInString}"
+                        android:text="@{String.valueOf(TimeLineCardWashItem.maintenanceCost)}"
                         android:textColor="@color/blueDark"
                         tools:text="Rs 2000" />
 
@@ -177,12 +184,5 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <data>
-
-        <variable
-            name="TimeLineItem"
-            type="com.innovidio.androidbootstrap.entity.models.TimeLine" />
-    </data>
 
 </layout>

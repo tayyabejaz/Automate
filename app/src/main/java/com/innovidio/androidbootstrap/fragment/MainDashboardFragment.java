@@ -50,7 +50,7 @@ public class MainDashboardFragment extends Fragment {
 
     private List<TimeLineItem> timeLineItemList =  new ArrayList<>();
 
-    public MainDashboardFragment() {
+    public MainDashboardFragment(){
         // Required empty public constructor
     }
 
@@ -86,7 +86,6 @@ public class MainDashboardFragment extends Fragment {
 
                 timeLineItemList.addAll(timeLineItems);
              //   timeLineItemList = Sorting.sortList(timeLineItemList);
-
                 timelineAdapter.updateData(timeLineItemList);
 
                 switch (timeLineItems.get(0).getType()) {
