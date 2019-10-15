@@ -2,54 +2,62 @@ package com.innovidio.androidbootstrap.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.innovidio.androidbootstrap.R;
-import com.innovidio.androidbootstrap.entity.Car;
+import com.innovidio.androidbootstrap.databinding.CustomSpinnerRowBinding;
+import com.innovidio.androidbootstrap.entity.models.SpinnerDataModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class SpinnerAdapter extends ArrayAdapter<Car> {
+public class SpinnerAdapter extends RecyclerView.Adapter<SpinnerAdapter.SpinnerViewHolder> {
 
+    private Context context;
+    private List<SpinnerDataModel> spinnerDataModel = new ArrayList<>();
 
-    public SpinnerAdapter(@NonNull Context context, ArrayList<Car> datalist) {
-        super(context, 0, datalist);
-
-    }
-
-    private View initView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.custom_spinner_row, parent, false);
-        }
-
-        ImageView spinner_image = convertView.findViewById(R.id.ivFlag);
-        TextView spinner_text = convertView.findViewById(R.id.tvName);
-
-        Car item = getItem(position);
-
-        if (item != null) {
-            spinner_image.setImageResource(R.drawable.automate_select_car_placeholder);
-            spinner_text.setText(item.getMakeid() + item.getModelname() + item.getModeldrive() + item.getTrim());
-        }
-        return convertView;
+    public SpinnerAdapter(Context context, List<SpinnerDataModel> spinnerDataModel) {
+        this.context = context;
+        this.spinnerDataModel = spinnerDataModel;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
-        return initView(position, convertView, parent);
+    public SpinnerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        CustomSpinnerRowBinding binding = DataBindingUtil.inflate(inflater, R.layout.custom_spinner_row, parent, false);
+        return new SpinnerViewHolder(binding);
     }
 
     @Override
-    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        return initView(position, convertView, parent);
+    public void onBindViewHolder(@NonNull SpinnerViewHolder holder, int position) {
+        SpinnerDataModel dataModel = new SpinnerDataModel();
+        holder.bind(dataModel);
+    }
+
+    @Override
+    public int getItemCount() {
+        return spinnerDataModel.size();
+    }
+
+    class SpinnerViewHolder extends RecyclerView.ViewHolder {
+
+        private final CustomSpinnerRowBinding binding;
+
+        public SpinnerViewHolder(CustomSpinnerRowBinding itemView) {
+            super(itemView.getRoot());
+            this.binding = itemView;
+        }
+
+        void bind(SpinnerDataModel model) {
+            binding.setRowitem(model);
+            binding.executePendingBindings();
+
+        }
     }
 }

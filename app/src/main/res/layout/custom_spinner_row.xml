@@ -1,27 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-
-    <ImageView
-        android:id="@+id/ivFlag"
-        android:layout_width="wrap_content"
+<layout xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="rowitem"
+            type="com.innovidio.androidbootstrap.entity.models.SpinnerDataModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        app:srcCompat="@drawable/automate_select_car_placeholder" />
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/ivFlag"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/data_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/automate_select_car_placeholder" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/blackColor"
+            android:paddingTop="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/data_layout" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/data_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivFlag"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:text="@{rowitem.carTitle}"
+                android:textColor="@color/blueDark"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/tv_car_manufacturer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Honda CIVIC 2005"/>
+
+            <TextView
+                android:id="@+id/tv_car_manufacturer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{rowitem.carManufacturer}"
+                app:layout_constraintBottom_toTopOf="@id/tv_car_model"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvName"
+                tools:text="Manufacturer: Honda"/>
+
+            <TextView
+                android:id="@+id/tv_car_model"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{rowitem.carName}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_car_numberplate"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_car_manufacturer"
+                tools:text="Model: Civic"/>
+
+            <TextView
+                android:id="@+id/tv_car_numberplate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:text="@{rowitem.carPlate}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_car_model"
+                app:layout_constraintTop_toBottomOf="@id/tv_car_manufacturer"
+                tools:text = "LEX 1234"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <TextView
-        android:id="@+id/tvName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="5dp"
-        android:text="TextView"
-        android:layout_weight="1"
-        android:textColor="@color/blueDark"
-        android:textSize="12sp" />
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -20,9 +19,7 @@ import com.innovidio.androidbootstrap.databinding.ItemTimelineTripsBinding;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
-import com.innovidio.androidbootstrap.entity.models.TimeLine;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
-import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +28,7 @@ import java.util.List;
 public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<TimeLineItem> timeLineItemList = new ArrayList<>();
+    private List<? extends TimeLineItem> timeLineItemList = new ArrayList<>();
 
     private static final int FUEL_UP = 0;
     private static final int TRIPS =  1;
@@ -39,7 +36,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int CAR_WASH =  3;
 
 
-    public TimelineAdapter(Context context, List<TimeLineItem> dataList) {
+    public TimelineAdapter(Context context, List<? extends TimeLineItem> dataList) {
         this.context = context;
         this.timeLineItemList = dataList;
     }
@@ -158,6 +155,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             itemBinding.executePendingBindings();
         }
     }
+
 
     class MaintenanceCarWashViewHolder extends RecyclerView.ViewHolder {
 
