@@ -29,7 +29,10 @@ import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.interfaces.TimelineItemClickListener;
+import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
+import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
+import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,10 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
     private List<TimeLineItem> dataList = new ArrayList<>();
 
     TimeLineViewModel timeLineViewModel = null;
+    FuelUpViewModel fuelUpViewModel = null;
+    MaintenanceViewModel maintenanceViewModel = null;
+    TripViewModel tripViewModel = null;
+
 
     private List<TimeLineItem> timeLineItemList = new ArrayList<>();
 
@@ -58,6 +65,10 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
 
     private void init() {
         timeLineViewModel = new ViewModelProvider(getActivity(), providerFactory).get(TimeLineViewModel.class);
+        maintenanceViewModel = new ViewModelProvider(getActivity(), providerFactory).get(MaintenanceViewModel.class);
+        fuelUpViewModel = new ViewModelProvider(getActivity(), providerFactory).get(FuelUpViewModel.class);
+        tripViewModel = new ViewModelProvider(getActivity(), providerFactory).get(TripViewModel.class);
+
         timeLineData();
 
         timelineAdapter = new TimelineAdapter(getContext(), this, dataList);
@@ -127,6 +138,10 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
             exitDialog.dismiss();
         });
 
+        fuelupDetailsBinding.btnDelete.setOnClickListener(view -> {
+            fuelUpViewModel.deleteFuelUp(fuelUp);
+        });
+
         exitDialog.show();
 
 
@@ -146,6 +161,10 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
 
         carwashDetailsBinding.btnClose.setOnClickListener(view -> {
             exitDialog.dismiss();
+        });
+
+        carwashDetailsBinding.btnDelete.setOnClickListener(view -> {
+            maintenanceViewModel.deleteMaintenanceService(maintenance);
         });
 
         exitDialog.show();
@@ -169,6 +188,10 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
             exitDialog.dismiss();
         });
 
+        maintenanceDetailsBinding.btnDelete.setOnClickListener(view -> {
+            maintenanceViewModel.deleteMaintenanceService(maintenance);
+        });
+
         exitDialog.show();
 
 
@@ -189,6 +212,11 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
 
         dialogTripDetailsBinding.btnClose.setOnClickListener(view -> {
             exitDialog.dismiss();
+        });
+
+        dialogTripDetailsBinding.btnDelete.setOnClickListener(view -> {
+            tripViewModel.deleteTrip(trip);
+
         });
 
         exitDialog.show();
