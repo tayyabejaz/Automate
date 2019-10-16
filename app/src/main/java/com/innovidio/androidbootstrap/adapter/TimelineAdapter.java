@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.IconProvider;
+import com.innovidio.androidbootstrap.databinding.ItemBoxesMainFragmentBinding;
 import com.innovidio.androidbootstrap.databinding.ItemTimelineCarWashBinding;
 import com.innovidio.androidbootstrap.databinding.ItemTimelineFuelUpBinding;
 import com.innovidio.androidbootstrap.databinding.ItemTimelineMaintenanceBinding;
@@ -30,10 +31,12 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private Context context;
     private List<? extends TimeLineItem> timeLineItemList = new ArrayList<>();
 
-    private static final int FUEL_UP = 0;
-    private static final int TRIPS =  1;
-    private static final int MAINTENANCE =  2;
-    private static final int CAR_WASH =  3;
+    private static final int BOXES = 0;
+    private static final int FUEL_UP = 1;
+    private static final int TRIPS =  2;
+    private static final int MAINTENANCE =  3;
+    private static final int CAR_WASH =  4;
+    private static final int FOOTER =  5;
 
 
     public TimelineAdapter(Context context, List<? extends TimeLineItem> dataList) {
@@ -45,24 +48,35 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        if (viewType == FUEL_UP){
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_fuel_up,
-                    parent, false);
-            return new FuelUpItemViewHolder(view);
-        }else if (viewType == MAINTENANCE){
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_maintenance,
-                    parent, false);
-            return new MaintenanceViewHolder(view);
-        }else if (viewType == CAR_WASH){
-            // same view Holder for maintenance and car wash
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_car_wash,
-                    parent, false);
-            return new MaintenanceViewHolder(view);
-        }else if (viewType == TRIPS){
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_trips,
-                    parent, false);
-            return new TripsViewHolder(view);
+        View view;
+        switch (viewType){
+            case BOXES:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_boxes_main_fragment,
+                        parent, false);
+                return new BoxesViewHolder(view);
+            case FUEL_UP:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_fuel_up,
+                        parent, false);
+                return new FuelUpItemViewHolder(view);
+            case MAINTENANCE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_maintenance,
+                        parent, false);
+                return new MaintenanceViewHolder(view);
+            case CAR_WASH:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_car_wash,
+                        parent, false);
+                return new MaintenanceViewHolder(view);
+            case TRIPS:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_trips,
+                        parent, false);
+                return new TripsViewHolder(view);
+
+            case FOOTER:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_trips,
+                        parent, false);
+                return new TripsViewHolder(view);
         }
+
         return null;
     }
 
@@ -71,6 +85,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         TimeLineItem item = timeLineItemList.get(position);
         switch (item.getType()) {
+            case BOXES:
+                // todo task about boxes data
+                FuelUp fuelUpDummy = (FuelUp) item;
+//                FuelUpItemViewHolder fuelUpItemViewHolder = (FuelUpItemViewHolder) holderParent;
+//                fuelUpItemViewHolder.bind(fuelUp);
+
+                break;
             case FUEL:
                 FuelUp fuelUp = (FuelUp) item;
                 FuelUpItemViewHolder fuelUpItemViewHolder = (FuelUpItemViewHolder) holderParent;
@@ -130,6 +151,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemViewType(int position) {
         switch (timeLineItemList.get(position).getType()) {
+            case BOXES:
+                return BOXES;
             case FUEL:
                 return FUEL_UP;
             case TRIP:
@@ -138,6 +161,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 return MAINTENANCE;
             case CAR_WASH:
                 return CAR_WASH;
+            case FOOTER:
+                return FOOTER;
         }
         return 0;
     }
@@ -145,6 +170,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void updateData(List<TimeLineItem> updatedList) {
         this.timeLineItemList = updatedList;
         notifyDataSetChanged();
+    }
+
+    private void addHeader(){
+
     }
 
     class MaintenanceViewHolder extends RecyclerView.ViewHolder {
@@ -205,6 +234,22 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public void bind(FuelUp item) {
             itemBinding.setTimeLineFuelUpItem(item);
             itemBinding.executePendingBindings();
+        }
+    }
+
+
+    class BoxesViewHolder extends RecyclerView.ViewHolder {
+
+        private final ItemBoxesMainFragmentBinding itemBinding;
+
+        public BoxesViewHolder(View itemView) {
+            super(itemView);
+            this.itemBinding = DataBindingUtil.bind(itemView);
+        }
+
+        public void bind(Object item) {
+           // itemBinding.setTimeLineFuelUpItem(item);
+          //  itemBinding.executePendingBindings();
         }
     }
 }

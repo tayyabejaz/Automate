@@ -9,7 +9,7 @@ public interface TimeLineItem {
 
 
     public enum Type {
-        FUEL, MAINTENANCE,TRIP, CAR_WASH;
+        BOXES, FUEL, MAINTENANCE,TRIP, CAR_WASH, FOOTER;
     }
 
 }
