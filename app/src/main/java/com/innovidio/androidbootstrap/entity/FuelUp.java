@@ -34,12 +34,22 @@ public class FuelUp implements TimeLineItem {
     @TypeConverters(DateConverter.class)
     private Date saveDate;
 
+    public String getFuelType() {
+        return fuelType;
+    }
+
+    public void setFuelType(String fuelType) {
+        this.fuelType = fuelType;
+    }
+
+    private String fuelType;
+
     public FuelUp() {
 
     }
 
     @Ignore
-    public FuelUp(String carname, int odometerreading, int tripId, int liters, int perunitfuelprice, int totalprice, String location, Date saveDate) {
+    public FuelUp(String carname, int odometerreading, int tripId, int liters, int perunitfuelprice, int totalprice, String location, Date saveDate, String fuelType) {
         this.carname = carname;
         this.odometerreading = odometerreading;
         this.liters = liters;
@@ -48,6 +58,7 @@ public class FuelUp implements TimeLineItem {
         this.location = location;
         this.tripId = tripId;
         this.saveDate =  saveDate;
+        this.fuelType = fuelType;
     }
 
     public void setId(int id) {
@@ -110,6 +121,7 @@ public class FuelUp implements TimeLineItem {
     public int getPerunitfuelprice() {
         return perunitfuelprice;
     }
+
 
     public int getTotalprice() {
         return totalprice;

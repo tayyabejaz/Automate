@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:tools="http://schemas.android.com/tools">
-
     <data>
         <variable
-            name="fuelupdata"
-            type="com.innovidio.androidbootstrap.entity.FuelUp" />
+            name="carwashdata"
+            type="com.innovidio.androidbootstrap.entity.Maintenance" />
     </data>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -37,6 +34,7 @@
                 android:orientation="horizontal"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
+                android:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@id/calender_layout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:scaleType="center"
-                    android:src="@drawable/automate_fuel_dialog_icon"
+                    android:src="@drawable/automate_cash_dialog_icon"
                    />
 
                 <TextView
@@ -58,8 +56,10 @@
                     android:layout_marginStart="5dp"
                     android:textColor="@color/blackColor"
                     android:gravity="center_vertical"
-                    android:text="@{fuelupdata.fuelType}"
-                    tools:text="Petrol"/>
+                    android:text="@{carwashdata.maintenanceCost}"
+                    tools:text="Petrol"
+
+                    />
 
             </LinearLayout>
 
@@ -89,7 +89,7 @@
                     android:layout_marginStart="5dp"
                     android:textColor="@color/blackColor"
                     android:gravity="center_vertical"
-                    android:text="@{fuelupdata.location}"
+                    android:text="@{carwashdata.maintenanceLocation}"
                     tools:text="Shell Petrol and CNG Station"
 
                     />
@@ -122,7 +122,7 @@
                     android:layout_marginStart="5dp"
                     android:textColor="@color/blackColor"
                     android:gravity="center_vertical"
-                    android:text="@{String.valueOf(fuelupdata.odometerreading)}"
+                    android:text="@{carwashdata.maintenanceOdometerReading}"
                     tools:text="032450"
 
                     />
@@ -135,6 +135,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
+                android:visibility="gone"
                 android:layout_marginTop="20dp"
                 app:layout_constraintTop_toBottomOf="@+id/fuel_odometer"
                 app:layout_constraintStart_toStartOf="parent"
@@ -149,8 +150,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(fuelupdata.perunitfuelprice)}"
-                    tools:text="113 Rs"
+                    android:text="113 Rs"
                     android:paddingStart="10dp"
                     android:textColor="@color/blackColor"/>
 
@@ -160,6 +160,7 @@
                 android:id="@+id/line_one"
                 android:layout_width="0.5dp"
                 android:layout_height="50dp"
+                android:visibility="gone"
                 android:background="@color/blackColor"
                 app:layout_constraintTop_toTopOf="@id/price_per_unit_layout"
                 app:layout_constraintBottom_toBottomOf="@id/price_per_unit_layout"
@@ -172,6 +173,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
+                android:visibility="gone"
                 android:layout_marginTop="20dp"
                 app:layout_constraintTop_toBottomOf="@+id/fuel_odometer"
                 app:layout_constraintStart_toEndOf="@id/line_one"
@@ -186,8 +188,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(fuelupdata.totalprice)}"
-                    tools:text="2000 Rs"
+                    android:text="2000 Rs"
                     android:paddingStart="10dp"
                     android:textColor="@color/blackColor"/>
 
@@ -197,6 +198,7 @@
                 android:id="@+id/line_two"
                 android:layout_width="1dp"
                 android:layout_height="50dp"
+                android:visibility="gone"
                 android:background="@color/blackColor"
                 app:layout_constraintStart_toEndOf="@id/total_price_layout"
                 app:layout_constraintEnd_toStartOf="@id/no_of_liters_layout"
@@ -209,6 +211,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="center"
+                android:visibility="gone"
                 android:layout_marginTop="20dp"
                 app:layout_constraintTop_toBottomOf="@+id/fuel_odometer"
                 app:layout_constraintStart_toEndOf="@id/line_two"
@@ -223,8 +226,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(fuelupdata.liters)}"
-                    tools:text="17 L"
+                    android:text="17 L"
                     android:paddingStart="10dp"
                     android:textColor="@color/blackColor"/>
 
@@ -266,7 +268,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{fuelupdata.saveDateInString}"
+                        android:text="@{carwashdata.saveDateInString}"
                         tools:text="10-10-2019"
                         android:textSize="14sp"
                         android:textColor="@color/blackColor" />
@@ -303,8 +305,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{fuelupdata.saveTimeInString}"
-                        tools:text="11:29 "
+                        android:text="@{carwashdata.saveTimeInString}"
+                        tools:text="10-10-2019"
                         android:textSize="14sp"
                         android:textColor="@color/blackColor" />
 
@@ -336,11 +338,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(fuelupdata.totalprice)}"
+                    android:text="@{carwashdata.maintenanceCost}"
                     tools:text="RS 2000.00/-"
                     android:textStyle="bold"
                     android:paddingStart="10dp"
-                    android:textSize="30sp"
+                    android:textSize="20sp"
                     android:textColor="@color/blueDark"
                     />
 
@@ -407,7 +409,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Fuel Up"
+                android:text="Car Wash"
                 android:textStyle="bold"
                 android:textColor="@color/blackColor"
                 android:textSize="20sp"
@@ -421,13 +423,12 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bottom_sheet_background_fuel"
+        android:background="@drawable/bottom_sheet_background_carwash"
         android:scaleType="center"
-        android:src="@drawable/automate_add_fuelup_icon"
+        android:src="@drawable/automate_add_car_wash"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>
