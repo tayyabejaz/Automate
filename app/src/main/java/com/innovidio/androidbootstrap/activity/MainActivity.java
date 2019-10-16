@@ -101,7 +101,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         initializeAdapters();
 
         initList();
-        addDummyValues();
+       // addDummyValues();
 
 
         carApiQueries();

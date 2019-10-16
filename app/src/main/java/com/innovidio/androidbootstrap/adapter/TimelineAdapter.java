@@ -33,9 +33,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private TimelineItemClickListener timelineItemClickListener;
 
     private static final int FUEL_UP = 0;
-    private static final int TRIPS = 1;
-    private static final int MAINTENANCE = 2;
-    private static final int CAR_WASH = 3;
+    private static final int TRIPS =  1;
+    private static final int MAINTENANCE =  2;
+    private static final int CAR_WASH =  3;
+    private static final int FOOTER =  4;
+
 
 
     public TimelineAdapter(Context context, TimelineItemClickListener listener, List<? extends TimeLineItem> dataList) {
@@ -48,29 +50,42 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        if (viewType == FUEL_UP) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_fuel_up,
-                    parent, false);
-            return new FuelUpItemViewHolder(view);
-        } else if (viewType == MAINTENANCE) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_maintenance,
-                    parent, false);
-            return new MaintenanceViewHolder(view);
-        } else if (viewType == CAR_WASH) {
-            // same view Holder for maintenance and car wash
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_car_wash,
-                    parent, false);
-            return new MaintenanceViewHolder(view);
-        } else if (viewType == TRIPS) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_trips,
-                    parent, false);
-            return new TripsViewHolder(view);
+        View view;
+        switch (viewType){
+            case FUEL_UP:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_fuel_up,
+                        parent, false);
+                return new FuelUpItemViewHolder(view);
+            case MAINTENANCE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_maintenance,
+                        parent, false);
+                return new MaintenanceViewHolder(view);
+            case CAR_WASH:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_car_wash,
+                        parent, false);
+                return new MaintenanceViewHolder(view);
+            case TRIPS:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_trips,
+                        parent, false);
+                return new TripsViewHolder(view);
+
+            case FOOTER:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_footer_timeline,
+                        parent, false);
+                return new FooterViewHolder(view);
         }
+
         return null;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holderParent, int position) {
+        // todo for footer item only
+        // return because no data binding needed for footer
+        if (timeLineItemList.size()==position){
+            return;
+        }
+        // =======================================
 
         TimeLineItem item = timeLineItemList.get(position);
         switch (item.getType()) {
@@ -127,36 +142,31 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 tripsViewHolder.itemBinding.imageIcon.setImageDrawable(IconProvider.getTrip(context).getDrawable());
                 break;
         }
-
-
-//        if(position == timeLineItemList.size()-1){
-//            holderParent.itemBinding.ivRvItemCircle.setVisibility(View.VISIBLE);
-//        }
-//        else{
-//            holder.itemBinding.ivRvItemCircle.setVisibility(View.GONE);
-//        }
-
     }
 
     @Override
     public int getItemCount() {
         Log.e("timeLine", "arrayListSize" + timeLineItemList.size());
-        return timeLineItemList.size();
+        // todo check +1 for footer item
+        return timeLineItemList.size()+1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        switch (timeLineItemList.get(position).getType()) {
-            case FUEL:
-                return FUEL_UP;
-            case TRIP:
-                return TRIPS;
-            case MAINTENANCE:
-                return MAINTENANCE;
-            case CAR_WASH:
-                return CAR_WASH;
+        // todo check for footer item
+        if (position<timeLineItemList.size()) {
+            switch (timeLineItemList.get(position).getType()) {
+                case FUEL:
+                    return FUEL_UP;
+                case TRIP:
+                    return TRIPS;
+                case MAINTENANCE:
+                    return MAINTENANCE;
+                case CAR_WASH:
+                    return CAR_WASH;
+            }
         }
-        return 0;
+        return FOOTER;
     }
 
     public void updateData(List<TimeLineItem> updatedList) {
@@ -188,7 +198,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public MaintenanceCarWashViewHolder(View itemView) {
             super(itemView);
             this.itemBinding = DataBindingUtil.bind(itemView);
-            ;
         }
 
         public void bind(Maintenance item) {
@@ -204,7 +213,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public TripsViewHolder(View itemView) {
             super(itemView);
             this.itemBinding = DataBindingUtil.bind(itemView);
-            ;
         }
 
         public void bind(Trip item) {
@@ -228,5 +236,18 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    class FooterViewHolder extends RecyclerView.ViewHolder {
 
+       // private final ItemBoxesMainFragmentBinding itemBinding;
+
+        public FooterViewHolder(View itemView) {
+            super(itemView);
+          //  this.itemBinding = DataBindingUtil.bind(itemView);
+        }
+
+//        public void bind(Object item) {
+//           // itemBinding.setTimeLineFuelUpItem(item);
+//          //  itemBinding.executePendingBindings();
+//        }
+    }
 }
