@@ -107,8 +107,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         initializeAdapters();
 
         initList();
-//        addDummyValues();
-        showFuelTypeDialog();
+       // addDummyValues();
 
 
         carApiQueries();
@@ -165,10 +164,11 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         fuelUp.setLiters(10);
         fuelUp.setSaveDate(new Date());
         fuelUp.setLocation("Lahore");
-        fuelUp.setOdometerreading(2520);
+        fuelUp.setOdometerreading(252000);
         fuelUp.setPerunitfuelprice(113);
-        fuelUp.setTotalprice(1000);
+        fuelUp.setTotalprice(2000);
         fuelUp.setTripId(12);
+        fuelUp.setFuelType("Petrol");
 
         //fuelDao.insert(fuelUp);
         fuelUpViewModel.addFuelUp(fuelUp);
@@ -349,8 +349,8 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
             case R.id.main_activity_spinner:
                 if (isDown) {
-                    mainBinding.flCustomSpinnerLayout.bringToFront();
-                    slideBackToTop(mainBinding.flCustomSpinnerLayout, 500);
+//                    mainBinding.flCustomSpinnerLayout.bringToFront();
+                    slideBackToTop(mainBinding.flCustomSpinnerLayout, mainBinding.mainActivitySpinner,500);
                 } else {
                     mainBinding.flCustomSpinnerLayout.bringToFront();
                     slideFromTop(mainBinding.flCustomSpinnerLayout, 500);
@@ -361,7 +361,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             case R.id.iv_cancel_layout:
                 if (isDown) {
                     mainBinding.mainActivitySpinner.bringToFront();
-                    slideBackToTop(mainBinding.flCustomSpinnerLayout, 500);
+                    slideBackToTop(mainBinding.flCustomSpinnerLayout,  mainBinding.mainActivitySpinner, 500);
                     isDown = !isDown;
                 }
                 break;
@@ -382,7 +382,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         TranslateAnimation animate = new TranslateAnimation(
                 0,                 // fromXDelta
                 0,                 // toXDelta
-                view.getHeight(),  // fromYDelta
+                view.getHeight()-10,  // fromYDelta
                 0);                // toYDelta
         animate.setDuration(700);
         animate.setFillAfter(true);
@@ -403,13 +403,13 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         view.startAnimation(animate);
     }
 
-    public void slideBackToTop(View view, int duration) {
+    public void slideBackToTop(View view, View view2, int duration) {
 
         view.setVisibility(View.INVISIBLE);
         TranslateAnimation animate = new TranslateAnimation(
                 0,                 // fromXDelta
                 0,                 // toXDelta
-                0,  // fromYDelta
+                -view2.getHeight(),  // fromYDelta
                 -view.getHeight()-150);                // toYDelta
 
         animate.setDuration(duration);
@@ -464,23 +464,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding.bottomSheet.ivAddSpeedometer.setBackground(IconProvider.getSpeedometer(this).getBackground());
     }
 
-    private void showFuelTypeDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // Get the layout inflater
-        LayoutInflater inflater = (this.getLayoutInflater());
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the
-        // dialog layout
 
-        builder.setCancelable(false);
-        View view = inflater.inflate(R.layout.dialog_fuelup_details, null);
-
-        view.setBackgroundColor(this.getResources().getColor(android.R.color.transparent));
-        builder.setView(view);
-
-        builder.create();
-        builder.show();
-
-    }
 
 }

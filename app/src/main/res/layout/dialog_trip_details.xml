@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
-            name="fuelupdata"
-            type="com.innovidio.androidbootstrap.entity.FuelUp" />
+            name="tripdata"
+            type="com.innovidio.androidbootstrap.entity.Trip" />
     </data>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -30,104 +28,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/fuel_type_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintTop_toBottomOf="@id/calender_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/fuel_location"
-                >
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:scaleType="center"
-                    android:src="@drawable/automate_fuel_dialog_icon"
-                   />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginStart="5dp"
-                    android:textColor="@color/blackColor"
-                    android:gravity="center_vertical"
-                    android:text="@{fuelupdata.fuelType}"
-                    tools:text="Petrol"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/fuel_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintTop_toBottomOf="@id/fuel_type_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/fuel_odometer">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:scaleType="center"
-                    android:src="@drawable/automate_location_dialog_icon" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginStart="5dp"
-                    android:textColor="@color/blackColor"
-                    android:gravity="center_vertical"
-                    android:text="@{fuelupdata.location}"
-                    tools:text="Shell Petrol and CNG Station"
-
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/fuel_odometer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintTop_toBottomOf="@id/fuel_location"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/total_price_layout"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:scaleType="center"
-                    android:src="@drawable/automate_odometer_dialog_icon" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginStart="5dp"
-                    android:textColor="@color/blackColor"
-                    android:gravity="center_vertical"
-                    android:text="@{String.valueOf(fuelupdata.odometerreading)}"
-                    tools:text="032450"
-
-                    />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/price_per_unit_layout"
@@ -136,7 +36,7 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/fuel_odometer"
+                app:layout_constraintTop_toBottomOf="@+id/location_layout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/line_one">
 
@@ -149,7 +49,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(fuelupdata.perunitfuelprice)}"
+                    android:text="@{String.valueOf(tripdata.fuelCostPerUnit)}"
                     tools:text="113 Rs"
                     android:paddingStart="10dp"
                     android:textColor="@color/blackColor"/>
@@ -173,9 +73,10 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/fuel_odometer"
+                app:layout_constraintTop_toBottomOf="@+id/location_layout"
                 app:layout_constraintStart_toEndOf="@id/line_one"
-                app:layout_constraintEnd_toStartOf="@id/line_two">
+                app:layout_constraintEnd_toStartOf="@id/line_two"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -186,7 +87,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(fuelupdata.totalprice)}"
+                    android:text="@{String.valueOf(tripdata.totalExpenses)}"
                     tools:text="2000 Rs"
                     android:paddingStart="10dp"
                     android:textColor="@color/blackColor"/>
@@ -210,9 +111,10 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/fuel_odometer"
+                app:layout_constraintTop_toBottomOf="@+id/location_layout"
                 app:layout_constraintStart_toEndOf="@id/line_two"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintEnd_toEndOf="parent"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -223,7 +125,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(fuelupdata.liters)}"
+                    android:text="@{String.valueOf(tripdata.noOfLitres)}"
                     tools:text="17 L"
                     android:paddingStart="10dp"
                     android:textColor="@color/blackColor"/>
@@ -235,15 +137,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="1dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
+                android:padding="5dp"
                 android:layout_marginStart="25dp"
                 android:layout_marginEnd="25dp"
                 app:layout_constraintTop_toBottomOf="@id/dialog_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/fuel_type_layout">
+                app:layout_constraintBottom_toTopOf="@id/odometer_layout"
+                >
 
                 <LinearLayout
                     android:id="@+id/date_view"
@@ -266,7 +167,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{fuelupdata.saveDateInString}"
+                        android:text="@{tripdata.saveDateInString}"
                         tools:text="10-10-2019"
                         android:textSize="14sp"
                         android:textColor="@color/blackColor" />
@@ -303,8 +204,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{fuelupdata.saveTimeInString}"
-                        tools:text="11:29 "
+                        android:text="@{tripdata.saveTimeInString}"
+                       tools:text="10-10-2019"
                         android:textSize="14sp"
                         android:textColor="@color/blackColor" />
 
@@ -313,6 +214,176 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/odometer_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="1dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                app:layout_constraintTop_toBottomOf="@id/calender_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/location_layout"
+                >
+
+                <LinearLayout
+                    android:id="@+id/inital_reading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toStartOf="@id/mid_line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dialog_title">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="13dp"
+                        android:text="Initial Odometer" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(tripdata.intialOdometer)}"
+                        tools:text="342010"
+                        android:textSize="14sp"
+                        android:textColor="@color/blackColor" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/odometer_mid_line"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/blackColor"
+                    app:layout_constraintEnd_toStartOf="@id/time_view"
+                    app:layout_constraintStart_toEndOf="@id/date_view"
+                    app:layout_constraintTop_toBottomOf="@id/dialog_title" />
+
+                <LinearLayout
+                    android:id="@+id/final_odometer_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/mid_line"
+                    app:layout_constraintTop_toBottomOf="@id/dialog_title">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:text="Final Odometer"
+                         />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(tripdata.finalOdometer)}"
+                        tools:text="35202"
+                        android:textSize="14sp"
+                        android:textColor="@color/blackColor" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <!-- Location Layout -->
+            <LinearLayout
+                android:id="@+id/location_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                app:layout_constraintTop_toBottomOf="@id/odometer_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/total_price_layout"
+                >
+
+                <LinearLayout
+                    android:id="@+id/origin_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toStartOf="@id/mid_line"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dialog_title">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="13dp"
+                        android:text="Origin" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{tripdata.origin}"
+                        tools:text="Enterprise Lahore"
+                        android:textSize="14sp"
+                        android:textColor="@color/blackColor" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/origin_mid_line"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/blackColor"
+                    app:layout_constraintEnd_toStartOf="@id/time_view"
+                    app:layout_constraintStart_toEndOf="@id/date_view"
+                    app:layout_constraintTop_toBottomOf="@id/dialog_title" />
+
+                <LinearLayout
+                    android:id="@+id/destination_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/mid_line"
+                    app:layout_constraintTop_toBottomOf="@id/dialog_title">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="10dp"
+                        android:text="Destination"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{tripdata.destination}"
+                        tools:text="Sabzazar Lahore"
+                        android:textSize="14sp"
+                        android:textColor="@color/blackColor" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <!-- Total Expenses Layout -->
             <LinearLayout
                 android:id="@+id/total_expenses_layout"
                 android:layout_width="wrap_content"
@@ -336,17 +407,18 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(fuelupdata.totalprice)}"
+                    android:text="@{String.valueOf(tripdata.totalExpenses)}"
                     tools:text="RS 2000.00/-"
                     android:textStyle="bold"
                     android:paddingStart="10dp"
-                    android:textSize="30sp"
+                    android:textSize="20sp"
                     android:textColor="@color/blueDark"
                     />
 
             </LinearLayout>
 
 
+            <!-- Button Layout-->
             <Button
                 android:id="@+id/btn_edit"
                 android:layout_width="100dp"
@@ -383,7 +455,7 @@
                 app:layout_constraintTop_toBottomOf="@id/total_expenses_layout"
                 app:layout_constraintEnd_toStartOf="@id/btn_close"/>
 
-          <Button
+            <Button
               android:id="@+id/btn_close"
               android:layout_width="100dp"
               android:layout_height="35dp"
@@ -407,7 +479,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:text="Fuel Up"
+                android:text="Trip"
                 android:textStyle="bold"
                 android:textColor="@color/blackColor"
                 android:textSize="20sp"
@@ -421,13 +493,12 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bottom_sheet_background_fuel"
+        android:background="@drawable/bottom_sheet_background_trip"
         android:scaleType="center"
-        android:src="@drawable/automate_add_fuelup_icon"
+        android:src="@drawable/automate_add_trip_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
 </layout>
