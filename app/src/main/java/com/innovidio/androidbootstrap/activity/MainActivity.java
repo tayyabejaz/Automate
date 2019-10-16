@@ -1,17 +1,13 @@
 package com.innovidio.androidbootstrap.activity;
 
 
-import android.app.AlertDialog;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
-import android.widget.RadioGroup;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -50,8 +46,6 @@ import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -155,11 +149,12 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
         mainBinding.mainActivitySpinner.setOnClickListener(this);
         mainBinding.spinnerCustomLayout.ivCancelLayout.setOnClickListener(this);
+        mainBinding.spinnerCustomLayout.btnCarSpinnerLayout.setOnClickListener(this);
     }
 
     private void addDummyValues() {
         FuelUp fuelUp = new FuelUp();
-     //   fuelUp.setId(1);
+        //   fuelUp.setId(1);
         fuelUp.setCarname("Honda");
         fuelUp.setLiters(10);
         fuelUp.setSaveDate(new Date());
@@ -174,7 +169,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         fuelUpViewModel.addFuelUp(fuelUp);
 
         Maintenance maintenance = new Maintenance();
-       // maintenance.setId(122);
+        // maintenance.setId(122);
         maintenance.setSaveDate(new Date());
         maintenance.setCarId(1);
         maintenance.setMaintenanceCost(1200);
@@ -190,7 +185,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         maintenanceViewModel.addMaintenanceService(maintenance);
 
         Trip trip = new Trip();
-       // trip.setId(22);
+        // trip.setId(22);
         trip.setAvgspeed(150);
         trip.setCarname("Honda2");
         trip.setDestination("Islamabad");
@@ -201,7 +196,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         trip.setTripTitle("lhr_to_islamabad");
         trip.setTripType("Personal");
 
-       // tripDao.insert(trip);
+        // tripDao.insert(trip);
         tripViewModel.addTrip(trip);
     }
 
@@ -350,7 +345,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             case R.id.main_activity_spinner:
                 if (isDown) {
 //                    mainBinding.flCustomSpinnerLayout.bringToFront();
-                    slideBackToTop(mainBinding.flCustomSpinnerLayout, mainBinding.mainActivitySpinner,500);
+                    slideBackToTop(mainBinding.flCustomSpinnerLayout, mainBinding.mainActivitySpinner, 500);
                 } else {
                     mainBinding.flCustomSpinnerLayout.bringToFront();
                     slideFromTop(mainBinding.flCustomSpinnerLayout, 500);
@@ -361,9 +356,13 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             case R.id.iv_cancel_layout:
                 if (isDown) {
                     mainBinding.mainActivitySpinner.bringToFront();
-                    slideBackToTop(mainBinding.flCustomSpinnerLayout,  mainBinding.mainActivitySpinner, 500);
+                    slideBackToTop(mainBinding.flCustomSpinnerLayout, mainBinding.mainActivitySpinner, 500);
                     isDown = !isDown;
                 }
+                break;
+
+            case R.id.btn_car_spinner_layout:
+                startActivity(new Intent(MainActivity.this, AddNewCarActivity.class));
                 break;
         }
     }
@@ -382,7 +381,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         TranslateAnimation animate = new TranslateAnimation(
                 0,                 // fromXDelta
                 0,                 // toXDelta
-                view.getHeight()-10,  // fromYDelta
+                view.getHeight() - 10,  // fromYDelta
                 0);                // toYDelta
         animate.setDuration(700);
         animate.setFillAfter(true);
@@ -410,7 +409,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 0,                 // fromXDelta
                 0,                 // toXDelta
                 -view2.getHeight(),  // fromYDelta
-                -view.getHeight()-150);                // toYDelta
+                -view.getHeight() - 150);                // toYDelta
 
         animate.setDuration(duration);
         animate.setFillAfter(true);
@@ -463,7 +462,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding.bottomSheet.ivAddSpeedometer.setImageDrawable(IconProvider.getSpeedometer(this).getDrawable());
         mainBinding.bottomSheet.ivAddSpeedometer.setBackground(IconProvider.getSpeedometer(this).getBackground());
     }
-
 
 
 }
