@@ -30,8 +30,8 @@ public abstract class TripDao extends BaseDao<Trip> {
     @Query("SELECT * FROM Trip")
     public abstract  LiveData<List<Trip>> getAllTripsForTimeline();
 
-    @Query("SELECT * FROM Trip")
-    public abstract  List<Trip> getAllTripsTimeline();
+    @Query("SELECT * FROM Trip WHERE carId =:carId")
+    public abstract  List<Trip> getAllTripsTimeline(int carId);
 
     @Query("SELECT * FROM Trip")
     public abstract  LiveData<List<Trip>> getAllTripsLiveDataForTimeline();

@@ -24,6 +24,7 @@ public class FuelUp implements TimeLineItem {
     private String carname;
     // optional for trips and without trip/ regular use
     private int tripId;
+    private int carId;
     private int odometerreading;
     private int liters;
     private int perunitfuelprice;
@@ -59,6 +60,14 @@ public class FuelUp implements TimeLineItem {
         this.tripId = tripId;
         this.saveDate =  saveDate;
         this.fuelType = fuelType;
+    }
+
+    public int getCarId() {
+        return carId;
+    }
+
+    public void setCarId(int carId) {
+        this.carId = carId;
     }
 
     public void setId(int id) {

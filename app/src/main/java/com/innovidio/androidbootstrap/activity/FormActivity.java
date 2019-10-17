@@ -12,6 +12,12 @@ import com.innovidio.androidbootstrap.fragment.AddFuelUp;
 import com.innovidio.androidbootstrap.fragment.AddServices;
 import com.innovidio.androidbootstrap.fragment.AddTrip;
 
+import static com.innovidio.androidbootstrap.Constants.ACTIVITY;
+import static com.innovidio.androidbootstrap.Constants.CAR_WASH_FORM;
+import static com.innovidio.androidbootstrap.Constants.FUEL_UP_FORM;
+import static com.innovidio.androidbootstrap.Constants.SERVICE_FORM;
+import static com.innovidio.androidbootstrap.Constants.TRIP_FORM;
+
 public class FormActivity extends AppCompatActivity {
 
     ActivityFormBinding binding;
@@ -21,25 +27,25 @@ public class FormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_form);
 
-        initializeFragment(getIntent().getStringExtra("activity"));
+        initializeFragment(getIntent().getStringExtra(ACTIVITY));
 
     }
 
     private void initializeFragment(String fragmentName) {
         switch (fragmentName) {
-            case "carwash":
+            case CAR_WASH_FORM:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fl_form_activity, new AddCarWash()).commit();
                 break;
 
-            case "fuelup":
+            case FUEL_UP_FORM:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fl_form_activity, new AddFuelUp()).commit();
                 break;
 
-            case "service":
+            case SERVICE_FORM:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fl_form_activity, new AddServices()).commit();
                 break;
 
-            case "trip":
+            case TRIP_FORM:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fl_form_activity, new AddTrip()).commit();
                 break;
         }

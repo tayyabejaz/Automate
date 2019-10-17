@@ -3,7 +3,6 @@ package com.innovidio.androidbootstrap.entity;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import com.squareup.moshi.Json;
 
 
 @Entity
@@ -11,123 +10,142 @@ public class Car {
 
     @PrimaryKey(autoGenerate = true)
     private Integer id;
+    private String registrationNo;
+    private int currentOdomaterReading;
+    private int makeYear;
+    private String manufacturer;
+    private String modelName;
+    private String subModel;
+    private String engineFuel;
+    private int enginecc;
+    private int fuelEconomyCityPer100km;
+    private int fuelEconomyMixedPer100km;
+    private int fuelCapacityInLiters;
+    private String modelDrive;
+    private String transmissionType;
+    String carImageUrl ="none";
+
+    public Car() {
+
+    }
 
     public Integer getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getMakeid() {
-        return makeid;
+    public String getRegistrationNo() {
+        return registrationNo;
     }
 
-    public void setMakeid(String makeid) {
-        this.makeid = makeid;
+    public void setRegistrationNo(String registrationNo) {
+        this.registrationNo = registrationNo;
     }
 
-    @Json(name = "make_id")
-    private String makeid;
-
-    public String getModelname() {
-        return modelname;
+    public int getCurrentOdomaterReading() {
+        return currentOdomaterReading;
     }
 
-    public void setModelname(String modelname) {
-        this.modelname = modelname;
+    public void setCurrentOdomaterReading(int currentOdomaterReading) {
+        this.currentOdomaterReading = currentOdomaterReading;
     }
 
-    @Json(name = "model_name")
-    private String modelname;
-
-    public String getTrim() {
-        return trim;
+    public int getMakeYear() {
+        return makeYear;
     }
 
-    public void setTrim(String trim) {
-        this.trim = trim;
+    public void setMakeYear(int makeYear) {
+        this.makeYear = makeYear;
     }
 
-    //
-    @Json(name = "model_trim")
-    private String trim;
-
-    public String getEnginefuel() {
-        return enginefuel;
+    public String getManufacturer() {
+        return manufacturer;
     }
 
-    public void setEnginefuel(String enginefuel) {
-        this.enginefuel = enginefuel;
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
-    @Json(name = "model_engine_fuel")
-    private String enginefuel;
+    public String getModelName() {
+        return modelName;
+    }
 
-    public String getEnginecc() {
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public String getSubModel() {
+        return subModel;
+    }
+
+    public void setSubModel(String subModel) {
+        this.subModel = subModel;
+    }
+
+    public String getEngineFuel() {
+        return engineFuel;
+    }
+
+    public void setEngineFuel(String engineFuel) {
+        this.engineFuel = engineFuel;
+    }
+
+    public int getEnginecc() {
         return enginecc;
     }
 
-    public void setEnginecc(String enginecc) {
+    public void setEnginecc(int enginecc) {
         this.enginecc = enginecc;
     }
 
-    @Json(name = "model_engine_cc")
-    private String enginecc;
-
-    public Car() {
+    public int getFuelEconomyCityPer100km() {
+        return fuelEconomyCityPer100km;
     }
 
-    @Override
-    public String toString() {
-        return this.makeid;
+    public void setFuelEconomyCityPer100km(int fuelEconomyCityPer100km) {
+        this.fuelEconomyCityPer100km = fuelEconomyCityPer100km;
     }
 
-
-    public String getFueleconomycityper100km() {
-        return fueleconomycityper100km;
+    public int getFuelEconomyMixedPer100km() {
+        return fuelEconomyMixedPer100km;
     }
 
-    public void setFueleconomycityper100km(String fueleconomycityper100km) {
-        this.fueleconomycityper100km = fueleconomycityper100km;
+    public void setFuelEconomyMixedPer100km(int fuelEconomyMixedPer100km) {
+        this.fuelEconomyMixedPer100km = fuelEconomyMixedPer100km;
     }
 
-    @Json(name = "model_lkm_city")
-    private String fueleconomycityper100km;
-
-    public String getFueleconomymixedper100km() {
-        return fueleconomymixedper100km;
+    public int getFuelCapacityInLiters() {
+        return fuelCapacityInLiters;
     }
 
-    public void setFueleconomymixedper100km(String fueleconomymixedper100km) {
-        this.fueleconomymixedper100km = fueleconomymixedper100km;
+    public void setFuelCapacityInLiters(int fuelCapacityInLiters) {
+        this.fuelCapacityInLiters = fuelCapacityInLiters;
     }
 
-    @Json(name = "model_lkm_mixed")
-    private String fueleconomymixedper100km;
-
-    public String getFuelcapacityinliters() {
-        return fuelcapacityinliters;
+    public String getModelDrive() {
+        return modelDrive;
     }
 
-    public void setFuelcapacityinliters(String fuelcapacityinliters) {
-        this.fuelcapacityinliters = fuelcapacityinliters;
+    public void setModelDrive(String modelDrive) {
+        this.modelDrive = modelDrive;
     }
 
-    @Json(name = "model_fuel_cap_l")
-
-    private String fuelcapacityinliters;
-
-    public String getModeldrive() {
-        return modeldrive;
+    public String getTransmissionType() {
+        return transmissionType;
     }
 
-    public void setModeldrive(String modeldrive) {
-        this.modeldrive = modeldrive;
+    public void setTransmissionType(String transmissionType) {
+        this.transmissionType = transmissionType;
     }
 
-    @Json(name = "model_drive")
-    private String modeldrive;
+    public String getCarImageUrl() {
+        return carImageUrl;
+    }
 
+    public void setCarImageUrl(String carImageUrl) {
+        this.carImageUrl = carImageUrl;
+    }
 }

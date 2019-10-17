@@ -12,6 +12,8 @@ import com.innovidio.androidbootstrap.db.dao.FormDao;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
 import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
+import com.innovidio.androidbootstrap.db.dao.UserDao;
+import com.innovidio.androidbootstrap.entity.User;
 
 
 import javax.inject.Singleton;
@@ -40,6 +42,12 @@ public class DBModule {
     @Singleton
     FeedDao provideFeedDao(@NonNull AppDatabase appDatabase) {
         return appDatabase.getFeedDao();
+    }
+
+    @Provides
+    @Singleton
+    UserDao provideUserDao(@NonNull AppDatabase appDatabase) {
+        return appDatabase.getUserDao();
     }
 
     @Provides

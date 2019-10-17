@@ -68,7 +68,7 @@ public class TimeLineViewModel extends ViewModel {
      //   timeLineLiveDataMerger.addSource(maintenanceLiveData, value -> timeLineLiveDataMerger.setValue(value));
      //   timeLineLiveDataMerger.addSource(fuelUpsLiveData, value -> timeLineLiveDataMerger.setValue(value));
       //  timeLineLiveDataMerger.addSource(tripsLiveData, value -> timeLineLiveDataMerger.setValue(value));
-        getAllTimelineData();
+        getAllTimelineData(1);
     }
 
     public String getName(){
@@ -91,10 +91,10 @@ public class TimeLineViewModel extends ViewModel {
         return timeLineLiveDataMerger;
     }
 
-    public void getAllTimelineData() {
-        List<Trip> trips = tripRepository.getAllTripsTimeline();
-        List<Maintenance> maintenances = maintenanceRepository.getAllMaintenanceTimeLine();
-        List<FuelUp> fuelUps = fuelUpRepository.getAllFuelUpsTimeLine();
+    public void getAllTimelineData(int carId ) {
+        List<Trip> trips = tripRepository.getAllTripsTimeline(carId);
+        List<Maintenance> maintenances = maintenanceRepository.getAllMaintenanceTimeLine(carId);
+        List<FuelUp> fuelUps = fuelUpRepository.getAllFuelUpsTimeLine(carId);
         List<TimeLineItem> timeLineItems =  new ArrayList<>();
         timeLineItems.addAll(trips);
         timeLineItems.addAll(maintenances);

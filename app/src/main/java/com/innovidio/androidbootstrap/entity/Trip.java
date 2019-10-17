@@ -23,6 +23,7 @@ public class Trip implements TimeLineItem {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
+    int carId;
     private String tripTitle;
     private String destination;
     // private String tripdate;
@@ -38,6 +39,15 @@ public class Trip implements TimeLineItem {
     private String origin;
     private int intialOdometer;
     private int finalOdometer;
+
+
+    public int getCarId() {
+        return carId;
+    }
+
+    public void setCarId(int carId) {
+        this.carId = carId;
+    }
 
     public String getOrigin() {
         return origin;

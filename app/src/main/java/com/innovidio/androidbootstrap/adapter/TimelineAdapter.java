@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.IconProvider;
+import com.innovidio.androidbootstrap.databinding.ItemFooterTimelineBinding;
 import com.innovidio.androidbootstrap.databinding.ItemTimelineCarWashBinding;
 import com.innovidio.androidbootstrap.databinding.ItemTimelineFuelUpBinding;
 import com.innovidio.androidbootstrap.databinding.ItemTimelineMaintenanceBinding;
@@ -24,7 +25,6 @@ import com.innovidio.androidbootstrap.interfaces.TimelineItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -83,6 +83,12 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         // todo for footer item only
         // return because no data binding needed for footer
         if (timeLineItemList.size()==position){
+            FooterViewHolder footerViewHolder = (FooterViewHolder) holderParent;
+            if (position<1){
+                footerViewHolder.itemBinding.ivTrackitem.setVisibility(View.VISIBLE);
+            }else{
+                footerViewHolder.itemBinding.ivTrackitem.setVisibility(View.GONE);
+            }
             return;
         }
         // =======================================
@@ -147,13 +153,13 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         Log.e("timeLine", "arrayListSize" + timeLineItemList.size());
-        // todo check +1 for footer item
+        // todo -- +1 for footer item
         return timeLineItemList.size()+1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        // todo check for footer item
+        // todo -- check for footer item
         if (position<timeLineItemList.size()) {
             switch (timeLineItemList.get(position).getType()) {
                 case FUEL:
@@ -238,11 +244,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     class FooterViewHolder extends RecyclerView.ViewHolder {
 
-       // private final ItemBoxesMainFragmentBinding itemBinding;
+        private final ItemFooterTimelineBinding itemBinding;
 
         public FooterViewHolder(View itemView) {
             super(itemView);
-          //  this.itemBinding = DataBindingUtil.bind(itemView);
+            this.itemBinding = DataBindingUtil.bind(itemView);
         }
 
 //        public void bind(Object item) {

@@ -69,8 +69,8 @@ public class MaintenanceRepository {
         return this.maintenanceDao.getAllMaintenanceForTimeline();
     }
 
-    public List<Maintenance> getAllMaintenanceTimeLine(){
-        return this.maintenanceDao.getAllMaintenanceTimeline();
+    public List<Maintenance> getAllMaintenanceTimeLine(int carId){
+        return this.maintenanceDao.getAllMaintenanceTimeline(carId);
     }
 }
 
