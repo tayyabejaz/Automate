@@ -1,426 +1,424 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools">
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_sheet_background_service"
+            android:scaleType="center"
+            android:elevation="5dp"
+            android:src="@drawable/automate_add_service_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            app:cardBackgroundColor="@color/whiteColor"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/btn_edit"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/app_button_background"
+                    android:drawableStart="@drawable/automate_edit_dialog_icon"
+                    android:paddingStart="15dp"
+                    android:text="Edit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/whiteColor"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_delete"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/total_expenses_layout" />
+
+                <Button
+                    android:id="@+id/btn_delete"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/app_button_background"
+                    android:drawableStart="@drawable/automate_delete_dialog_icon"
+                    android:paddingStart="15dp"
+                    android:text="Delete"
+                    android:textAllCaps="false"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_close"
+                    app:layout_constraintStart_toEndOf="@id/btn_edit"
+                    app:layout_constraintTop_toBottomOf="@id/total_expenses_layout" />
+
+                <Button
+                    android:id="@+id/btn_close"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/app_button_background"
+                    android:drawableStart="@drawable/automate_close_dialog_icon"
+                    android:paddingStart="15dp"
+                    android:text="Close"
+                    android:textAllCaps="false"
+                    android:textColor="@color/whiteColor"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/btn_delete"
+                    app:layout_constraintTop_toBottomOf="@id/total_expenses_layout" />
+
+                <LinearLayout
+                    android:id="@+id/fuel_type_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@id/fuel_location"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/calender_layout">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:scaleType="center"
+                        android:src="@drawable/automate_fuel_dialog_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Petrol"
+                        android:textColor="@color/blackColor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/fuel_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@id/fuel_odometer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fuel_type_layout">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:scaleType="center"
+                        android:src="@drawable/automate_location_dialog_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@{maintenancedata.maintenanceLocation}"
+                        android:textColor="@color/blackColor"
+                        tools:text="Shell Petrol and CNG Station"
+
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/fuel_odometer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toTopOf="@id/total_price_layout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fuel_location">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:scaleType="center"
+                        android:src="@drawable/automate_odometer_dialog_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="@{maintenancedata.maintenanceOdometerReading}"
+                        android:textColor="@color/blackColor"
+                        tools:text="032450" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/price_per_unit_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toStartOf="@id/line_one"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fuel_odometer">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:text="Price / Unit" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:text="113 Rs"
+                        android:textColor="@color/blackColor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/total_price_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toStartOf="@id/line_two"
+                    app:layout_constraintStart_toEndOf="@id/line_one"
+                    app:layout_constraintTop_toBottomOf="@+id/fuel_odometer">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:text="Total Price" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:text="2000 Rs"
+                        android:textColor="@color/blackColor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/no_of_liters_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/line_two"
+                    app:layout_constraintTop_toBottomOf="@+id/fuel_odometer">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:text="No. of Liters" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:text="17 L"
+                        android:textColor="@color/blackColor" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/calender_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal"
+                    android:padding="1dp"
+                    app:layout_constraintBottom_toTopOf="@id/fuel_type_layout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/dialog_title">
+
+                    <LinearLayout
+                        android:id="@+id/date_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toStartOf="@id/mid_line"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/dialog_title">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="13dp"
+                            android:src="@drawable/automate_date_dialog_icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{maintenancedata.saveDateInString}"
+                            android:textColor="@color/blackColor"
+                            android:textSize="14sp"
+                            tools:text="10-10-2019" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/time_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/mid_line"
+                        app:layout_constraintTop_toBottomOf="@id/dialog_title">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="10dp"
+                            android:src="@drawable/automate_time_dialog_icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{maintenancedata.saveTimeInString}"
+                            android:textColor="@color/blackColor"
+                            android:textSize="14sp"
+                            tools:text="11:29" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/mid_line"
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/blackColor"
+                        app:layout_constraintEnd_toStartOf="@id/time_view"
+                        app:layout_constraintStart_toEndOf="@id/date_view"
+                        app:layout_constraintTop_toBottomOf="@id/dialog_title" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/total_expenses_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@id/btn_delete"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/total_price_layout">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:paddingStart="10dp"
+                        android:text="Overall Expense" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:text="@{String.valueOf(maintenancedata.maintenanceCost)}"
+                        android:textColor="@color/blueDark"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:text="RS 2000.00/-" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/dialog_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:text="Maintenance"
+                    android:textColor="@color/blackColor"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/line_one"
+                    android:layout_width="0.5dp"
+                    android:layout_height="50dp"
+                    android:background="@color/blackColor"
+                    app:layout_constraintBottom_toBottomOf="@id/price_per_unit_layout"
+                    app:layout_constraintEnd_toStartOf="@id/total_price_layout"
+                    app:layout_constraintStart_toEndOf="@id/price_per_unit_layout"
+                    app:layout_constraintTop_toTopOf="@id/price_per_unit_layout" />
+
+                <View
+                    android:id="@+id/line_two"
+                    android:layout_width="1dp"
+                    android:layout_height="50dp"
+                    android:background="@color/blackColor"
+                    app:layout_constraintBottom_toBottomOf="@id/total_price_layout"
+                    app:layout_constraintEnd_toStartOf="@id/no_of_liters_layout"
+                    app:layout_constraintStart_toEndOf="@id/total_price_layout"
+                    app:layout_constraintTop_toTopOf="@id/total_price_layout" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <data>
         <variable
             name="maintenancedata"
             type="com.innovidio.androidbootstrap.entity.Maintenance" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/transparent">
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        app:cardBackgroundColor="@color/whiteColor"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/fuel_type_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/calender_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/fuel_location"
-                >
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:scaleType="center"
-                    android:src="@drawable/automate_fuel_dialog_icon"
-                   />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginStart="5dp"
-                    android:textColor="@color/blackColor"
-                    android:gravity="center_vertical"
-                    android:text="Petrol"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/fuel_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintTop_toBottomOf="@id/fuel_type_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/fuel_odometer">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:scaleType="center"
-                    android:src="@drawable/automate_location_dialog_icon" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginStart="5dp"
-                    android:textColor="@color/blackColor"
-                    android:gravity="center_vertical"
-                    android:text="@{maintenancedata.maintenanceLocation}"
-                    tools:text="Shell Petrol and CNG Station"
-
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/fuel_odometer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintTop_toBottomOf="@id/fuel_location"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/total_price_layout"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:scaleType="center"
-                    android:src="@drawable/automate_odometer_dialog_icon" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginStart="5dp"
-                    android:textColor="@color/blackColor"
-                    android:gravity="center_vertical"
-                    android:text="@{maintenancedata.maintenanceOdometerReading}"
-                    tools:text="032450"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/price_per_unit_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/fuel_odometer"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/line_one">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
-                    android:text="Price / Unit"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="113 Rs"
-                    android:paddingStart="10dp"
-                    android:textColor="@color/blackColor"/>
-
-            </LinearLayout>
-
-            <View
-                android:id="@+id/line_one"
-                android:layout_width="0.5dp"
-                android:layout_height="50dp"
-                android:background="@color/blackColor"
-                app:layout_constraintTop_toTopOf="@id/price_per_unit_layout"
-                app:layout_constraintBottom_toBottomOf="@id/price_per_unit_layout"
-                app:layout_constraintStart_toEndOf="@id/price_per_unit_layout"
-                app:layout_constraintEnd_toStartOf="@id/total_price_layout"/>
-
-            <LinearLayout
-                android:id="@+id/total_price_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/fuel_odometer"
-                app:layout_constraintStart_toEndOf="@id/line_one"
-                app:layout_constraintEnd_toStartOf="@id/line_two">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
-                    android:text="Total Price"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2000 Rs"
-                    android:paddingStart="10dp"
-                    android:textColor="@color/blackColor"/>
-
-            </LinearLayout>
-
-            <View
-                android:id="@+id/line_two"
-                android:layout_width="1dp"
-                android:layout_height="50dp"
-                android:background="@color/blackColor"
-                app:layout_constraintStart_toEndOf="@id/total_price_layout"
-                app:layout_constraintEnd_toStartOf="@id/no_of_liters_layout"
-                app:layout_constraintTop_toTopOf="@id/total_price_layout"
-                app:layout_constraintBottom_toBottomOf="@id/total_price_layout"/>
-
-            <LinearLayout
-                android:id="@+id/no_of_liters_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@+id/fuel_odometer"
-                app:layout_constraintStart_toEndOf="@id/line_two"
-                app:layout_constraintEnd_toEndOf="parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
-                    android:text="No. of Liters"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="17 L"
-                    android:paddingStart="10dp"
-                    android:textColor="@color/blackColor"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/calender_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="1dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp"
-                app:layout_constraintTop_toBottomOf="@id/dialog_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/fuel_type_layout">
-
-                <LinearLayout
-                    android:id="@+id/date_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    app:layout_constraintEnd_toStartOf="@id/mid_line"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/dialog_title">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="13dp"
-                        android:src="@drawable/automate_date_dialog_icon" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{maintenancedata.saveDateInString}"
-                        tools:text="10-10-2019"
-                        android:textSize="14sp"
-                        android:textColor="@color/blackColor" />
-
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/mid_line"
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/blackColor"
-                    app:layout_constraintEnd_toStartOf="@id/time_view"
-                    app:layout_constraintStart_toEndOf="@id/date_view"
-                    app:layout_constraintTop_toBottomOf="@id/dialog_title" />
-
-                <LinearLayout
-                    android:id="@+id/time_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/mid_line"
-                    app:layout_constraintTop_toBottomOf="@id/dialog_title">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:src="@drawable/automate_time_dialog_icon" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{maintenancedata.saveTimeInString}"
-                        tools:text="11:29"
-                        android:textSize="14sp"
-                        android:textColor="@color/blackColor" />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/total_expenses_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                app:layout_constraintTop_toBottomOf="@id/total_price_layout"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/btn_delete">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
-                    android:gravity="center"
-                    android:layout_marginBottom="10dp"
-                    android:text="Overall Expense"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(maintenancedata.maintenanceCost)}"
-                   tools:text="RS 2000.00/-"
-                    android:textStyle="bold"
-                    android:paddingStart="10dp"
-                    android:textSize="20sp"
-                    android:textColor="@color/blueDark"
-                    />
-
-            </LinearLayout>
-
-
-            <Button
-                android:id="@+id/btn_edit"
-                android:layout_width="100dp"
-                android:layout_height="35dp"
-                android:text="Edit"
-                android:textStyle="bold"
-                android:textAllCaps="false"
-                android:paddingStart="15dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="15dp"
-                android:drawableStart="@drawable/automate_edit_dialog_icon"
-                android:textColor="@color/whiteColor"
-                android:background="@drawable/app_button_background"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/total_expenses_layout"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_delete"/>
-
-            <Button
-                android:id="@+id/btn_delete"
-                android:layout_width="100dp"
-                android:layout_height="35dp"
-                android:text="Delete"
-                android:textStyle="bold"
-                android:textAllCaps="false"
-                android:textSize="12sp"
-                android:paddingStart="15dp"
-                android:layout_marginBottom="15dp"
-                android:drawableStart="@drawable/automate_delete_dialog_icon"
-                android:textColor="@color/whiteColor"
-                android:background="@drawable/app_button_background"
-                app:layout_constraintStart_toEndOf="@id/btn_edit"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/total_expenses_layout"
-                app:layout_constraintEnd_toStartOf="@id/btn_close"/>
-
-          <Button
-              android:id="@+id/btn_close"
-              android:layout_width="100dp"
-              android:layout_height="35dp"
-              android:text="Close"
-              android:paddingStart="15dp"
-              android:textStyle="bold"
-              android:textAllCaps="false"
-              android:layout_marginTop="20dp"
-              android:layout_marginBottom="15dp"
-              android:drawableStart="@drawable/automate_close_dialog_icon"
-              android:textColor="@color/whiteColor"
-              android:background="@drawable/app_button_background"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintBottom_toBottomOf="parent"
-              app:layout_constraintStart_toEndOf="@id/btn_delete"
-              app:layout_constraintTop_toBottomOf="@id/total_expenses_layout"/>
-
-
-            <TextView
-                android:id="@+id/dialog_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Maintenance"
-                android:textStyle="bold"
-                android:textColor="@color/blackColor"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bottom_sheet_background_service"
-        android:scaleType="center"
-        android:src="@drawable/automate_add_service_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -2,6 +2,7 @@ package com.innovidio.androidbootstrap.fragment;
 
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.activity.FormActivity;
 import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
 import com.innovidio.androidbootstrap.databinding.DialogCarwashDetailsBinding;
 import com.innovidio.androidbootstrap.databinding.DialogFuelupDetailsBinding;
@@ -38,6 +40,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import static com.innovidio.androidbootstrap.Constants.ACTIVITY;
+import static com.innovidio.androidbootstrap.Constants.CAR_WASH_FORM;
+import static com.innovidio.androidbootstrap.Constants.FUEL_UP_FORM;
+import static com.innovidio.androidbootstrap.Constants.SERVICE_FORM;
+import static com.innovidio.androidbootstrap.Constants.TRIP_FORM;
 
 
 /**
@@ -140,10 +148,15 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
 
         fuelupDetailsBinding.btnDelete.setOnClickListener(view -> {
             fuelUpViewModel.deleteFuelUp(fuelUp);
+            exitDialog.dismiss();
+        });
+
+        fuelupDetailsBinding.btnEdit.setOnClickListener(view -> {
+            startFormActivity(FUEL_UP_FORM);
+            exitDialog.dismiss();
         });
 
         exitDialog.show();
-
 
     }
 
@@ -165,9 +178,15 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
 
         carwashDetailsBinding.btnDelete.setOnClickListener(view -> {
             maintenanceViewModel.deleteMaintenanceService(maintenance);
+            exitDialog.dismiss();
         });
 
-        exitDialog.show();
+
+        carwashDetailsBinding.btnEdit.setOnClickListener(view -> {
+            startFormActivity(CAR_WASH_FORM);
+            exitDialog.dismiss();
+        });
+
 
 
     }
@@ -190,9 +209,13 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
 
         maintenanceDetailsBinding.btnDelete.setOnClickListener(view -> {
             maintenanceViewModel.deleteMaintenanceService(maintenance);
+            exitDialog.dismiss();
         });
 
-        exitDialog.show();
+        maintenanceDetailsBinding.btnEdit.setOnClickListener(view -> {
+            startFormActivity(SERVICE_FORM);
+            exitDialog.dismiss();
+        });
 
 
     }
@@ -216,6 +239,14 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
 
         dialogTripDetailsBinding.btnDelete.setOnClickListener(view -> {
             tripViewModel.deleteTrip(trip);
+            exitDialog.dismiss();
+
+        });
+
+
+        dialogTripDetailsBinding.btnEdit.setOnClickListener(view -> {
+            startFormActivity(TRIP_FORM);
+            exitDialog.dismiss();
 
         });
 
@@ -223,6 +254,13 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
 
 
     }
+
+    public void startFormActivity(String formType){
+        Intent intent = new Intent(getContext(), FormActivity.class);
+        intent.putExtra(ACTIVITY, formType);
+        startActivity(intent);
+    }
+
 
     @Override
     public void onFuelUpClick(FuelUp fuelUp) {

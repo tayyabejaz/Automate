@@ -16,8 +16,8 @@ public abstract class CarDao extends BaseDao<Car> {
     public abstract LiveData<List<Car>> getAllCarsOrderById();
 
 
-    @Query("SELECT * FROM Car WHERE makeid =:makeid")
-    public abstract LiveData<List<Car>> getCarByMakerId(String makeid);
+    @Query("SELECT * FROM Car WHERE manufacturer =:makeCompany")
+    public abstract LiveData<List<Car>> getCarByMakerId(String makeCompany);
 
 
     @Query("SELECT * FROM Car")

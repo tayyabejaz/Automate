@@ -17,12 +17,14 @@ import com.innovidio.androidbootstrap.db.dao.FormDao;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
 import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
+import com.innovidio.androidbootstrap.db.dao.UserDao;
 import com.innovidio.androidbootstrap.entity.Alarm;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.Form;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
+import com.innovidio.androidbootstrap.entity.User;
 import com.innovidio.androidbootstrap.entity.models.Feed;
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
 import com.innovidio.androidbootstrap.db.converters.IntegerListConverter;
@@ -35,6 +37,7 @@ import java.io.InputStream;
 @Database(
         entities = {
                 //@TODO add your Entity classes here
+                User.class,
                 Feed.class,
                 Alarm.class,
                 Car.class,
@@ -58,6 +61,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
     //TODO define you DAO against Entity here
     public abstract FeedDao getFeedDao();
+
+    public abstract UserDao getUserDao();
 
     public abstract AlarmDao getAlarmDao();
 //

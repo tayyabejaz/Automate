@@ -53,6 +53,12 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 
+import static com.innovidio.androidbootstrap.Constants.ACTIVITY;
+import static com.innovidio.androidbootstrap.Constants.CAR_WASH_FORM;
+import static com.innovidio.androidbootstrap.Constants.FUEL_UP_FORM;
+import static com.innovidio.androidbootstrap.Constants.SERVICE_FORM;
+import static com.innovidio.androidbootstrap.Constants.TRIP_FORM;
+
 
 public class MainActivity extends DaggerAppCompatActivity implements View.OnClickListener {
     private static final String TAG = "MainActivityLog";
@@ -101,8 +107,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         initializeAdapters();
 
         initList();
-       // addDummyValues();
-
+      //  addDummyValues();
 
         carApiQueries();
         //timeLineData();
@@ -153,9 +158,27 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     }
 
     private void addDummyValues() {
+        Car car = new Car();
+        car.setId(1);
+        car.setModelName("WagonR");
+        car.setManufacturer("Suzuki");
+        car.setMakeYear(2019);
+        car.setSubModel("VXL");
+        car.setEngineFuel("Petrol");
+        car.setFuelCapacityInLiters(20);
+        car.setEnginecc(1000);
+        car.setCurrentOdomaterReading(23403);
+        car.setFuelEconomyCityPer100km(13);
+        car.setFuelEconomyMixedPer100km(15);
+        car.setModelDrive("Front Wheel");
+        car.setTransmissionType("Manual");
+        carViewModel.addCar(car);
+
+
         FuelUp fuelUp = new FuelUp();
         //   fuelUp.setId(1);
         fuelUp.setCarname("Honda");
+        fuelUp.setCarId(1);
         fuelUp.setLiters(10);
         fuelUp.setSaveDate(new Date());
         fuelUp.setLocation("Lahore");
@@ -187,6 +210,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         Trip trip = new Trip();
         // trip.setId(22);
         trip.setAvgspeed(150);
+        trip.setCarId(1);
         trip.setCarname("Honda2");
         trip.setDestination("Islamabad");
         trip.setDistanceCovered(100);
@@ -319,27 +343,19 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 break;
 
             case R.id.iv_add_carwash:
-                Intent carwash = new Intent(getBaseContext(), FormActivity.class);
-                carwash.putExtra("activity", "carwash");
-                startActivity(carwash);
+                startFormActivity(CAR_WASH_FORM);
                 break;
 
             case R.id.iv_add_fuelup:
-                Intent fuelup = new Intent(getBaseContext(), FormActivity.class);
-                fuelup.putExtra("activity", "fuelup");
-                startActivity(fuelup);
+                startFormActivity(FUEL_UP_FORM);
                 break;
 
             case R.id.iv_add_service:
-                Intent service = new Intent(getBaseContext(), FormActivity.class);
-                service.putExtra("activity", "service");
-                startActivity(service);
+                startFormActivity(SERVICE_FORM);
                 break;
 
             case R.id.iv_add_trip:
-                Intent trip = new Intent(getBaseContext(), FormActivity.class);
-                trip.putExtra("activity", "trip");
-                startActivity(trip);
+                startFormActivity(TRIP_FORM);
                 break;
 
             case R.id.main_activity_spinner:
@@ -463,5 +479,11 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding.bottomSheet.ivAddSpeedometer.setBackground(IconProvider.getSpeedometer(this).getBackground());
     }
 
+
+    public void startFormActivity(String formType){
+        Intent intent = new Intent(this, FormActivity.class);
+        intent.putExtra(ACTIVITY, formType);
+        startActivity(intent);
+    }
 
 }

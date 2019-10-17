@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="TimeLineFuelUpItem"
-            type="com.innovidio.androidbootstrap.entity.FuelUp" />
-    </data>
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -36,7 +29,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/mid_card_view" />
 
-           <androidx.cardview.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/mid_card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -175,5 +168,13 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <data>
+
+        <variable
+            name="TimeLineFuelUpItem"
+            type="com.innovidio.androidbootstrap.entity.FuelUp" />
+    </data>
 
 </layout>
