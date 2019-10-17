@@ -1,149 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/mainDashboardGray">
 
-    <Button
-        android:id="@+id/btn_custom_car"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_40sdp"
-        android:layout_marginEnd="@dimen/_40sdp"
-        android:layout_marginBottom="@dimen/_30sdp"
-        android:background="@drawable/app_button_background"
-        android:text="Add Custom View"
-        android:textColor="@color/whiteColor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider_layout" />
-
-    <EditText
-        android:id="@+id/et_car_reg_no"
-        style="@style/formEditText"
-        android:hint="Enter Car Registration"
-        android:paddingStart="@dimen/_20sdp"
-        android:paddingEnd="@dimen/_20sdp"
-        app:layout_constraintBottom_toTopOf="@id/et_year_of_manu"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title" />
-
-    <EditText
-        android:id="@+id/et_year_of_manu"
-        style="@style/formEditText"
-        android:hint="Select Year of Manufacture eg 2019"
-        android:paddingStart="@dimen/_20sdp"
-        android:paddingEnd="@dimen/_20sdp"
-        app:layout_constraintBottom_toTopOf="@id/et_make_of_car"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_car_reg_no" />
-
-    <EditText
-        android:id="@+id/et_make_of_car"
-        style="@style/formEditText"
-        android:hint="Select Make of Car e.g Acura"
-        android:paddingStart="@dimen/_20sdp"
-        android:paddingEnd="@dimen/_20sdp"
-        app:layout_constraintBottom_toTopOf="@id/et_model_of_car"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_year_of_manu" />
-
-    <EditText
-        android:id="@+id/et_model_of_car"
-        style="@style/formEditText"
-        android:hint="Select Model of your Caar e.g ILX"
-        android:paddingStart="@dimen/_20sdp"
-        android:paddingEnd="@dimen/_20sdp"
-        app:layout_constraintBottom_toTopOf="@id/et_sub_model_of_car"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_make_of_car" />
-
-    <EditText
-        android:id="@+id/et_sub_model_of_car"
-        style="@style/formEditText"
-        android:hint="Select Sub Model of your car e.g $DR Sedan"
-        android:paddingStart="@dimen/_20sdp"
-        android:paddingEnd="@dimen/_20sdp"
-        app:layout_constraintBottom_toTopOf="@id/et_current_odometer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_model_of_car" />
-
-    <EditText
-        android:id="@+id/et_current_odometer"
-        style="@style/formEditText"
-        android:hint="Current Odometer Reading"
-        android:paddingStart="@dimen/_20sdp"
-        android:paddingEnd="@dimen/_20sdp"
-        app:layout_constraintBottom_toTopOf="@id/divider_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_sub_model_of_car" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/automate_add_car_form_bg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <LinearLayout
-        android:id="@+id/divider_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/btn_custom_car"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_current_odometer">
+        android:layout_height="match_parent"
+        android:background="@color/mainDashboardGray">
 
-        <TextView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:padding="@dimen/_5sdp"
-            android:text="OR"
-            android:textColor="#767676" />
+            android:src="@drawable/automate_add_car_form_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <View
+        <Button
+            android:id="@+id/btn_custom_car"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_40sdp"
+            android:layout_marginEnd="@dimen/_40sdp"
+            android:layout_marginBottom="@dimen/_30sdp"
+            android:background="@drawable/app_button_background"
+            android:text="@string/add_custom_car"
+            android:textColor="@color/whiteColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_layout" />
+
+        <EditText
+            android:id="@+id/et_car_reg_no"
+            style="@style/EditText_In_Forms"
+            android:hint="Enter Car Registration"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingEnd="@dimen/_20sdp"
+            app:layout_constraintBottom_toTopOf="@id/et_year_of_manu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <EditText
+            android:id="@+id/et_year_of_manu"
+            style="@style/EditText_In_Forms"
+            android:hint="Select Year of Manufacture eg 2019"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingEnd="@dimen/_20sdp"
+            app:layout_constraintBottom_toTopOf="@id/et_make_of_car"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_car_reg_no" />
+
+        <EditText
+            android:id="@+id/et_make_of_car"
+            style="@style/EditText_In_Forms"
+            android:hint="Select Make of Car e.g Acura"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingEnd="@dimen/_20sdp"
+            app:layout_constraintBottom_toTopOf="@id/et_model_of_car"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_year_of_manu" />
+
+        <EditText
+            android:id="@+id/et_model_of_car"
+            style="@style/EditText_In_Forms"
+            android:hint="Select Model of your Caar e.g ILX"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingEnd="@dimen/_20sdp"
+            app:layout_constraintBottom_toTopOf="@id/et_sub_model_of_car"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_make_of_car" />
+
+        <EditText
+            android:id="@+id/et_sub_model_of_car"
+            style="@style/EditText_In_Forms"
+            android:hint="Select Sub Model of your car e.g $DR Sedan"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingEnd="@dimen/_20sdp"
+            app:layout_constraintBottom_toTopOf="@id/et_current_odometer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_model_of_car" />
+
+        <EditText
+            android:id="@+id/et_current_odometer"
+            style="@style/EditText_In_Forms"
+            android:hint="Current Odometer Reading"
+            android:paddingStart="@dimen/_20sdp"
+            android:paddingEnd="@dimen/_20sdp"
+            app:layout_constraintBottom_toTopOf="@id/divider_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_sub_model_of_car" />
+
+
+
+
+        <LinearLayout
+            android:id="@+id/divider_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/btn_custom_car"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_current_odometer">
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/gray_dialog_colour" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:padding="@dimen/_5sdp"
+                android:text="OR"
+                android:textColor="@color/gray_dialog_colour" />
+
+
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/gray_dialog_colour" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:background="#767676" />
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:background="#767676" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="2"
-        android:text="Enter all the details of your car here \n  You can also add Custom Car"
-        android:textColor="#767676"
-        android:textSize="@dimen/_10sdp"
-        app:layout_constraintBottom_toTopOf="@id/et_car_reg_no"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:text="Enter all the details of your car here \n  You can also add Custom Car"
+            android:textColor="#767676"
+            android:textSize="@dimen/_10sdp"
+            app:layout_constraintBottom_toTopOf="@id/et_car_reg_no"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

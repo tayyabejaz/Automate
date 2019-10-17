@@ -11,7 +11,7 @@
 
         <EditText
             android:id="@+id/et_additional_note"
-            style="@style/formEditText"
+            style="@style/EditText_In_Forms"
             android:drawableLeft="@drawable/automate_additional_notes_form_icon"
             android:hint="@string/form_any_additional_notes"
             android:inputType="text"
@@ -22,7 +22,7 @@
 
         <TextView
             android:id="@+id/et_carwash_date"
-            style="@style/formEditText"
+            style="@style/EditText_In_Forms"
             android:drawableLeft="@drawable/automate_set_date_form_icon"
             android:hint="@string/form_set_date"
             app:layout_constraintBottom_toTopOf="@id/et_carwash_time"
@@ -33,7 +33,7 @@
 
         <TextView
             android:id="@+id/et_carwash_time"
-            style="@style/formEditText"
+            style="@style/EditText_In_Forms"
             android:drawableLeft="@drawable/automate_set_time_form_icon"
             android:hint="@string/form_set_time"
             app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
@@ -43,7 +43,7 @@
 
         <EditText
             android:id="@+id/et_odometer_reading"
-            style="@style/formEditText"
+            style="@style/EditText_In_Forms"
             android:drawableLeft="@drawable/automate_odometer_reading_form_icon"
             android:hint="@string/enter_current_odometer_reading"
             android:inputType="number"
@@ -54,7 +54,7 @@
 
         <EditText
             android:id="@+id/et_carwash_location"
-            style="@style/formEditText"
+            style="@style/EditText_In_Forms"
             android:drawableLeft="@drawable/automate_location_form_icon"
             android:hint="@string/enter_form_location"
             android:inputType="text"
@@ -67,7 +67,7 @@
 
         <EditText
             android:id="@+id/et_carwash_cost"
-            style="@style/formEditText"
+            style="@style/EditText_In_Forms"
             android:drawableLeft="@drawable/automate_price_form_icon"
             android:hint="@string/form_add_car_wash_price"
             android:inputType="number"
@@ -81,7 +81,7 @@
 
         <TextView
             android:id="@+id/tv_car_selection"
-            style="@style/formEditText"
+            style="@style/EditText_In_Forms"
             android:hint="@string/select_your_car_hint"
             android:gravity="center_vertical"
             android:background="@drawable/edittext_background"

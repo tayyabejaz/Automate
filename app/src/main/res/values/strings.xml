@@ -24,4 +24,10 @@
     <string name="form_total_price">Total Price</string>
     <string name="form_select_services">Select Services</string>
     <string name="form_get_location">Get Location?</string>
+
+    <string name="currency_unit"> RS </string>
+    <string name="liquid_unit"> L </string>
+    <string name="speed_unit"> Km/h </string>
+    <string name="distance_unit"> Km </string>
+    <string name="add_custom_car">Add Custom Car</string>
 </resources>
