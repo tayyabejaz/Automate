@@ -4,6 +4,12 @@ import android.app.Application;
 
 
 import com.innovidio.androidbootstrap.BaseApplication;
+import com.innovidio.androidbootstrap.di.module.ActivityBuilderModule;
+import com.innovidio.androidbootstrap.di.module.AppModule;
+import com.innovidio.androidbootstrap.di.module.DBModule;
+import com.innovidio.androidbootstrap.di.module.FragmentBuilderModule;
+import com.innovidio.androidbootstrap.di.module.NetworkModule;
+import com.innovidio.androidbootstrap.di.module.ViewModelFactoryModule;
 
 import javax.inject.Singleton;
 

@@ -24,11 +24,13 @@ public class Maintenance implements TimeLineItem {
     private int id;
 
     private int formId;
+    private int carId;
     private String maintenanceName;
     private int maintenanceCost;
-    @ColumnInfo(name = "maintenanceLife")
+    @ColumnInfo(name = "nextMaintenanceDate")
     @TypeConverters(DateConverter.class)
-    private Date maintenanceLife;
+    private Date nextMaintenanceDate;
+    private int maintenanceLife;
     private boolean alarmON;
     @ColumnInfo(name = "maintenanceType")
     @TypeConverters(EnumTypeConverters.class)
@@ -40,6 +42,23 @@ public class Maintenance implements TimeLineItem {
     private String maintenanceLocation;
     private String maintenanceOdometerReading;
 
+    public Maintenance() {
+    }
+
+    @Ignore
+    public Maintenance(int formId, int carId, String maintenancename, int maintenanceprice, Date maintenancelifetime, boolean alramOn, TimeLineItem.Type maintenancetype, Date saveDate, String location, String odometerReading) {
+        this.maintenanceName = maintenancename;
+        this.formId = formId;
+        this.carId = carId;
+        this.maintenanceCost = maintenanceprice;
+        this.nextMaintenanceDate = maintenancelifetime;
+        this.alarmON = alramOn;
+        this.maintenanceType = maintenancetype;
+        this.saveDate = saveDate;
+        this.maintenanceLocation = location;
+        this.maintenanceOdometerReading = odometerReading;
+    }
+
     public int getCarId() {
         return carId;
     }
@@ -47,8 +66,6 @@ public class Maintenance implements TimeLineItem {
     public void setCarId(int carId) {
         this.carId = carId;
     }
-
-    private int carId;
 
     public String getMaintenanceLocation() {
         return maintenanceLocation;
@@ -58,10 +75,6 @@ public class Maintenance implements TimeLineItem {
         this.maintenanceLocation = maintenanceLocation;
     }
 
-    public Maintenance() {
-
-    }
-
     public String getMaintenanceOdometerReading() {
         return maintenanceOdometerReading;
     }
@@ -69,21 +82,6 @@ public class Maintenance implements TimeLineItem {
     public void setMaintenanceOdometerReading(String maintenanceOdometerReading) {
         this.maintenanceOdometerReading = maintenanceOdometerReading;
     }
-
-    @Ignore
-    public Maintenance(int formId, int carId, String maintenancename, int maintenanceprice, Date maintenancelifetime, boolean alramOn, TimeLineItem.Type maintenancetype, Date saveDate, String location, String odometerReading) {
-        this.maintenanceName = maintenancename;
-        this.formId = formId;
-        this.carId = carId;
-        this.maintenanceCost = maintenanceprice;
-        this.maintenanceLife = maintenancelifetime;
-        this.alarmON = alramOn;
-        this.maintenanceType = maintenancetype;
-        this.saveDate = saveDate;
-        this.maintenanceLocation = location;
-        this.maintenanceOdometerReading = odometerReading;
-    }
-
 
     public void setId(int id) {
         this.id = id;
@@ -101,8 +99,8 @@ public class Maintenance implements TimeLineItem {
         this.maintenanceCost = maintenanceCost;
     }
 
-    public void setMaintenanceLife(Date maintenanceLife) {
-        this.maintenanceLife = maintenanceLife;
+    public void setNextMaintenanceDate(Date nextMaintenanceDate) {
+        this.nextMaintenanceDate = nextMaintenanceDate;
     }
 
 
@@ -134,8 +132,8 @@ public class Maintenance implements TimeLineItem {
         return maintenanceCost;
     }
 
-    public Date getMaintenanceLife() {
-        return maintenanceLife;
+    public Date getNextMaintenanceDate() {
+        return nextMaintenanceDate;
     }
 
 
@@ -174,5 +172,13 @@ public class Maintenance implements TimeLineItem {
     @Override
     public Type getType() {
         return maintenanceType;
+    }
+
+    public int getMaintenanceLife() {
+        return maintenanceLife;
+    }
+
+    public void setMaintenanceLife(int maintenanceLife) {
+        this.maintenanceLife = maintenanceLife;
     }
 }

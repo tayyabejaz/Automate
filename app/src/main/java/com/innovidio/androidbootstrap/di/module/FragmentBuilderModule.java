@@ -1,4 +1,4 @@
-package com.innovidio.androidbootstrap.di;
+package com.innovidio.androidbootstrap.di.module;
 
 import com.innovidio.androidbootstrap.fragment.AddCarWash;
 import com.innovidio.androidbootstrap.fragment.AddFuelUp;

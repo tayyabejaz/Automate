@@ -11,7 +11,6 @@ import android.view.animation.TranslateAnimation;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,7 +37,6 @@ import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.network.dto.CarMakesByYear;
 import com.innovidio.androidbootstrap.network.dto.CarModelName;
 import com.innovidio.androidbootstrap.network.dto.CarTrimsInfo;
-import com.innovidio.androidbootstrap.repository.CarQueryRepository;
 import com.innovidio.androidbootstrap.viewmodel.CarQueryViewModel;
 import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
 import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
@@ -201,7 +199,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         maintenance.setAlarmON(true);
         maintenance.setFormId(10);
         maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
-        maintenance.setMaintenanceLife(new Date());
+        maintenance.setNextMaintenanceDate(new Date());
         maintenance.setMaintenanceName("Service2");
 
         //maintenanceDao.insert(maintenance);

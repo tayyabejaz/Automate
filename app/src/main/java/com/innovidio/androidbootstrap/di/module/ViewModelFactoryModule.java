@@ -1,4 +1,4 @@
-package com.innovidio.androidbootstrap.di;
+package com.innovidio.androidbootstrap.di.module;
 
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;

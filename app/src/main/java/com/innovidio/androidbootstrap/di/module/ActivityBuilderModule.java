@@ -1,4 +1,4 @@
-package com.innovidio.androidbootstrap.di;
+package com.innovidio.androidbootstrap.di.module;
 
 import com.innovidio.androidbootstrap.activity.FormActivity;
 import com.innovidio.androidbootstrap.activity.MainActivity;

@@ -8,9 +8,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.innovidio.androidbootstrap.entity.Maintenance;
+import com.innovidio.androidbootstrap.entity.MaintenanceWithAlarms;
 import com.innovidio.androidbootstrap.entity.models.TimeLine;
 import com.innovidio.androidbootstrap.repository.MaintenanceRepository;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -36,8 +38,12 @@ public class MaintenanceViewModel extends ViewModel {
         this.maintenanceRepository.deleteMaintenanceService(maintenance);
     }
 
-    public void updateaintenanceService(Maintenance maintenance){
+    public void updatMaintenanceService(Maintenance maintenance){
         this.maintenanceRepository.updateMaintenanceService(maintenance);
+    }
+
+    public LiveData<MaintenanceWithAlarms> getNextComingMaintenanceWithAlarm(int carId, Date currentdate){
+        return this.maintenanceRepository.getNextComingMaintenanceWithAlarm(carId, currentdate);
     }
 
 
