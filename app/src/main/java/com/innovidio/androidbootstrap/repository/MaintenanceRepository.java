@@ -11,6 +11,7 @@ import com.innovidio.androidbootstrap.entity.MaintenanceWithAlarms;
 import com.innovidio.androidbootstrap.entity.models.TimeLine;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -71,6 +72,14 @@ public class MaintenanceRepository {
 
     public List<Maintenance> getAllMaintenanceTimeLine(int carId){
         return this.maintenanceDao.getAllMaintenanceTimeline(carId);
+    }
+
+    public List<Maintenance> getAllMaintenanceWithTypeTimeLine(int carId, TimeLineItem.Type type){
+        return this.maintenanceDao.getAllMaintenanceWithTypeTimeLine(carId, type);
+    }
+
+    public LiveData<MaintenanceWithAlarms> getNextComingMaintenanceWithAlarm(int carId, Date currentDate){
+        return this.maintenanceDao.getNextMaintenanceWithAlarm(carId, currentDate);
     }
 }
 

@@ -35,7 +35,7 @@ public class ServiceDialogAdapter extends RecyclerView.Adapter<ServiceDialogAdap
             maintenance.setMaintenanceName("Test Title");
             maintenance.setMaintenanceCost(10000);
             maintenance.setSaveDate(new Date());
-            maintenance.setMaintenanceLife(new Date());
+            maintenance.setNextMaintenanceDate(new Date());
             dataList.add(maintenance);
         }
     }

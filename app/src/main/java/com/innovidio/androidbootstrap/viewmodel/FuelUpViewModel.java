@@ -55,4 +55,16 @@ public class FuelUpViewModel extends ViewModel {
     public LiveData<FuelUp> getRecentFuelUp(){
         return this.fuelUpRepository.getRecentFuelUp();
     }
+
+    public LiveData<Float> getFuelTankPercentage(){
+        // todo add code for getting percentage of remaining fuel
+      //  this.fuelUpRepository.getAllFuelkTankPercentage();
+        return getRemainingFuel();
+    }
+
+    private LiveData<Float> getRemainingFuel(){
+        MutableLiveData<Float> fuelUpLiveData = new MutableLiveData<>();
+        fuelUpLiveData.setValue(19f);
+        return fuelUpLiveData;
+    }
 }

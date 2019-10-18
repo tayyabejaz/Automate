@@ -76,4 +76,8 @@ public class FuelUpRepository {
     public LiveData<List<FuelUp>> getAllFuelUpsForTimeLine(){
         return this.fuelDao.getAllFuelUpsForTimeline();
     }
+
+    public LiveData<List<FuelUp>> getAllFuelkTankPercentage(){
+        return this.fuelDao.getFuelTankPercentage();
+    }
 }

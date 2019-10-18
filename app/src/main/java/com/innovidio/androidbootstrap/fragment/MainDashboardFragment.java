@@ -39,28 +39,33 @@ import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+
+import dagger.android.support.DaggerFragment;
+
 import static com.innovidio.androidbootstrap.Constants.ACTIVITY;
 import static com.innovidio.androidbootstrap.Constants.CAR_WASH_FORM;
 import static com.innovidio.androidbootstrap.Constants.FUEL_UP_FORM;
 import static com.innovidio.androidbootstrap.Constants.SERVICE_FORM;
 import static com.innovidio.androidbootstrap.Constants.TRIP_FORM;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainDashboardFragment extends Fragment implements TimelineItemClickListener, View.OnClickListener {
 
+public class MainDashboardFragment extends DaggerFragment implements TimelineItemClickListener, View.OnClickListener {
     @Inject
     ViewModelProviderFactory providerFactory;
     private TimelineAdapter timelineAdapter;
     private FragmentMainDashboardBinding binding;
     private List<TimeLineItem> dataList = new ArrayList<>();
-
-    TimeLineViewModel timeLineViewModel = null;
-    FuelUpViewModel fuelUpViewModel = null;
-    MaintenanceViewModel maintenanceViewModel = null;
-    TripViewModel tripViewModel = null;
+    @Inject
+    TimeLineViewModel timeLineViewModel;
+    @Inject
+    FuelUpViewModel fuelUpViewModel;
+    @Inject
+    MaintenanceViewModel maintenanceViewModel;
+    @Inject
+    TripViewModel tripViewModel;
 
 
     private List<TimeLineItem> timeLineItemList = new ArrayList<>();
@@ -70,12 +75,8 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
     }
 
     private void init() {
-        timeLineViewModel = new ViewModelProvider(getActivity(), providerFactory).get(TimeLineViewModel.class);
-        maintenanceViewModel = new ViewModelProvider(getActivity(), providerFactory).get(MaintenanceViewModel.class);
-        fuelUpViewModel = new ViewModelProvider(getActivity(), providerFactory).get(FuelUpViewModel.class);
-        tripViewModel = new ViewModelProvider(getActivity(), providerFactory).get(TripViewModel.class);
-
         timeLineData();
+        timeLineFilteredData();
 
         timelineAdapter = new TimelineAdapter(getContext(), this, dataList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -128,6 +129,33 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
         });
     }
 
+    private void timeLineFilteredData() {
+        timeLineViewModel.getFilteredTimelineMergerData(1, true, true, false, false).observe(this, timeLineItems -> {
+            if (timeLineItems != null && timeLineItems.size() > 0) {
+
+                timeLineItemList.addAll(timeLineItems);
+                //   timeLineItemList = Sorting.sortList(timeLineItemList);
+                timelineAdapter.updateData(timeLineItemList);
+
+                switch (timeLineItems.get(0).getType()) {
+                    case FUEL:
+                        FuelUp fuelUp = (FuelUp) timeLineItems.get(0);
+                        Log.d("MainDashboardFragment", "FuelUp: " + fuelUp.getCarname());
+                        break;
+
+                    case MAINTENANCE:
+                        Maintenance maintenance = (Maintenance) timeLineItems.get(0);
+                        Log.d("MainDashboardFragment", "Maintenance: " + maintenance.getMaintenanceName());
+                        break;
+
+                    case TRIP:
+                        Trip trip = (Trip) timeLineItems.get(0);
+                        Log.d("MainDashboardFragment", "Trip: " + trip.getTripTitle());
+                        break;
+                }
+            }
+        });
+    }
     private void initializeListeners() {
         binding.topFragmentedLayout.firstAddFuel.setOnClickListener(this);
     }
@@ -190,7 +218,7 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
             exitDialog.dismiss();
         });
 
-
+        exitDialog.show();
 
     }
 
@@ -224,6 +252,7 @@ public class MainDashboardFragment extends Fragment implements TimelineItemClick
             exitDialog.dismiss();
         });
 
+        exitDialog.show();
 
     }
 

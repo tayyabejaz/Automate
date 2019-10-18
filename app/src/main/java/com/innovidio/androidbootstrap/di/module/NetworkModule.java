@@ -1,4 +1,4 @@
-package com.innovidio.androidbootstrap.di;
+package com.innovidio.androidbootstrap.di.module;
 
 
 import android.util.Log;

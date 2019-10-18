@@ -11,7 +11,6 @@ import android.view.animation.TranslateAnimation;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -71,8 +70,23 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     @Inject
     ViewModelProviderFactory providerFactory;
+
     @Inject
     AppPreferences appPreferences;
+
+    @Inject
+    CarViewModel carViewModel;
+    @Inject
+    MaintenanceViewModel maintenanceViewModel;
+    @Inject
+    TripViewModel tripViewModel;
+    @Inject
+    CarQueryViewModel carQueryViewModel;
+    @Inject
+    FuelUpViewModel fuelUpViewModel;
+    @Inject
+    TimeLineViewModel timeLineViewModel;
+
 
     private ActivityMainBinding mainBinding;
     private ArrayList<SpinnerDataModel> dataList;
@@ -82,13 +96,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     private NavController navigationController;
     private boolean isUp, isDown = false;
 
-    CarViewModel carViewModel = null;
-    MaintenanceViewModel maintenanceViewModel = null;
-    TripViewModel tripViewModel = null;
-    CarQueryViewModel carQueryViewModel = null;
-    TimeLineViewModel timeLineViewModel = null;
-    FuelUpViewModel fuelUpViewModel = null;
-
     List<TimeLineItem> timeLineItemList = new ArrayList<>();
 
     @Override
@@ -97,14 +104,15 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         navigationController = Navigation.findNavController(MainActivity.this, R.id.nav_main_host);
 
+        // only need if activity is not extends with DaggerAppCompatActivity or not added in di builder module
+       // timeLineViewModel = new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
+
         //Initialize icons for Bottom Sheet
         initializeIcons();
         initializeListeners();
-        initializeVIewModels();
         initializeAdapters();
-
         initList();
-//        addDummyValues();
+        //addDummyValues();
         carApiQueries();
         //timeLineData();
         fuelUpData();
@@ -119,15 +127,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
         mainBinding.spinnerCustomLayout.rvCarSpinnerLayout.setLayoutManager(layoutManager);
         mainBinding.spinnerCustomLayout.rvCarSpinnerLayout.setAdapter(customMainSpinnerAdapter);
-    }
-
-    private void initializeVIewModels() {
-        carQueryViewModel = new ViewModelProvider(this, providerFactory).get(CarQueryViewModel.class);
-        timeLineViewModel = new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
-        fuelUpViewModel = new ViewModelProvider(this, providerFactory).get(FuelUpViewModel.class);
-        carViewModel = new ViewModelProvider(this, providerFactory).get(CarViewModel.class);
-        maintenanceViewModel = new ViewModelProvider(this, providerFactory).get(MaintenanceViewModel.class);
-        tripViewModel = new ViewModelProvider(this, providerFactory).get(TripViewModel.class);
     }
 
     private void initializeListeners() {
@@ -197,7 +196,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         maintenance.setAlarmON(true);
         maintenance.setFormId(10);
         maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
-        maintenance.setMaintenanceLife(new Date());
+        maintenance.setNextMaintenanceDate(new Date());
         maintenance.setMaintenanceName("Service2");
 
         //maintenanceDao.insert(maintenance);

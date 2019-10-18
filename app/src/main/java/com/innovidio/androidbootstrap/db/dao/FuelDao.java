@@ -38,5 +38,8 @@ public abstract class FuelDao extends BaseDao<FuelUp> {
     @Query("SELECT * FROM FuelUp  ORDER BY id DESC LIMIT 1")
     public abstract  LiveData<FuelUp> getRecentFuelUp();
 
+    @Query("SELECT * FROM FuelUp")
+    public abstract  LiveData<List<FuelUp>> getFuelTankPercentage();
+
 }
 
