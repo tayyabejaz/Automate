@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -16,10 +16,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.adapter.ServiceDialogAdapter;
 import com.innovidio.androidbootstrap.activity.FormActivity;
 import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
+import com.innovidio.androidbootstrap.databinding.DialogAddFuelCapacityBinding;
 import com.innovidio.androidbootstrap.databinding.DialogCarwashDetailsBinding;
 import com.innovidio.androidbootstrap.databinding.DialogFuelupDetailsBinding;
 import com.innovidio.androidbootstrap.databinding.DialogMaintenanceDetailsBinding;
@@ -35,10 +36,8 @@ import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
 import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
@@ -52,8 +51,8 @@ import static com.innovidio.androidbootstrap.Constants.TRIP_FORM;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainDashboardFragment extends DaggerFragment implements TimelineItemClickListener {
 
+public class MainDashboardFragment extends DaggerFragment implements TimelineItemClickListener, View.OnClickListener {
     @Inject
     ViewModelProviderFactory providerFactory;
     private TimelineAdapter timelineAdapter;
@@ -89,6 +88,7 @@ public class MainDashboardFragment extends DaggerFragment implements TimelineIte
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init();
+        initializeListeners();
     }
 
     @Override
@@ -156,13 +156,15 @@ public class MainDashboardFragment extends DaggerFragment implements TimelineIte
             }
         });
     }
+    private void initializeListeners() {
+        binding.topFragmentedLayout.firstAddFuel.setOnClickListener(this);
+    }
 
     private void showFuelTypeDialog(FuelUp fuelUp) {
         DialogFuelupDetailsBinding fuelupDetailsBinding;
         fuelupDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_fuelup_details, null, false);
         fuelupDetailsBinding.setFuelupdata(fuelUp);
         View dialogView = fuelupDetailsBinding.getRoot();
-
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         final AlertDialog exitDialog = dialogBuilder.create();
@@ -176,6 +178,7 @@ public class MainDashboardFragment extends DaggerFragment implements TimelineIte
 
         fuelupDetailsBinding.btnDelete.setOnClickListener(view -> {
             fuelUpViewModel.deleteFuelUp(fuelUp);
+
             exitDialog.dismiss();
         });
 
@@ -239,6 +242,10 @@ public class MainDashboardFragment extends DaggerFragment implements TimelineIte
             maintenanceViewModel.deleteMaintenanceService(maintenance);
             exitDialog.dismiss();
         });
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
+        ServiceDialogAdapter adapter = new ServiceDialogAdapter();
+        maintenanceDetailsBinding.rvServiceDialog.setAdapter(adapter);
+        maintenanceDetailsBinding.rvServiceDialog.setLayoutManager(layoutManager);
 
         maintenanceDetailsBinding.btnEdit.setOnClickListener(view -> {
             startFormActivity(SERVICE_FORM);
@@ -284,14 +291,24 @@ public class MainDashboardFragment extends DaggerFragment implements TimelineIte
 
     }
 
+    private void showAddFuelUpDialog() {
+        DialogAddFuelCapacityBinding binding;
+        binding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_add_fuel_capacity, null, false);
+        View dialogView = binding.getRoot();
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        final AlertDialog exitDialog = dialogBuilder.create();
+        exitDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        exitDialog.setView(dialogView);
+        exitDialog.show();
+    }
+
     public void startFormActivity(String formType){
         Intent intent = new Intent(getContext(), FormActivity.class);
         intent.putExtra(ACTIVITY, formType);
         startActivity(intent);
     }
 
-
-    @Override
+        @Override
     public void onFuelUpClick(FuelUp fuelUp) {
         showFuelTypeDialog(fuelUp);
     }
@@ -309,5 +326,14 @@ public class MainDashboardFragment extends DaggerFragment implements TimelineIte
     @Override
     public void onTripsClick(Trip trip) {
         showTripDialog(trip);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.first_add_fuel:
+                showAddFuelUpDialog();
+                break;
+        }
     }
 }

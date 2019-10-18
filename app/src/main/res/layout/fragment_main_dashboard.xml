@@ -21,6 +21,7 @@
                 android:layout_height="match_parent">
 
                 <include
+                    android:id="@+id/top_fragmented_layout"
                     layout="@layout/item_boxes_main_fragment"/>
 
                 <androidx.recyclerview.widget.RecyclerView

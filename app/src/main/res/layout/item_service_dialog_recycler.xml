@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/name_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cost_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Name"
+                android:textColor="@color/gray_dialog_colour" />
+
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:text="@{itemServiceData.maintenanceName}"
+                android:textColor="@color/blackColor"
+                tools:text="Name" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/cost_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/first_divider"
+            app:layout_constraintStart_toEndOf="@id/name_layout"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Price"
+                android:textColor="@color/gray_dialog_colour" />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="Price"
+                android:textColor="@color/blackColor"
+                tools:text="Price" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/life_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/second_divider"
+            app:layout_constraintStart_toEndOf="@id/first_divider"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Life"
+                android:textColor="@color/gray_dialog_colour" />
+
+            <TextView
+                android:id="@+id/tv_life"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@{itemServiceData.saveDateInString}"
+                android:textColor="@color/blackColor"
+                tools:text="Lifetime" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/reminder_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/life_layout"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reminder"
+                android:textColor="@color/gray_dialog_colour" />
+
+            <ImageView
+                android:id="@+id/tv_reminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:src="@{itemServiceData.alarmON ? @drawable/automate_reminder_on_dialog_icon : @drawable/automate_reminder_off_dialog_icon}"
+                android:textColor="@color/blackColor"
+                tools:src="@drawable/automate_reminder_on_dialog_icon" />
+
+
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/second_divider"
+            android:layout_width="@dimen/_1sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@color/gray_dialog_colour"
+            app:layout_constraintBottom_toBottomOf="@id/life_layout"
+            app:layout_constraintEnd_toStartOf="@id/reminder_layout"
+            app:layout_constraintStart_toEndOf="@id/life_layout"
+            app:layout_constraintTop_toTopOf="@id/life_layout" />
+
+        <View
+            android:id="@+id/first_divider"
+            android:layout_width="1dp"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@color/gray_dialog_colour"
+            app:layout_constraintBottom_toBottomOf="@id/cost_layout"
+            app:layout_constraintEnd_toStartOf="@id/life_layout"
+            app:layout_constraintStart_toEndOf="@id/cost_layout"
+            app:layout_constraintTop_toTopOf="@id/cost_layout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <variable
+            name="itemServiceData"
+            type="com.innovidio.androidbootstrap.entity.Maintenance" />
+    </data>
+</layout>

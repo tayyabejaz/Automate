@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activity.SplashActivity"></activity>
         <activity android:name=".activity.AddNewCarActivity" />
         <activity android:name=".activity.FormActivity" />
         <activity android:name=".activity.MainActivity">
@@ -20,7 +21,6 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-
             </intent-filter>
         </activity>
     </application>

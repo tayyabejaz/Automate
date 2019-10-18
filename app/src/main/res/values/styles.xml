@@ -17,7 +17,7 @@
         <item name="android:textColor">@color/blackColor</item>
     </style>
 
-    <style name="formEditText">
+    <style name="EditText_In_Forms">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">58dp</item>
         <item name="android:paddingStart">10dp</item>
@@ -32,5 +32,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:maxLines"> 1 </item>
     </style>
+
+
 
 </resources>

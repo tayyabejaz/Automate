@@ -12,10 +12,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/first_add_fuel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:layout_weight="1"
+            android:clickable="true"
+            android:onClick="onClick"
             android:background="@drawable/first_card_gradient"
             android:orientation="vertical">
 
@@ -46,6 +49,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/second_next_maintenance"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
@@ -79,6 +83,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/third_fuel_consumption"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"

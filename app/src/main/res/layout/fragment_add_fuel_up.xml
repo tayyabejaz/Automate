@@ -19,7 +19,7 @@
 
                 <EditText
                     android:id="@+id/et_additional_note"
-                    style="@style/formEditText"
+                    style="@style/EditText_In_Forms"
                     android:drawableLeft="@drawable/automate_additional_notes_form_icon"
                     android:hint="Any Additional Notes"
                     android:inputType="text"
@@ -29,7 +29,7 @@
 
                 <EditText
                     android:id="@+id/et_odometer_reading"
-                    style="@style/formEditText"
+                    style="@style/EditText_In_Forms"
                     android:drawableLeft="@drawable/automate_odometer_reading_form_icon"
                     android:hint="Enter Current Odometer Reading"
                     android:inputType="number"
@@ -40,7 +40,7 @@
 
                 <EditText
                     android:id="@+id/tv_fuelup_location"
-                    style="@style/formEditText"
+                    style="@style/EditText_In_Forms"
                     android:drawableLeft="@drawable/automate_location_form_icon"
                     android:hint="@string/enter_form_location"
                     app:layout_constraintBottom_toTopOf="@id/et_additional_note"
@@ -50,7 +50,7 @@
 
                 <EditText
                     android:id="@+id/et_fuelup_cost"
-                    style="@style/formEditText"
+                    style="@style/EditText_In_Forms"
                     android:autofillHints="Add Car Wash Price"
                     android:drawableLeft="@drawable/automate_price_form_icon"
                     android:hint="@string/form_total_price"
@@ -62,7 +62,7 @@
 
                 <EditText
                     android:id="@+id/et_price_per_unit"
-                    style="@style/formEditText"
+                    style="@style/EditText_In_Forms"
                     android:drawableStart="@drawable/automate_unit_price_form_icon"
                     android:hint="@string/form_enter_price_per_unit"
                     android:paddingEnd="30dp"
@@ -73,7 +73,7 @@
 
                 <EditText
                     android:id="@+id/et_no_of_litre"
-                    style="@style/formEditText"
+                    style="@style/EditText_In_Forms"
                     android:drawableStart="@drawable/automate_number_of_liters_form_icon"
                     android:hint="@string/form_enter_no_of_litres"
                     android:paddingEnd="30dp"
@@ -92,7 +92,7 @@
 
                 <TextView
                     android:id="@+id/tv_fuelup_date"
-                    style="@style/formEditText"
+                    style="@style/EditText_In_Forms"
                     android:drawableLeft="@drawable/automate_set_date_form_icon"
                     android:hint="Set Date"
                     app:layout_constraintBottom_toTopOf="@id/tv_fuelup_time"
@@ -102,7 +102,7 @@
 
                 <TextView
                     android:id="@+id/tv_fuelup_time"
-                    style="@style/formEditText"
+                    style="@style/EditText_In_Forms"
                     android:drawableLeft="@drawable/automate_set_time_form_icon"
                     android:hint="Set Time"
                     app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
@@ -112,7 +112,7 @@
 
                 <TextView
                     android:id="@+id/et_car_selection"
-                    style="@style/formEditText"
+                    style="@style/EditText_In_Forms"
                     android:layout_marginStart="50dp"
                     android:layout_marginEnd="50dp"
                     android:drawableLeft="@drawable/automate_select_car_placeholder"
@@ -125,7 +125,7 @@
 
                 <TextView
                     android:id="@+id/tv_fuel_type"
-                    style="@style/formEditText"
+                    style="@style/EditText_In_Forms"
                     android:drawableLeft="@drawable/automate_fuel_type_form_icon"
                     android:hint="@string/form_select_fuel_type"
                     android:inputType="numberDecimal"

@@ -7,7 +7,7 @@
         android:endColor="@color/primaryDark"
         android:startColor="@color/primaryLight" />
     <size
-        android:width="70sp"
-        android:height="70sp" />
+        android:width="@dimen/_50sdp"
+        android:height="@dimen/_50sdp" />
 
 </shape>

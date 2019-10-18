@@ -24,6 +24,15 @@ public class AddNewCarActivity extends AppCompatActivity implements OnFragmentCl
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        binding.ivNewCarBack.setOnClickListener(view -> {
+            finish();
+        });
+    }
+
+    @Override
     public void onCustomFragmentClick() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_newcar_fragment,new AddCustomCar(this)).commit();
     }

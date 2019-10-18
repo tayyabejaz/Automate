@@ -11,7 +11,7 @@
 
         <EditText
             android:id="@+id/et_additional_note"
-            style="@style/formEditText"
+            style="@style/EditText_In_Forms"
             android:drawableLeft="@drawable/automate_additional_notes_form_icon"
             android:hint="Any Additional Notes"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -21,7 +21,7 @@
 
         <TextView
             android:id="@+id/tv_services_date"
-            style="@style/formEditText"
+            style="@style/EditText_In_Forms"
             android:drawableLeft="@drawable/automate_set_date_form_icon"
             android:hint="Set Date"
             app:layout_constraintBottom_toTopOf="@id/tv_services_time"
@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@+id/tv_services_time"
-            style="@style/formEditText"
+            style="@style/EditText_In_Forms"
             android:drawableLeft="@drawable/automate_set_time_form_icon"
             android:hint="Time"
             app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
@@ -42,7 +42,7 @@
 
         <EditText
             android:id="@+id/et_odometer_reading"
-            style="@style/formEditText"
+            style="@style/EditText_In_Forms"
             android:drawableLeft="@drawable/automate_odometer_reading_form_icon"
             android:hint="Odometer Reading"
             android:inputType="number"
@@ -53,7 +53,7 @@
 
         <EditText
             android:id="@+id/et_carwash_location"
-            style="@style/formEditText"
+            style="@style/EditText_In_Forms"
             android:drawableLeft="@drawable/automate_location_form_icon"
             android:hint="Enter Location"
             app:layout_constraintBottom_toTopOf="@id/et_additional_note"
@@ -75,7 +75,7 @@
 
         <EditText
             android:id="@+id/et_carwash_cost"
-            style="@style/formEditText"
+            style="@style/EditText_In_Forms"
             android:autofillHints="Add Car Wash Price"
             android:drawableLeft="@drawable/automate_select_services_form_icon"
             android:hint="@string/form_select_services"
@@ -87,7 +87,7 @@
 
         <TextView
             android:id="@+id/et_car_selection"
-            style="@style/formEditText"
+            style="@style/EditText_In_Forms"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:drawableLeft="@drawable/automate_select_car_placeholder"
