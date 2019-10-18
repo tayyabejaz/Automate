@@ -12,6 +12,7 @@ import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
 import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
+import com.innovidio.androidbootstrap.viewmodel.UserViewModel;
 
 import dagger.Binds;
 import dagger.Module;
@@ -26,6 +27,11 @@ public abstract class ViewModelFactoryModule {
 
 
     // todo add all viewModels here
+    @Binds
+    @IntoMap
+    @ViewModelKey(UserViewModel.class)
+    abstract ViewModel bindUserViewModel(UserViewModel userViewModel);
+
     @Binds
     @IntoMap
     @ViewModelKey(CarQueryViewModel.class)

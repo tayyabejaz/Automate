@@ -41,9 +41,10 @@ public class TimeLineViewModel extends ViewModel {
     LiveData<List<Maintenance>> maintenanceLiveData = null;
     LiveData<List<Trip>> tripsLiveData = null;
 
-   // MutableLiveData<List<? extends TimeLineItem>> timeLineList = new MutableLiveData<>();
+    MutableLiveData<List<? extends TimeLineItem>> timeLineList = new MutableLiveData<>();
 
     MediatorLiveData<List<TimeLineItem>> timeLineLiveDataMerger = new MediatorLiveData<>();
+    MediatorLiveData<List<TimeLineItem>> timeLineFilteredLiveDataMerger = new MediatorLiveData<>();
 
     @Inject
     public TimeLineViewModel(TripRepository tripRepository, FuelUpRepository fuelUpRepository, MaintenanceRepository maintenanceRepository) {
@@ -91,7 +92,12 @@ public class TimeLineViewModel extends ViewModel {
         return timeLineLiveDataMerger;
     }
 
-    public void getAllTimelineData(int carId ) {
+    public MediatorLiveData<List<TimeLineItem>> getFilteredTimelineMergerData(int carId, boolean trip, boolean fuelup, boolean maintenance, boolean carWash) {
+        getFilteredTimelineData(carId, trip, fuelup, maintenance, carWash);
+        return timeLineFilteredLiveDataMerger;
+    }
+
+    public void getAllTimelineData(int carId) {
         List<Trip> trips = tripRepository.getAllTripsTimeline(carId);
         List<Maintenance> maintenances = maintenanceRepository.getAllMaintenanceTimeLine(carId);
         List<FuelUp> fuelUps = fuelUpRepository.getAllFuelUpsTimeLine(carId);
@@ -102,6 +108,33 @@ public class TimeLineViewModel extends ViewModel {
         timeLineItems = Sorting.sortList(timeLineItems);
         List<TimeLineItem> finalTimeLineItems = timeLineItems;
         timeLineLiveDataMerger.addSource(maintenanceLiveData, value -> timeLineLiveDataMerger.setValue(finalTimeLineItems));
+    }
+
+    public void getFilteredTimelineData(int carId, boolean trip, boolean fuelup, boolean maintenance, boolean carwash ) {
+        List<TimeLineItem> timeLineItems =  new ArrayList<>();
+        if (carwash && maintenance){
+            List<Maintenance> maintenanceList = maintenanceRepository.getAllMaintenanceTimeLine(carId);
+            timeLineItems.addAll(maintenanceList);
+        }else if (maintenance){
+            List<Maintenance> maintenanceList = maintenanceRepository.getAllMaintenanceWithTypeTimeLine(carId, TimeLineItem.Type.MAINTENANCE);
+            timeLineItems.addAll(maintenanceList);
+        }else if (carwash){
+            List<Maintenance> maintenanceList = maintenanceRepository.getAllMaintenanceWithTypeTimeLine(carId, TimeLineItem.Type.CAR_WASH);
+            timeLineItems.addAll(maintenanceList);
+        }
+
+        if (fuelup){
+            List<FuelUp> fuelUpList = fuelUpRepository.getAllFuelUpsTimeLine(carId);
+            timeLineItems.addAll(fuelUpList);
+        }
+        if (trip){
+            List<Trip> tripsList = tripRepository.getAllTripsTimeline(carId);
+            timeLineItems.addAll(tripsList);
+        }
+
+        timeLineItems = Sorting.sortList(timeLineItems);
+        List<TimeLineItem> finalTimeLineItems = timeLineItems;
+        timeLineFilteredLiveDataMerger.addSource(maintenanceLiveData, value -> timeLineFilteredLiveDataMerger.setValue(finalTimeLineItems));
     }
 
 

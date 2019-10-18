@@ -173,6 +173,6 @@ public class Maintenance implements TimeLineItem {
 
     @Override
     public Type getType() {
-        return Type.MAINTENANCE;
+        return maintenanceType;
     }
 }

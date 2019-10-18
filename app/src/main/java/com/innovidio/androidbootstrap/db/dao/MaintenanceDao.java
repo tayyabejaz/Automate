@@ -49,4 +49,7 @@ public abstract class MaintenanceDao extends BaseDao<Maintenance>{
     @Query("SELECT * FROM Maintenance WHERE carId =:carId")
     public abstract List<Maintenance> getAllMaintenanceTimeline(int carId);
 
+    @Query("SELECT * FROM Maintenance WHERE carId =:carId AND maintenanceType =:type")
+    public abstract List<Maintenance> getAllMaintenanceWithTypeTimeLine(int carId, TimeLineItem.Type type);
+
 }

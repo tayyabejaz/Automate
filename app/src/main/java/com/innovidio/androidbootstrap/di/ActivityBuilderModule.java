@@ -7,6 +7,7 @@ import com.innovidio.androidbootstrap.fragment.AddFuelUp;
 import com.innovidio.androidbootstrap.fragment.AddServices;
 import com.innovidio.androidbootstrap.fragment.AddTrip;
 import com.innovidio.androidbootstrap.fragment.BaseFragment;
+import com.innovidio.androidbootstrap.fragment.MainDashboardFragment;
 
 import dagger.Module;
 import dagger.Provides;
@@ -21,23 +22,5 @@ public abstract class ActivityBuilderModule {
     @ContributesAndroidInjector
     abstract FormActivity contributeFormActivity();
 
-    @ContributesAndroidInjector
-    abstract BaseFragment contributeBaseFragment();
 
-    @ContributesAndroidInjector
-    abstract AddCarWash contributeAddCarWashFragment();
-
-    @ContributesAndroidInjector
-    abstract AddFuelUp contributeAddFuelUpFragment();
-
-    @ContributesAndroidInjector
-    abstract AddServices contributeAddServiceFragment();
-
-    @ContributesAndroidInjector
-    abstract AddTrip contributeAddTripFragment();
-
-    @Provides
-    static String firstInjectionString() {
-        return "My first Injection String";
-    }
 }
