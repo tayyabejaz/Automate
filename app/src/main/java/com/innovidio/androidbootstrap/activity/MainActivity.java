@@ -21,7 +21,7 @@ import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.IconProvider;
 import com.innovidio.androidbootstrap.Utils.Sorting;
-import com.innovidio.androidbootstrap.adapter.SpinnerAdapter;
+import com.innovidio.androidbootstrap.adapter.CustomMainSpinnerAdapter;
 import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
 import com.innovidio.androidbootstrap.databinding.ActivityMainBinding;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
@@ -35,9 +35,6 @@ import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.entity.models.SpinnerDataModel;
 import com.innovidio.androidbootstrap.entity.models.TimeLine;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
-import com.innovidio.androidbootstrap.network.dto.CarMakesByYear;
-import com.innovidio.androidbootstrap.network.dto.CarModelName;
-import com.innovidio.androidbootstrap.network.dto.CarTrimsInfo;
 import com.innovidio.androidbootstrap.viewmodel.CarQueryViewModel;
 import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
 import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
@@ -79,7 +76,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     private ActivityMainBinding mainBinding;
     private ArrayList<SpinnerDataModel> dataList;
-    private SpinnerAdapter spinnerAdapter;
+    private CustomMainSpinnerAdapter customMainSpinnerAdapter;
     private TimelineAdapter timelineAdapter;
     private List<TimeLine> data;
     private NavController navigationController;
@@ -117,11 +114,11 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     private void initializeAdapters() {
         initList();
-        spinnerAdapter = new SpinnerAdapter(this, dataList);
+        customMainSpinnerAdapter = new CustomMainSpinnerAdapter(this, dataList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
 
         mainBinding.spinnerCustomLayout.rvCarSpinnerLayout.setLayoutManager(layoutManager);
-        mainBinding.spinnerCustomLayout.rvCarSpinnerLayout.setAdapter(spinnerAdapter);
+        mainBinding.spinnerCustomLayout.rvCarSpinnerLayout.setAdapter(customMainSpinnerAdapter);
     }
 
     private void initializeVIewModels() {
@@ -243,41 +240,29 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     }
 
     private void carApiQueries() {
-        carQueryViewModel.getCarMakesByYear("2019").observe(this, new Observer<List<CarMakesByYear>>() {
-            @Override
-            public void onChanged(List<CarMakesByYear> carMakesByYears) {
-                if (carMakesByYears != null) {
-                    Log.e("response", "CarMakesByYear: " + carMakesByYears.get(0).getMakeDisplay());
-                }
+        carQueryViewModel.getCarMakesByYear("2019").observe(this, carMakesByYears -> {
+            if (carMakesByYears != null) {
+                Log.e("response", "CarMakesByYear: " + carMakesByYears.get(0).getMakeDisplay());
             }
         });
 
-        carQueryViewModel.getCarModelsByYearAndMake("2019", "Acura").observe(this, new Observer<List<CarModelName>>() {
-            @Override
-            public void onChanged(List<CarModelName> carModelNames) {
-                if (carModelNames != null) {
-                    Log.e("response", "CarModelName: " + carModelNames.get(0).getModelName());
-                }
+        carQueryViewModel.getCarModelsByYearAndMake("2019", "Acura").observe(this, carModelNames -> {
+            if (carModelNames != null) {
+                Log.e("response", "CarModelName: " + carModelNames.get(0).getModelName());
             }
         });
 
-        carQueryViewModel.getCarTrimsByYearMakeModel("2019", "Acura", "ILX").observe(this, new Observer<List<CarTrimsInfo>>() {
-            @Override
-            public void onChanged(List<CarTrimsInfo> carTrimsInfos) {
-                if (carTrimsInfos != null) {
-                    Log.e("response", "CarTrimsInfo: " + carTrimsInfos.get(0).getModelEngineCc());
-                }
+        carQueryViewModel.getCarTrimsByYearMakeModel("2019", "Acura", "ILX").observe(this, carTrimsInfos -> {
+            if (carTrimsInfos != null) {
+                Log.e("response", "CarTrimsInfo: " + carTrimsInfos.get(0).getModelEngineCc());
             }
         });
     }
 
     private void getCarsData() {
-        carViewModel.getAllCars().observe(this, new Observer<List<Car>>() {
-            @Override
-            public void onChanged(List<Car> cars) {
-                if (cars != null) {
-                    Log.d(TAG, "cars: " + cars.size());
-                }
+        carViewModel.getAllCars().observe(this, cars -> {
+            if (cars != null) {
+                Log.d(TAG, "cars: " + cars.size());
             }
         });
     }
