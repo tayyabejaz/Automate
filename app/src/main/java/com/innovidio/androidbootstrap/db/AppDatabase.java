@@ -30,9 +30,11 @@ import com.innovidio.androidbootstrap.db.converters.DateConverter;
 import com.innovidio.androidbootstrap.db.converters.IntegerListConverter;
 import com.innovidio.androidbootstrap.db.converters.StringListConverter;
 import com.innovidio.androidbootstrap.db.dao.FeedDao;
+import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 @Database(
         entities = {

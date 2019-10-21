@@ -42,7 +42,8 @@ public class Maintenance implements TimeLineItem {
     private String maintenanceLocation;
     private String maintenanceOdometerReading;
 
-    public Maintenance() {
+    public Maintenance(){
+
     }
 
     @Ignore
