@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_30sdp"
             app:cardBackgroundColor="@color/mainDashboardGray"
-            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_20sdp"
             app:cardElevation="0dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"

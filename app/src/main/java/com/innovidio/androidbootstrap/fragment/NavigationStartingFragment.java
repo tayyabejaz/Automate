@@ -1,22 +1,18 @@
 package com.innovidio.androidbootstrap.fragment;
 
 
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.innovidio.androidbootstrap.R;
-import com.innovidio.androidbootstrap.adapter.SpinnerAdapter;
+import com.innovidio.androidbootstrap.adapter.CustomMainSpinnerAdapter;
 import com.innovidio.androidbootstrap.databinding.FragmentNavigationStartingBinding;
 import com.innovidio.androidbootstrap.entity.models.SpinnerDataModel;
 
@@ -29,7 +25,7 @@ public class NavigationStartingFragment extends Fragment{
 
     private FragmentNavigationStartingBinding binding;
     private ArrayList<SpinnerDataModel> dataList;
-    private SpinnerAdapter mAdapter;
+    private CustomMainSpinnerAdapter mAdapter;
     private NavController navigationController;
     public NavigationStartingFragment() {
         // Required empty public constructor

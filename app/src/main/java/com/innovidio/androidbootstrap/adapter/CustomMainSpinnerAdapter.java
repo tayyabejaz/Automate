@@ -15,12 +15,12 @@ import com.innovidio.androidbootstrap.entity.models.SpinnerDataModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SpinnerAdapter extends RecyclerView.Adapter<SpinnerAdapter.SpinnerViewHolder> {
+public class CustomMainSpinnerAdapter extends RecyclerView.Adapter<CustomMainSpinnerAdapter.SpinnerViewHolder> {
 
     private Context context;
     private List<SpinnerDataModel> spinnerDataModel = new ArrayList<>();
 
-    public SpinnerAdapter(Context context, List<SpinnerDataModel> spinnerDataModel) {
+    public CustomMainSpinnerAdapter(Context context, List<SpinnerDataModel> spinnerDataModel) {
         this.context = context;
         this.spinnerDataModel = spinnerDataModel;
     }
