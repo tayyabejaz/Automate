@@ -38,7 +38,6 @@ public class AddCustomCar extends Fragment implements OnActivityBtnClickListener
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_add_custom_car, container, false);
         View view = binding.getRoot();
-
         return view;
 
     }

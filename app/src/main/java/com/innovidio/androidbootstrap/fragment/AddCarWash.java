@@ -42,8 +42,6 @@ import static com.innovidio.androidbootstrap.Utils.UtilClass.checkEmptyField;
 public class AddCarWash extends DaggerFragment {
 
     @Inject
-    ViewModelProviderFactory providerFactory;
-
     MaintenanceViewModel maintenanceViewModel;
 
     private FragmentAddCarWashBinding carWashBinding;
@@ -59,7 +57,6 @@ public class AddCarWash extends DaggerFragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        maintenanceViewModel = new ViewModelProvider(getActivity(), providerFactory).get(MaintenanceViewModel.class);
     }
 
     @Override

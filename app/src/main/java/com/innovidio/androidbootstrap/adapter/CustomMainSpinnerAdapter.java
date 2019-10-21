@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.databinding.ItemCustomSpinnerBinding;
-import com.innovidio.androidbootstrap.entity.models.SpinnerDataModel;
+import com.innovidio.androidbootstrap.entity.Car;
+import com.innovidio.androidbootstrap.interfaces.SpinnerItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,13 @@ import java.util.List;
 public class CustomMainSpinnerAdapter extends RecyclerView.Adapter<CustomMainSpinnerAdapter.SpinnerViewHolder> {
 
     private Context context;
-    private List<SpinnerDataModel> spinnerDataModel = new ArrayList<>();
+    private List<Car> carList = new ArrayList<>();
+    SpinnerItemClickListener spinnerItemClickListener;
 
-    public CustomMainSpinnerAdapter(Context context, List<SpinnerDataModel> spinnerDataModel) {
+    public CustomMainSpinnerAdapter(Context context, SpinnerItemClickListener spinnerItemClickListener, List<Car> cars) {
         this.context = context;
-        this.spinnerDataModel = spinnerDataModel;
+        this.carList = cars;
+        this.spinnerItemClickListener = spinnerItemClickListener;
     }
 
     @NonNull
@@ -36,13 +39,17 @@ public class CustomMainSpinnerAdapter extends RecyclerView.Adapter<CustomMainSpi
 
     @Override
     public void onBindViewHolder(@NonNull SpinnerViewHolder holder, int position) {
-        SpinnerDataModel dataModel = new SpinnerDataModel();
-        holder.bind(dataModel);
+        Car car = carList.get(position);
+        holder.bind(car);
+
+        holder.itemView.setOnClickListener(view->{
+            spinnerItemClickListener.onItemClick(car);
+        });
     }
 
     @Override
     public int getItemCount() {
-        return spinnerDataModel.size();
+        return carList.size();
     }
 
     class SpinnerViewHolder extends RecyclerView.ViewHolder {
@@ -54,10 +61,16 @@ public class CustomMainSpinnerAdapter extends RecyclerView.Adapter<CustomMainSpi
             this.binding = itemView;
         }
 
-        void bind(SpinnerDataModel model) {
-            binding.setRowitem(model);
+        void bind(Car model) {
+            binding.setCar(model);
             binding.executePendingBindings();
 
         }
+    }
+
+    public void updateAdapterList(List<Car> cars){
+        carList.clear();
+        carList =  cars;
+        notifyDataSetChanged();
     }
 }

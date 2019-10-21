@@ -26,13 +26,13 @@ import com.innovidio.androidbootstrap.databinding.ActivityMainBinding;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
 import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
-import com.innovidio.androidbootstrap.di.viewmodel.ViewModelProviderFactory;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.entity.models.SpinnerDataModel;
 import com.innovidio.androidbootstrap.entity.models.TimeLine;
+import com.innovidio.androidbootstrap.interfaces.SpinnerItemClickListener;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.viewmodel.CarQueryViewModel;
 import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
@@ -56,8 +56,10 @@ import static com.innovidio.androidbootstrap.Constants.SERVICE_FORM;
 import static com.innovidio.androidbootstrap.Constants.TRIP_FORM;
 
 
-public class MainActivity extends DaggerAppCompatActivity implements View.OnClickListener {
+public class MainActivity extends DaggerAppCompatActivity implements View.OnClickListener, SpinnerItemClickListener {
     private static final String TAG = "MainActivityLog";
+
+    public static int SAVED_CAR_ID = 0;
 
     @Inject
     FuelDao fuelDao;
@@ -87,7 +89,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
 
     private ActivityMainBinding mainBinding;
-    private ArrayList<SpinnerDataModel> dataList;
+    private List<Car> carArrayList = new ArrayList<>();
     private CustomMainSpinnerAdapter customMainSpinnerAdapter;
     private TimelineAdapter timelineAdapter;
     private List<TimeLine> data;
@@ -110,7 +112,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         initializeListeners();
         initializeAdapters();
         initList();
-      //  addDummyValues();
+        //addDummyValues();
         carApiQueries();
         //timeLineData();
         fuelUpData();
@@ -120,7 +122,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     private void initializeAdapters() {
         initList();
-        customMainSpinnerAdapter = new CustomMainSpinnerAdapter(this, dataList);
+        customMainSpinnerAdapter = new CustomMainSpinnerAdapter(this,this::onItemClick, carArrayList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
 
         mainBinding.spinnerCustomLayout.rvCarSpinnerLayout.setLayoutManager(layoutManager);
@@ -152,11 +154,12 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     private void addDummyValues() {
         Car car = new Car();
-        car.setId(1);
-        car.setModelName("WagonR");
-        car.setManufacturer("Suzuki");
+        //car.setId(1);
+        car.setModelName("Toyota");
+        car.setManufacturer("Carrola");
+        car.setRegistrationNo("LXA 5039");
         car.setMakeYear(2019);
-        car.setSubModel("VXL");
+        car.setSubModel("1.3");
         car.setEngineFuel("Petrol");
         car.setFuelCapacityInLiters(20);
         car.setEnginecc(1000);
@@ -168,53 +171,53 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         carViewModel.addCar(car);
 
 
-        FuelUp fuelUp = new FuelUp();
-        //   fuelUp.setId(1);
-        fuelUp.setCarname("Honda");
-        fuelUp.setCarId(1);
-        fuelUp.setLiters(10);
-        fuelUp.setSaveDate(new Date());
-        fuelUp.setLocation("Lahore");
-        fuelUp.setOdometerreading(252000);
-        fuelUp.setPerunitfuelprice(113);
-        fuelUp.setTotalprice(2000);
-        fuelUp.setTripId(12);
-        fuelUp.setFuelType("Petrol");
-
-        //fuelDao.insert(fuelUp);
-        fuelUpViewModel.addFuelUp(fuelUp);
-
-        Maintenance maintenance = new Maintenance();
-        // maintenance.setId(122);
-        maintenance.setSaveDate(new Date());
-        maintenance.setCarId(1);
-        maintenance.setMaintenanceCost(1200);
-        maintenance.setMaintenanceLocation("Lahore");
-        maintenance.setMaintenanceOdometerReading("2520");
-        maintenance.setAlarmON(true);
-        maintenance.setFormId(10);
-        maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
-        maintenance.setNextMaintenanceDate(new Date());
-        maintenance.setMaintenanceName("Service2");
-
-        //maintenanceDao.insert(maintenance);
-        maintenanceViewModel.addMaintenanceService(maintenance);
-
-        Trip trip = new Trip();
-        // trip.setId(22);
-        trip.setAvgspeed(150);
-        trip.setCarId(1);
-        trip.setCarname("Honda2");
-        trip.setDestination("Islamabad");
-        trip.setDistanceCovered(100);
-        trip.setFueleconomypertrip(10);
-        trip.setMaxspeed(200);
-        trip.setSaveDate(new Date());
-        trip.setTripTitle("lhr_to_islamabad");
-        trip.setTripType("Personal");
-
-        // tripDao.insert(trip);
-        tripViewModel.addTrip(trip);
+//        FuelUp fuelUp = new FuelUp();
+//        //   fuelUp.setId(1);
+//        fuelUp.setCarname("Honda");
+//        fuelUp.setCarId(1);
+//        fuelUp.setLiters(10);
+//        fuelUp.setSaveDate(new Date());
+//        fuelUp.setLocation("Lahore");
+//        fuelUp.setOdometerreading(252000);
+//        fuelUp.setPerunitfuelprice(113);
+//        fuelUp.setTotalprice(2000);
+//        fuelUp.setTripId(12);
+//        fuelUp.setFuelType("Petrol");
+//
+//        //fuelDao.insert(fuelUp);
+//        fuelUpViewModel.addFuelUp(fuelUp);
+//
+//        Maintenance maintenance = new Maintenance();
+//        // maintenance.setId(122);
+//        maintenance.setSaveDate(new Date());
+//        maintenance.setCarId(1);
+//        maintenance.setMaintenanceCost(1200);
+//        maintenance.setMaintenanceLocation("Lahore");
+//        maintenance.setMaintenanceOdometerReading("2520");
+//        maintenance.setAlarmON(true);
+//        maintenance.setFormId(10);
+//        maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
+//        maintenance.setNextMaintenanceDate(new Date());
+//        maintenance.setMaintenanceName("Service2");
+//
+//        //maintenanceDao.insert(maintenance);
+//        maintenanceViewModel.addMaintenanceService(maintenance);
+//
+//        Trip trip = new Trip();
+//        // trip.setId(22);
+//        trip.setAvgspeed(150);
+//        trip.setCarId(1);
+//        trip.setCarname("Honda2");
+//        trip.setDestination("Islamabad");
+//        trip.setDistanceCovered(100);
+//        trip.setFueleconomypertrip(10);
+//        trip.setMaxspeed(200);
+//        trip.setSaveDate(new Date());
+//        trip.setTripTitle("lhr_to_islamabad");
+//        trip.setTripType("Personal");
+//
+//        // tripDao.insert(trip);
+//        tripViewModel.addTrip(trip);
     }
 
     private void fuelUpData() {
@@ -351,11 +354,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 break;
 
             case R.id.iv_cancel_layout:
-                if (isDown) {
-                    mainBinding.mainActivitySpinner.bringToFront();
-                    slideBackToTop(mainBinding.flCustomSpinnerLayout, mainBinding.mainActivitySpinner, 500);
-                    isDown = !isDown;
-                }
+                closeSpinnerLayout();
                 break;
 
             case R.id.btn_car_spinner_layout:
@@ -364,11 +363,42 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         }
     }
 
+    private void closeSpinnerLayout(){
+        if (isDown) {
+            mainBinding.mainActivitySpinner.bringToFront();
+            slideBackToTop(mainBinding.flCustomSpinnerLayout, mainBinding.mainActivitySpinner, 500);
+            isDown = !isDown;
+        }
+    }
+
     private void initList() {
-        dataList = new ArrayList<>();
-        dataList.add(new SpinnerDataModel("Honda Civic", "Honda", "CIVIC", "LRF 4567"));
-        dataList.add(new SpinnerDataModel("Toyota Corolla", "Toyota", "Corolla", "GAL 9510"));
-        dataList.add(new SpinnerDataModel("Suzuki CIAZ", "Suzuki", "Ciaz", "SLL 6541"));
+        SAVED_CAR_ID = appPreferences.getInt(AppPreferences.Key.SAVED_CAR_ID);
+        carViewModel.getAllCars().observe(this, new Observer<List<Car>>() {
+            @Override
+            public void onChanged(List<Car> cars) {
+                carArrayList = cars;
+                customMainSpinnerAdapter.updateAdapterList(carArrayList);
+            }
+        });
+
+        carViewModel.getCarById(SAVED_CAR_ID).observe(this, new Observer<Car>() {
+            @Override
+            public void onChanged(Car car) {
+                setSpinnerItem(car);
+            }
+        });
+
+//        carArrayList = new ArrayList<>();
+//        carArrayList.add(new SpinnerDataModel("Honda Civic", "Honda", "CIVIC", "LRF 4567"));
+//        carArrayList.add(new SpinnerDataModel("Toyota Corolla", "Toyota", "Corolla", "GAL 9510"));
+//        carArrayList.add(new SpinnerDataModel("Suzuki CIAZ", "Suzuki", "Ciaz", "SLL 6541"));
+    }
+
+    private void setSpinnerItem(Car car){
+        String name =  car.getManufacturer() + " " +  car.getModelName() + " " + car.getMakeYear();
+        mainBinding.mainActivitySpinner.setText(name);
+        appPreferences.put(AppPreferences.Key.SAVED_CAR_ID, car.getId());
+        SAVED_CAR_ID =  car.getId();
     }
 
     public void slideUp(View view) {
@@ -467,4 +497,9 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         startActivity(intent);
     }
 
+    @Override
+    public void onItemClick(Car car) {
+        closeSpinnerLayout();
+        setSpinnerItem(car);
+    }
 }

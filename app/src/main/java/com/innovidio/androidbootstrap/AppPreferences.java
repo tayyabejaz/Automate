@@ -49,7 +49,9 @@ public class AppPreferences {
          * String: SAMPLE_KEY, SAMPLE_STR or just SAMPLE
          */
         SAMPLE_STR,
-        SAMPLE_INT
+        SAMPLE_INT,
+        SAVED_CAR_ID
+
     }
 
     @Inject

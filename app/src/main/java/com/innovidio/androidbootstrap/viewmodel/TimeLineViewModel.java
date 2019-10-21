@@ -100,6 +100,7 @@ public class TimeLineViewModel extends ViewModel {
         List<Trip> trips = tripRepository.getAllTripsTimeline(carId);
         List<Maintenance> maintenances = maintenanceRepository.getAllMaintenanceTimeLine(carId);
         List<FuelUp> fuelUps = fuelUpRepository.getAllFuelUpsTimeLine(carId);
+
         List<TimeLineItem> timeLineItems =  new ArrayList<>();
         timeLineItems.addAll(trips);
         timeLineItems.addAll(maintenances);
