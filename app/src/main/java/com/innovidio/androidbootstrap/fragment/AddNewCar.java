@@ -1,12 +1,14 @@
 package com.innovidio.androidbootstrap.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +17,7 @@ import androidx.databinding.DataBindingUtil;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.adapter.GeneralSpinnerAdapter;
 import com.innovidio.androidbootstrap.databinding.FragmentAddNewCarBinding;
+import com.innovidio.androidbootstrap.interfaces.OnActivityBtnClickListener;
 import com.innovidio.androidbootstrap.interfaces.OnFragmentClickListener;
 import com.innovidio.androidbootstrap.viewmodel.CarQueryViewModel;
 
@@ -24,7 +27,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
-public class AddNewCar extends DaggerFragment {
+public class AddNewCar extends DaggerFragment implements OnActivityBtnClickListener {
 
 
     private OnFragmentClickListener fragmentClickListener;
@@ -178,4 +181,8 @@ public class AddNewCar extends DaggerFragment {
         });
     }
 
+    @Override
+    public void onSubmitButtonClick(Context context) {
+        Toast.makeText(context, "Add new Car fragment", Toast.LENGTH_SHORT).show();
+    }
 }

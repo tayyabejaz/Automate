@@ -7,6 +7,7 @@ import androidx.room.Transaction;
 
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.MaintenanceWithAlarms;
+import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
 import java.util.Date;
@@ -41,8 +42,8 @@ public abstract class MaintenanceDao extends BaseDao<Maintenance>{
 //    public abstract LiveData<List<TimeLine>> getAllFromMaintenanceTripsAndFuelUp();
 
 
-    @Query("SELECT * FROM Maintenance")
-    public abstract LiveData<List<Maintenance>> getAllMaintenanceForTimeline();
+    @Query("SELECT * FROM Maintenance WHERE carId =:carId")
+    public abstract LiveData<List<Maintenance>> getAllMaintenanceForTimeline(int carId);
 
     @Query("SELECT * FROM Maintenance WHERE carId =:carId")
     public abstract List<Maintenance> getAllMaintenanceTimeline(int carId);
@@ -55,4 +56,9 @@ public abstract class MaintenanceDao extends BaseDao<Maintenance>{
     @Query("SELECT * FROM Maintenance WHERE carId=:carId AND nextMaintenanceDate = (SELECT MIN (nextMaintenanceDate) FROM Maintenance WHERE nextMaintenanceDate >=:currentDate)")
     public abstract LiveData<MaintenanceWithAlarms> getNextMaintenanceWithAlarm(int carId, Date currentDate);
 
+    @Query("SELECT * FROM Maintenance WHERE carId=:carId AND id = (SELECT MAX(ID) FROM Trip)")
+    public abstract  LiveData<Maintenance> getLastMaintenance(int carId);
+
+    @Query("SELECT COUNT(id) FROM Maintenance WHERE carId=:carId AND saveDate BETWEEN :startDate AND :endDate")
+    public abstract  LiveData<Integer> getMaintenanceCountBetweenDateRange(int carId, Date startDate, Date endDate );
 }

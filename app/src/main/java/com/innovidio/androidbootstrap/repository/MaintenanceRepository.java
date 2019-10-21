@@ -66,8 +66,8 @@ public class MaintenanceRepository {
 //        return this.maintenanceDao.getAllFromMaintenanceTripsAndFuelUp();
 //    }
 
-    public LiveData<List<Maintenance>> getAllMaintenanceForTimeLine(){
-        return this.maintenanceDao.getAllMaintenanceForTimeline();
+    public LiveData<List<Maintenance>> getAllMaintenanceForTimeLine(int carId){
+        return this.maintenanceDao.getAllMaintenanceForTimeline(carId);
     }
 
     public List<Maintenance> getAllMaintenanceTimeLine(int carId){
@@ -80,6 +80,14 @@ public class MaintenanceRepository {
 
     public LiveData<MaintenanceWithAlarms> getNextComingMaintenanceWithAlarm(int carId, Date currentDate){
         return this.maintenanceDao.getNextMaintenanceWithAlarm(carId, currentDate);
+    }
+
+    public LiveData<Maintenance> getLastMaintenance(int carId){
+        return this.maintenanceDao.getLastMaintenance(carId);
+    }
+
+    public LiveData<Integer> getMaintenanceCountBetweenDateRange(int carId, Date starDate, Date endDate){
+        return this.maintenanceDao.getMaintenanceCountBetweenDateRange(carId, starDate, endDate);
     }
 }
 

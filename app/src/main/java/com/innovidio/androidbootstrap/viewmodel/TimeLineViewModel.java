@@ -52,9 +52,9 @@ public class TimeLineViewModel extends ViewModel {
         this.fuelUpRepository = fuelUpRepository;
         this.maintenanceRepository = maintenanceRepository;
 
-        this.tripsLiveData = this.tripRepository.getAllTripsLiveDataTimeline();
-        this.maintenanceLiveData = this.maintenanceRepository.getAllMaintenanceForTimeLine();
-        this.fuelUpsLiveData = this.fuelUpRepository.getAllFuelUpsForTimeLine();
+       // this.tripsLiveData = this.tripRepository.getAllTripsLiveDataTimeline(1);
+        this.maintenanceLiveData = this.maintenanceRepository.getAllMaintenanceForTimeLine(1);
+    //    this.fuelUpsLiveData = this.fuelUpRepository.getAllFuelUpsForTimeLine(1);
 
 //        timeLineList.addAll(tripsLiveData);
 //        timeLineList.addAll(tripsLiveData);
@@ -88,7 +88,6 @@ public class TimeLineViewModel extends ViewModel {
     }
 
     public MediatorLiveData<List<TimeLineItem>> getAllTimelineMergerData() {
-
         return timeLineLiveDataMerger;
     }
 
@@ -97,7 +96,7 @@ public class TimeLineViewModel extends ViewModel {
         return timeLineFilteredLiveDataMerger;
     }
 
-    public void getAllTimelineData(int carId) {
+    private void getAllTimelineData(int carId) {
         List<Trip> trips = tripRepository.getAllTripsTimeline(carId);
         List<Maintenance> maintenances = maintenanceRepository.getAllMaintenanceTimeLine(carId);
         List<FuelUp> fuelUps = fuelUpRepository.getAllFuelUpsTimeLine(carId);
@@ -110,7 +109,7 @@ public class TimeLineViewModel extends ViewModel {
         timeLineLiveDataMerger.addSource(maintenanceLiveData, value -> timeLineLiveDataMerger.setValue(finalTimeLineItems));
     }
 
-    public void getFilteredTimelineData(int carId, boolean trip, boolean fuelup, boolean maintenance, boolean carwash ) {
+    private void getFilteredTimelineData(int carId, boolean trip, boolean fuelup, boolean maintenance, boolean carwash ) {
         List<TimeLineItem> timeLineItems =  new ArrayList<>();
         if (carwash && maintenance){
             List<Maintenance> maintenanceList = maintenanceRepository.getAllMaintenanceTimeLine(carId);
@@ -136,6 +135,5 @@ public class TimeLineViewModel extends ViewModel {
         List<TimeLineItem> finalTimeLineItems = timeLineItems;
         timeLineFilteredLiveDataMerger.addSource(maintenanceLiveData, value -> timeLineFilteredLiveDataMerger.setValue(finalTimeLineItems));
     }
-
 
 }

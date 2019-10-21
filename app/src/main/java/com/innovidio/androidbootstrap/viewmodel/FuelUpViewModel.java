@@ -67,4 +67,16 @@ public class FuelUpViewModel extends ViewModel {
         fuelUpLiveData.setValue(19f);
         return fuelUpLiveData;
     }
+
+    public LiveData<Integer> getFuelUpCountBetweenDateRange(int carId, Date starDate, Date endDate){
+        return this.fuelUpRepository.getFuelUpCountBetweenDateRange(carId, starDate, endDate);
+    }
+
+    public LiveData<Long> getLittersSumBetweenDateRange(int carId, Date starDate, Date endDate){
+        return this.fuelUpRepository.getLittersSumBetweenDateRange(carId, starDate, endDate);
+    }
+
+    public LiveData<Float> getFuelAverageBetweenDateRange(int carId, Date starDate, Date endDate){
+        return this.fuelUpRepository.getFuelAverageBetweenDateRange(carId, starDate, endDate);
+    }
 }

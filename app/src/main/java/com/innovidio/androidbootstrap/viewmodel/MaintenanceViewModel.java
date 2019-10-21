@@ -46,6 +46,13 @@ public class MaintenanceViewModel extends ViewModel {
         return this.maintenanceRepository.getNextComingMaintenanceWithAlarm(carId, currentdate);
     }
 
+    public LiveData<Maintenance> getLastMaintenance(int carId){
+        return this.maintenanceRepository.getLastMaintenance(carId);
+    }
+
+    public LiveData<Integer> getMaintenanceCountBetweenDateRange(int carId, Date starDate, Date endDate){
+        return this.maintenanceRepository.getMaintenanceCountBetweenDateRange(carId, starDate, endDate);
+    }
 
 //    public LiveData<List<TimeLine>> getAllMaintenanceTripsAndFuelUps(){
 //        return this.maintenanceRepository.getAllMaintenanceTripsAndFuelUps();

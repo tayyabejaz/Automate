@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.repository.TripRepository;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -41,5 +42,17 @@ public class TripViewModel extends ViewModel {
 
     public LiveData<Trip> getTripById(int id) {
         return this.tripRepository.getTripById(id);
+    }
+
+    public LiveData<Trip> getLastTrip(int cardId) {
+        return this.tripRepository.getLastTrip(cardId);
+    }
+
+    public LiveData<Integer> getTripsCount(int carId, Date starDate, Date endDate) {
+        return this.tripRepository.getTripsCountBetweenDateRange(carId, starDate, endDate);
+    }
+
+    public LiveData<Long> getTripsCoverDistanceBetweenDateRange(int cardId, Date starDate, Date endDate) {
+        return this.tripRepository.getDistanceCoveredBetweenDateRange(cardId, starDate, endDate);
     }
 }

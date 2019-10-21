@@ -61,15 +61,13 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     @Inject
     FuelDao fuelDao;
-
     @Inject
     MaintenanceDao maintenanceDao;
-
     @Inject
     TripDao tripDao;
 
-    @Inject
-    ViewModelProviderFactory providerFactory;
+//    @Inject
+//    ViewModelProviderFactory providerFactory;
 
     @Inject
     AppPreferences appPreferences;

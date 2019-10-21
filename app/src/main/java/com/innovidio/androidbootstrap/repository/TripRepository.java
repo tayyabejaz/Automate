@@ -2,19 +2,13 @@ package com.innovidio.androidbootstrap.repository;
 
 import android.os.AsyncTask;
 
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import com.innovidio.androidbootstrap.BaseApplication;
-import com.innovidio.androidbootstrap.db.dao.CarDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
-import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.Trip;
-import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
-import com.innovidio.androidbootstrap.network.dto.CarModelName;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,17 +25,6 @@ public class TripRepository {
     @Inject
     public TripRepository(TripDao tripDao) {
         this.tripDao = tripDao;
-
-        tripDao.getAllTripsLiveDataForTimeline().observeForever(new Observer<List<Trip>>() {
-            @Override
-            public void onChanged(List<Trip> trips) {
-                allTrips = trips;
-            }
-        });
-    }
-
-    public List<Trip> getTrips() {
-        return allTrips;
     }
 
     public void addTrip(Trip trip) {
@@ -94,8 +77,20 @@ public class TripRepository {
         return this.tripDao.getAllTripsTimeline(cardId);
     }
 
-    public LiveData<List<Trip>> getAllTripsLiveDataTimeline() {
+    public LiveData<List<Trip>> getAllTripsLiveDataTimeline(int cardId) {
 
-        return this.tripDao.getAllTripsLiveDataForTimeline();
+        return this.tripDao.getAllTripsLiveDataForTimeline(cardId);
+    }
+
+    public LiveData<Trip> getLastTrip(int cardId) {
+        return this.tripDao.getLastTrip(cardId);
+    }
+
+    public LiveData<Integer> getTripsCountBetweenDateRange(int carId, Date starDate, Date endDate) {
+        return this.tripDao.getTripsCountBetweenDateRange(carId, starDate, endDate);
+    }
+
+    public LiveData<Long> getDistanceCoveredBetweenDateRange(int carId, Date starDate, Date endDate) {
+        return this.tripDao.getDistanceCoveredBetweenDateRange(carId, starDate, endDate);
     }
 }

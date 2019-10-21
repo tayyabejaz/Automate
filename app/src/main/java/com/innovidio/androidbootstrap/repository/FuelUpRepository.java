@@ -73,11 +73,23 @@ public class FuelUpRepository {
     }
 
 
-    public LiveData<List<FuelUp>> getAllFuelUpsForTimeLine(){
-        return this.fuelDao.getAllFuelUpsForTimeline();
+    public LiveData<List<FuelUp>> getAllFuelUpsForTimeLine(int carId){
+        return this.fuelDao.getAllFuelUpsForTimeline(carId);
     }
 
     public LiveData<List<FuelUp>> getAllFuelkTankPercentage(){
         return this.fuelDao.getFuelTankPercentage();
+    }
+
+    public LiveData<Integer> getFuelUpCountBetweenDateRange(int carId, Date starDate, Date endDate){
+        return this.fuelDao.getFuelUpCountBetweenDateRange(carId, starDate, endDate);
+    }
+
+    public LiveData<Long> getLittersSumBetweenDateRange(int carId, Date starDate, Date endDate){
+        return this.fuelDao.getLittersSumBetweenDateRange(carId, starDate, endDate);
+    }
+
+    public LiveData<Float> getFuelAverageBetweenDateRange(int carId, Date starDate, Date endDate){
+        return this.fuelDao.getFuelAverageBetweenDateRange(carId, starDate, endDate);
     }
 }

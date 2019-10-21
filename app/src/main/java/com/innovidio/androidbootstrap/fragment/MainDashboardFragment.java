@@ -53,11 +53,9 @@ import static com.innovidio.androidbootstrap.Constants.TRIP_FORM;
  */
 
 public class MainDashboardFragment extends DaggerFragment implements TimelineItemClickListener, View.OnClickListener {
-    @Inject
-    ViewModelProviderFactory providerFactory;
+
     private TimelineAdapter timelineAdapter;
     private FragmentMainDashboardBinding binding;
-    private List<TimeLineItem> dataList = new ArrayList<>();
     @Inject
     TimeLineViewModel timeLineViewModel;
     @Inject
@@ -76,9 +74,9 @@ public class MainDashboardFragment extends DaggerFragment implements TimelineIte
 
     private void init() {
         timeLineData();
-        timeLineFilteredData();
+       // timeLineFilteredData();
 
-        timelineAdapter = new TimelineAdapter(getContext(), this, dataList);
+        timelineAdapter = new TimelineAdapter(getContext(), this, timeLineItemList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         binding.rvMainFragment.setLayoutManager(layoutManager);
         binding.rvMainFragment.setAdapter(timelineAdapter);
@@ -104,27 +102,9 @@ public class MainDashboardFragment extends DaggerFragment implements TimelineIte
     private void timeLineData() {
         timeLineViewModel.getAllTimelineMergerData().observe(this, timeLineItems -> {
             if (timeLineItems != null && timeLineItems.size() > 0) {
-
                 timeLineItemList.addAll(timeLineItems);
                 //   timeLineItemList = Sorting.sortList(timeLineItemList);
                 timelineAdapter.updateData(timeLineItemList);
-
-                switch (timeLineItems.get(0).getType()) {
-                    case FUEL:
-                        FuelUp fuelUp = (FuelUp) timeLineItems.get(0);
-                        Log.d("MainDashboardFragment", "FuelUp: " + fuelUp.getCarname());
-                        break;
-
-                    case MAINTENANCE:
-                        Maintenance maintenance = (Maintenance) timeLineItems.get(0);
-                        Log.d("MainDashboardFragment", "Maintenance: " + maintenance.getMaintenanceName());
-                        break;
-
-                    case TRIP:
-                        Trip trip = (Trip) timeLineItems.get(0);
-                        Log.d("MainDashboardFragment", "Trip: " + trip.getTripTitle());
-                        break;
-                }
             }
         });
     }
@@ -136,23 +116,6 @@ public class MainDashboardFragment extends DaggerFragment implements TimelineIte
                 timeLineItemList.addAll(timeLineItems);
                 //   timeLineItemList = Sorting.sortList(timeLineItemList);
                 timelineAdapter.updateData(timeLineItemList);
-
-                switch (timeLineItems.get(0).getType()) {
-                    case FUEL:
-                        FuelUp fuelUp = (FuelUp) timeLineItems.get(0);
-                        Log.d("MainDashboardFragment", "FuelUp: " + fuelUp.getCarname());
-                        break;
-
-                    case MAINTENANCE:
-                        Maintenance maintenance = (Maintenance) timeLineItems.get(0);
-                        Log.d("MainDashboardFragment", "Maintenance: " + maintenance.getMaintenanceName());
-                        break;
-
-                    case TRIP:
-                        Trip trip = (Trip) timeLineItems.get(0);
-                        Log.d("MainDashboardFragment", "Trip: " + trip.getTripTitle());
-                        break;
-                }
             }
         });
     }
