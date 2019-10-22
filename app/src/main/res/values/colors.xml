@@ -28,7 +28,15 @@
     <color name="trip_rec">#d7272b</color>
     <color name="speedometer">#f7750d</color>
 
-    <color name="gray_dialog_colour"> #767676 </color>
+    <color name="gray_dialog_colour">#767676</color>
 
     <color name="bottom_nav_unselected">#9ba2a6</color>
+
+    <color name="orangeLight">#e6a432</color>
+    <color name="orangeDark">#c84903</color>
+
+    <color name="greenLight">#32e676</color>
+    <color name="greenDark"> #038f38</color>
+
+
 </resources>
