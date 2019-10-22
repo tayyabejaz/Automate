@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
+import com.innovidio.androidbootstrap.activity.MainActivity;
 import com.innovidio.androidbootstrap.databinding.FragmentAddCarWashBinding;
 import com.innovidio.androidbootstrap.di.viewmodel.ViewModelProviderFactory;
 import com.innovidio.androidbootstrap.entity.Maintenance;
@@ -62,7 +63,6 @@ public class AddCarWash extends DaggerFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         carWashBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_car_wash, container, false);
         View view = carWashBinding.getRoot();
         return view;
@@ -78,6 +78,7 @@ public class AddCarWash extends DaggerFragment {
             todaysCalender.set(Calendar.DAY_OF_MONTH, i2);
             updateDate();
         };
+        
 
         carWashBinding.etCarwashDate.setOnClickListener(view1 -> {
             new DatePickerDialog(getContext(), date, todaysCalender.get(Calendar.YEAR), todaysCalender.get(Calendar.MONTH), todaysCalender.get(Calendar.DAY_OF_MONTH)).show();

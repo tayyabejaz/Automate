@@ -117,7 +117,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         initList();
         //addDummyValues();
         carApiQueries();
-        //timeLineData();
         fuelUpData();
         getCarsData();
 
@@ -175,53 +174,53 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         carViewModel.addCar(car);
 
 
-//        FuelUp fuelUp = new FuelUp();
-//        //   fuelUp.setId(1);
-//        fuelUp.setCarname("Honda");
-//        fuelUp.setCarId(1);
-//        fuelUp.setLiters(10);
-//        fuelUp.setSaveDate(new Date());
-//        fuelUp.setLocation("Lahore");
-//        fuelUp.setOdometerreading(252000);
-//        fuelUp.setPerunitfuelprice(113);
-//        fuelUp.setTotalprice(2000);
-//        fuelUp.setTripId(12);
-//        fuelUp.setFuelType("Petrol");
-//
-//        //fuelDao.insert(fuelUp);
-//        fuelUpViewModel.addFuelUp(fuelUp);
-//
-//        Maintenance maintenance = new Maintenance();
-//        // maintenance.setId(122);
-//        maintenance.setSaveDate(new Date());
-//        maintenance.setCarId(1);
-//        maintenance.setMaintenanceCost(1200);
-//        maintenance.setMaintenanceLocation("Lahore");
-//        maintenance.setMaintenanceOdometerReading("2520");
-//        maintenance.setAlarmON(true);
-//        maintenance.setFormId(10);
-//        maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
-//        maintenance.setNextMaintenanceDate(new Date());
-//        maintenance.setMaintenanceName("Service2");
-//
-//        //maintenanceDao.insert(maintenance);
-//        maintenanceViewModel.addMaintenanceService(maintenance);
-//
-//        Trip trip = new Trip();
-//        // trip.setId(22);
-//        trip.setAvgspeed(150);
-//        trip.setCarId(1);
-//        trip.setCarname("Honda2");
-//        trip.setDestination("Islamabad");
-//        trip.setDistanceCovered(100);
-//        trip.setFueleconomypertrip(10);
-//        trip.setMaxspeed(200);
-//        trip.setSaveDate(new Date());
-//        trip.setTripTitle("lhr_to_islamabad");
-//        trip.setTripType("Personal");
-//
-//        // tripDao.insert(trip);
-//        tripViewModel.addTrip(trip);
+        FuelUp fuelUp = new FuelUp();
+        //   fuelUp.setId(1);
+        fuelUp.setCarname("Honda");
+        fuelUp.setCarId(1);
+        fuelUp.setLiters(10);
+        fuelUp.setSaveDate(new Date());
+        fuelUp.setLocation("Lahore");
+        fuelUp.setOdometerreading(252000);
+        fuelUp.setPerunitfuelprice(113);
+        fuelUp.setTotalprice(2000);
+        fuelUp.setTripId(12);
+        fuelUp.setFuelType("Petrol");
+
+        //fuelDao.insert(fuelUp);
+        fuelUpViewModel.addFuelUp(fuelUp);
+
+        Maintenance maintenance = new Maintenance();
+        // maintenance.setId(122);
+        maintenance.setSaveDate(new Date());
+        maintenance.setCarId(1);
+        maintenance.setMaintenanceCost(1200);
+        maintenance.setMaintenanceLocation("Lahore");
+        maintenance.setMaintenanceOdometerReading("2520");
+        maintenance.setAlarmON(true);
+        maintenance.setFormId(10);
+        maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
+        maintenance.setNextMaintenanceDate(new Date());
+        maintenance.setMaintenanceName("Service2");
+
+        //maintenanceDao.insert(maintenance);
+        maintenanceViewModel.addMaintenanceService(maintenance);
+
+        Trip trip = new Trip();
+        // trip.setId(22);
+        trip.setAvgspeed(150);
+        trip.setCarId(1);
+        trip.setCarname("Honda2");
+        trip.setDestination("Islamabad");
+        trip.setDistanceCovered(100);
+        trip.setFueleconomypertrip(10);
+        trip.setMaxspeed(200);
+        trip.setSaveDate(new Date());
+        trip.setTripTitle("lhr_to_islamabad");
+        trip.setTripType("Personal");
+
+        // tripDao.insert(trip);
+        tripViewModel.addTrip(trip);
     }
 
     private void fuelUpData() {
@@ -267,33 +266,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         carViewModel.getAllCars().observe(this, cars -> {
             if (cars != null) {
                 Log.d(TAG, "cars: " + cars.size());
-            }
-        });
-    }
-
-    private void timeLineData() {
-        timeLineViewModel.getAllTimelineMergerData().observe(this, timeLineItems -> {
-            if (timeLineItems != null && timeLineItems.size() > 0) {
-
-                timeLineItemList.addAll(timeLineItems);
-                timeLineItemList = Sorting.sortList(timeLineItemList);
-
-                switch (timeLineItems.get(0).getType()) {
-                    case FUEL:
-                        FuelUp fuelUp = (FuelUp) timeLineItems.get(0);
-                        Log.d(TAG, "FuelUp: " + fuelUp.getCarname());
-                        break;
-
-                    case MAINTENANCE:
-                        Maintenance maintenance = (Maintenance) timeLineItems.get(0);
-                        Log.d(TAG, "Maintenance: " + maintenance.getMaintenanceName());
-                        break;
-
-                    case TRIP:
-                        Trip trip = (Trip) timeLineItems.get(0);
-                        Log.d(TAG, "Trip: " + trip.getTripTitle());
-                        break;
-                }
             }
         });
     }
