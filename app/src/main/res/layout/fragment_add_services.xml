@@ -9,36 +9,6 @@
         android:background="@color/mainDashboardGray"
         tools:context=".fragment.AddServices">
 
-        <EditText
-            android:id="@+id/et_additional_note"
-            style="@style/EditText_In_Forms"
-            android:drawableLeft="@drawable/automate_additional_notes_form_icon"
-            android:hint="Any Additional Notes"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_carwash_location" />
-
-        <TextView
-            android:id="@+id/tv_services_date"
-            style="@style/EditText_In_Forms"
-            android:drawableLeft="@drawable/automate_set_date_form_icon"
-            android:hint="Set Date"
-            app:layout_constraintBottom_toTopOf="@id/tv_services_time"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_car_selection" />
-
-
-        <TextView
-            android:id="@+id/tv_services_time"
-            style="@style/EditText_In_Forms"
-            android:drawableLeft="@drawable/automate_set_time_form_icon"
-            android:hint="Time"
-            app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_services_date" />
 
         <EditText
             android:id="@+id/et_odometer_reading"
@@ -46,44 +16,106 @@
             android:drawableLeft="@drawable/automate_odometer_reading_form_icon"
             android:hint="Odometer Reading"
             android:inputType="number"
-            app:layout_constraintBottom_toTopOf="@id/et_carwash_cost"
+            app:layout_constraintBottom_toTopOf="@id/button_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_services_time" />
 
-        <EditText
-            android:id="@+id/et_carwash_location"
-            style="@style/EditText_In_Forms"
-            android:drawableLeft="@drawable/automate_location_form_icon"
-            android:hint="Enter Location"
-            app:layout_constraintBottom_toTopOf="@id/et_additional_note"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_carwash_cost" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/blueDark"
-            android:textSize="10sp"
-            android:layout_marginEnd="15dp"
-            android:text="@string/form_get_location"
-            app:layout_constraintEnd_toEndOf="@id/et_carwash_location"
-            app:layout_constraintTop_toTopOf="@id/et_carwash_location"
-            app:layout_constraintBottom_toBottomOf="@id/et_carwash_location"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_15sdp"
+            app:layout_constraintTop_toBottomOf="@id/et_odometer_reading">
+
+            <Button
+                android:id="@+id/btn_add_services"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_margin="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:background="@drawable/app_button_background"
+                android:drawableEnd="@drawable/automate_bottom_nav_open_icon"
+                android:drawablePadding="@dimen/_8sdp"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:text="Service"
+                android:textColor="@color/whiteColor"
+                android:textSize="@dimen/_9sdp" />
+
+            <Button
+                android:id="@+id/btn_add_parts"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_margin="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:background="@drawable/app_button_background"
+                android:drawableEnd="@drawable/automate_bottom_nav_open_icon"
+                android:drawablePadding="@dimen/_8sdp"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:text="Parts"
+                android:textColor="@color/whiteColor"
+                android:textSize="@dimen/_9sdp" />
+
+            <Button
+                android:id="@+id/btn_add_expenses"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_margin="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:background="@drawable/app_button_background"
+                android:drawableEnd="@drawable/automate_bottom_nav_open_icon"
+                android:drawablePadding="@dimen/_8sdp"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:text="Expenses"
+                android:textColor="@color/whiteColor"
+                android:textSize="@dimen/_9sdp" />
+
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_add_services"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/button_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             />
 
-        <EditText
-            android:id="@+id/et_carwash_cost"
+        <TextView
+            android:id="@+id/tv_services_date"
             style="@style/EditText_In_Forms"
-            android:autofillHints="Add Car Wash Price"
-            android:drawableLeft="@drawable/automate_select_services_form_icon"
-            android:hint="@string/form_select_services"
-            android:inputType="number"
-            app:layout_constraintBottom_toTopOf="@id/et_carwash_location"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="0dp"
+            android:drawableLeft="@drawable/automate_set_date_form_icon"
+            android:hint="Set Date"
+            app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
+            app:layout_constraintEnd_toStartOf="@id/tv_services_time"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_odometer_reading" />
+            app:layout_constraintTop_toBottomOf="@id/et_car_selection" />
+
+
+        <TextView
+            android:id="@+id/tv_services_time"
+            style="@style/EditText_In_Forms"
+            android:layout_width="0dp"
+            android:drawableLeft="@drawable/automate_set_time_form_icon"
+            android:hint="Time"
+            app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_services_date"
+            app:layout_constraintTop_toBottomOf="@id/et_car_selection" />
 
         <TextView
             android:id="@+id/et_car_selection"
@@ -91,8 +123,8 @@
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:drawableLeft="@drawable/automate_select_car_placeholder"
-            android:hint="Select Your Car"
             android:drawableRight="@drawable/automate_dropdown_icon"
+            android:hint="Select Your Car"
             app:layout_constraintBottom_toTopOf="@id/tv_services_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -34,6 +34,11 @@ public interface Constants {
     String perunitfuelprice = "perunitfuelprice";
 
     Context CONTEXT = null;
+    int FILTERED_ADAPTER = 1;
+    String FILTER_FUEL_UPS = "filter_fuelup";
+    String FILTER_MAINTENANCE = "filter_maintenance";
+    String FILTER_TRIPS = "filter_trips";
+    String FILTER_CARWASH = "filter_carwash";
 
 }
 

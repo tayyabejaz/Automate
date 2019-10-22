@@ -215,8 +215,8 @@
                 android:id="@+id/tv_total_maintenance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Today Maintenance"
                 android:gravity="center"
+                android:text="Today Maintenance"
                 android:textColor="@color/whiteColor"
                 app:layout_constraintBottom_toTopOf="@id/tv_total_maintenance_value"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -282,6 +282,7 @@
             app:layout_constraintTop_toBottomOf="@id/second_card">
 
             <ImageView
+                android:id="@+id/iv_maintenance_backdrop"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:scaleType="fitXY"
@@ -290,6 +291,20 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/automate_bottom_nav_open_icon"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Add Maintenance"
+                android:textColor="@color/whiteColor"
+                android:textSize="@dimen/_14sdp"
+                android:drawablePadding="@dimen/_5sdp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_maintenance_backdrop"
+                app:layout_constraintEnd_toEndOf="@id/iv_maintenance_backdrop"
+                app:layout_constraintStart_toStartOf="@id/iv_maintenance_backdrop"
+                app:layout_constraintTop_toTopOf="@id/iv_maintenance_backdrop" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_add_maintenance"

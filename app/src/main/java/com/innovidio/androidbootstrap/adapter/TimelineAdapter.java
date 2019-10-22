@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.IconProvider;
 import com.innovidio.androidbootstrap.databinding.ItemFooterTimelineBinding;
@@ -30,20 +31,21 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private Context context;
     private List<? extends TimeLineItem> timeLineItemList = new ArrayList<>();
+    private int adapterType = 0;
     private TimelineItemClickListener timelineItemClickListener;
 
     private static final int FUEL_UP = 0;
-    private static final int TRIPS =  1;
-    private static final int MAINTENANCE =  2;
-    private static final int CAR_WASH =  3;
-    private static final int FOOTER =  4;
+    private static final int TRIPS = 1;
+    private static final int MAINTENANCE = 2;
+    private static final int CAR_WASH = 3;
+    private static final int FOOTER = 4;
 
 
-
-    public TimelineAdapter(Context context, TimelineItemClickListener listener, List<? extends TimeLineItem> dataList) {
+    public TimelineAdapter(Context context, TimelineItemClickListener listener, List<? extends TimeLineItem> dataList, int adapterType) {
         this.context = context;
         this.timeLineItemList = dataList;
         this.timelineItemClickListener = listener;
+        this.adapterType = adapterType;
     }
 
     @NonNull
@@ -51,7 +53,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view;
-        switch (viewType){
+        switch (viewType) {
             case FUEL_UP:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_timeline_fuel_up,
                         parent, false);
@@ -80,15 +82,9 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holderParent, int position) {
-        // todo for footer item only
-        // return because no data binding needed for footer
-        if (timeLineItemList.size()==position){
-            FooterViewHolder footerViewHolder = (FooterViewHolder) holderParent;
-            if (position<1){
-                footerViewHolder.itemBinding.ivTrackitem.setVisibility(View.VISIBLE);
-            }else{
-                footerViewHolder.itemBinding.ivTrackitem.setVisibility(View.GONE);
-            }
+
+        // check if size is 0 then return after adding footer
+        if (setFooterItem(holderParent, position)){
             return;
         }
         // =======================================
@@ -153,14 +149,18 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         Log.e("timeLine", "arrayListSize" + timeLineItemList.size());
+
+        if (adapterType == Constants.FILTERED_ADAPTER) {
+            return timeLineItemList.size();
+        }
         // todo -- +1 for footer item
-        return timeLineItemList.size()+1;
+        return timeLineItemList.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
         // todo -- check for footer item
-        if (position<timeLineItemList.size()) {
+        if (position < timeLineItemList.size()) {
             switch (timeLineItemList.get(position).getType()) {
                 case FUEL:
                     return FUEL_UP;
@@ -178,6 +178,29 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void updateData(List<TimeLineItem> updatedList) {
         this.timeLineItemList = updatedList;
         notifyDataSetChanged();
+    }
+
+    private boolean setFooterItem(RecyclerView.ViewHolder holderParent, int position) {
+        boolean value = false;
+        // todo for footer item only
+        // return because no data binding needed for footer
+        if (timeLineItemList.size() == position) {
+            FooterViewHolder footerViewHolder = (FooterViewHolder) holderParent;
+            if (position < 1) {
+                footerViewHolder.itemBinding.ivTrackitem.setVisibility(View.VISIBLE);
+
+            } else {
+                footerViewHolder.itemBinding.ivTrackitem.setVisibility(View.GONE);
+            }
+            // true means retun not run below code in viewbinder
+            value = true;
+        }//TODO: Done this for a Track Item
+        else if (adapterType == Constants.FILTERED_ADAPTER) {
+            holderParent.itemView.findViewById(R.id.iv_trackitem).setVisibility(View.GONE);
+        } else {
+            holderParent.itemView.findViewById(R.id.iv_trackitem).setVisibility(View.VISIBLE);
+        }
+        return value;
     }
 
 
