@@ -36,6 +36,8 @@ public class AppPreferences {
     private SharedPreferences.Editor mEditor;
     private boolean mBulkUpdate = false;
 
+    public static int SELECTED_CAR_ID = 1;
+
     /**
      * Enum representing your setting names or key for your setting.
      */

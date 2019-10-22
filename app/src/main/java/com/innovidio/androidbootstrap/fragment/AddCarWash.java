@@ -141,5 +141,4 @@ public class AddCarWash extends DaggerFragment {
         }
         return new Date();
     }
-
 }

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.innovidio.androidbootstrap.dashboard.SetSpeedLimit" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/whiteColor">
+
+        <!--<ImageView
+            android:id="@+id/header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/home"
+            app:layout_constraintBottom_toBottomOf="@+id/header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text_speedometer"
+            app:layout_constraintTop_toTopOf="@+id/header" />
+
+
+        <TextView
+            android:id="@+id/text_speedometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="120dp"
+            android:drawablePadding="5dp"
+            android:drawableTop="@drawable/car_speedometer"
+            android:text="Speedometer Dashboard"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />-->
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_speedlimit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#f5f5f5"
+            app:layout_constraintBottom_toTopOf="@+id/text_speedalarm"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:title="Speed Limit"
+            app:titleTextColor="@color/blackColor">
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidline_speedalarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".13" />
+
+        <TextView
+            android:id="@+id/text_speedalarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:text="Speed Limit Alarm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guidline_speedalarm" />
+
+        <Switch
+            android:id="@+id/switch_speedalarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guidline_speedalarm" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_speedlimit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".28" />
+
+        <ImageView
+            android:id="@+id/speed_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/speedlimit_bg_new"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline_speedlimit"/>
+
+        <TextView
+            android:id="@+id/text_speedlimit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Speed Limit"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toEndOf="@+id/speed_bg"
+            app:layout_constraintStart_toStartOf="@+id/speed_bg"
+            app:layout_constraintTop_toTopOf="@+id/speed_bg" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/blackColor"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintStart_toStartOf="@+id/speed_bg"
+            app:layout_constraintEnd_toEndOf="@+id/speed_bg"
+            app:layout_constraintTop_toBottomOf="@+id/text_speedlimit"/>
+
+        <EditText
+            android:id="@+id/speedlimit_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="120"
+            android:textSize="60sp"
+            android:background="@null"
+            android:textCursorDrawable="@null"
+            android:maxLines="1"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="@id/speed_bg"
+            app:layout_constraintEnd_toEndOf="@id/speed_bg"
+            app:layout_constraintTop_toTopOf="@id/speed_bg"
+            app:layout_constraintBottom_toBottomOf="@+id/speed_bg" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:text="KMPH"
+            android:textSize="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/speedlimit_edittext"
+            app:layout_constraintEnd_toEndOf="@+id/speed_bg"
+            android:layout_marginRight="20dp" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".7" />
+
+        <TextView
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/start_bg"
+            android:gravity="center"
+            android:text="Start"
+            android:textColor="@color/whiteColor"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline_start" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".81" />
+
+        <TextView
+            android:id="@+id/skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:text="Skip >"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/start"
+            app:layout_constraintStart_toStartOf="@+id/start"
+            app:layout_constraintTop_toBottomOf="@+id/guideline_skip" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/blackColor"
+            app:layout_constraintEnd_toEndOf="@id/skip"
+            app:layout_constraintStart_toStartOf="@id/skip"
+            app:layout_constraintTop_toBottomOf="@+id/skip" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

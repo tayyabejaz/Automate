@@ -1,6 +1,7 @@
 package com.innovidio.androidbootstrap.fragment;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.dashboard.SetSpeedLimit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +31,13 @@ public class DriveFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_drive, container, false);
+    }
+
+
+
+    private void startDrive(){
+        Intent i = new Intent(getContext(), SetSpeedLimit.class);
+        startActivity(i);
     }
 
 

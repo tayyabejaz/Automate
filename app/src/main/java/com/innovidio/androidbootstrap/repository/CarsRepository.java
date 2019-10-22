@@ -63,8 +63,8 @@ public class CarsRepository {
         return carDao.getAllCars();
     }
 
-    public LiveData<List<Car>> getAllCarsOrderById() {
-        return carDao.getAllCarsOrderById();
+    public LiveData<List<Car>> getAllEnableCarsOrderById(boolean isEnable) {
+        return carDao.getAllEnableCarsOrderById(isEnable);
     }
 
     public LiveData<Car> getCarById(int id) {

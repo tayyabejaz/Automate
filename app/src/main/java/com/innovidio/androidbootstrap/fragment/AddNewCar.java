@@ -17,8 +17,8 @@ import androidx.databinding.DataBindingUtil;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.adapter.GeneralSpinnerAdapter;
 import com.innovidio.androidbootstrap.databinding.FragmentAddNewCarBinding;
-import com.innovidio.androidbootstrap.interfaces.OnActivityBtnClickListener;
-import com.innovidio.androidbootstrap.interfaces.OnFragmentClickListener;
+import com.innovidio.androidbootstrap.interfaces.ActivityBtnClickListener;
+import com.innovidio.androidbootstrap.interfaces.FragmentClickListener;
 import com.innovidio.androidbootstrap.viewmodel.CarQueryViewModel;
 
 import java.util.ArrayList;
@@ -27,10 +27,10 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
-public class AddNewCar extends DaggerFragment implements OnActivityBtnClickListener {
+public class AddNewCar extends DaggerFragment implements ActivityBtnClickListener {
 
 
-    private OnFragmentClickListener fragmentClickListener;
+    private FragmentClickListener fragmentClickListener;
     private FragmentAddNewCarBinding binding;
     @Inject
     CarQueryViewModel carQueryViewModel;
@@ -42,7 +42,7 @@ public class AddNewCar extends DaggerFragment implements OnActivityBtnClickListe
     private GeneralSpinnerAdapter adapterSubmodel;
     private String year, make, model, submodel;
 
-    public AddNewCar(OnFragmentClickListener listener) {
+    public AddNewCar(FragmentClickListener listener) {
         // Required empty public constructor
         this.fragmentClickListener = listener;
     }

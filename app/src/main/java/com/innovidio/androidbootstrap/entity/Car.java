@@ -10,6 +10,7 @@ public class Car {
 
     @PrimaryKey(autoGenerate = true)
     private Integer id;
+    private boolean isEnable=true;
     private String registrationNo;
     private int currentOdomaterReading;
     private int makeYear;
@@ -35,6 +36,14 @@ public class Car {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public boolean isEnable() {
+        return isEnable;
+    }
+
+    public void setEnable(boolean enable) {
+        isEnable = enable;
     }
 
     public String getRegistrationNo() {

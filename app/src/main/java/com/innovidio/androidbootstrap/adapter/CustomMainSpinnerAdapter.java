@@ -43,7 +43,7 @@ public class CustomMainSpinnerAdapter extends RecyclerView.Adapter<CustomMainSpi
         holder.bind(car);
 
         holder.itemView.setOnClickListener(view->{
-            spinnerItemClickListener.onItemClick(car);
+            spinnerItemClickListener.onSpinnerItemClick(car);
         });
     }
 
@@ -69,7 +69,6 @@ public class CustomMainSpinnerAdapter extends RecyclerView.Adapter<CustomMainSpi
     }
 
     public void updateAdapterList(List<Car> cars){
-        carList.clear();
         carList =  cars;
         notifyDataSetChanged();
     }

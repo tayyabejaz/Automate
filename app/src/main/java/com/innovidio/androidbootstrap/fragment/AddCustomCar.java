@@ -16,18 +16,18 @@ import android.widget.Toast;
 
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.databinding.FragmentAddCustomCarBinding;
-import com.innovidio.androidbootstrap.interfaces.OnActivityBtnClickListener;
-import com.innovidio.androidbootstrap.interfaces.OnFragmentClickListener;
+import com.innovidio.androidbootstrap.interfaces.ActivityBtnClickListener;
+import com.innovidio.androidbootstrap.interfaces.FragmentClickListener;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddCustomCar extends Fragment implements OnActivityBtnClickListener {
+public class AddCustomCar extends Fragment implements ActivityBtnClickListener {
 
-    private OnFragmentClickListener listener;
+    private FragmentClickListener listener;
     private FragmentAddCustomCarBinding binding;
 
-    public AddCustomCar(OnFragmentClickListener clickListener) {
+    public AddCustomCar(FragmentClickListener clickListener) {
         // Required empty public constructor
         this.listener = clickListener;
     }

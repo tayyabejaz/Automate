@@ -15,6 +15,9 @@ public abstract class CarDao extends BaseDao<Car> {
     @Query("SELECT * FROM Car ORDER BY id desc")
     public abstract LiveData<List<Car>> getAllCarsOrderById();
 
+    @Query("SELECT * FROM Car WHERE isEnable =:enable ORDER BY id desc")
+    public abstract LiveData<List<Car>> getAllEnableCarsOrderById(boolean enable);
+
     @Query("SELECT * FROM Car WHERE manufacturer =:makeCompany")
     public abstract LiveData<List<Car>> getCarByMakerId(String makeCompany);
 

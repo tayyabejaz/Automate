@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
@@ -73,7 +75,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
 
     //Library used for the Scalable Display Pixels
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
+
+    implementation 'com.github.anastr:speedviewlib:1.4.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
