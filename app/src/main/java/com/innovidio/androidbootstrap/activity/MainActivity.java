@@ -1,9 +1,11 @@
 package com.innovidio.androidbootstrap.activity;
 
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -17,12 +19,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.innovidio.androidbootstrap.AppPreferences;
+import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.IconProvider;
 import com.innovidio.androidbootstrap.Utils.Sorting;
 import com.innovidio.androidbootstrap.adapter.CustomMainSpinnerAdapter;
 import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
 import com.innovidio.androidbootstrap.databinding.ActivityMainBinding;
+import com.innovidio.androidbootstrap.databinding.DialogFilterListBinding;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
 import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
@@ -30,7 +34,6 @@ import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
-import com.innovidio.androidbootstrap.entity.models.SpinnerDataModel;
 import com.innovidio.androidbootstrap.entity.models.TimeLine;
 import com.innovidio.androidbootstrap.interfaces.SpinnerItemClickListener;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
@@ -105,7 +108,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         navigationController = Navigation.findNavController(MainActivity.this, R.id.nav_main_host);
 
         // only need if activity is not extends with DaggerAppCompatActivity or not added in di builder module
-       // timeLineViewModel = new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
+        // timeLineViewModel = new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
 
         //Initialize icons for Bottom Sheet
         initializeIcons();
@@ -122,7 +125,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     private void initializeAdapters() {
         initList();
-        customMainSpinnerAdapter = new CustomMainSpinnerAdapter(this,this::onItemClick, carArrayList);
+        customMainSpinnerAdapter = new CustomMainSpinnerAdapter(this, this::onItemClick, carArrayList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
 
         mainBinding.spinnerCustomLayout.rvCarSpinnerLayout.setLayoutManager(layoutManager);
@@ -150,6 +153,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding.mainActivitySpinner.setOnClickListener(this);
         mainBinding.spinnerCustomLayout.ivCancelLayout.setOnClickListener(this);
         mainBinding.spinnerCustomLayout.btnCarSpinnerLayout.setOnClickListener(this);
+        mainBinding.toolbarFilterIcon.setOnClickListener(this);
     }
 
     private void addDummyValues() {
@@ -360,10 +364,14 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             case R.id.btn_car_spinner_layout:
                 startActivity(new Intent(MainActivity.this, AddNewCarActivity.class));
                 break;
+
+            case R.id.toolbar_filter_icon:
+                showFilterDialog();
+                break;
         }
     }
 
-    private void closeSpinnerLayout(){
+    private void closeSpinnerLayout() {
         if (isDown) {
             mainBinding.mainActivitySpinner.bringToFront();
             slideBackToTop(mainBinding.flCustomSpinnerLayout, mainBinding.mainActivitySpinner, 500);
@@ -384,7 +392,9 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         carViewModel.getCarById(SAVED_CAR_ID).observe(this, new Observer<Car>() {
             @Override
             public void onChanged(Car car) {
-                setSpinnerItem(car);
+                if (car != null) {
+                    setSpinnerItem(car);
+                }
             }
         });
 
@@ -394,11 +404,11 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 //        carArrayList.add(new SpinnerDataModel("Suzuki CIAZ", "Suzuki", "Ciaz", "SLL 6541"));
     }
 
-    private void setSpinnerItem(Car car){
-        String name =  car.getManufacturer() + " " +  car.getModelName() + " " + car.getMakeYear();
+    private void setSpinnerItem(Car car) {
+        String name = car.getManufacturer() + " " + car.getModelName() + " " + car.getMakeYear();
         mainBinding.mainActivitySpinner.setText(name);
         appPreferences.put(AppPreferences.Key.SAVED_CAR_ID, car.getId());
-        SAVED_CAR_ID =  car.getId();
+        SAVED_CAR_ID = car.getId();
     }
 
     public void slideUp(View view) {
@@ -491,7 +501,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     }
 
 
-    public void startFormActivity(String formType){
+    public void startFormActivity(String formType) {
         Intent intent = new Intent(this, FormActivity.class);
         intent.putExtra(ACTIVITY, formType);
         startActivity(intent);
@@ -501,5 +511,54 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     public void onItemClick(Car car) {
         closeSpinnerLayout();
         setSpinnerItem(car);
+    }
+
+    private void showFilterDialog() {
+        DialogFilterListBinding binding;
+        binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_filter_list, null, false);
+        View dialogView = binding.getRoot();
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        final AlertDialog exitDialog = dialogBuilder.create();
+        exitDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        exitDialog.setView(dialogView);
+        exitDialog.show();
+
+        Intent filterIntent = new Intent(MainActivity.this, FilterResultActivity.class);
+
+        binding.checkboxCarwash.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                filterIntent.putExtra(Constants.FILTER_CARWASH, true);
+            } else {
+                filterIntent.removeExtra(Constants.FILTER_CARWASH);
+            }
+        });
+
+        binding.checkboxFuelups.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                filterIntent.putExtra(Constants.FILTER_FUEL_UPS, true);
+            } else {
+                filterIntent.removeExtra(Constants.FILTER_FUEL_UPS);
+            }
+        });
+
+        binding.checkboxMaintenance.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                filterIntent.putExtra(Constants.FILTER_MAINTENANCE, true);
+            } else {
+                filterIntent.removeExtra(Constants.FILTER_MAINTENANCE);
+            }
+        });
+
+        binding.checkboxTrips.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                filterIntent.putExtra(Constants.FILTER_TRIPS, true);
+            } else {
+                filterIntent.removeExtra(Constants.FILTER_TRIPS);
+            }
+        });
+
+        binding.btnFilteredResult.setOnClickListener(view -> {
+            startActivity(filterIntent);
+        });
     }
 }

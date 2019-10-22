@@ -7,7 +7,10 @@ import com.innovidio.androidbootstrap.fragment.AddNewCar;
 import com.innovidio.androidbootstrap.fragment.AddServices;
 import com.innovidio.androidbootstrap.fragment.AddTrip;
 import com.innovidio.androidbootstrap.fragment.BaseFragment;
+import com.innovidio.androidbootstrap.fragment.DriveFragment;
 import com.innovidio.androidbootstrap.fragment.MainDashboardFragment;
+import com.innovidio.androidbootstrap.fragment.MaintainFragment;
+import com.innovidio.androidbootstrap.fragment.SettingsFragment;
 
 import dagger.Module;
 import dagger.Provides;
@@ -20,6 +23,15 @@ public abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract MainDashboardFragment contributeMainDashboardFragment();
+
+    @ContributesAndroidInjector
+    abstract SettingsFragment contributeSettingsFragment();
+
+    @ContributesAndroidInjector
+    abstract MaintainFragment contributeMaintainFragment();
+
+    @ContributesAndroidInjector
+    abstract DriveFragment contributeDriveFragment();
 
     @ContributesAndroidInjector
     abstract AddCarWash contributeAddCarWashFragment();
@@ -38,6 +50,7 @@ public abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract AddCustomCar contributeAddCustomCarFragment();
+
     @Provides
     static String firstInjectionString() {
         return "My first Injection String";

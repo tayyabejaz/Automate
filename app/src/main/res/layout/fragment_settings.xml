@@ -1,14 +1,480 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.SettingsFragment">
+<layout>
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_title"
+                style="@style/settingText"
+                android:text="User Profile"
+                app:layout_constraintBottom_toTopOf="@id/card_user_info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_my_cars"
+                style="@style/settingText"
+                android:text="My Cars"
+                app:layout_constraintBottom_toTopOf="@id/card_my_cars"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_user_info" />
+
+            <TextView
+                android:id="@+id/tv_more"
+                style="@style/settingText"
+                android:text="More"
+                app:layout_constraintBottom_toTopOf="@id/card_links"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_my_cars" />
+
+            <TextView
+                android:id="@+id/tv_about_app"
+                style="@style/settingText"
+                android:text="About App"
+                app:layout_constraintBottom_toTopOf="@id/card_about_us"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_links" />
+
+            <!-- User Profile Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_user_info"
+                style="@style/settingsCard"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/tv_my_cars"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:layout_width="@dimen/_90sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:background="@drawable/app_button_background"
+                        android:drawableLeft="@drawable/automate_edit_dialog_icon"
+                        android:fontFamily="@font/roboto_medium"
+                        android:gravity="center"
+                        android:padding="@dimen/_10sdp"
+                        android:text="Edit"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:textColor="@color/whiteColor"
+                        android:textSize="@dimen/_8sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/iv_user_image"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/iv_user_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:src="@drawable/automate_user_profile_placeholder"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_user_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/automate_location_icon"
+                        android:drawablePadding="@dimen/_8sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Lohore, Pakistan"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_user_name" />
+
+                    <TextView
+                        android:id="@+id/tv_user_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:text="username123@gmail.com"
+                        android:textColor="@color/blueTextColor"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_user_location" />
+
+                    <TextView
+                        android:id="@+id/tv_user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="User Name"
+                        android:textColor="@color/blackColor"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/iv_user_image" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Links Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_links"
+                style="@style/settingsCard"
+                app:layout_constraintBottom_toTopOf="@id/tv_about_app"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_more">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ll_preferences"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        app:layout_constraintBottom_toTopOf="@id/ll_reset_data"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/iv_preferences"
+                            style="@style/imageviewSetting"
+                            android:src="@drawable/automate_preferences_settings_icon"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/tv_preferences"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_preferences"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Preferences"
+                            android:textColor="@color/blackColor"
+                            android:textSize="@dimen/_14sdp"
+                            app:layout_constraintBottom_toTopOf="@id/tv_preferences_description"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_preferences"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_preferences_description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Change currency, fuel units, distance units etc"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@id/tv_preferences"
+                            app:layout_constraintStart_toStartOf="@id/tv_preferences"
+                            app:layout_constraintTop_toBottomOf="@id/tv_preferences" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ll_reset_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        app:layout_constraintBottom_toTopOf="@id/ll_privacy_policy"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ll_preferences">
+
+                        <ImageView
+                            android:id="@+id/iv_reset_data"
+                            style="@style/imageviewSetting"
+                            android:src="@drawable/automate_reset_data_settings_icon"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/tv_reset_data"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_reset_data"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Reset Data"
+                            android:textColor="@color/blackColor"
+                            android:textSize="@dimen/_14sdp"
+                            app:layout_constraintBottom_toTopOf="@id/tv_reset_data_description"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_reset_data"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_reset_data_description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Reset all your saved data"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@id/tv_reset_data"
+                            app:layout_constraintStart_toStartOf="@id/tv_reset_data"
+                            app:layout_constraintTop_toBottomOf="@id/tv_reset_data" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ll_privacy_policy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        app:layout_constraintBottom_toTopOf="@id/ll_rate_us"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ll_reset_data">
+
+                        <ImageView
+                            android:id="@+id/iv_privacy_policy"
+                            style="@style/imageviewSetting"
+                            android:src="@drawable/automate_privacy_policy_settings_icon"
+                            app:layout_constraintEnd_toStartOf="@id/tv_privacy_policy"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_privacy_policy"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Privacy Policy"
+                            android:textColor="@color/blackColor"
+                            android:textSize="@dimen/_14sdp"
+                            app:layout_constraintBottom_toTopOf="@id/tv_privacy_policy_description"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_privacy_policy"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_privacy_policy_description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="A statement that discloses all data"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@id/tv_privacy_policy"
+                            app:layout_constraintStart_toStartOf="@id/tv_privacy_policy"
+                            app:layout_constraintTop_toBottomOf="@id/tv_privacy_policy"
+
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ll_rate_us"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        app:layout_constraintBottom_toTopOf="@id/ll_share"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ll_privacy_policy">
+
+                        <ImageView
+                            android:id="@+id/iv_rate_us"
+                            style="@style/imageviewSetting"
+                            android:src="@drawable/automate_rate_us_settings_icon"
+                            app:layout_constraintEnd_toStartOf="@id/tv_rate_us"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_rate_us"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Rate Us!"
+                            android:textColor="@color/blackColor"
+                            android:textSize="@dimen/_14sdp"
+                            app:layout_constraintBottom_toTopOf="@id/tv_rate_us_description"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_rate_us"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_rate_us_description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Rate this app 5 start to keep encourging us"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@id/tv_rate_us"
+                            app:layout_constraintStart_toStartOf="@id/tv_rate_us"
+                            app:layout_constraintTop_toBottomOf="@id/tv_rate_us"
+
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ll_share"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ll_rate_us">
+
+                        <ImageView
+                            android:id="@+id/iv_share"
+                            style="@style/imageviewSetting"
+                            android:src="@drawable/automate_share_settings_icon"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/tv_share"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_share"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Share"
+                            android:textColor="@color/blackColor"
+                            android:textSize="@dimen/_14sdp"
+                            app:layout_constraintBottom_toTopOf="@id/tv_share_description"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_share"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_share_description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Share this app with your friends."
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@id/tv_share"
+                            app:layout_constraintStart_toStartOf="@id/tv_share"
+                            app:layout_constraintTop_toBottomOf="@id/tv_share"
+
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- My Cars Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_my_cars"
+                style="@style/settingsCard"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/tv_more"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_my_cars">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_160sdp"
+                    android:padding="@dimen/_5sdp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:listitem="@layout/item_custom_spinner" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Version Card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_about_us"
+                style="@style/settingsCard"
+                android:layout_marginBottom="@dimen/_30sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_about_app">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp">
+
+                    <TextView
+                        android:id="@+id/tv_version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_medium"
+                        android:padding="@dimen/_10sdp"
+                        android:text="Version"
+                        android:textColor="@color/blueTextColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_version_code"
+                        app:layout_constraintEnd_toStartOf="@id/tv_version_value"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_version_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="1.5.8"
+                        android:textColor="@color/blueTextColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_version_code_value"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_version"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_version_code"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Version Code"
+                        android:textColor="@color/blueTextColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_copyrights"
+                        app:layout_constraintEnd_toStartOf="@id/tv_version_code_value"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_version" />
+
+                    <TextView
+                        android:id="@+id/tv_version_code_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:text="10"
+                        android:textColor="@color/blueTextColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_copyrights"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/tv_version_code"
+                        app:layout_constraintTop_toBottomOf="@id/tv_version_value" />
+
+                    <TextView
+                        android:id="@+id/tv_copyrights"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/_5sdp"
+                        android:text="All Right Reserved"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_version_code_value" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>

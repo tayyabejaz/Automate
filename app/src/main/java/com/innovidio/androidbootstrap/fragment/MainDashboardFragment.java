@@ -76,7 +76,7 @@ public class MainDashboardFragment extends DaggerFragment implements TimelineIte
         timeLineData();
        // timeLineFilteredData();
 
-        timelineAdapter = new TimelineAdapter(getContext(), this, timeLineItemList);
+        timelineAdapter = new TimelineAdapter(getContext(), this, timeLineItemList, 0);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         binding.rvMainFragment.setLayoutManager(layoutManager);
         binding.rvMainFragment.setAdapter(timelineAdapter);

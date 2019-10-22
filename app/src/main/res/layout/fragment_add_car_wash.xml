@@ -22,11 +22,12 @@
 
         <TextView
             android:id="@+id/et_carwash_date"
+            android:layout_width="0dp"
             style="@style/EditText_In_Forms"
             android:drawableLeft="@drawable/automate_set_date_form_icon"
             android:hint="@string/form_set_date"
-            app:layout_constraintBottom_toTopOf="@id/et_carwash_time"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
+            app:layout_constraintEnd_toStartOf="@id/et_carwash_time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_car_selection" />
 
@@ -34,12 +35,13 @@
         <TextView
             android:id="@+id/et_carwash_time"
             style="@style/EditText_In_Forms"
+            android:layout_width="0dp"
             android:drawableLeft="@drawable/automate_set_time_form_icon"
             android:hint="@string/form_set_time"
             app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_carwash_date" />
+            app:layout_constraintStart_toEndOf="@id/et_carwash_date"
+            app:layout_constraintTop_toBottomOf="@id/tv_car_selection" />
 
         <EditText
             android:id="@+id/et_odometer_reading"

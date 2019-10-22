@@ -126,24 +126,26 @@
 
                 <TextView
                     android:id="@+id/tv_trip_date"
+                    android:layout_width="0d"
                     style="@style/EditText_In_Forms"
                     android:drawableLeft="@drawable/automate_set_date_form_icon"
                     android:hint="Set Date"
-                    app:layout_constraintBottom_toTopOf="@id/tv_trip_time"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
+                    app:layout_constraintEnd_toStartOf="@id/tv_trip_time"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_car_selection" />
 
 
                 <TextView
                     android:id="@+id/tv_trip_time"
+                    android:layout_width="0dp"
                     style="@style/EditText_In_Forms"
                     android:drawableLeft="@drawable/automate_set_time_form_icon"
                     android:hint="Time"
                     app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_trip_date" />
+                    app:layout_constraintStart_toEndOf="@id/tv_trip_date"
+                    app:layout_constraintTop_toBottomOf="@id/et_car_selection" />
 
 
                 <TextView
