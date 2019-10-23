@@ -51,7 +51,6 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_user_info"
                 style="@style/settingsCard"
-                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/tv_my_cars"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -62,6 +61,7 @@
                     android:layout_height="match_parent">
 
                     <Button
+                        android:id="@+id/button_edit_profile"
                         android:layout_width="@dimen/_90sdp"
                         android:layout_height="@dimen/_30sdp"
                         android:background="@drawable/app_button_background"
@@ -370,7 +370,6 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_my_cars"
                 style="@style/settingsCard"
-                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/tv_more"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -382,6 +381,7 @@
                     android:padding="@dimen/_5sdp">
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_my_cars"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"

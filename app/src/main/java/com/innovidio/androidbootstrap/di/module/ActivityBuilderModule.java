@@ -3,6 +3,7 @@ package com.innovidio.androidbootstrap.di.module;
 import com.innovidio.androidbootstrap.activity.FilterResultActivity;
 import com.innovidio.androidbootstrap.activity.FormActivity;
 import com.innovidio.androidbootstrap.activity.MainActivity;
+import com.innovidio.androidbootstrap.activity.UserProfileActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -18,6 +19,9 @@ public abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector
     abstract FilterResultActivity contributeFilteredResultActivity();
+
+    @ContributesAndroidInjector
+    abstract UserProfileActivity contributeUserProfileActivity();
 
 
 }

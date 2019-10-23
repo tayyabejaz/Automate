@@ -270,7 +270,7 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
         userid = SharedPreferenceHelper.getInstance().getStringValue(Constants.userid, "");
        // carname = SharedPreferenceHelper.getInstance().getStringValue(AppConstant.carnameselectedfortrip, "");
         // todo get car
-        carname = "WagonR";//DriveFragment.carchoosenbyuser;
+        carname = "WagonR";//FragmentDrive.carchoosenbyuser;
        // Toast.makeText(this, ""+carname, Toast.LENGTH_SHORT).show();
         //usertripsdatabase = FirebaseDatabase.getInstance().getReference("usertrips").child(userid).child(carname);
 

@@ -22,12 +22,12 @@ import com.innovidio.androidbootstrap.interfaces.FragmentClickListener;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddCustomCar extends Fragment implements ActivityBtnClickListener {
+public class FragmentAddCustomCar extends Fragment implements ActivityBtnClickListener {
 
     private FragmentClickListener listener;
     private FragmentAddCustomCarBinding binding;
 
-    public AddCustomCar(FragmentClickListener clickListener) {
+    public FragmentAddCustomCar(FragmentClickListener clickListener) {
         // Required empty public constructor
         this.listener = clickListener;
     }

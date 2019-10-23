@@ -40,7 +40,7 @@ import static com.innovidio.androidbootstrap.Utils.UtilClass.checkEmptyField;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddCarWash extends DaggerFragment {
+public class FragmentAddCarWash extends DaggerFragment {
 
     @Inject
     MaintenanceViewModel maintenanceViewModel;
@@ -50,7 +50,7 @@ public class AddCarWash extends DaggerFragment {
     private final Calendar todaysCalender = Calendar.getInstance();
 
 
-    public AddCarWash() {
+    public FragmentAddCarWash() {
         // Required empty public constructor
     }
 

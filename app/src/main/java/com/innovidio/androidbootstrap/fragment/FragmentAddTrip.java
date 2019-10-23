@@ -20,12 +20,12 @@ import java.util.Calendar;
 
 import dagger.android.support.DaggerFragment;
 
-public class AddTrip extends DaggerFragment {
+public class FragmentAddTrip extends DaggerFragment {
 
     private FragmentAddTripBinding tripBinding;
     private Calendar calendar = Calendar.getInstance();
 
-    public AddTrip() {
+    public FragmentAddTrip() {
         // Required empty public constructor
     }
 

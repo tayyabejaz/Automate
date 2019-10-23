@@ -21,13 +21,13 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NavigationStartingFragment extends Fragment{
+public class FragmentNavigationStarting extends Fragment{
 
     private FragmentNavigationStartingBinding binding;
     private ArrayList<SpinnerDataModel> dataList;
     private CustomMainSpinnerAdapter mAdapter;
     private NavController navigationController;
-    public NavigationStartingFragment() {
+    public FragmentNavigationStarting() {
         // Required empty public constructor
     }
 

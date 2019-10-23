@@ -13,15 +13,17 @@ import android.view.ViewGroup;
 
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.dashboard.SetSpeedLimit;
+import com.innovidio.androidbootstrap.databinding.FragmentDriveBinding;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DriveFragment extends Fragment {
+public class FragmentDrive extends Fragment  {
 
 
 
-    public DriveFragment() {
+
+    public FragmentDrive() {
         // Required empty public constructor
     }
 
