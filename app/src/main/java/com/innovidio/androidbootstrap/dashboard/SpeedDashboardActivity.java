@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.GpsStatus;
 import android.location.Location;
@@ -28,7 +26,6 @@ import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -66,7 +63,7 @@ import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.activity.MainActivity;
 import com.innovidio.androidbootstrap.databinding.ActivitySpeedDashboardBinding;
-import com.innovidio.androidbootstrap.entity.Trip;
+import com.innovidio.androidbootstrap.entity.Preferences;
 import com.innovidio.androidbootstrap.service.FloatingViewService;
 
 import java.text.DateFormat;
@@ -77,6 +74,11 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import javax.inject.Inject;
+
+import static com.innovidio.androidbootstrap.Constants.KM_HR;
+import static com.innovidio.androidbootstrap.Constants.M_HR;
+
 public class SpeedDashboardActivity extends AppCompatActivity implements GpsStatus.Listener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     private static final String TAG = "SpeedDashboardActivity";
     private static final String CHANNEL_ID = "channelId";
@@ -84,7 +86,7 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
     public static String currentSpeed;
     public boolean isTimeSet = false;
     ActivitySpeedDashboardBinding binding;
-    SpeedDashboardModel viewModel;
+    SpeedDashboardModel speedDashboardModel;
     int maximumspeed = 280;
     String maxSpeed, avgSpeed, distance;
     long[] vibrate = {500, 1000};
@@ -112,18 +114,19 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
     boolean isstart = true;
     String speedUnits;
     String distanceUnitsfromdatabase;
- //   DatabaseReference usertripsdatabase;
+//    DatabaseReference usertripsdatabase;
     private LocationManager mLocationManager;
     //  private DataManager dataManagerLocal = new DataManager();
     private DataManager data;
     String date;
     long dateinmillis;
- //   DatabaseReference usercompleteprofile;
+  //  DatabaseReference usercompleteprofile;
     private String carname;
     String userid;
     String distanceUnits;
     String carfueleconomyperkm;
 
+    public static Preferences preferences = null;
     // Timer timer;
     //  Location locationp=new Location("Enterprise building , thokr lahore pakistn");
     private BroadcastReceiver mBatteryLevelReciver = new BroadcastReceiver() {
@@ -172,42 +175,33 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
         binding = DataBindingUtil.setContentView(this, R.layout.activity_speed_dashboard);
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
+        preferences = new Preferences();
+        preferences.setId(1);
+        preferences.setSpeedLimit(90);
+        preferences.setCountry("Pakistan");
+        preferences.setAutoDetect(false);
+        preferences.setCurrency("Rs");
+        preferences.setDistanceUnit(Preferences.UnitTypeEnum.KM);
+        preferences.setSpeedUnit(Preferences.UnitTypeEnum.KM_HR);
+        preferences.setFuelUnit(Preferences.UnitTypeEnum.Liters);
+        preferences.setFuelUnitPrice(113);
+
+
         PointerSpeedometer pointerSpeedometer = (PointerSpeedometer) findViewById(R.id.iv_imageSpeedometer);
         pointerSpeedometer.setMaxSpeed(maximumspeed);
        // PointerSpeedometer pointerSpeedometer = (PointerSpeedometer) findViewById(R.id.iv_imageSpeedometer);
 
         carfueleconomyperkm = SharedPreferenceHelper.getInstance().getStringValue(Constants.carfueleconomyperkm , "0.7");
+        userid = SharedPreferenceHelper.getInstance().getStringValue(Constants.userid , "");
 
-    //    todo i commented this code for latter check
-//        userid = SharedPreferenceHelper.getInstance().getStringValue(Constants.userid , "");
-//        usercompleteprofile = FirebaseDatabase.getInstance().getReference("userscompleteprofile").child(userid);
-//
-//        usercompleteprofile.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists())
-//                {
-//                    UserInformation userInformation = dataSnapshot.getValue(UserInformation.class);
-//
-//                    distanceUnitsfromdatabase = userInformation.getDistance();
-//                   // Log.d("distanceunitsfromfireba" , distanceUnitsfromdatabase);
-//                }
-//                else
-//                {
-//                    distanceUnits = "KM";
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                    distanceUnits = "KM";
-//            }
-//        });
+        //distanceUnits = "KM";
+        distanceUnits = preferences.getDistanceUnit().name();
         Log.d("speedunits: " , SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits , ""));
         Log.d("distanceunits: " , SharedPreferenceHelper.getInstance().getStringValue(Constants.distanceunits , ""));
 
         //binding.ivImageSpeedometer.setMaxSpeed(maximumspeed);
-        speedLimit = SharedPreferenceHelper.getInstance().getIntegerValue(Constants.SPEED_LIMIT, 0);
+     //  speedLimit = SharedPreferenceHelper.getInstance().getIntegerValue(Constants.SPEED_LIMIT, 0);
+        speedLimit = preferences.getSpeedLimit();
 
         if (speedLimit == 0)
         {
@@ -220,9 +214,11 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
             binding.textSpeedlimit.setVisibility(View.VISIBLE);
         }
 
-        if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, "KM/hr").equals("KM/hr")) {
+        if (preferences.getSpeedUnit() == Preferences.UnitTypeEnum.KM_HR){
+       // if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, KM_HR).equals(KM_HR)) {
             binding.textAlarm.setText(/*"Speed Limit " + */String.valueOf(speedLimit) + "KMPH");
-        } else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, "KM/hr").equals("M/hr")) {
+        } if (preferences.getSpeedUnit() == Preferences.UnitTypeEnum.M_HR){
+        //} else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, KM_HR).equals(M_HR)) {
             binding.textAlarm.setText(/*"Speed Limit " + */String.valueOf(speedLimit) + "MPH");
         }
         //  Toast.makeText(this, "Limit alarm value: "+FuturisticSettingsActivity.limitalarmpressed, Toast.LENGTH_SHORT).show();
@@ -268,13 +264,12 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
 
         String userid;
         userid = SharedPreferenceHelper.getInstance().getStringValue(Constants.userid, "");
-       // carname = SharedPreferenceHelper.getInstance().getStringValue(AppConstant.carnameselectedfortrip, "");
-        // todo get car
-        carname = "WagonR";//DriveFragment.carchoosenbyuser;
+       // carname = SharedPreferenceHelper.getInstance().getStringValue(Constants.carnameselectedfortrip, "");
+        carname = "Suzuki WagonR 2019";
        // Toast.makeText(this, ""+carname, Toast.LENGTH_SHORT).show();
-        //usertripsdatabase = FirebaseDatabase.getInstance().getReference("usertrips").child(userid).child(carname);
+     //   usertripsdatabase = FirebaseDatabase.getInstance().getReference("usertrips").child(userid).child(carname);
 
-        viewModel = new SpeedDashboardModel();
+        speedDashboardModel = new SpeedDashboardModel();
 
         try {
             mp = new MediaPlayer();
@@ -292,30 +287,29 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
         binding.stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finishdrivedialog();
+                finishDriveDialog();
             }
         });
 
-        if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, "KM/hr").equals("KM/hr")) {
-            viewModel.setSpeedView("0");
-            viewModel.setUnitView("KMPH");
-            viewModel.setDistanceView("0 M");
-            viewModel.setMaxSpeedView("0 KMPH");
-            viewModel.setAvgSpeedView("0 KMPH");
+        if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.KM_HR) {
+       //     if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, KM_HR).equals(KM_HR)) {
+            speedDashboardModel.setSpeedView("0");
+            speedDashboardModel.setUnitView("KMPH");
+            speedDashboardModel.setDistanceView("0 M");
+            speedDashboardModel.setMaxSpeedView("0 KMPH");
+            speedDashboardModel.setAvgSpeedView("0 KMPH");
         } else {
-            viewModel.setSpeedView("0");
-            viewModel.setUnitView("MPH");
-            viewModel.setDistanceView("0 M");
-            viewModel.setMaxSpeedView("0 MPH");
-            viewModel.setAvgSpeedView("0 MPH");
+            speedDashboardModel.setSpeedView("0");
+            speedDashboardModel.setUnitView("MPH");
+            speedDashboardModel.setDistanceView("0 M");
+            speedDashboardModel.setMaxSpeedView("0 MPH");
+            speedDashboardModel.setAvgSpeedView("0 MPH");
         }
 
-        if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, "KM/hr").equals("KM/hr"))
-        {
+        if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.KM_HR) {
+      //  if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, KM_HR).equals(KM_HR)) {
             binding.speedUnit.setText("KMPH");
-        }
-        else
-        {
+        } else {
             binding.speedUnit.setText("MPH");
         }
 
@@ -325,9 +319,6 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
             @Override
             public void onChronometerTick(Chronometer chrono) {
                 long time;
-                //  Log.d("basetimebefore", "chrono.getBase(): " + chrono.getBase());
-                //  Log.d("baserealtimebefore", "SystemClock.elapsedRealtime(): " + SystemClock.elapsedRealtime());
-                // chrono.setBase(System.currentTimeMillis());
                 time = SystemClock.elapsedRealtime() - chrono.getBase();
                 Log.d("basetime", "" + chrono.getBase() + "\t" + "realtime" + "" + SystemClock.elapsedRealtime() + "\t" + "finaltime" + time);
                 locationViewModel.setChronoTimerMutableLiveData(time);
@@ -393,8 +384,8 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                 double averageTemp = average;
 
                 // Log.d("saad", "before update: " + averageTemp);
-
-                if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, "KM/hr").equals("KM/hr")) {
+                if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.KM_HR) {
+              //  if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, KM_HR).equals(KM_HR)) {
                     speedUnits = "KMPH";
                     /*if (distanceTemp <= 1000.0) {
                         distanceUnits = "m";
@@ -427,7 +418,9 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
 
 
 
-                } else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, "KM/hr").equals("M/hr")) {
+                }
+                else if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.M_HR) {
+                //else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, KM_HR).equals(M_HR)) {
                     try {
                         maxSpeedTemp *= 0.62137119;
                         if (distanceUnitsfromdatabase.equals("KM")) {
@@ -466,27 +459,13 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                 }*/
 
 
-                viewModel.setUnitView(speedUnits);
+                speedDashboardModel.setUnitView(speedUnits);
 
                 Log.d("maxspeed", maxSpeedTemp + "\t" + "speedavg" + averageTemp + "\t" + "distance" + distanceTemp);
 
-//                maxSpeed = new SpannableString(String.format("%.0f", maxSpeedTemp) + speedUnits);
-//              //  maxSpeed.setSpan(new RelativeSizeSpan(0.5f), maxSpeed.length() - 4, maxSpeed.length(), 0);
-//                viewModel.setMaxSpeedView(maxSpeed.toString());
-//               // binding.maxSpeedView.setText(maxSpeed);
-//                //  SharedPreferenceHelper.getInstance().setStringValue(AppConstant.maxspeed , maxSpeed.toString());
-//
-//                avgSpeed = new SpannableString(String.format("%.0f", averageTemp) + speedUnits);
-//                //avgSpeed.setSpan(new RelativeSizeSpan(0.5f), avgSpeed.length() - 4, avgSpeed.length(), 0);
-//                viewModel.setAvgSpeedView(avgSpeed.toString());
-//               // binding.avgSpeedView.setText(avgSpeed);
-//
-//                distance = new SpannableString(String.format("%.3f", distanceTemp) + distanceUnits);
-//               // distance.setSpan(new RelativeSizeSpan(0.5f), distance.length() - 2, distance.length(), 0);
-//                viewModel.setDistanceView(distance.toString());
 
                 maxSpeed = String.format("%.0f", maxSpeedTemp) + " " + speedUnits;
-                viewModel.setMaxSpeedView(maxSpeed);
+                speedDashboardModel.setMaxSpeedView(maxSpeed);
 
                 // avgSpeed =  String.format("%.0f", averageTemp)+ speedUnits;
                 try {
@@ -497,20 +476,15 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                viewModel.setAvgSpeedView(avgSpeed);
+                speedDashboardModel.setAvgSpeedView(avgSpeed);
 
                 distance = String.format("%.2f", distanceTemp) + " " + distanceUnits;
-                viewModel.setDistanceView(distance);
+                speedDashboardModel.setDistanceView(distance);
 
-
-                binding.setViewModel(viewModel);
-                // binding.distanceView.setText(distance);
-
-                // Log.d("maxspeed" , maxSpeed +"\t"+ "speedavg" + avgSpeed+ "\t"+ "distance" + distance);
-
+                binding.setViewModel(speedDashboardModel);
 
                 try {
-                    currentSpeed = dataManager.getCurrentspeed();
+                    currentSpeed = dataManager.getCurrentSpeed();
                 } catch (NullPointerException e) {
                     e.printStackTrace();
                 } catch (Exception e) {
@@ -563,20 +537,6 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                         binding.minimizeIcon.setImageDrawable(drawable);
                     }
                 }
-                /*if (mp!=null && mp.isPlaying())
-                {
-                    if (currentSpeed!=null && Integer.parseInt(currentSpeed) < speedLimit)
-                    {
-                        mp.stop();
-                    }
-                }
-
-                if (Integer.parseInt(currentSpeed) < speedLimit && mp.isPlaying() && mp!=null)
-                {
-                    mp.stop();
-                }*/
-
-
             }
         });
 
@@ -585,139 +545,44 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
             @Override
             public void onChanged(@Nullable String s) {
                 if (s != null) {
-                   // if (SetSpeedLimit.speedalarmon) {
                         if (currentSpeed != null && Integer.parseInt(currentSpeed) > speedLimit) {
                             if (mp != null && !mp.isPlaying()) {
                                 //  mp.setLooping(true);
                                 mp.start();
                             }
 
-                            binding.currentSpeed.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.speedUnit.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.textTime.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.battery.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.textMaxspeed.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.maxSpeedView.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.avgSpeedView.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            //   binding.textView10.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.textDistance.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.distanceView.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.textAlarm.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.hud.setTextColor(getResources().getColor(R.color.imagecolor1));
-
-                            binding.textAveragespeed.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.textDuration.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.chronometer.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.textCurrentspeed.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.textSpeedlimit.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.stop.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            binding.fuelup.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            //  binding.stop.setTextColor(getResources().getColor(R.color.imagecolor1));
-                            if (Build.VERSION.SDK_INT >= 21) {
-                                Drawable drawable = getResources().getDrawable(R.drawable.minimize);
-                                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor1));
-                                binding.minimizeIcon.setImageDrawable(drawable);
-                            } else {
-
-                                Drawable drawable = ContextCompat.getDrawable(SpeedDashboardActivity.this, R.drawable.minimize);
-                                Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
-                                DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor1));
-                                binding.minimizeIcon.setImageDrawable(drawable);
-                            }
+                            setMeterViewForOverSpeed();
 
 
                         } else {
                             if (mp != null && mp.isPlaying()) {
                                 mp.stop();
                             }
-                            binding.currentSpeed.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.speedUnit.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.textTime.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.battery.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.textMaxspeed.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.maxSpeedView.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.avgSpeedView.setTextColor(getResources().getColor(R.color.whiteColor));
-                            //  binding.textView10.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.textDistance.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.distanceView.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.textAlarm.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.hud.setTextColor(getResources().getColor(R.color.whiteColor));
-                            //  binding.stop.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.textAveragespeed.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.textDuration.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.chronometer.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.textCurrentspeed.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.textSpeedlimit.setTextColor(getResources().getColor(R.color.whiteColor));
-                            binding.stop.setTextColor(getResources().getColor(R.color.blackColor));
-                            binding.fuelup.setTextColor(getResources().getColor(R.color.blackColor));
-
-                            if (Build.VERSION.SDK_INT >= 21) {
-                                Drawable drawable = getResources().getDrawable(R.drawable.minimize);
-                                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.whiteColor));
-                                binding.minimizeIcon.setImageDrawable(drawable);
-                            } else {
-
-                                Drawable drawable = ContextCompat.getDrawable(SpeedDashboardActivity.this, R.drawable.minimize);
-                                Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
-                                DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.whiteColor));
-                                binding.minimizeIcon.setImageDrawable(drawable);
-                            }
+                            setMeterViewForNormalSpeed();
                         }
-                   // }
                 }
 
             }
         });
-        //  Toast.makeText(this, "Activity main created", Toast.LENGTH_SHORT).show();
 
-
-        // if (SettingsActivity.ischecked)
         {
 
 
         }
-        if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_TYPE, "km/h").equals("KM/hr")) {
+        if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.KM_HR) {
+       // if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_UNIT, "km/h").equals("KM/hr")) {
             binding.speedUnit.setText("km/h");
-        } else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_TYPE, "km/h").equals("M/hr")) {
+        }else if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.M_HR) {
+      //  else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_UNIT, "km/h").equals("M/hr")) {
             binding.speedUnit.setText("mph");
         }
 
 
-        //  modelspeed = ViewModelProviders.of(this).get(SharedViewModel.class);
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        //  GoogleAnalyticsLogs.getInstance().logEvent(this, 3, SpeedDashboardActivity.this.getClass().getSimpleName());
-
-
-        //  binding.raySpeedometer.setMaxSpeed(maximumspeed);
-
-
-        // counter ++;
-        // Toast.makeText(this, ""+counter, Toast.LENGTH_SHORT).show();
-
-        // if (counter == 1)
-        //  {
-        // Toast.makeText(this, "In 1", Toast.LENGTH_SHORT).show();
-//            viewModel.setSpeedView("0");
-//            viewModel.setUnitView("km/h");
-//            viewModel.setDistanceView("0 M");
-//            viewModel.setMaxSpeedView("0 km/h");
-//            viewModel.setAvgSpeedView("0 km/h");
-        // viewModel.setTitle(SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_NAME, "Digital"));
-
-        //  }
-
-
-        // hudAnimationButton();
-        // setVisibility();
-        // setTheme();
-        // futuristicvisibility();
         setcurrentTime();
 
-        binding.setViewModel(viewModel);
+        binding.setViewModel(speedDashboardModel);
         binding.setActivity(this);
         // historySaveDialog = new HistorySaveDialog(this);
 
@@ -733,25 +598,95 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
         binding.fuelup.setOnClickListener(this);
 
 
-        runningcountdowntimer();
+        runningCountDownTimer();
         animate();
     }
 
     public void hudAnimationButton() {
-
         scaleAnimation = new ScaleAnimation(1.0f, 1.15f, 1.0f, 1.15f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         scaleAnimation.setDuration(500);
         scaleAnimation.setRepeatCount(Animation.INFINITE);
         scaleAnimation.setRepeatMode(Animation.REVERSE);
         binding.hud.startAnimation(scaleAnimation);
+    }
 
+    private void setMeterViewForOverSpeed(){
+        binding.currentSpeed.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.speedUnit.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.textTime.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.battery.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.textMaxspeed.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.maxSpeedView.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.avgSpeedView.setTextColor(getResources().getColor(R.color.imagecolor1));
+        //   binding.textView10.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.textDistance.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.distanceView.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.textAlarm.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.hud.setTextColor(getResources().getColor(R.color.imagecolor1));
 
+        binding.textAveragespeed.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.textDuration.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.chronometer.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.textCurrentspeed.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.textSpeedlimit.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.stop.setTextColor(getResources().getColor(R.color.imagecolor1));
+        binding.fuelup.setTextColor(getResources().getColor(R.color.imagecolor1));
+        //  binding.stop.setTextColor(getResources().getColor(R.color.imagecolor1));
+        if (Build.VERSION.SDK_INT >= 21) {
+            Drawable drawable = getResources().getDrawable(R.drawable.minimize);
+            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
+            DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor1));
+            binding.minimizeIcon.setImageDrawable(drawable);
+        } else {
+
+            Drawable drawable = ContextCompat.getDrawable(SpeedDashboardActivity.this, R.drawable.minimize);
+            Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
+            DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor1));
+            binding.minimizeIcon.setImageDrawable(drawable);
+        }
+    }
+
+    private void setMeterViewForNormalSpeed(){
+        binding.currentSpeed.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.speedUnit.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.textTime.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.battery.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.textMaxspeed.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.maxSpeedView.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.avgSpeedView.setTextColor(getResources().getColor(R.color.whiteColor));
+        //  binding.textView10.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.textDistance.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.distanceView.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.textAlarm.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.hud.setTextColor(getResources().getColor(R.color.whiteColor));
+        //  binding.stop.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.textAveragespeed.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.textDuration.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.chronometer.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.textCurrentspeed.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.textSpeedlimit.setTextColor(getResources().getColor(R.color.whiteColor));
+        binding.stop.setTextColor(getResources().getColor(R.color.blackColor));
+        binding.fuelup.setTextColor(getResources().getColor(R.color.blackColor));
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            Drawable drawable = getResources().getDrawable(R.drawable.minimize);
+            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
+            DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.whiteColor));
+            binding.minimizeIcon.setImageDrawable(drawable);
+        } else {
+
+            Drawable drawable = ContextCompat.getDrawable(SpeedDashboardActivity.this, R.drawable.minimize);
+            Drawable wrappedDrawable = DrawableCompat.wrap(drawable);
+            DrawableCompat.setTint(wrappedDrawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.whiteColor));
+            binding.minimizeIcon.setImageDrawable(drawable);
+        }
     }
 
 
     public void onClick(View view) {
         switch (view.getId()) {
 //            case R.id.save_track_btn:
+            // todo read carefully what to do here
 //                {
 //                HistoryManager.getInstance(this).saveHistoryData(maxSpeed, avgSpeed, distance);
 ////                historySaveDialog.showDialog();
@@ -761,16 +696,16 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
 //                break;
 //            }
 //            case R.id.kmph_btn:
-//                SharedPreferenceHelper.getInstance().setStringValue(AppConstant.METER_TYPE, "km/h");
+//                SharedPreferenceHelper.getInstance().setStringValue(Constants.METER_UNIT, "km/h");
 //                SpeedMeterManager.getInstance().setKmphBtnValue(binding.kmphBtn, binding.mphBtn/*, binding.knotBtn*/);
 //                break;
 //            case R.id.mph_btn:
-//                SharedPreferenceHelper.getInstance().setStringValue(AppConstant.METER_TYPE, "mph");
+//                SharedPreferenceHelper.getInstance().setStringValue(Constants.METER_UNIT, "mph");
 //                SpeedMeterManager.getInstance().setMphBtnValue(binding.kmphBtn, binding.mphBtn/*, binding.knotBtn*/);
 //                break;
 
             case R.id.fuelup:
-                // todo add fuel dialog here
+                // todo fuelup dialog add here
 //                if (SharedPreferenceHelper.getInstance().getStringValue(Constants.anycaradded , "").equals("yes"))
 //                {
 //                    FuelUpDialog fuelUpDialog = new FuelUpDialog(SpeedDashboardActivity.this);
@@ -809,12 +744,8 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
 
                 break;
 
-         /*   case R.id.knot_btn:
-                SharedPreferenceHelper.getInstance().setStringValue(AppConstant.METER_TYPE, "knot");
-                SpeedMeterManager.getInstance().setKnotBtnValue(binding.kmphBtn, binding.mphBtn*//*, binding.knotBtn*//*);
-                break;*/
             case R.id.hud:
-                // if (!SharedPreferenceHelper.getInstance().getStringValue(AppConstant.VEHICLE_TYPE, "cycle").equals("cycle"))
+                // if (!SharedPreferenceHelper.getInstance().getStringValue(Constants.VEHICLE_TYPE, "cycle").equals("cycle"))
                 // {
                 if (!isClickHudBtn) {
                     isClickHudBtn = true;
@@ -827,39 +758,11 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
 
 
                 }
-                // }
-
                 break;
 
-            /*case R.id.stop:
-                historySaveDialog.createDialog();
-                historySaveDialog.showDialog();
-
-                *//*SharedPreferenceHelper.getInstance().setStringValue(AppConstant.avgspeedfuturistic , "NotClicked");
-                SharedPreferenceHelper.getInstance().setStringValue(AppConstant.maxspeedfuturistic , "NotClicked");
-                SharedPreferenceHelper.getInstance().setStringValue(AppConstant.distaancefuturistic , "NotClicked");
-                SharedPreferenceHelper.getInstance().setStringValue(AppConstant.speedlimitfuturistic , "NotClicked");
-                SharedPreferenceHelper.getInstance().setStringValue(AppConstant.limitalarmfuturistic , "NotClicked");
-                SharedPreferenceHelper.getInstance().setStringValue(AppConstant.timefuturistic , "NotClicked");
-                SharedPreferenceHelper.getInstance().setStringValue(AppConstant.unitfuturistic , "NotClicked");
-                SharedPreferenceHelper.getInstance().setStringValue(AppConstant.minimizefuturistic , "NotClicked");
-                SharedPreferenceHelper.getInstance().setStringValue(AppConstant.batteryfuturistic , "NotClicked");*//*
-
-                FuturisticSettingsActivity.avgclicked = false;
-                FuturisticSettingsActivity.maxclicked = false;
-                FuturisticSettingsActivity.distancepressed = false;
-                FuturisticSettingsActivity.speedlimitpressed = false;
-                FuturisticSettingsActivity.limitalarmpressed = false;
-                FuturisticSettingsActivity.timepressed = false;
-                FuturisticSettingsActivity.unitpressed = false;
-                FuturisticSettingsActivity.minimizepressed = false;
-                FuturisticSettingsActivity.batterypressed = false;
-                break;*/
-
             case R.id.text_alarm:
-                // todo check it please
-//                NewSpeedLimitDialog newSpeedLimitDialog = new NewSpeedLimitDialog(SpeedDashboardActivity.this);
-//                newSpeedLimitDialog.show();
+                NewSpeedLimitDialog newSpeedLimitDialog = new NewSpeedLimitDialog(SpeedDashboardActivity.this);
+                newSpeedLimitDialog.show();
 
                 break;
         }
@@ -984,43 +887,12 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
 
     @Override
     protected void onPause() {
-
-        //  Toast.makeText(getApplicationContext(), "on Pause called", Toast.LENGTH_SHORT).show();
-        //unregisterReceiver(mBatteryLevelReciver);
-        // Toast.makeText(this, "unregistered receiver", Toast.LENGTH_SHORT).show();
-        /*if (mBatteryLevelReciver == null)
-        {
-            Toast.makeText(this, "Not unregistering receiver as it is already null", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            Toast.makeText(this, "Unregistering Receiver", Toast.LENGTH_SHORT).show();
-            unregisterReceiver(mBatteryLevelReciver);
-            mBatteryLevelReciver = null;
-        }*/
         super.onPause();
         unregisterReceiver(mBatteryLevelReciver);
 
     }
 
-    @Override
-    public void onDestroy() {
-        //   Toast.makeText(getApplicationContext(), "Speed Activity onDestroy called", Toast.LENGTH_SHORT).show();
-
-//        if (isminimizepressed == true) {
-//            Toast.makeText(getApplicationContext(), "Not stopping the Gps Service", Toast.LENGTH_SHORT).show();
-//        } else if (isminimizepressed == false) {
-//
-//            // stopService(new Intent(getBaseContext(), GpsServices.class));
-//
-//        }
-
-        super.onDestroy();
-    }
-
     public void showGpsDisabledDialog() {
-
-
         if (googleApiClient == null) {
             googleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(LocationServices.API).addConnectionCallbacks(this)
@@ -1074,27 +946,6 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
             });
         }
 
-
-
-
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(getResources().getString(R.string.please_enable_gps));
-        builder.setPositiveButton("accept", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
-            }
-        });
-        builder.show();*/
-       /* Dialog dialog = new Dialog(this, getResources().getString(R.string.gps_disabled), getResources().getString(R.string.please_enable_gps));
-
-        dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-        dialog.show();*/
     }
 
     @Override
@@ -1115,243 +966,13 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
 
     }
 
-//    @Override
-//    public void onLocationChanged(Location location) {
-//        // Toast.makeText(getApplicationContext(), "Locaton is changing",Toast.LENGTH_SHORT).show();
-//        binding.chronometer.start();
-//        currentLat = location.getLatitude();
-//        currentLon = location.getLongitude();
-//
-//        if (data.isFirstTime()) {
-//            lastLat = currentLat;
-//            lastLon = currentLon;
-//            data.setFirstTime(false);
-//        }
-//
-//        lastlocation.setLatitude(lastLat);
-//        lastlocation.setLongitude(lastLon);
-//        double distance = location.distanceTo(lastlocation);
-//
-//
-//        //  Log.d("talal", "activity distance: " + distance);
-//        if (location.getAccuracy() < distance) {
-//            //Log.d("talal", "activity distance: " + distance);
-//            data.addDistance(distance);
-//
-//            lastLat = currentLat;
-//            lastLon = currentLon;
-//        }
-//
-//
-//        if (location.hasSpeed()) {
-//            //  Toast.makeText(getApplicationContext(),"location has speed",Toast.LENGTH_SHORT).show();
-//            if (!isTimeSet) {
-//                SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.US); //dd-MM-yyyy
-//                Calendar calender = Calendar.getInstance();
-//                TimeZone ccme = calender.getTimeZone();
-//                timeFormat.setTimeZone(ccme);
-//                starttime = timeFormat.format(new Date());
-//                isTimeSet = true;
-//            }
-//            data.setCurSpeed(location.getSpeed() * 3.6);
-//
-//            if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("km/h")) {
-//                currentSpeed = String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6) /*+ "km/h"*/;
-//            } else if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("mph")) {
-//                currentSpeed = String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6 * 0.62137119)/* + "mi/h"*/;
-//            } else {
-//                currentSpeed = String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6 * 0.5399568) /*+ "kn"*/;
-//            }
-//
-//
-//            //  if (SharedPreferenceHelper.getInstance().getBooleanValue(AppConstant.SPEED_ALERT_ON_OFF, false)) {
-//            if (SetSpeedLimitFuturistic.alarmon == true) {
-//                speedLimit = SharedPreferenceHelper.getInstance().getIntegerValue(AppConstant.SPEED_LIMIT, 0);
-//                if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.SPEED_LIMIT_METER_TYPE, "km/h").equals("km/h")) {
-//
-//                    if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("km/h")) {
-//
-//                    } else if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("mph")) {
-//                        speedLimit *= 0.62137119;
-//                    } else {
-//                        speedLimit *= 0.5399568;
-//                    }
-//                } else if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("mph")) {
-//                    if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("km/h")) {
-//                        speedLimit /= 0.62137119;
-//                    } else if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("mph")) {
-//
-//                    } else {
-//                        speedLimit *= 0.868976;
-//                    }
-//
-//                } else {
-//                    if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("km/h")) {
-//                        speedLimit /= 1.852;
-//                    } else if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("mph")) {
-//                        speedLimit /= 1.15078;
-//                    } else {
-//
-//                    }
-//                }
-//
-//
-//                if (speedLimit > Integer.parseInt(currentSpeed) && speedLimit != 0) {
-//
-//
-//                    createNotification(String.valueOf(speedLimit));
-//                  //  Toast.makeText(getApplicationContext(), "Max speed reached", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                if (Integer.parseInt(currentSpeed) < speedLimit) {
-//                    if (mp.isPlaying())
-//                        mp.stop();
-//                }
-//
-//                if (Integer.parseInt(currentSpeed) > speedLimit && speedLimit != 0 && isFinished) {
-//                    // Toast.makeText(getApplicationContext(),"Speed Limit Exceeded",Toast.LENGTH_SHORT).show();
-//                    if (!mp.isPlaying() && !isPlaing) {
-//                        mp.setLooping(true);
-//                        mp.start();
-//                        isPlaing = true;
-//                    }
-//
-//                    if (!speedlimitdialogclicked) {
-//                        createNotification(String.valueOf(speedLimit));
-//
-//
-//                        AlertDialog.Builder builder1 = new AlertDialog.Builder(SpeedDashboardActivity.this);
-//                        builder1.setMessage("Your Safety is Important\nYour are currently over your speed limit");
-//                        builder1.setCancelable(true);
-//
-//                        builder1.setPositiveButton(
-//                                "Ignore",
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int id) {
-//                                        dialog.cancel();
-//                                        countDownTimer.start();
-//                                        notificationalarm = true;
-//                                        if (notificationalarm) {
-//                                            createNotification(String.valueOf(speedLimit));
-//                                        }
-//
-//                                        Snackbar snackbar = Snackbar
-//                                                .make(binding.mainContainer, "We will not disturb you for next 15 minutes", Snackbar.LENGTH_LONG);
-//                                        snackbar.show();
-//
-//                                    }
-//                                });
-//
-//                        builder1.setNegativeButton(
-//                                "Dismiss",
-//                                new DialogInterface.OnClickListener() {
-//                                    public void onClick(DialogInterface dialog, int id) {
-//                                        cancelNotification(SpeedDashboardActivity.this, Notificationid);
-//                                        dialog.dismiss();
-//                                        notificationalarm = false;
-//                                        countDownTimer.start();
-//
-//                                        if (mp.isPlaying()) {
-//                                            mp.stop();
-//
-//                                        }
-//
-//                                        Snackbar snackbar = Snackbar
-//                                                .make(binding.mainContainer, "We will not disturb you for next 15 minutes", Snackbar.LENGTH_LONG);
-//                                        snackbar.show();
-//                                    }
-//                                });
-//
-//                        if (notificationalarm) {
-//                            createNotification(String.valueOf(speedLimit));
-//                        }
-//
-//                        AlertDialog alert11 = builder1.create();
-//
-//                        if (alert11.isShowing()) {
-//                            alert11.dismiss();
-//                        } else {
-//                            alert11.show();
-//                            speedlimitdialogclicked = true;
-//
-//                        }
-//                    } else {
-//
-//
-//                    }
-//
-//
-//                }
-//
-//
-//            }
-//            modelspeed.select(new SpeedDashboadFrafmentModel(currentSpeed, SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h")));
-//            binding.currentSpeed.setText(currentSpeed);
-//            binding.raySpeedometer.speedTo(Integer.parseInt(currentSpeed));
-//            //  EventBus.getDefault().post(new SpeedDashboadFrafmentModel(currentSpeed, SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h"), location));
-//            // SharedPreferenceHelper.getInstance().setStringValue(AppConstant.currentspeed , currentSpeed);
-//            //  EventBus.getDefault().post(new ServiceSpeedModel(currentSpeed));
-//            viewModel.setSpeedView(currentSpeed);
-//            binding.setViewModel(viewModel);
-//
-//        }
-//        UpdateDataListener listener = this;
-//        listener.update();
-//
-//    }
 
 
     @Override
     public void onBackPressed() {
       //  super.onBackPressed();
-        finishdrivedialog();
-//        historySaveDialog.createDialog();
-//        historySaveDialog.showDialog();
-        // finish();
-        /*SharedPreferenceHelper.getInstance().setStringValue(AppConstant.avgspeedfuturistic , "NotClicked");
-        SharedPreferenceHelper.getInstance().setStringValue(AppConstant.maxspeedfuturistic , "NotClicked");
-        SharedPreferenceHelper.getInstance().setStringValue(AppConstant.distaancefuturistic , "NotClicked");
-        SharedPreferenceHelper.getInstance().setStringValue(AppConstant.speedlimitfuturistic , "NotClicked");
-        SharedPreferenceHelper.getInstance().setStringValue(AppConstant.limitalarmfuturistic , "NotClicked");
-        SharedPreferenceHelper.getInstance().setStringValue(AppConstant.timefuturistic , "NotClicked");
-        SharedPreferenceHelper.getInstance().setStringValue(AppConstant.unitfuturistic , "NotClicked");
-        SharedPreferenceHelper.getInstance().setStringValue(AppConstant.minimizefuturistic , "NotClicked");
-        SharedPreferenceHelper.getInstance().setStringValue(AppConstant.batteryfuturistic , "NotClicked");
-*/
-
-       /* FuturisticSettingsActivity.avgclicked = false;
-        FuturisticSettingsActivity.maxclicked = false;
-        FuturisticSettingsActivity.distancepressed = false;
-        FuturisticSettingsActivity.speedlimitpressed = false;
-        FuturisticSettingsActivity.limitalarmpressed = false;
-        FuturisticSettingsActivity.timepressed = false;
-        FuturisticSettingsActivity.unitpressed = false;
-        FuturisticSettingsActivity.minimizepressed = false;
-        FuturisticSettingsActivity.batterypressed = false;*/
+        finishDriveDialog();
     }
-
-
-   /* @Override
-    public void saveData() {
-        HistoryManager.getInstance(this).saveHistoryData(maxSpeed, avgSpeed, distance);
-        startActivity(new Intent(this, HistoryActivity.class));
-        finish();
-
-    }
-
-    @Override
-    public void dontSaveData() {
-
-//        Intent intent = new Intent(this, FirstActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(intent);
-        // ProcessPhoenix.triggerRebirth(this, intent);
-        Intent intent = new Intent(this, FirstActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-       // Runtime.getRuntime().exit(0);
-    }*/
 
     private void createNotification(String speedLimit) {
 
@@ -1384,96 +1005,6 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
 
     }
 
-//    @Override
-//    public void update() {
-//
-//        double maxSpeedTemp = data.getMaxSpeed();
-//        double distanceTemp = data.getDistance();
-//        double averageTemp;
-//       /* if (SharedPreferenceHelper.getInstance().getBooleanValue("auto_average", false)) {
-//            averageTemp = data.getAverageSpeedMotion();
-//        } else {*/
-//        averageTemp = data.getAverageSpeed();
-////        }
-//        // Log.d("saad", "before update: " + averageTemp);
-//        String speedUnits;
-//        String distanceUnits;
-//        if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("km/h")) {
-//            speedUnits = "km/h";
-//            if (distanceTemp <= 1000.0) {
-//                distanceUnits = "m";
-//            } else {
-//                distanceTemp /= 1000.0;
-//                distanceUnits = "km";
-//            }
-//        } else if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("mph")) {
-//            maxSpeedTemp *= 0.62137119;
-//            distanceTemp = distanceTemp / 1000.0 * 0.62137119;
-//            averageTemp *= 0.62137119;
-//            speedUnits = "mi/h";
-//            distanceUnits = "mi";
-//        } else {
-//            maxSpeedTemp *= 0.5399568;
-//            distanceTemp = distanceTemp / 1000.0 * 0.5399568;
-//            averageTemp *= 0.5399568;
-//            speedUnits = "knot";
-//            distanceUnits = "kn";
-//        }
-//
-//
-//        viewModel.setUnitView(speedUnits);
-//
-//        maxSpeed = new SpannableString(String.format("%.0f", maxSpeedTemp) + speedUnits);
-//        maxSpeed.setSpan(new RelativeSizeSpan(0.5f), maxSpeed.length() - 4, maxSpeed.length(), 0);
-//        viewModel.setMaxSpeedView(maxSpeed.toString());
-//        //  SharedPreferenceHelper.getInstance().setStringValue(AppConstant.maxspeed , maxSpeed.toString());
-//
-//        avgSpeed = new SpannableString(String.format("%.0f", averageTemp) + speedUnits);
-//        avgSpeed.setSpan(new RelativeSizeSpan(0.5f), avgSpeed.length() - 4, avgSpeed.length(), 0);
-//        viewModel.setAvgSpeedView(avgSpeed.toString());
-//        //   SharedPreferenceHelper.getInstance().setStringValue(AppConstant.avgspeed , avgSpeed.toString());
-//
-//        distance = new SpannableString(String.format("%.3f", distanceTemp) + distanceUnits);
-//        distance.setSpan(new RelativeSizeSpan(0.5f), distance.length() - 2, distance.length(), 0);
-//        viewModel.setDistanceView(distance.toString());
-//        binding.setViewModel(viewModel);
-//        //  SharedPreferenceHelper.getInstance().setStringValue(AppConstant.distance , distance.toString());
-//
-//        //  modelspeed.select(new SpeedDashboadFrafmentModel(currentSpeed, SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h")));
-//        speedDashboadFrafmentModel.setAvgspeed(avgSpeed.toString());
-//        speedDashboadFrafmentModel.setMaxspeed(maxSpeed.toString());
-//        speedDashboadFrafmentModel.setDistance(distance.toString());
-//        /*if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-//            mapFragment.upDateFragment(maxSpeed.toString(), distance.toString(), avgSpeed.toString());
-//        }*/
-//    }
-
-    /*@Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        switch (position) {
-            case 0:
-                viewModel.setTitle("Digital");
-                break;
-            case 1:
-                viewModel.setTitle("Analog");
-                break;
-            case 2:
-                viewModel.setTitle("Map");
-                break;
-        }
-        binding.setViewModel(viewModel);
-
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }*/
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -1491,10 +1022,6 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
     }
 
     public void setcurrentTime() {
-//        Calendar calendar = Calendar.getInstance();
-//        SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm");
-//        String strDate = "" + mdformat.format(calendar.getTime());
-//        binding.textTime.setText(strDate);
 
         Thread t = new Thread() {
             @Override
@@ -1538,521 +1065,6 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
         registerReceiver(mBatteryLevelReciver, batteryLevelFliter);
     }
 
-   /* public void setVisibility() {
-        if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.isCheck, "").equals("Clicked")) {
-            // Toast.makeText(getApplicationContext(),"In if",Toast.LENGTH_SHORT).show();
-            binding.textTime.setVisibility(View.VISIBLE);
-            binding.battery.setVisibility(View.VISIBLE);  //battery
-            binding.distanceView.setVisibility(View.VISIBLE);
-            binding.textAlarm.setVisibility(View.VISIBLE);
-            binding.maxtitile.setVisibility(View.VISIBLE);
-            binding.maxSpeedView.setVisibility(View.VISIBLE);
-            binding.textView10.setVisibility(View.VISIBLE); //avg
-            binding.avgSpeedView.setVisibility(View.VISIBLE);
-            binding.minimizeIcon.setVisibility(View.VISIBLE);
-
-        } else {
-
-            //  Toast.makeText(getApplicationContext(),"In else",Toast.LENGTH_SHORT).show();
-            if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.AVG_SPEED, "").equals("Clicked")) {
-                binding.textView10.setVisibility(View.VISIBLE);
-                binding.avgSpeedView.setVisibility(View.VISIBLE);
-            } else {
-                binding.textView10.setVisibility(View.INVISIBLE);
-                binding.avgSpeedView.setVisibility(View.INVISIBLE);
-            }
-
-            if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.MAX_SPEED, "").equals("Clicked")) {
-                binding.maxtitile.setVisibility(View.VISIBLE);
-                binding.maxSpeedView.setVisibility(View.VISIBLE);
-            } else {
-                binding.maxtitile.setVisibility(View.INVISIBLE);
-                binding.maxSpeedView.setVisibility(View.INVISIBLE);
-            }
-
-            if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.CURRENT_TIME, "").equals("Clicked")) {
-                binding.textTime.setVisibility(View.VISIBLE);
-            } else {
-                binding.textTime.setVisibility(View.INVISIBLE);
-            }
-
-            if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.BATTERY, "").equals("Clicked")) {
-                binding.battery.setVisibility(View.VISIBLE);
-            } else {
-                binding.battery.setVisibility(View.INVISIBLE);
-            }
-
-            if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.DISTANCE, "").equals("Clicked")) {
-                binding.distanceView.setVisibility(View.VISIBLE);
-            } else {
-                binding.distanceView.setVisibility(View.INVISIBLE);
-            }
-
-            if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.minimizeapp, "").equals("Clicked")) {
-                binding.minimizeIcon.setVisibility(View.VISIBLE);
-            } else {
-                binding.minimizeIcon.setVisibility(View.INVISIBLE);
-            }
-
-            if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.setspeedlimit, "").equals("Clicked")) {
-                binding.textAlarm.setVisibility(View.VISIBLE);
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                // SecondActivity.speedlimitclicked = false;
-            }
-
-            if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.LIMIT_ALARM, "").equals("Clicked")) {
-                binding.textAlarm.setVisibility(View.VISIBLE);
-                //  binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(R.drawable.alarm_notification, 0, 0, 0);
-                // SecondActivity.speedalarmclicked = false;
-            }
-//            else
-//            {
-//                binding.textAlarm.setVisibility(View.INVISIBLE);
-//                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-//                //     SharedPreferenceHelper.getInstance().setStringValue(AppConstant.LIMIT_ALARM , "Not Clicked");
-//
-//            }
-
-
-            SharedPreferenceHelper.getInstance().setStringValue(AppConstant.isCheck, "Not Clicked");
-
-        }
-
-    }
-
-    public void setTheme() {
-        if (SetTheme.currentthemecolor == 1) {
-            binding.textTime.setTextColor(getResources().getColor(R.color.whiteColor));
-            binding.battery.setTextColor(getResources().getColor(R.color.whiteColor));  //battery
-            binding.distanceView.setTextColor(getResources().getColor(R.color.whiteColor));
-            binding.textAlarm.setTextColor(getResources().getColor(R.color.whiteColor));
-            binding.maxtitile.setTextColor(getResources().getColor(R.color.whiteColor));
-            binding.maxSpeedView.setTextColor(getResources().getColor(R.color.whiteColor));
-            binding.textView10.setTextColor(getResources().getColor(R.color.whiteColor)); //avg
-            binding.avgSpeedView.setTextColor(getResources().getColor(R.color.whiteColor));
-
-            Drawable drawable1 = getResources().getDrawable(R.drawable.distance_bg);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable1, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.whiteColor));
-            binding.distanceView.setBackground(drawable1);
-
-            Drawable drawable2 = getResources().getDrawable(R.drawable.battery);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable2, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.whiteColor));
-            binding.battery.setCompoundDrawablesWithIntrinsicBounds(drawable2, null, null, null);
-
-            Drawable drawable3 = getResources().getDrawable(R.drawable.distance_bg);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable3, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.whiteColor));
-            binding.textAlarm.setBackground(drawable3);
-
-            Drawable drawable4 = getResources().getDrawable(R.drawable.hud_new);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable4, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.whiteColor));
-            //binding.hudBtn.setImageDrawable(drawable4);
-
-            Drawable drawable5 = getResources().getDrawable(R.drawable.minimize);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable5, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.whiteColor));
-            binding.minimizeIcon.setImageDrawable(drawable5);
-
-            Drawable drawable6 = getResources().getDrawable(R.drawable.speed_background);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable6, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.whiteColor));
-            //binding.viewPager.setBackground(drawable6);
-
-            if (SettingsActivity.ischecked == true) {
-                Drawable drawable = getResources().getDrawable(R.drawable.alarm_notification);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.whiteColor));
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-            }
-
-            if (SettingsActivity.ischecked == false && SettingsActivity.speedalarmclicked == true) {
-                Drawable drawable = getResources().getDrawable(R.drawable.alarm_notification);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.whiteColor));
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-            }
-
-        }
-
-        if (SetTheme.currentthemecolor == 2) {
-
-            Drawable drawable4 = getResources().getDrawable(R.drawable.hud_new);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable4, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.glowColor));
-            //binding.hudBtn.setImageDrawable(drawable4);
-
-            Drawable drawable5 = getResources().getDrawable(R.drawable.minimize);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable5, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.glowColor));
-            binding.minimizeIcon.setImageDrawable(drawable5);
-
-            Drawable drawable6 = getResources().getDrawable(R.drawable.speed_background);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable6, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.glowColor));
-            //binding.viewPager.setBackground(drawable6);
-
-            if (SettingsActivity.ischecked == true) {
-                binding.textTime.setTextColor(getResources().getColor(R.color.glowColor));
-                binding.battery.setTextColor(getResources().getColor(R.color.glowColor));  //battery
-                binding.distanceView.setTextColor(getResources().getColor(R.color.glowColor));
-                binding.textAlarm.setTextColor(getResources().getColor(R.color.glowColor));
-                binding.maxtitile.setTextColor(getResources().getColor(R.color.glowColor));
-                binding.maxSpeedView.setTextColor(getResources().getColor(R.color.glowColor));
-                binding.textView10.setTextColor(getResources().getColor(R.color.glowColor)); //avg
-                binding.avgSpeedView.setTextColor(getResources().getColor(R.color.glowColor));
-                Drawable drawable1 = getResources().getDrawable(R.drawable.distance_bg);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable1, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.glowColor));
-                binding.distanceView.setBackground(drawable1);
-
-                Drawable drawable2 = getResources().getDrawable(R.drawable.battery);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable2, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.glowColor));
-                binding.battery.setCompoundDrawablesWithIntrinsicBounds(drawable2, null, null, null);
-
-                Drawable drawable3 = getResources().getDrawable(R.drawable.distance_bg);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable3, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.glowColor));
-                binding.textAlarm.setBackground(drawable3);
-
-                Drawable drawable = getResources().getDrawable(R.drawable.alarm_notification);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.glowColor));
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-            }
-
-
-            if (SettingsActivity.ischecked == false && SettingsActivity.speedalarmclicked == true) {
-                binding.textAlarm.setTextColor(getResources().getColor(R.color.glowColor));
-                Drawable drawable = getResources().getDrawable(R.drawable.alarm_notification);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.glowColor));
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-
-                Drawable drawable3 = getResources().getDrawable(R.drawable.distance_bg);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable3, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.glowColor));
-                binding.textAlarm.setBackground(drawable3);
-            }
-
-            if (SettingsActivity.ischecked == false && SettingsActivity.speedlimitclicked == true) {
-                binding.textAlarm.setTextColor(getResources().getColor(R.color.glowColor));
-                Drawable drawable3 = getResources().getDrawable(R.drawable.distance_bg);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable3, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.glowColor));
-                binding.textAlarm.setBackground(drawable3);
-            }
-
-            if (SettingsActivity.ischecked == false && (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.AVG_SPEED, "").equals("Clicked"))) {
-                binding.textView10.setTextColor(getResources().getColor(R.color.glowColor));
-                binding.avgSpeedView.setTextColor(getResources().getColor(R.color.glowColor));
-            }
-
-            if (SettingsActivity.ischecked == false && (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.MAX_SPEED, "").equals("Clicked"))) {
-                binding.maxtitile.setTextColor(getResources().getColor(R.color.glowColor));
-                binding.maxSpeedView.setTextColor(getResources().getColor(R.color.glowColor));
-            }
-
-            if (SettingsActivity.ischecked == false && (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.CURRENT_TIME, "").equals("Clicked"))) {
-                binding.textTime.setTextColor(getResources().getColor(R.color.glowColor));
-            }
-
-            if (SettingsActivity.ischecked == false && (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.DISTANCE, "").equals("Clicked"))) {
-                binding.distanceView.setTextColor(getResources().getColor(R.color.glowColor));
-                Drawable drawable1 = getResources().getDrawable(R.drawable.distance_bg);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable1, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.glowColor));
-                binding.distanceView.setBackground(drawable1);
-
-            }
-
-            if (SettingsActivity.ischecked == false && (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.BATTERY, "").equals("Clicked"))) {
-                binding.battery.setTextColor(getResources().getColor(R.color.glowColor));
-                Drawable drawable2 = getResources().getDrawable(R.drawable.battery);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable2, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.glowColor));
-                binding.battery.setCompoundDrawablesWithIntrinsicBounds(drawable2, null, null, null);
-
-            }
-        }
-
-        if (SetTheme.currentthemecolor == 3) {
-            binding.textTime.setTextColor(getResources().getColor(R.color.imagecolor1));
-            binding.battery.setTextColor(getResources().getColor(R.color.imagecolor1));  //battery
-            binding.distanceView.setTextColor(getResources().getColor(R.color.imagecolor1));
-            binding.textAlarm.setTextColor(getResources().getColor(R.color.imagecolor1));
-            binding.maxtitile.setTextColor(getResources().getColor(R.color.imagecolor1));
-            binding.maxSpeedView.setTextColor(getResources().getColor(R.color.imagecolor1));
-            binding.textView10.setTextColor(getResources().getColor(R.color.imagecolor1)); //avg
-            binding.avgSpeedView.setTextColor(getResources().getColor(R.color.imagecolor1));
-            Drawable drawable1 = getResources().getDrawable(R.drawable.distance_bg);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable1, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor1));
-            binding.distanceView.setBackground(drawable1);
-
-            Drawable drawable2 = getResources().getDrawable(R.drawable.battery);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable2, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor1));
-            binding.battery.setCompoundDrawablesWithIntrinsicBounds(drawable2, null, null, null);
-
-            Drawable drawable3 = getResources().getDrawable(R.drawable.distance_bg);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable3, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor1));
-            binding.textAlarm.setBackground(drawable3);
-
-            Drawable drawable4 = getResources().getDrawable(R.drawable.hud_new);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable4, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor1));
-            //binding.hudBtn.setImageDrawable(drawable4);
-
-            Drawable drawable5 = getResources().getDrawable(R.drawable.minimize);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable5, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor1));
-            binding.minimizeIcon.setImageDrawable(drawable5);
-
-            Drawable drawable6 = getResources().getDrawable(R.drawable.speed_background);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable6, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor1));
-            //binding.viewPager.setBackground(drawable6);
-
-            if (SettingsActivity.ischecked == true) {
-                Drawable drawable = getResources().getDrawable(R.drawable.alarm_notification);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor1));
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-            }
-
-            if (SettingsActivity.ischecked == false && SettingsActivity.speedalarmclicked == true) {
-                Drawable drawable = getResources().getDrawable(R.drawable.alarm_notification);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor1));
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-            }
-        }
-
-        if (SetTheme.currentthemecolor == 4) {
-            binding.textTime.setTextColor(getResources().getColor(R.color.imagecolor2));
-            binding.battery.setTextColor(getResources().getColor(R.color.imagecolor2));  //battery
-            binding.distanceView.setTextColor(getResources().getColor(R.color.imagecolor2));
-            binding.textAlarm.setTextColor(getResources().getColor(R.color.imagecolor2));
-            binding.maxtitile.setTextColor(getResources().getColor(R.color.imagecolor2));
-            binding.maxSpeedView.setTextColor(getResources().getColor(R.color.imagecolor2));
-            binding.textView10.setTextColor(getResources().getColor(R.color.imagecolor2)); //avg
-            binding.avgSpeedView.setTextColor(getResources().getColor(R.color.imagecolor2));
-            Drawable drawable1 = getResources().getDrawable(R.drawable.distance_bg);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable1, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor2));
-            binding.distanceView.setBackground(drawable1);
-
-            Drawable drawable2 = getResources().getDrawable(R.drawable.battery);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable2, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor2));
-            binding.battery.setCompoundDrawablesWithIntrinsicBounds(drawable2, null, null, null);
-
-            Drawable drawable3 = getResources().getDrawable(R.drawable.distance_bg);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable3, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor2));
-            binding.textAlarm.setBackground(drawable3);
-
-            Drawable drawable4 = getResources().getDrawable(R.drawable.hud_new);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable4, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor2));
-            //binding.hudBtn.setImageDrawable(drawable4);
-
-            Drawable drawable5 = getResources().getDrawable(R.drawable.minimize);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable5, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor2));
-            binding.minimizeIcon.setImageDrawable(drawable5);
-
-            Drawable drawable6 = getResources().getDrawable(R.drawable.speed_background);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable6, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor2));
-            //binding.viewPager.setBackground(drawable6);
-
-            if (SettingsActivity.ischecked == true) {
-                Drawable drawable = getResources().getDrawable(R.drawable.alarm_notification);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor2));
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-            }
-
-            if (SettingsActivity.ischecked == false && SettingsActivity.speedalarmclicked == true) {
-                Drawable drawable = getResources().getDrawable(R.drawable.alarm_notification);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor2));
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-            }
-        }
-
-        if (SetTheme.currentthemecolor == 5) {
-            binding.textTime.setTextColor(getResources().getColor(R.color.imagecolor3));
-            binding.battery.setTextColor(getResources().getColor(R.color.imagecolor3));  //battery
-            binding.distanceView.setTextColor(getResources().getColor(R.color.imagecolor3));
-            binding.textAlarm.setTextColor(getResources().getColor(R.color.imagecolor3));
-            binding.maxtitile.setTextColor(getResources().getColor(R.color.imagecolor3));
-            binding.maxSpeedView.setTextColor(getResources().getColor(R.color.imagecolor3));
-            binding.textView10.setTextColor(getResources().getColor(R.color.imagecolor3)); //avg
-            binding.avgSpeedView.setTextColor(getResources().getColor(R.color.imagecolor3));
-            Drawable drawable1 = getResources().getDrawable(R.drawable.distance_bg);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable1, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor3));
-            binding.distanceView.setBackground(drawable1);
-
-            Drawable drawable2 = getResources().getDrawable(R.drawable.battery);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable2, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor3));
-            binding.battery.setCompoundDrawablesWithIntrinsicBounds(drawable2, null, null, null);
-
-            Drawable drawable3 = getResources().getDrawable(R.drawable.distance_bg);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable3, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor3));
-            binding.textAlarm.setBackground(drawable3);
-
-            Drawable drawable4 = getResources().getDrawable(R.drawable.hud_new);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable4, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor3));
-            //binding.hudBtn.setImageDrawable(drawable4);
-
-            Drawable drawable5 = getResources().getDrawable(R.drawable.minimize);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable5, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor3));
-            binding.minimizeIcon.setImageDrawable(drawable5);
-
-            Drawable drawable6 = getResources().getDrawable(R.drawable.speed_background);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable6, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor3));
-            //binding.viewPager.setBackground(drawable6);
-
-            if (SettingsActivity.ischecked == true) {
-                Drawable drawable = getResources().getDrawable(R.drawable.alarm_notification);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor3));
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-            }
-
-            if (SettingsActivity.ischecked == false && SettingsActivity.speedalarmclicked == true) {
-                Drawable drawable = getResources().getDrawable(R.drawable.alarm_notification);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor3));
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-            }
-        }
-
-        if (SetTheme.currentthemecolor == 6) {
-            binding.textTime.setTextColor(getResources().getColor(R.color.imagecolor4));
-            binding.battery.setTextColor(getResources().getColor(R.color.imagecolor4));  //battery
-            binding.distanceView.setTextColor(getResources().getColor(R.color.imagecolor4));
-            binding.textAlarm.setTextColor(getResources().getColor(R.color.imagecolor4));
-            binding.maxtitile.setTextColor(getResources().getColor(R.color.imagecolor4));
-            binding.maxSpeedView.setTextColor(getResources().getColor(R.color.imagecolor4));
-            binding.textView10.setTextColor(getResources().getColor(R.color.imagecolor4)); //avg
-            binding.avgSpeedView.setTextColor(getResources().getColor(R.color.imagecolor4));
-            Drawable drawable1 = getResources().getDrawable(R.drawable.distance_bg);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable1, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor4));
-            binding.distanceView.setBackground(drawable1);
-
-            Drawable drawable2 = getResources().getDrawable(R.drawable.battery);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable2, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor4));
-            binding.battery.setCompoundDrawablesWithIntrinsicBounds(drawable2, null, null, null);
-
-            Drawable drawable3 = getResources().getDrawable(R.drawable.distance_bg);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable3, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor4));
-            binding.textAlarm.setBackground(drawable3);
-
-            Drawable drawable4 = getResources().getDrawable(R.drawable.hud_new);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable4, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor4));
-            //binding.hudBtn.setImageDrawable(drawable4);
-
-            Drawable drawable5 = getResources().getDrawable(R.drawable.minimize);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable5, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor4));
-            binding.minimizeIcon.setImageDrawable(drawable5);
-
-            Drawable drawable6 = getResources().getDrawable(R.drawable.speed_background);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable6, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor4));
-            //binding.viewPager.setBackground(drawable6);
-
-            if (SettingsActivity.ischecked == true) {
-                Drawable drawable = getResources().getDrawable(R.drawable.alarm_notification);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor4));
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-            }
-
-            if (SettingsActivity.ischecked == false && SettingsActivity.speedalarmclicked == true) {
-                Drawable drawable = getResources().getDrawable(R.drawable.alarm_notification);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor4));
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-            }
-        }
-
-        if (SetTheme.currentthemecolor == 7) {
-            binding.textTime.setTextColor(getResources().getColor(R.color.imagecolor5));
-            binding.battery.setTextColor(getResources().getColor(R.color.imagecolor5));  //battery
-            binding.distanceView.setTextColor(getResources().getColor(R.color.imagecolor5));
-            binding.textAlarm.setTextColor(getResources().getColor(R.color.imagecolor5));
-            binding.maxtitile.setTextColor(getResources().getColor(R.color.imagecolor5));
-            binding.maxSpeedView.setTextColor(getResources().getColor(R.color.imagecolor5));
-            binding.textView10.setTextColor(getResources().getColor(R.color.imagecolor5)); //avg
-            binding.avgSpeedView.setTextColor(getResources().getColor(R.color.imagecolor5));
-            Drawable drawable1 = getResources().getDrawable(R.drawable.distance_bg);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable1, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor5));
-            binding.distanceView.setBackground(drawable1);
-
-            Drawable drawable3 = getResources().getDrawable(R.drawable.distance_bg);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable3, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor5));
-            binding.textAlarm.setBackground(drawable3);
-
-            Drawable drawable4 = getResources().getDrawable(R.drawable.hud_new);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable4, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor5));
-            //binding.hudBtn.setImageDrawable(drawable4);
-
-            Drawable drawable5 = getResources().getDrawable(R.drawable.minimize);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable5, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor5));
-            binding.minimizeIcon.setImageDrawable(drawable5);
-
-
-            Drawable drawable2 = getResources().getDrawable(R.drawable.battery);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable2, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor5));
-            binding.battery.setCompoundDrawablesWithIntrinsicBounds(drawable2, null, null, null);
-
-            Drawable drawable6 = getResources().getDrawable(R.drawable.speed_background);
-            //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-            DrawableCompat.setTint(drawable6, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor5));
-            //binding.viewPager.setBackground(drawable6);
-
-
-            if (SettingsActivity.ischecked) {
-                Drawable drawable = getResources().getDrawable(R.drawable.alarm_notification);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor5));
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-            }
-
-
-            if (SettingsActivity.ischecked == false && SettingsActivity.speedalarmclicked == true) {
-                Drawable drawable = getResources().getDrawable(R.drawable.alarm_notification);
-                //  drawable.mutate().setColorFilter(0xffff0000, PorterDuff.Mode.SRC_IN);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.imagecolor5));
-                binding.textAlarm.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
-            }
-        }
-    }*/
-
     public void initializeView() {
         // isminimizepressed = true;
         Intent intent = new Intent(SpeedDashboardActivity.this, FloatingViewService.class);
@@ -2075,16 +1087,11 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                 Toast.makeText(SpeedDashboardActivity.this,
                         "Draw over other app permission not available.",
                         Toast.LENGTH_SHORT).show();
-
-                // finish();
             }
-        } /*else {
-           // Toast.makeText(SpeedDashboardActivity.this, "permission code doesnt match", Toast.LENGTH_SHORT).show();
-            super.onActivityResult(requestCode, resultCode, data);
-        }*/
+        }
     }
 
-    public void runningcountdowntimer() {
+    public void runningCountDownTimer() {
         if (alreadyinitialized) {
 
         } else {
@@ -2147,64 +1154,6 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
         }
     }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-////---save whatever you need to persist—
-//
-//        if (outState == null) {
-//            viewModel.setSpeedView("0");
-//            viewModel.setUnitView("km/h");
-//            viewModel.setDistanceView("0 M");
-//            viewModel.setMaxSpeedView("0 km/h");
-//            viewModel.setAvgSpeedView("0 km/h");
-//        } else {
-//            if (currentSpeed == null) {
-//                outState.putString("currentspeed", "0");
-//            } else {
-//                outState.putString("currentspeed", currentSpeed);
-//            }
-//
-//            if (maxSpeed == null) {
-//                outState.putString("maxspeed", "0");
-//            } else {
-//                outState.putString("maxspeed", maxSpeed.toString());
-//            }
-//
-//            if (avgSpeed == null) {
-//                outState.putString("avgspeed", "0");
-//            } else {
-//                outState.putString("avgspeed", avgSpeed.toString());
-//            }
-//
-//            if (distance == null) {
-//                outState.putString("distance", "0");
-//            } else {
-//                outState.putString("distance", distance.toString());
-//            }
-//
-//        }
-//
-//
-//        super.onSaveInstanceState(outState);
-//    }
-//
-//    @Override
-//    public void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-////---retrieve the information persisted earlier---
-//        Toast.makeText(this, "onRestore Created", Toast.LENGTH_SHORT).show();
-//        currentSpeed = savedInstanceState.getString("currentspeed");
-//        Log.d("currentspeed", currentSpeed);
-//        //   Toast.makeText(this, ""+currentSpeed, Toast.LENGTH_SHORT).show();
-//        maxSpeed = SpannableString.valueOf(savedInstanceState.getString("maxspeed"));
-//        Log.d("maxspeed", maxSpeed.toString());
-//        avgSpeed = SpannableString.valueOf(savedInstanceState.getString("avgspeed"));
-//        Log.d("avgspeed", avgSpeed.toString());
-//        distance = SpannableString.valueOf(savedInstanceState.getString("distance"));
-//        Log.d("distance", distance.toString());
-//        // viewModel.setDistanceView(distance.toString());
-//    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -2214,388 +1163,6 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
     protected void onStop() {
         super.onStop();
     }
-
-
-    /*public class HistorySaveDialog implements View.OnClickListener {
-
-
-        Dialog dialog;
-        Context context;
-        View myView;
-        HistorySaveListener listener;
-        HistorySaveDialogBinding binding;
-
-        public HistorySaveDialog(Context context) {
-            this.context = context;
-            listener = (HistorySaveListener) context;
-        }
-
-
-        public void createDialog() {
-            LayoutInflater myInflator = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            assert myInflator != null;
-            binding = DataBindingUtil.inflate(myInflator, R.layout.history_save_dialog, null, false);
-
-            myView = binding.getRoot();
-            // binding.setActivity(context);
-
-            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.US); //dd-MM-yyyy
-            Calendar calender = Calendar.getInstance();
-            TimeZone ccme = calender.getTimeZone();
-            timeFormat.setTimeZone(ccme);
-            String end_time = timeFormat.format(new Date());
-
-            //setTheme();
-
-            Drawable drawable1 = ContextCompat.getDrawable(SpeedDashboardActivity.this, R.drawable.buttonhexa_unselected);
-            Drawable wrappedDrawable1 = DrawableCompat.wrap(drawable1);
-            DrawableCompat.setTint(wrappedDrawable1, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.whiteColor));
-            binding.dontSaveBtn.setBackground(wrappedDrawable1);
-            binding.saveBtn.setBackground(wrappedDrawable1);
-            binding.cancelBtn.setBackground(wrappedDrawable1);
-
-            if (Build.VERSION.SDK_INT >= 21) {
-                dialog = new Dialog(context, android.R.style.Theme_Material_Light_Dialog_NoActionBar);
-            } else {
-                dialog = new Dialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
-            }
-
-            dialog.setContentView(myView);
-
-            binding.cancelBtn.setOnClickListener(this);
-            binding.saveBtn.setOnClickListener(this);
-            binding.dontSaveBtn.setOnClickListener(this);
-
-            if (maxSpeed == null) {
-                if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("km/h")) {
-                    binding.maxspeed.setText("0 km/h");
-                } else if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("mph")) {
-                    binding.maxspeed.setText("0 mph");
-                }
-            } else {
-                binding.maxspeed.setText(maxSpeed);
-            }
-
-            if (avgSpeed == null) {
-                if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("km/h")) {
-                    binding.avgspeed.setText("0 km/h");
-                } else if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.METER_TYPE, "km/h").equals("mph")) {
-                    binding.avgspeed.setText("0 mph");
-                }
-            } else {
-                binding.avgspeed.setText(avgSpeed);
-            }
-
-            if (distance == null) {
-                binding.distance.setText("0M");
-            } else {
-                binding.distance.setText(distance);
-            }
-
-
-            binding.starttime.setText(starttime);
-            binding.endtime.setText(end_time);
-
-        }
-
-        public void onClick(View view) {
-            // setClickedTheme();
-            switch (view.getId()) {
-                case R.id.save_btn:
-                    listener.saveData();
-                    dialog.dismiss();
-                    AdsManager.getInstance(context).showInterstitial();
-                    break;
-                case R.id.cancel_btn:
-                    // Toast.makeText(context, "cancel button pressed", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                    //   AdsManager.getInstance(context).showInterstitial();
-                    break;
-                case R.id.dont_save_btn:
-                    listener.dontSaveData();
-                    dialog.dismiss();
-                    AdsManager.getInstance(context).showInterstitial();
-                    break;
-
-            }
-        }
-
-        public void showDialog() {
-            dialog.show();
-        }
-
-        public void hideDialog() {
-            dialog.hide();
-        }
-
-        public void setCancelable(boolean isCancelable) {
-            dialog.setCancelable(isCancelable);
-        }
-
-       *//* public void setTheme() {
-            if (SetTheme.currentthemecolor == 1)
-            {
-                binding.textView.setTextColor(context.getResources().getColor(R.color.whiteColor));
-                binding.textView2.setTextColor(context.getResources().getColor(R.color.whiteColor));
-                binding.dontSaveBtn.setTextColor(context.getResources().getColor(R.color.whiteColor));
-                binding.saveBtn.setTextColor(context.getResources().getColor(R.color.whiteColor));
-                binding.cancelBtn.setTextColor(context.getResources().getColor(R.color.whiteColor));
-
-                binding.textMaxspeed.setTextColor(context.getResources().getColor(R.color.whiteColor));
-                binding.maxspeed.setTextColor(context.getResources().getColor(R.color.whiteColor));
-                binding.textAvgspeed.setTextColor(context.getResources().getColor(R.color.whiteColor));
-                binding.avgspeed.setTextColor(context.getResources().getColor(R.color.whiteColor));
-                binding.textDistance.setTextColor(context.getResources().getColor(R.color.whiteColor));
-                binding.distance.setTextColor(context.getResources().getColor(R.color.whiteColor));
-                binding.textStarttime.setTextColor(context.getResources().getColor(R.color.whiteColor));
-                binding.starttime.setTextColor(context.getResources().getColor(R.color.whiteColor));
-                binding.textEndtime.setTextColor(context.getResources().getColor(R.color.whiteColor));
-                binding.endtime.setTextColor(context.getResources().getColor(R.color.whiteColor));
-
-
-                Drawable drawable1 = context.getResources().getDrawable(R.drawable.dialog_btn);
-                drawable1.setColorFilter(context.getResources().getColor(R.color.whiteColor), PorterDuff.Mode.SRC_ATOP);
-//            Drawable drawable1 = context.getResources().getDrawable(R.drawable.dialog_btn);
-//            DrawableCompat.setTint(drawable1, ContextCompat.getColor(context, R.color.whiteColor));
-//            binding.dontSaveBtn.setBackground(drawable1);
-                Drawable drawable = context.getResources().getDrawable(R.drawable.buttonhexa_unselected);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(AppConstant.CONTEXT, R.color.whiteColor));
-                binding.dontSaveBtn.setBackground(drawable);
-                binding.saveBtn.setBackground(drawable);
-                binding.cancelBtn.setBackground(drawable);
-            }
-
-            if (SetTheme.currentthemecolor == 2) {
-                binding.textView.setTextColor(context.getResources().getColor(R.color.glowColor));
-                binding.textView2.setTextColor(context.getResources().getColor(R.color.glowColor));
-                binding.dontSaveBtn.setTextColor(context.getResources().getColor(R.color.glowColor));
-                binding.saveBtn.setTextColor(context.getResources().getColor(R.color.glowColor));
-                binding.cancelBtn.setTextColor(context.getResources().getColor(R.color.glowColor));
-
-                binding.textMaxspeed.setTextColor(context.getResources().getColor(R.color.glowColor));
-                binding.maxspeed.setTextColor(context.getResources().getColor(R.color.glowColor));
-                binding.textAvgspeed.setTextColor(context.getResources().getColor(R.color.glowColor));
-                binding.avgspeed.setTextColor(context.getResources().getColor(R.color.glowColor));
-                binding.textDistance.setTextColor(context.getResources().getColor(R.color.glowColor));
-                binding.distance.setTextColor(context.getResources().getColor(R.color.glowColor));
-                binding.textStarttime.setTextColor(context.getResources().getColor(R.color.glowColor));
-                binding.starttime.setTextColor(context.getResources().getColor(R.color.glowColor));
-                binding.textEndtime.setTextColor(context.getResources().getColor(R.color.glowColor));
-                binding.endtime.setTextColor(context.getResources().getColor(R.color.glowColor));
-
-                Drawable drawable1 = context.getResources().getDrawable(R.drawable.dialog_btn);
-                drawable1.setColorFilter(context.getResources().getColor(R.color.glowColor), PorterDuff.Mode.SRC_ATOP);
-                // DrawableCompat.setTint(drawable1, ContextCompat.getColor(context, R.color.glowColor));
-                //  binding.dontSaveBtn.setBackground(drawable1);
-                Drawable drawable = context.getResources().getDrawable(R.drawable.buttonhexa_unselected);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(AppConstant.CONTEXT, R.color.glowColor));
-                binding.dontSaveBtn.setBackground(drawable);
-                binding.saveBtn.setBackground(drawable);
-                binding.cancelBtn.setBackground(drawable);
-
-            }
-
-            if (SetTheme.currentthemecolor == 3) {
-                binding.textView.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-                binding.textView2.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-                binding.dontSaveBtn.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-                binding.saveBtn.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-                binding.cancelBtn.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-
-                binding.textMaxspeed.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-                binding.maxspeed.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-                binding.textAvgspeed.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-                binding.avgspeed.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-                binding.textDistance.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-                binding.distance.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-                binding.textStarttime.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-                binding.starttime.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-                binding.textEndtime.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-                binding.endtime.setTextColor(context.getResources().getColor(R.color.imagecolor1));
-
-
-                Drawable drawable1 = context.getResources().getDrawable(R.drawable.dialog_btn);
-                drawable1.setColorFilter(context.getResources().getColor(R.color.imagecolor1), PorterDuff.Mode.SRC_ATOP);
-
-                Drawable drawable = context.getResources().getDrawable(R.drawable.buttonhexa_unselected);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(AppConstant.CONTEXT, R.color.imagecolor1));
-                binding.dontSaveBtn.setBackground(drawable);
-                binding.saveBtn.setBackground(drawable);
-                binding.cancelBtn.setBackground(drawable);
-            }
-
-            if (SetTheme.currentthemecolor == 4) {
-                binding.textView.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-                binding.textView2.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-                binding.dontSaveBtn.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-                binding.saveBtn.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-                binding.cancelBtn.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-
-                binding.textMaxspeed.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-                binding.maxspeed.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-                binding.textAvgspeed.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-                binding.avgspeed.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-                binding.textDistance.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-                binding.distance.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-                binding.textStarttime.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-                binding.starttime.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-                binding.textEndtime.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-                binding.endtime.setTextColor(context.getResources().getColor(R.color.imagecolor2));
-
-                Drawable drawable1 = context.getResources().getDrawable(R.drawable.dialog_btn);
-                drawable1.setColorFilter(context.getResources().getColor(R.color.imagecolor2), PorterDuff.Mode.SRC_ATOP);
-
-                Drawable drawable = context.getResources().getDrawable(R.drawable.buttonhexa_unselected);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(AppConstant.CONTEXT, R.color.imagecolor2));
-                binding.dontSaveBtn.setBackground(drawable);
-                binding.saveBtn.setBackground(drawable);
-                binding.cancelBtn.setBackground(drawable);
-            }
-
-            if (SetTheme.currentthemecolor == 5) {
-                binding.textView.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-                binding.textView2.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-                binding.dontSaveBtn.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-                binding.saveBtn.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-                binding.cancelBtn.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-
-                binding.textMaxspeed.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-                binding.maxspeed.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-                binding.textAvgspeed.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-                binding.avgspeed.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-                binding.textDistance.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-                binding.distance.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-                binding.textStarttime.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-                binding.starttime.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-                binding.textEndtime.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-                binding.endtime.setTextColor(context.getResources().getColor(R.color.imagecolor3));
-
-                Drawable drawable1 = context.getResources().getDrawable(R.drawable.dialog_btn);
-                drawable1.setColorFilter(context.getResources().getColor(R.color.imagecolor3), PorterDuff.Mode.SRC_ATOP);
-
-                Drawable drawable = context.getResources().getDrawable(R.drawable.buttonhexa_unselected);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(AppConstant.CONTEXT, R.color.imagecolor3));
-                binding.dontSaveBtn.setBackground(drawable);
-                binding.saveBtn.setBackground(drawable);
-                binding.cancelBtn.setBackground(drawable);
-            }
-
-            if (SetTheme.currentthemecolor == 6) {
-                binding.textView.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-                binding.textView2.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-                binding.dontSaveBtn.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-                binding.saveBtn.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-                binding.cancelBtn.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-
-                binding.textMaxspeed.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-                binding.maxspeed.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-                binding.textAvgspeed.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-                binding.avgspeed.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-                binding.textDistance.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-                binding.distance.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-                binding.textStarttime.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-                binding.starttime.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-                binding.textEndtime.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-                binding.endtime.setTextColor(context.getResources().getColor(R.color.imagecolor4));
-
-                Drawable drawable1 = context.getResources().getDrawable(R.drawable.dialog_btn);
-                drawable1.setColorFilter(context.getResources().getColor(R.color.imagecolor4), PorterDuff.Mode.SRC_ATOP);
-
-                Drawable drawable = context.getResources().getDrawable(R.drawable.buttonhexa_unselected);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(AppConstant.CONTEXT, R.color.imagecolor4));
-                binding.dontSaveBtn.setBackground(drawable);
-                binding.saveBtn.setBackground(drawable);
-                binding.cancelBtn.setBackground(drawable);
-            }
-
-            if (SetTheme.currentthemecolor == 7) {
-                binding.textView.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-                binding.textView2.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-                binding.dontSaveBtn.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-                binding.saveBtn.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-                binding.cancelBtn.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-
-                binding.textMaxspeed.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-                binding.maxspeed.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-                binding.textAvgspeed.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-                binding.avgspeed.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-                binding.textDistance.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-                binding.distance.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-                binding.textStarttime.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-                binding.starttime.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-                binding.textEndtime.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-                binding.endtime.setTextColor(context.getResources().getColor(R.color.imagecolor5));
-
-                Drawable drawable1 = context.getResources().getDrawable(R.drawable.dialog_btn);
-                drawable1.setColorFilter(context.getResources().getColor(R.color.imagecolor5), PorterDuff.Mode.SRC_ATOP);
-
-                Drawable drawable = context.getResources().getDrawable(R.drawable.buttonhexa_unselected);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(AppConstant.CONTEXT, R.color.imagecolor5));
-                binding.dontSaveBtn.setBackground(drawable);
-                binding.saveBtn.setBackground(drawable);
-                binding.cancelBtn.setBackground(drawable);
-            }
-        }*//*
-
-       *//* public void setClickedTheme() {
-            if (SetTheme.currentthemecolor == 1) {
-                Drawable drawable = context.getResources().getDrawable(R.drawable.buttonhexa_selected);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(AppConstant.CONTEXT, R.color.whiteColor));
-                binding.dontSaveBtn.setBackground(drawable);
-                binding.saveBtn.setBackground(drawable);
-                binding.cancelBtn.setBackground(drawable);
-            }
-
-            if (SetTheme.currentthemecolor == 2) {
-                Drawable drawable = context.getResources().getDrawable(R.drawable.buttonhexa_selected);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(AppConstant.CONTEXT, R.color.glowColor));
-                binding.dontSaveBtn.setBackground(drawable);
-                binding.saveBtn.setBackground(drawable);
-                binding.cancelBtn.setBackground(drawable);
-            }
-
-            if (SetTheme.currentthemecolor == 3) {
-                Drawable drawable = context.getResources().getDrawable(R.drawable.buttonhexa_selected);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(AppConstant.CONTEXT, R.color.imagecolor1));
-                binding.dontSaveBtn.setBackground(drawable);
-                binding.saveBtn.setBackground(drawable);
-                binding.cancelBtn.setBackground(drawable);
-            }
-
-            if (SetTheme.currentthemecolor == 4) {
-                Drawable drawable = context.getResources().getDrawable(R.drawable.buttonhexa_selected);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(AppConstant.CONTEXT, R.color.imagecolor2));
-                binding.dontSaveBtn.setBackground(drawable);
-                binding.saveBtn.setBackground(drawable);
-                binding.cancelBtn.setBackground(drawable);
-            }
-
-            if (SetTheme.currentthemecolor == 5) {
-                Drawable drawable = context.getResources().getDrawable(R.drawable.buttonhexa_selected);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(AppConstant.CONTEXT, R.color.imagecolor3));
-                binding.dontSaveBtn.setBackground(drawable);
-                binding.saveBtn.setBackground(drawable);
-                binding.cancelBtn.setBackground(drawable);
-            }
-
-            if (SetTheme.currentthemecolor == 6) {
-                Drawable drawable = context.getResources().getDrawable(R.drawable.buttonhexa_selected);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(AppConstant.CONTEXT, R.color.imagecolor4));
-                binding.dontSaveBtn.setBackground(drawable);
-                binding.saveBtn.setBackground(drawable);
-                binding.cancelBtn.setBackground(drawable);
-            }
-
-            if (SetTheme.currentthemecolor == 7) {
-                Drawable drawable = context.getResources().getDrawable(R.drawable.buttonhexa_selected);
-                DrawableCompat.setTint(drawable, ContextCompat.getColor(AppConstant.CONTEXT, R.color.imagecolor5));
-                binding.dontSaveBtn.setBackground(drawable);
-                binding.saveBtn.setBackground(drawable);
-                binding.cancelBtn.setBackground(drawable);
-            }
-        }*//*
-
-    }*/
 
     private void buildAlertMessageNoGps() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -2647,109 +1214,7 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
 
     }
 
-   /* public void futuristicvisibility()
-    {
-        //if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.avgspeedfuturistic , "").equals("Clicked"))
-        if (FuturisticSettingsActivity.avgclicked)
-        {
-           binding.avgSpeedView.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-           binding.avgSpeedView.setVisibility(View.GONE);
-        }
-
-
-       // if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.maxspeedfuturistic , "").equals("Clicked"))
-        if (FuturisticSettingsActivity.maxclicked)
-        {
-            binding.maxSpeedView.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            binding.maxSpeedView.setVisibility(View.GONE);
-        }
-
-
-       // if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.distaancefuturistic , "").equals("Clicked"))
-        if (FuturisticSettingsActivity.distancepressed)
-        {
-            binding.distanceView.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            binding.distanceView.setVisibility(View.GONE);
-        }
-
-
-
-      //  if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.speedlimitfuturistic , "").equals("Clicked"))
-        if (FuturisticSettingsActivity.speedlimitpressed)
-        {
-         //   binding.bar1.setVisibility(View.VISIBLE);
-            binding.textAlarm.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-         //   binding.bar1.setVisibility(View.GONE);
-            binding.textAlarm.setVisibility(View.GONE);
-        }
-
-
-       *//* if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.limitalarmfuturistic , "").equals("Clicked"))
-        {
-
-        }
-        else
-        {
-
-        }*//*
-
-
-       // if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.timefuturistic , "").equals("Clicked"))
-        if (FuturisticSettingsActivity.timepressed)
-        {
-            binding.textTime.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            binding.textTime.setVisibility(View.GONE);
-        }
-
-
-        *//*if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.unitfuturistic , "").equals("Clicked"))
-        {
-
-        }
-        else
-        {
-
-        }*//*
-
-
-       // if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.minimizefuturistic , "").equals("Clicked"))
-        if (FuturisticSettingsActivity.minimizepressed)
-        {
-            binding.minimizeIcon.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            binding.minimizeIcon.setVisibility(View.GONE);
-        }
-
-
-     //   if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.batteryfuturistic , "").equals("Clicked"))
-        if (FuturisticSettingsActivity.batterypressed)
-        {
-            binding.battery.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            binding.battery.setVisibility(View.GONE);
-        }
-    }*/
-
-    public void finishdrivedialog() {
+    public void finishDriveDialog() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(SpeedDashboardActivity.this);
         builder1.setMessage("Do you want to quit drive?");
         builder1.setCancelable(true);
@@ -2767,7 +1232,7 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                         endtime = timeFormat.format(new Date());
 
                         triptype = SharedPreferenceHelper.getInstance().getStringValue(Constants.triptype, "");
-                        starttime = LocationViewModel.starttime;
+                        starttime = LocationViewModel.startTime;
 
                         if (maxSpeed!=null && avgSpeed!=null && distance!=null)
                         {
@@ -2779,14 +1244,10 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                            // String fueleconomypertrip = String.valueOf(fueleconomycalculated);
                             String fueleconomypertrip = String.format("%.3f" , fueleconomycalculated);
                            // fueleconomypertrip = String.format("%.3f" , fueleconomypertrip);
-
-                            // todo save trip here in table / room
-                          //  String key = usertripsdatabase.push().getKey();
-                            // String tripTitle, String destination, String carname, String triptype, int maxspeed, int avgspeed, int distanceCovered,
-                            // int fueleconomypertrip, Date saveDate, int fuelCostPerUnit, int totalExpenses, int noOfLitres
-                         //   Trip trip = new Trip("trip to muree", "muree", carname, triptype, starttime, endtime, maxSpeed, avgSpeed, distance, date, dateinmillis, fueleconomypertrip);
-                            Trip trip = new Trip("trip to muree", "muree", carname, triptype, Integer.parseInt(maxSpeed), Integer.parseInt(avgSpeed), Integer.parseInt(distance),Integer.parseInt(fueleconomypertrip), new Date(date), 90, 5000, 20);
-                        //    usertripsdatabase.child(key).setValue(trip);
+                            // todo save trip here
+//                            String key = usertripsdatabase.push().getKey();
+//                            Trip trip = new Trip(carname, triptype, startTime, endtime, maxSpeed, avgSpeed, distance, date, dateinmillis, fueleconomypertrip);
+//                            usertripsdatabase.child(key).setValue(trip);
                             Toast.makeText(SpeedDashboardActivity.this, "Your trip is saved.", Toast.LENGTH_SHORT).show();
 
                             Intent i  = new Intent(SpeedDashboardActivity.this , MainActivity.class);
@@ -2797,9 +1258,9 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                         {
                             // todo save trip here
 //                            String key = usertripsdatabase.push().getKey();
-//                            Trip trip = new Trip(carname, triptype, starttime, endtime, "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(AppConstant.speedunits , ""), "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits , ""), "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(AppConstant.distanceunits , ""), date, dateinmillis, "0");
+//                            Trip trip = new Trip(carname, triptype, startTime, endtime, "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits , ""), "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits , ""), "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(Constants.distanceunits , ""), date, dateinmillis, "0");
 //                            usertripsdatabase.child(key).setValue(trip);
-//                            Toast.makeText(SpeedDashboardActivity.this, "Your trip is saved.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SpeedDashboardActivity.this, "Your trip is saved.", Toast.LENGTH_SHORT).show();
 
                             Intent i  = new Intent(SpeedDashboardActivity.this , MainActivity.class);
                             startActivity(i);
@@ -2856,18 +1317,21 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                 case R.id.done:
                     try {
                         if (newspeededittext.getText().toString().length() != 0 && newspeededittext.getText().toString().length() <= 3) {
-                            //   SetSpeedLimitFuturistic.alarmon = true;
-                           /* SharedPreferenceHelper.getInstance().setStringValue(AppConstant.limitalarmfuturistic , "Clicked");
-                            FuturisticSettingsActivity.limitalarmpressed = true;*/
 
                             try {
                                 speedLimit = Integer.parseInt(newspeededittext.getText().toString());
                                 LocationViewModel.speedLimit = Integer.parseInt(newspeededittext.getText().toString());
-                                SharedPreferenceHelper.getInstance().setIntegerValue(Constants.SPEED_LIMIT, Integer.parseInt(newspeededittext.getText().toString()));
+
+                                preferences.setSpeedLimit(Integer.parseInt(newspeededittext.getText().toString()));
+                               //SharedPreferenceHelper.getInstance().setIntegerValue(Constants.SPEED_LIMIT, Integer.parseInt(newspeededittext.getText().toString()));
+
                                 // FuturisticSettingsActivity.limitalarmpressed = true;
-                                if (SharedPreferenceHelper.getInstance().getStringValue(Constants.SPEED_LIMIT_METER_TYPE, "km/h").equals("km/h")) {
+                                if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.KM_HR) {
+                               // if (SharedPreferenceHelper.getInstance().getStringValue(Constants.SPEED_LIMIT_METER_TYPE, "km/h").equals("km/h")) {
                                     binding.textAlarm.setText(newspeededittext.getText().toString() + "km/h");
-                                } else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.SPEED_LIMIT_METER_TYPE, "km/h").equals("mph")) {
+                                }
+                                if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.M_HR) {
+                               // else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.SPEED_LIMIT_METER_TYPE, "km/h").equals("mph")) {
                                     binding.textAlarm.setText(newspeededittext.getText().toString() + "mph");
                                 }
                             } catch (NullPointerException e) {
@@ -2878,14 +1342,11 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
 
                             dismiss();
                         } else if (newspeededittext.getText().toString().length() == 0 || newspeededittext.getText().toString().length() > 3) {
-                            //SharedPreferenceHelper.getInstance().setIntegerValue(AppConstant.SPEED_LIMIT, Integer.parseInt("0"));
-                            //binding.speedtext.setText("0");
                             Toast.makeText(SpeedDashboardActivity.this, "Please enter a valid speed limit", Toast.LENGTH_SHORT).show();
                             newspeededittext.setText("");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        //  Toast.makeText(this, ""+e, Toast.LENGTH_SHORT).show();
                     }
                     break;
                 default:

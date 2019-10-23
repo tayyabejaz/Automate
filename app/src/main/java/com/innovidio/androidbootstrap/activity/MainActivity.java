@@ -35,6 +35,9 @@ import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.interfaces.SpinnerItemClickListener;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
+import com.innovidio.androidbootstrap.network.dto.CarMakesByYear;
+import com.innovidio.androidbootstrap.network.dto.CarModelName;
+import com.innovidio.androidbootstrap.network.dto.CarTrimsInfo;
 import com.innovidio.androidbootstrap.viewmodel.CarQueryViewModel;
 import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
 import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
@@ -103,12 +106,10 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         initializeListeners();
         initializeAdapters();
         initList();
-        //addDummyValues();
+     //   addDummyValues();
         carApiQueries();
         fuelUpData();
         getCarsData();
-
-
     }
 
     private void initializeAdapters() {
@@ -233,21 +234,31 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     }
 
     private void carApiQueries() {
-        carQueryViewModel.getCarMakesByYear("2019").observe(this, carMakesByYears -> {
-            if (carMakesByYears != null) {
-                Log.e("response", "CarMakesByYear: " + carMakesByYears.get(0).getMakeDisplay());
+        carQueryViewModel.getCarMakesByYear("2019").observe(this, new Observer<List<CarMakesByYear>>() {
+            @Override
+            public void onChanged(List<CarMakesByYear> carMakesByYears) {
+                if (carMakesByYears != null) {
+                    Log.e("response", "CarMakesByYear: " + carMakesByYears.get(0).getMakeDisplay());
+                }
             }
         });
 
-        carQueryViewModel.getCarModelsByYearAndMake("2019", "Acura").observe(this, carModelNames -> {
-            if (carModelNames != null) {
-                Log.e("response", "CarModelName: " + carModelNames.get(0).getModelName());
+        carQueryViewModel.getCarModelsByYearAndMake("2019", "Acura").observe(this, new Observer<List<CarModelName>>() {
+            @Override
+            public void onChanged(List<CarModelName> carModelNames) {
+                if (carModelNames != null) {
+                    Log.e("response", "CarModelName: " + carModelNames.get(0).getModelName());
+                }
             }
+
         });
 
-        carQueryViewModel.getCarTrimsByYearMakeModel("2019", "Acura", "ILX").observe(this, carTrimsInfos -> {
-            if (carTrimsInfos != null) {
-                Log.e("response", "CarTrimsInfo: " + carTrimsInfos.get(0).getModelEngineCc());
+        carQueryViewModel.getCarTrimsByYearMakeModel("2019", "Acura", "ILX").observe(this, new Observer<List<CarTrimsInfo>>() {
+            @Override
+            public void onChanged(List<CarTrimsInfo> carTrimsInfos) {
+                if (carTrimsInfos != null) {
+                    Log.e("response", "CarTrimsInfo: " + carTrimsInfos.get(0).getModelEngineCc());
+                }
             }
         });
     }

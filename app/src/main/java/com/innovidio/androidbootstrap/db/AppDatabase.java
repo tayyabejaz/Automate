@@ -11,11 +11,13 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.innovidio.androidbootstrap.db.converters.EnumTypeConverters;
+import com.innovidio.androidbootstrap.db.converters.UnitTypeEnumConverters;
 import com.innovidio.androidbootstrap.db.dao.AlarmDao;
 import com.innovidio.androidbootstrap.db.dao.CarDao;
 import com.innovidio.androidbootstrap.db.dao.FormDao;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
 import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
+import com.innovidio.androidbootstrap.db.dao.PreferencesDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
 import com.innovidio.androidbootstrap.db.dao.UserDao;
 import com.innovidio.androidbootstrap.entity.Alarm;
@@ -23,6 +25,7 @@ import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.Form;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.Maintenance;
+import com.innovidio.androidbootstrap.entity.Preferences;
 import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.entity.User;
 import com.innovidio.androidbootstrap.entity.models.Feed;
@@ -40,6 +43,7 @@ import java.util.Date;
         entities = {
                 //@TODO add your Entity classes here
                 User.class,
+                Preferences.class,
                 Feed.class,
                 Alarm.class,
                 Car.class,
@@ -55,7 +59,7 @@ import java.util.Date;
 @TypeConverters(
         {
                 //TODO add you typeConverters here
-                IntegerListConverter.class, DateConverter.class, StringListConverter.class, EnumTypeConverters.class
+                IntegerListConverter.class, DateConverter.class, StringListConverter.class, EnumTypeConverters.class, UnitTypeEnumConverters.class
         }
 )
 
@@ -65,6 +69,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract FeedDao getFeedDao();
 
     public abstract UserDao getUserDao();
+
+    public abstract PreferencesDao getPreferencesDao();
 
     public abstract AlarmDao getAlarmDao();
 //
@@ -120,7 +126,7 @@ public abstract class AppDatabase extends RoomDatabase {
         sQLiteDatabase.execSQL(sb.toString());
         */
 
-// for processing JSON datat
+        //  for processing JSON data
        /* String json = loadStringDataFromAsset("asset_filename");
         Type type = Types.newParameterizedType(List.class, Breed.class, BreedDetail.class, PuppyName.class);
         Moshi moshi = new Moshi.Builder().build();
@@ -128,7 +134,6 @@ public abstract class AppDatabase extends RoomDatabase {
         JsonAdapter<List<Breed>> jsonAdapter = moshi.adapter(type);
         List<Breed> breeds = jsonAdapter.fromJson(json);
         return breeds;
-
         */
 
     }

@@ -11,7 +11,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.innovidio.androidbootstrap.Constants;
+import com.innovidio.androidbootstrap.BaseApplication;
 import com.innovidio.androidbootstrap.dashboard.SpeedDashboardActivity;
 
 
@@ -36,7 +36,7 @@ public final class CustomLocationRunnable implements Runnable {
         try {
             Bundle bundle = new Bundle();
             bundle.putString("Dummy", "dummy");
-            Constants.CONTEXT.startService(new Intent(Constants.CONTEXT,FloatingViewService.class));
+            BaseApplication.context.startService(new Intent(BaseApplication.context,FloatingViewService.class));
             // customLocationRunnable.floatingViewService.m10042a(FloatingViewService.class, bundle);
         } catch (Exception e) {
             Log.e("DigiHUD", "Floating window update error: " + e.toString());

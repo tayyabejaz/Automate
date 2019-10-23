@@ -149,7 +149,6 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         Log.e("timeLine", "arrayListSize" + timeLineItemList.size());
-
         if (adapterType == Constants.FILTERED_ADAPTER) {
             return timeLineItemList.size();
         }
