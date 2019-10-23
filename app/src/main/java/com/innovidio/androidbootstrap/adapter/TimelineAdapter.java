@@ -84,7 +84,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holderParent, int position) {
 
         // check if size is 0 then return after adding footer
-        if (setFooterItem(holderParent, position)){
+        if (setFooterItem(holderParent, position)) {
             return;
         }
         // =======================================
@@ -99,10 +99,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 fuelUpItemViewHolder.itemBinding.imageIcon.setBackground(IconProvider.getFuelUp(context).getBackground());
                 fuelUpItemViewHolder.itemBinding.imageIcon.setImageDrawable(IconProvider.getFuelUp(context).getDrawable());
 
-                fuelUpItemViewHolder.itemView.setOnClickListener(view -> {
-                    timelineItemClickListener.onFuelUpClick(fuelUp);
-                });
-
+                if (timelineItemClickListener != null) {
+                    fuelUpItemViewHolder.itemView.setOnClickListener(view -> {
+                        timelineItemClickListener.onFuelUpClick(fuelUp);
+                    });
+                }
                 break;
 
             case MAINTENANCE:
@@ -110,9 +111,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 MaintenanceViewHolder maintenanceViewHolder = (MaintenanceViewHolder) holderParent;
                 maintenanceViewHolder.bind(maintenance);
 
-                maintenanceViewHolder.itemView.setOnClickListener(view -> {
-                    timelineItemClickListener.onMaintenanceClick(maintenance);
-                });
+                if (timelineItemClickListener != null) {
+                    maintenanceViewHolder.itemView.setOnClickListener(view -> {
+                        timelineItemClickListener.onMaintenanceClick(maintenance);
+                    });
+                }
                 maintenanceViewHolder.itemBinding.imageIcon.setBackground(IconProvider.getServices(context).getBackground());
                 maintenanceViewHolder.itemBinding.imageIcon.setImageDrawable(IconProvider.getServices(context).getDrawable());
 
@@ -124,9 +127,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 MaintenanceCarWashViewHolder maintenanceCarWashViewHolder = (MaintenanceCarWashViewHolder) holderParent;
                 maintenanceCarWashViewHolder.bind(maintenanceCarWash);
 
-                maintenanceCarWashViewHolder.itemView.setOnClickListener(view -> {
-                    timelineItemClickListener.onCarWashClick(maintenanceCarWash);
-                });
+                if (timelineItemClickListener != null) {
+                    maintenanceCarWashViewHolder.itemView.setOnClickListener(view -> {
+                        timelineItemClickListener.onCarWashClick(maintenanceCarWash);
+                    });
+                }
                 maintenanceCarWashViewHolder.itemBinding.imageIcon.setBackground(IconProvider.getCarWash(context).getBackground());
                 maintenanceCarWashViewHolder.itemBinding.imageIcon.setImageDrawable(IconProvider.getCarWash(context).getDrawable());
 
@@ -137,9 +142,11 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 TripsViewHolder tripsViewHolder = (TripsViewHolder) holderParent;
                 tripsViewHolder.bind(trip);
 
-                tripsViewHolder.itemView.setOnClickListener(view -> {
-                    timelineItemClickListener.onTripsClick(trip);
-                });
+                if (timelineItemClickListener != null) {
+                    tripsViewHolder.itemView.setOnClickListener(view -> {
+                        timelineItemClickListener.onTripsClick(trip);
+                    });
+                }
                 tripsViewHolder.itemBinding.imageIcon.setBackground(IconProvider.getTrip(context).getBackground());
                 tripsViewHolder.itemBinding.imageIcon.setImageDrawable(IconProvider.getTrip(context).getDrawable());
                 break;
