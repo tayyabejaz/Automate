@@ -67,6 +67,7 @@ public class FilterResultActivity extends DaggerAppCompatActivity {
                 timeLineItemList.addAll(timeLineItems);
                 timelineAdapter.updateData(timeLineItemList);
                 binding.rvFilterResults.setAdapter(timelineAdapter);
+
             }
         });
     }
