@@ -1,4 +1,4 @@
-package com.innovidio.androidbootstrap.entity.models;
+package com.innovidio.androidbootstrap.dashboard;
 
 /**
  * Created by RanaTalal on 15/03/2018.

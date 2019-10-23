@@ -40,7 +40,7 @@ public class CarViewModel extends ViewModel {
         return this.carRepository.getAllCars();
     }
 
-    public LiveData<List<Car>> getAllCarsOrderById(){
-        return this.carRepository.getAllCarsOrderById();
+    public LiveData<List<Car>> getAllEnableCarsOrderById(boolean isEnable){
+        return this.carRepository.getAllEnableCarsOrderById(isEnable);
     }
 }

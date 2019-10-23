@@ -83,7 +83,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holderParent, int position) {
 
-        setFooterItem(holderParent, position);
+        // check if size is 0 then return after adding footer
+        if (setFooterItem(holderParent, position)){
+            return;
+        }
         // =======================================
 
         TimeLineItem item = timeLineItemList.get(position);
@@ -177,7 +180,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
-    private void setFooterItem(RecyclerView.ViewHolder holderParent, int position) {
+    private boolean setFooterItem(RecyclerView.ViewHolder holderParent, int position) {
+        boolean value = false;
         // todo for footer item only
         // return because no data binding needed for footer
         if (timeLineItemList.size() == position) {
@@ -188,13 +192,15 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             } else {
                 footerViewHolder.itemBinding.ivTrackitem.setVisibility(View.GONE);
             }
-            return;
+            // true means retun not run below code in viewbinder
+            value = true;
         }//TODO: Done this for a Track Item
         else if (adapterType == Constants.FILTERED_ADAPTER) {
             holderParent.itemView.findViewById(R.id.iv_trackitem).setVisibility(View.GONE);
         } else {
             holderParent.itemView.findViewById(R.id.iv_trackitem).setVisibility(View.VISIBLE);
         }
+        return value;
     }
 
 

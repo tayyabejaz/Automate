@@ -22,9 +22,8 @@ import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.IconProvider;
-import com.innovidio.androidbootstrap.Utils.Sorting;
 import com.innovidio.androidbootstrap.adapter.CustomMainSpinnerAdapter;
-import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
+import com.innovidio.androidbootstrap.dashboard.SetSpeedLimit;
 import com.innovidio.androidbootstrap.databinding.ActivityMainBinding;
 import com.innovidio.androidbootstrap.databinding.DialogFilterListBinding;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
@@ -34,7 +33,6 @@ import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
-import com.innovidio.androidbootstrap.entity.models.TimeLine;
 import com.innovidio.androidbootstrap.interfaces.SpinnerItemClickListener;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.viewmodel.CarQueryViewModel;
@@ -62,17 +60,12 @@ import static com.innovidio.androidbootstrap.Constants.TRIP_FORM;
 public class MainActivity extends DaggerAppCompatActivity implements View.OnClickListener, SpinnerItemClickListener {
     private static final String TAG = "MainActivityLog";
 
-    public static int SAVED_CAR_ID = 0;
-
     @Inject
     FuelDao fuelDao;
     @Inject
     MaintenanceDao maintenanceDao;
     @Inject
     TripDao tripDao;
-
-//    @Inject
-//    ViewModelProviderFactory providerFactory;
 
     @Inject
     AppPreferences appPreferences;
@@ -90,16 +83,11 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     @Inject
     TimeLineViewModel timeLineViewModel;
 
-
     private ActivityMainBinding mainBinding;
     private List<Car> carArrayList = new ArrayList<>();
     private CustomMainSpinnerAdapter customMainSpinnerAdapter;
-    private TimelineAdapter timelineAdapter;
-    private List<TimeLine> data;
     private NavController navigationController;
     private boolean isUp, isDown = false;
-
-    List<TimeLineItem> timeLineItemList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,11 +108,13 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         fuelUpData();
         getCarsData();
 
+
     }
 
     private void initializeAdapters() {
         initList();
-        customMainSpinnerAdapter = new CustomMainSpinnerAdapter(this, this::onItemClick, carArrayList);
+        customMainSpinnerAdapter = new CustomMainSpinnerAdapter(this,this::onSpinnerItemClick, carArrayList);
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
 
         mainBinding.spinnerCustomLayout.rvCarSpinnerLayout.setLayoutManager(layoutManager);
@@ -157,9 +147,9 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     private void addDummyValues() {
         Car car = new Car();
-        //car.setId(1);
-        car.setModelName("Toyota");
-        car.setManufacturer("Carrola");
+        car.setId(1);
+        car.setModelName("Carrola");
+        car.setManufacturer("Toyota");
         car.setRegistrationNo("LXA 5039");
         car.setMakeYear(2019);
         car.setSubModel("1.3");
@@ -352,7 +342,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     }
 
     private void initList() {
-        SAVED_CAR_ID = appPreferences.getInt(AppPreferences.Key.SAVED_CAR_ID);
+        AppPreferences.SELECTED_CAR_ID = appPreferences.getInt(AppPreferences.Key.SAVED_CAR_ID);
         carViewModel.getAllCars().observe(this, new Observer<List<Car>>() {
             @Override
             public void onChanged(List<Car> cars) {
@@ -361,7 +351,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             }
         });
 
-        carViewModel.getCarById(SAVED_CAR_ID).observe(this, new Observer<Car>() {
+        carViewModel.getCarById(AppPreferences.SELECTED_CAR_ID).observe(this, new Observer<Car>() {
             @Override
             public void onChanged(Car car) {
                 if (car != null) {
@@ -369,18 +359,12 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 }
             }
         });
-
-//        carArrayList = new ArrayList<>();
-//        carArrayList.add(new SpinnerDataModel("Honda Civic", "Honda", "CIVIC", "LRF 4567"));
-//        carArrayList.add(new SpinnerDataModel("Toyota Corolla", "Toyota", "Corolla", "GAL 9510"));
-//        carArrayList.add(new SpinnerDataModel("Suzuki CIAZ", "Suzuki", "Ciaz", "SLL 6541"));
     }
 
     private void setSpinnerItem(Car car) {
         String name = car.getManufacturer() + " " + car.getModelName() + " " + car.getMakeYear();
         mainBinding.mainActivitySpinner.setText(name);
-        appPreferences.put(AppPreferences.Key.SAVED_CAR_ID, car.getId());
-        SAVED_CAR_ID = car.getId();
+        AppPreferences.SELECTED_CAR_ID =  car.getId();
     }
 
     public void slideUp(View view) {
@@ -452,7 +436,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     }
 
     private void initializeIcons() {
-
         mainBinding.bottomSheet.ivAddTriprec.setImageDrawable(IconProvider.getTripRecording(this).getDrawable());
         mainBinding.bottomSheet.ivAddTriprec.setBackground(IconProvider.getTripRecording(this).getBackground());
 
@@ -480,8 +463,9 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     }
 
     @Override
-    public void onItemClick(Car car) {
+    public void onSpinnerItemClick(Car car) {
         closeSpinnerLayout();
+        appPreferences.put(AppPreferences.Key.SAVED_CAR_ID, car.getId());
         setSpinnerItem(car);
     }
 

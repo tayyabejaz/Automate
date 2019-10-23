@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/blackColor">
+
+    <TextView
+        android:id="@+id/settext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Please set your new speed limit"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="@color/whiteColor"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/newspeededittext"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:digits="0123456789"
+        android:gravity="center"
+        android:hint="100"
+        android:inputType="number"
+        android:maxLines="1"
+        android:textColor="@color/whiteColor"
+        android:textColorHint="#14AAAAAA"
+        android:textCursorDrawable="@null"
+        android:backgroundTint="@color/whiteColor"
+        android:textSize="20sp"
+        android:fontFamily="@font/roboto_bold"
+        android:imeOptions="actionDone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settext"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Done"
+        android:fontFamily="@font/roboto_bold"
+        android:textColor="@color/whiteColor"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newspeededittext" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

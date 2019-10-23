@@ -126,7 +126,7 @@
 
                 <TextView
                     android:id="@+id/tv_trip_date"
-                    android:layout_width="0d"
+                    android:layout_width="0dp"
                     style="@style/EditText_In_Forms"
                     android:drawableLeft="@drawable/automate_set_date_form_icon"
                     android:hint="Set Date"

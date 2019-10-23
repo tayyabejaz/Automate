@@ -13,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
         <activity android:name=".activity.FilterResultActivity"></activity>
-        <activity android:name=".activity.FilteredActivity" />
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,9 +27,23 @@
             android:name=".activity.FormActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".activity.MainActivity" />
-    </application>
+        <activity
+            android:name=".dashboard.SpeedDashboardActivity"
+            android:launchMode="singleTask" /> <!-- <activity android:name=".Dialog.AddServiceDialog" /> -->
+        <activity
+            android:name=".dashboard.SetSpeedLimit"
+            android:screenOrientation="portrait" />
 
+        <service android:name=".service.FloatingViewService" />
+    </application>
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:maxSdkVersion="22" />
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:maxSdkVersion="22" />
 
     <dist:module dist:instant="true" />
 

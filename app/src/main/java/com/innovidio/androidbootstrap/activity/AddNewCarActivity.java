@@ -4,18 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.databinding.ActivityAddNewCarBinding;
 import com.innovidio.androidbootstrap.fragment.AddCustomCar;
 import com.innovidio.androidbootstrap.fragment.AddNewCar;
-import com.innovidio.androidbootstrap.interfaces.OnActivityBtnClickListener;
-import com.innovidio.androidbootstrap.interfaces.OnFragmentClickListener;
+import com.innovidio.androidbootstrap.interfaces.ActivityBtnClickListener;
+import com.innovidio.androidbootstrap.interfaces.FragmentClickListener;
 
-public class AddNewCarActivity extends AppCompatActivity implements OnFragmentClickListener {
+public class AddNewCarActivity extends AppCompatActivity implements FragmentClickListener {
 
-    OnActivityBtnClickListener onActivityBtnClickListener;
+    ActivityBtnClickListener onActivityBtnClickListener;
     private ActivityAddNewCarBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +22,7 @@ public class AddNewCarActivity extends AppCompatActivity implements OnFragmentCl
         binding = DataBindingUtil.setContentView(this,R.layout.activity_add_new_car);
 
         AddNewCar addNewCar = new AddNewCar(this);
-        onActivityBtnClickListener=(OnActivityBtnClickListener) addNewCar;
+        onActivityBtnClickListener=(ActivityBtnClickListener) addNewCar;
         getSupportFragmentManager().beginTransaction().add(R.id.fl_newcar_fragment,addNewCar).commit();
     }
 
@@ -43,14 +42,14 @@ public class AddNewCarActivity extends AppCompatActivity implements OnFragmentCl
     @Override
     public void onCustomFragmentClick() {
         AddCustomCar addCustomCar = new AddCustomCar(this);
-        onActivityBtnClickListener=(OnActivityBtnClickListener) addCustomCar;
+        onActivityBtnClickListener=(ActivityBtnClickListener) addCustomCar;
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_newcar_fragment,addCustomCar).commit();
     }
 
     @Override
     public void onGoDefaultClick() {
         AddNewCar addNewCar = new AddNewCar(this);
-        onActivityBtnClickListener=(OnActivityBtnClickListener) addNewCar;
+        onActivityBtnClickListener=(ActivityBtnClickListener) addNewCar;
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_newcar_fragment,new AddNewCar(this)).commit();
     }
 }

@@ -31,6 +31,9 @@
     <string name="distance_unit"> Km </string>
     <string name="add_custom_car">Add Custom Car</string>
 
+
+    <string name="running">Route in process…</string>
+
     <string-array name="model_year">
         <item> Select Year of Manufacture eg 2019 </item>
         <item> 2019 </item>
