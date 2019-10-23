@@ -271,7 +271,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         startActivity(intent);
     }
 
-        @Override
+    @Override
     public void onFuelUpClick(FuelUp fuelUp) {
         showFuelTypeDialog(fuelUp);
     }

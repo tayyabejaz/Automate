@@ -99,7 +99,7 @@ public class Trip implements TimeLineItem {
         this.avgspeed = avgspeed;
         this.distanceCovered = distanceCovered;
 //        this.tripdate = tripdate;
-//        this.startTime = starttime;
+//        this.startTime = startTime;
 //        this.endTime = endtime;
         this.fueleconomypertrip = fueleconomypertrip;
         this.saveDate = saveDate;
@@ -177,8 +177,8 @@ public class Trip implements TimeLineItem {
     }
 
 
-//    public void setStarttime(Date starttime) {
-//        this.startTime = starttime;
+//    public void setStarttime(Date startTime) {
+//        this.startTime = startTime;
 //    }
 //
 //    public void setEndtime(Date endtime) {

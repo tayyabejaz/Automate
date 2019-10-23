@@ -64,7 +64,10 @@ public class FuelUpRepository {
         return this.fuelDao.getAllFuelUpsTimeline(cardId);
     }
 
-    public LiveData<List<FuelUp>> getMonthlyFuelUp(Date startDate, Date endDate){
+    public LiveData<List<FuelUp>> getMonthlyFuelUp(Date month){
+        // todo please provide fuel up date range using month
+        Date startDate=null;
+        Date endDate=null;
         return this.fuelDao.getMonthlyFuelConsume(startDate, endDate);
     }
 
@@ -91,5 +94,24 @@ public class FuelUpRepository {
 
     public LiveData<Float> getFuelAverageBetweenDateRange(int carId, Date starDate, Date endDate){
         return this.fuelDao.getFuelAverageBetweenDateRange(carId, starDate, endDate);
+    }
+
+    public MutableLiveData<Float>  getFuelAverage(int carId, Date starDate, Date endDate){
+        //TODO Adnan - please provide fuel average
+        MutableLiveData<Float> floatLiveData = new MutableLiveData<>();
+        floatLiveData.postValue(0.6f);
+        return floatLiveData;
+    }
+
+    public LiveData<Float>  getFuelTankPercentage(int carId){
+        // todo add code for getting percentage of remaining fuel
+        //  this.fuelUpRepository.getAllFuelkTankPercentage();
+        return getRemainingFuel();
+    }
+
+    private LiveData<Float> getRemainingFuel(){
+        MutableLiveData<Float> fuelUpLiveData = new MutableLiveData<>();
+        fuelUpLiveData.setValue(19f);
+        return fuelUpLiveData;
     }
 }

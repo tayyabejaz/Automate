@@ -10,6 +10,7 @@ import com.innovidio.androidbootstrap.di.viewmodel.ViewModelProviderFactory;
 import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
 import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
 import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
+import com.innovidio.androidbootstrap.viewmodel.PreferencesViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
 import com.innovidio.androidbootstrap.viewmodel.UserViewModel;
@@ -31,6 +32,11 @@ public abstract class ViewModelFactoryModule {
     @IntoMap
     @ViewModelKey(UserViewModel.class)
     abstract ViewModel bindUserViewModel(UserViewModel userViewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PreferencesViewModel.class)
+    abstract ViewModel bindPreferencesViewModel(PreferencesViewModel preferencesViewModel);
 
     @Binds
     @IntoMap

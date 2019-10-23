@@ -3,9 +3,6 @@ package com.innovidio.androidbootstrap.dashboard;
 import android.location.Location;
 import android.util.Log;
 
-/**
- * Created by RanaTalal on 28/o3/2018.
- */
 
 public class DataManager {
     private boolean isFirstTime;
@@ -13,8 +10,8 @@ public class DataManager {
     private double curSpeed;
     private double maxSpeed;
     private long time;
-    private int currentincomingspeed = 0;
-    private int currentincomingspeedcounter = 0;
+    private int currentIncomingSpeed = 0;
+    private int currentIncomingSpeedCounter = 0;
     private double speedLimit;
 
     public double getSpeedLimit() {
@@ -31,15 +28,15 @@ public class DataManager {
         return location;
     }
 
-    public String getCurrentspeed() {
-        return currentspeed;
+    public String getCurrentSpeed() {
+        return currentSpeed;
     }
 
-    public void setCurrentspeed(String currentspeed) {
-        this.currentspeed = currentspeed;
+    public void setCurrentSpeed(String currentSpeed) {
+        this.currentSpeed = currentSpeed;
     }
 
-    private String currentspeed;
+    private String currentSpeed;
 
 
     public String getTotalAvgSpeed() {
@@ -49,20 +46,20 @@ public class DataManager {
     public void setTotalAvgSpeed(String totalAvgSpeed) {
 
         int finalavgspeed;
-        currentincomingspeed = currentincomingspeed + (Integer.parseInt(totalAvgSpeed));
-        currentincomingspeedcounter++;
-        if (currentincomingspeed >= Integer.MAX_VALUE-500)
+        currentIncomingSpeed = currentIncomingSpeed + (Integer.parseInt(totalAvgSpeed));
+        currentIncomingSpeedCounter++;
+        if (currentIncomingSpeed >= Integer.MAX_VALUE-500)
         {
-            finalavgspeed = currentincomingspeed / currentincomingspeedcounter;
-            currentincomingspeedcounter = 1;
+            finalavgspeed = currentIncomingSpeed / currentIncomingSpeedCounter;
+            currentIncomingSpeedCounter = 1;
         }
         else
         {
-            finalavgspeed = currentincomingspeed / currentincomingspeedcounter;
+            finalavgspeed = currentIncomingSpeed / currentIncomingSpeedCounter;
 
         }
         this.totalAvgSpeed = String.valueOf(finalavgspeed);
-        Log.d("incoming speed: ", "" + totalAvgSpeed + "\t" + " total speed: " + "" + currentincomingspeed + "\t" + "final avg speed: " + ""+ finalavgspeed);
+        Log.d("incoming speed: ", "" + totalAvgSpeed + "\t" + " total speed: " + "" + currentIncomingSpeed + "\t" + "final avg speed: " + ""+ finalavgspeed);
     }
 
     private String totalAvgSpeed;

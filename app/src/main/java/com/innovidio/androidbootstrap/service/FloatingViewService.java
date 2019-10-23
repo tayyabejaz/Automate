@@ -102,9 +102,9 @@ public class FloatingViewService extends Service {
 
         //Speed Units
         speedunits = (TextView) mFloatingView.findViewById(R.id.units);
-        if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_TYPE, "km/h").equals("km/h")) {
+        if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_UNIT, "km/h").equals("km/h")) {
             speedunits.setText("KMPH");
-        } else if ((SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_TYPE, "km/h").equals("mph"))) {
+        } else if ((SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_UNIT, "km/h").equals("mph"))) {
             speedunits.setText("MPH");
         }
 
@@ -207,11 +207,11 @@ public class FloatingViewService extends Service {
 
     public void setFloatingWindowSSpeed(Location location) {
 
-        if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_TYPE, "km/h").equals("km/h")) {
+        if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_UNIT, "km/h").equals("km/h")) {
             //  Toast.makeText(getApplicationContext(), "In Kmph Speed", Toast.LENGTH_SHORT).show();
             currentSpeed = String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6) /*+ "km/h"*/;
 
-        } else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_TYPE, "km/h").equals("mph")) {
+        } else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_UNIT, "km/h").equals("mph")) {
             currentSpeed = String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6 * 0.62137119)/* + "mi/h"*/;
             // EventBus.getDefault().post(new ServiceSpeedModel(currentSpeed));
         } else {

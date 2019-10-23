@@ -40,32 +40,19 @@ public class FuelUpViewModel extends ViewModel {
     }
 
 
-    public MutableLiveData<Float> getFeulAverage() {
-        //TODO Adnan - please provide feul average
-        MutableLiveData<Float> floatLiveData = new MutableLiveData<>();
-        floatLiveData.postValue(0.6f);
-        return floatLiveData;
+    public MutableLiveData<Float> getFuelAverage(int carId, Date starDate, Date endDate) {
+        return fuelUpRepository.getFuelAverage(carId, starDate, endDate);
     }
     public LiveData<List<FuelUp>> getMonthlyFuelUp(Date month){
-        Date startDate=null;
-        Date endDate=null;
-        return this.fuelUpRepository.getMonthlyFuelUp(startDate, endDate);
+        return this.fuelUpRepository.getMonthlyFuelUp(month);
     }
 
     public LiveData<FuelUp> getRecentFuelUp(){
         return this.fuelUpRepository.getRecentFuelUp();
     }
 
-    public LiveData<Float> getFuelTankPercentage(){
-        // todo add code for getting percentage of remaining fuel
-      //  this.fuelUpRepository.getAllFuelkTankPercentage();
-        return getRemainingFuel();
-    }
-
-    private LiveData<Float> getRemainingFuel(){
-        MutableLiveData<Float> fuelUpLiveData = new MutableLiveData<>();
-        fuelUpLiveData.setValue(19f);
-        return fuelUpLiveData;
+    public LiveData<Float> getFuelTankPercentage(int carId){
+      return fuelUpRepository.getFuelTankPercentage(carId);
     }
 
     public LiveData<Integer> getFuelUpCountBetweenDateRange(int carId, Date starDate, Date endDate){

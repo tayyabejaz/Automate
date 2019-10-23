@@ -15,6 +15,8 @@ import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.databinding.ActivitySetSpeedLimitBinding;
 
+import static com.innovidio.androidbootstrap.Constants.KM_HR;
+
 public class SetSpeedLimit extends AppCompatActivity implements View.OnClickListener {
 
     ActivitySetSpeedLimitBinding binding;
@@ -26,8 +28,8 @@ public class SetSpeedLimit extends AppCompatActivity implements View.OnClickList
        // this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_set_speed_limit);
 
-        SharedPreferenceHelper.getInstance().setStringValue(Constants.METER_TYPE, "km/h");
-        SharedPreferenceHelper.getInstance().setStringValue(Constants.SPEED_LIMIT_METER_TYPE, "km/h");
+        SharedPreferenceHelper.getInstance().setStringValue(Constants.METER_UNIT, KM_HR);
+        SharedPreferenceHelper.getInstance().setStringValue(Constants.SPEED_LIMIT_METER_TYPE, KM_HR);
 
         binding.start.setOnClickListener(this);
         binding.skip.setOnClickListener(this);

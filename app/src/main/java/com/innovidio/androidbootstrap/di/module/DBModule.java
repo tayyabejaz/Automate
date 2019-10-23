@@ -11,8 +11,10 @@ import com.innovidio.androidbootstrap.db.dao.FeedDao;
 import com.innovidio.androidbootstrap.db.dao.FormDao;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
 import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
+import com.innovidio.androidbootstrap.db.dao.PreferencesDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
 import com.innovidio.androidbootstrap.db.dao.UserDao;
+import com.innovidio.androidbootstrap.entity.Preferences;
 import com.innovidio.androidbootstrap.entity.User;
 
 
@@ -48,6 +50,12 @@ public class DBModule {
     @Singleton
     UserDao provideUserDao(@NonNull AppDatabase appDatabase) {
         return appDatabase.getUserDao();
+    }
+
+    @Provides
+    @Singleton
+    PreferencesDao providePreferencesDao(@NonNull AppDatabase appDatabase) {
+        return appDatabase.getPreferencesDao();
     }
 
     @Provides

@@ -38,7 +38,7 @@ public class MaintenanceViewModel extends ViewModel {
         this.maintenanceRepository.deleteMaintenanceService(maintenance);
     }
 
-    public void updatMaintenanceService(Maintenance maintenance){
+    public void updateMaintenanceService(Maintenance maintenance){
         this.maintenanceRepository.updateMaintenanceService(maintenance);
     }
 

@@ -14,7 +14,7 @@ public interface Constants {
 
     String FILE_NAME = "file";
 
-    String METER_TYPE = "km/h";
+    String METER_UNIT = "meterUnit";
     String SPEED_LIMIT = "speedlimit";
     String SPEED_LIMIT_METER_TYPE = "speedlimitmetertype";
 
@@ -33,7 +33,7 @@ public interface Constants {
     String speedunits = "distanceunits";
     String perunitfuelprice = "perunitfuelprice";
 
-    Context CONTEXT = null;
+  //  Context CONTEXT = null;
     int FILTERED_ADAPTER = 1;
     int SPINNER_ADPTER_TYPE = 1;
     String FILTER_FUEL_UPS = "filter_fuelup";
@@ -41,5 +41,9 @@ public interface Constants {
     String FILTER_TRIPS = "filter_trips";
     String FILTER_CARWASH = "filter_carwash";
 
+
+    ///
+    String KM_HR = "KM/hr";
+    String M_HR ="M/hr";
 }
 

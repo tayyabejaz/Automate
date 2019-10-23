@@ -4,6 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.innovidio.androidbootstrap">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="com.android.vending.BILLING" />
+
+    <dist:module dist:instant="true" />
+
     <application
         android:name=".BaseApplication"
         android:allowBackup="false"
@@ -33,22 +46,13 @@
         <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".dashboard.SpeedDashboardActivity"
-            android:launchMode="singleTask" /> <!-- <activity android:name=".Dialog.AddServiceDialog" /> -->
+            android:launchMode="singleTask" />
         <activity
             android:name=".dashboard.SetSpeedLimit"
             android:screenOrientation="portrait" />
 
         <service android:name=".service.FloatingViewService" />
     </application>
-    <uses-permission
-        android:name="android.permission.ACCESS_FINE_LOCATION"
-        android:maxSdkVersion="22" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-permission
-        android:name="android.permission.ACCESS_COARSE_LOCATION"
-        android:maxSdkVersion="22" />
-
-    <dist:module dist:instant="true" />
 
 </manifest>
