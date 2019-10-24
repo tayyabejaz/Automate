@@ -168,7 +168,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="@{maintenancedata.maintenanceOdometerReading}"
+                        android:text="@{String.valueOf(maintenancedata.maintenanceOdometerReading)}"
                         android:textColor="@color/blackColor"
                         tools:text="032450" />
 

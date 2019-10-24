@@ -68,24 +68,72 @@
         <item> 1990 </item>
     </string-array>
 
+
     <string-array name="service_list">
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
-        <item> Engine </item>
+        <item>Check Battery and Contacts</item>
+        <item>Check Exhaust System</item>
+        <item>Check Lubrication System</item>
+        <item>Check/Change Spark Plugs</item>
+        <item>Clean/Wash</item>
+        <item>Check and Replace Wiper Blades</item>
+        <item>Check/Change Lights</item>
+        <item>Professional Detailing</item>
+        <item>Wax/Polish</item>
+        <item>Check Automatic Transmission Fluid</item>
+        <item>Check Brake Fluid</item>
+        <item>Check/Change Cabin Air Filter</item>
+        <item>Check/Add Radiator Coolant[AntiFreeze]</item>
+        <item>Check/Change Engine Air Filter</item>
+        <item>Check/Add Engine Oil</item>
+        <item>Check/Change Engine Oil</item>
+        <item>Check/Check/Change Fuel Filter</item>
+        <item>Check/Change Power Steering Fluid</item>
+        <item>Check/Change Transmission Fluid</item>
+        <item>Check/Add Wiper Fluid</item>
+        <item>Check/Change Belts[Alternator , Serpentine , Timing, etc.]</item>
+        <item>Check/Change Brake Hoses</item>
+        <item>Check/Change Power Steering Hoses</item>
+        <item>Check/Change Vacuum Hoses</item>
+        <item>Clean/Protect</item>
+        <item>Professional Detailing</item>
+        <item>Monitor Dashboard Lights</item>
+        <item>Check Allignment</item>
+        <item>Check and Adjust Tire Pressure</item>
+        <item>Check/Replace Brake Pads</item>
+        <item>Check Tire Condition/Tread</item>
+        <item>Check/Inspect Suspension System</item>
+        <item>Rotate and Balance Tires</item>
+    </string-array>
+
+    <string-array name="parts_categories">
+        <item>Oil and Oil Filter</item>
+        <item>Windshield Wiper Blades</item>
+        <item>Air Filter</item>
+        <item>Brake Pads</item>
+        <item>Battery</item>
+        <item>Headlights and/or taillight bulbs</item>
+        <item>Tires</item>
+        <item>Spark Plugs</item>
+        <item>Belts</item>
+        <item>Alternator</item>
+        <item>Fuel Pump</item>
+        <item>Water pump</item>
+        <item>Muffler</item>
+    </string-array>
+
+    <string-array name="otherexpenses_categories">
+        <item>Car Insurance</item>
+        <item>Tracker Navigation</item>
+        <item>Installments</item>
+        <item>Annual Registration</item>
+        <item>Tolls</item>
+    </string-array>
+
+
+    <string-array name="lifetime_categories">
+        <item>weeks</item>
+        <item>month</item>
+        <item>year</item>
     </string-array>
 
     <string-array name="calendar_list">

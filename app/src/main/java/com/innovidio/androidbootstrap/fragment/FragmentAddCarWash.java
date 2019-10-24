@@ -98,9 +98,9 @@ public class FragmentAddCarWash extends DaggerFragment {
             new TimePickerDialog(getActivity(), time, todaysCalender.get(Calendar.HOUR_OF_DAY),todaysCalender.get(Calendar.MINUTE), false).show();
         });
 
-        if (checkEmptyField(carWashBinding.etOdometerReading)) {
-            maintenance.setMaintenanceOdometerReading(carWashBinding.etOdometerReading.getText().toString());
-        }
+//        if (checkEmptyField(carWashBinding.etOdometerReading)) {
+//            maintenance.setMaintenanceOdometerReading(carWashBinding.etOdometerReading.getText().toString());
+//        }
 
         if (checkEmptyField(carWashBinding.etCarwashLocation)) {
             maintenance.setMaintenanceLocation(carWashBinding.etCarwashLocation.getText().toString());
