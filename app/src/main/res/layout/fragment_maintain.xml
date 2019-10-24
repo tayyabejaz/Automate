@@ -7,313 +7,334 @@
         android:layout_height="match_parent"
         tools:context=".fragment.FragmentMaintain">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/first_card"
+        <ScrollView
             android:layout_width="0dp"
-            android:layout_height="@dimen/_150sdp"
-            android:layout_margin="@dimen/_5sdp"
-            android:background="@drawable/first_card_gradient"
-            app:layout_constraintEnd_toStartOf="@id/second_card"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/tv_last_maintenance_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Last Maintenance"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toTopOf="@id/divider_last_maintenance"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_last_maintenance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toTopOf="@id/tv_last_maintenance_value"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider_last_maintenance" />
-
-            <TextView
-                android:id="@+id/tv_last_maintenance_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Check Battery"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toTopOf="@id/tv_date"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_last_maintenance"
-
-                />
-
-            <TextView
-                android:id="@+id/tv_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toTopOf="@id/tv_date_value"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_last_maintenance_value" />
-
-            <TextView
-                android:id="@+id/tv_date_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="15-10-2019"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toTopOf="@id/tv_cost"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_date" />
-
-            <TextView
-                android:id="@+id/tv_cost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cost"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toTopOf="@id/tv_cost_value"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_date_value" />
-
-            <TextView
-                android:id="@+id/tv_cost_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="6000 Rs"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_cost" />
-
-
-            <View
-                android:id="@+id/divider_last_maintenance"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:background="@color/whiteColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/second_card"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_150sdp"
-            android:layout_margin="@dimen/_5sdp"
-            android:background="@drawable/second_card_gradient"
-            app:layout_constraintEnd_toStartOf="@id/third_card"
-            app:layout_constraintStart_toEndOf="@id/first_card"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/tv_next_maintenance_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Next \n Maintenance"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toTopOf="@id/divider_next_maintenance"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_next_maintenance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toTopOf="@id/tv_next_maintenance_value"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider_next_maintenance" />
-
-            <TextView
-                android:id="@+id/tv_next_maintenance_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Oil Change"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toTopOf="@id/tv_days"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_next_maintenance"
-
-                />
-
-            <TextView
-                android:id="@+id/tv_days"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="30"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toTopOf="@id/tv_days_value"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_next_maintenance_value" />
-
-            <TextView
-                android:id="@+id/tv_days_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="days Remaining"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_days" />
-
-
-            <View
-                android:id="@+id/divider_next_maintenance"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:background="@color/whiteColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/third_card"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_150sdp"
-            android:layout_margin="@dimen/_5sdp"
-            android:background="@drawable/orange_card_gradient"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/second_card"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
-                android:id="@+id/tv_summary_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Summary"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toTopOf="@id/divider_summary_maintenance"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_total_maintenance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Today Maintenance"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toTopOf="@id/tv_total_maintenance_value"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider_summary_maintenance" />
-
-            <TextView
-                android:id="@+id/tv_total_maintenance_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toTopOf="@id/tv_total_cost"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_total_maintenance"
-
-                />
-
-
-            <TextView
-                android:id="@+id/tv_total_cost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total Cost"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toTopOf="@id/tv_total_cost_value"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_total_maintenance_value" />
-
-            <TextView
-                android:id="@+id/tv_total_cost_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="6000 Rs"
-                android:textColor="@color/whiteColor"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_total_cost" />
-
-
-            <View
-                android:id="@+id/divider_summary_maintenance"
-                android:layout_width="wrap_content"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:background="@color/whiteColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/iv_add_maintenance"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/second_card">
-
-            <ImageView
-                android:id="@+id/iv_maintenance_backdrop"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                android:src="@drawable/automate_maintenance_card"
-                app:layout_constraintBottom_toTopOf="@id/rv_add_maintenance"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/automate_bottom_nav_open_icon"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Add Maintenance"
-                android:textColor="@color/whiteColor"
-                android:textSize="@dimen/_14sdp"
-                android:drawablePadding="@dimen/_5sdp"
-                app:layout_constraintBottom_toBottomOf="@id/iv_maintenance_backdrop"
-                app:layout_constraintEnd_toEndOf="@id/iv_maintenance_backdrop"
-                app:layout_constraintStart_toStartOf="@id/iv_maintenance_backdrop"
-                app:layout_constraintTop_toTopOf="@id/iv_maintenance_backdrop" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_add_maintenance"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_add_maintenance" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/first_card"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_150sdp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@drawable/first_card_gradient"
+                    app:layout_constraintEnd_toStartOf="@id/second_card"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/tv_last_maintenance_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Last Maintenance"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toTopOf="@id/divider_last_maintenance"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_last_maintenance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Name"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_last_maintenance_value"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_last_maintenance" />
+
+                    <TextView
+                        android:id="@+id/tv_last_maintenance_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Check Battery"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_date"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_last_maintenance"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Date"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_date_value"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_last_maintenance_value" />
+
+                    <TextView
+                        android:id="@+id/tv_date_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="15-10-2019"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_cost"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_date" />
+
+                    <TextView
+                        android:id="@+id/tv_cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cost"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_cost_value"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_date_value" />
+
+                    <TextView
+                        android:id="@+id/tv_cost_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="6000 Rs"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_cost" />
+
+
+                    <View
+                        android:id="@+id/divider_last_maintenance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/_25sdp"
+                        android:background="@color/whiteColor"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/second_card"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_150sdp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@drawable/second_card_gradient"
+                    app:layout_constraintEnd_toStartOf="@id/third_card"
+                    app:layout_constraintStart_toEndOf="@id/first_card"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/tv_next_maintenance_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Next \n Maintenance"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toTopOf="@id/divider_next_maintenance"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_next_maintenance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Name"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_next_maintenance_value"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_next_maintenance" />
+
+                    <TextView
+                        android:id="@+id/tv_next_maintenance_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Oil Change"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_days"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_next_maintenance"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/tv_days"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="30"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_days_value"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_next_maintenance_value" />
+
+                    <TextView
+                        android:id="@+id/tv_days_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="days Remaining"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_days" />
+
+
+                    <View
+                        android:id="@+id/divider_next_maintenance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/_25sdp"
+                        android:background="@color/whiteColor"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/third_card"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_150sdp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@drawable/orange_card_gradient"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/second_card"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/tv_summary_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Summary"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toTopOf="@id/divider_summary_maintenance"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_total_maintenance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Today Maintenance"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_total_maintenance_value"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_summary_maintenance" />
+
+                    <TextView
+                        android:id="@+id/tv_total_maintenance_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_total_cost"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_maintenance"
+
+                        />
+
+
+                    <TextView
+                        android:id="@+id/tv_total_cost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total Cost"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toTopOf="@id/tv_total_cost_value"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_maintenance_value" />
+
+                    <TextView
+                        android:id="@+id/tv_total_cost_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="6000 Rs"
+                        android:textColor="@color/whiteColor"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_cost" />
+
+
+                    <View
+                        android:id="@+id/divider_summary_maintenance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/_25sdp"
+                        android:background="@color/whiteColor"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/iv_add_maintenance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/second_card">
+
+                    <ImageView
+                        android:id="@+id/iv_maintenance_backdrop"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/automate_maintenance_card"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_add_maintenance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/automate_bottom_nav_open_icon"
+                        android:fontFamily="@font/roboto_medium"
+                        android:text="Add Maintenance"
+                        android:textColor="@color/whiteColor"
+                        android:textSize="@dimen/_14sdp"
+                        android:drawablePadding="@dimen/_5sdp"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_maintenance_backdrop"
+                        app:layout_constraintEnd_toEndOf="@id/iv_maintenance_backdrop"
+                        app:layout_constraintStart_toStartOf="@id/iv_maintenance_backdrop"
+                        app:layout_constraintTop_toTopOf="@id/iv_maintenance_backdrop" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_add_maintenance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_add_maintenance"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

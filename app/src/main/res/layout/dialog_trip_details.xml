@@ -43,7 +43,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
+                    android:padding="@dimen/_5sdp"
                     android:text="Price / Unit"/>
 
                 <TextView
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{String.valueOf(tripdata.fuelCostPerUnit)}"
                     tools:text="113 Rs"
-                    android:paddingStart="10dp"
+                    android:padding="@dimen/_5sdp"
                     android:textColor="@color/blackColor"/>
 
             </LinearLayout>
@@ -81,7 +81,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
+                    android:padding="@dimen/_5sdp"
                     android:text="Total Price"/>
 
                 <TextView
@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{String.valueOf(tripdata.totalExpenses)}"
                     tools:text="2000 Rs"
-                    android:paddingStart="10dp"
+                    android:padding="@dimen/_5sdp"
                     android:textColor="@color/blackColor"/>
 
             </LinearLayout>
@@ -119,7 +119,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
+                    android:padding="@dimen/_5sdp"
                     android:text="No. of Liters"/>
 
                 <TextView
@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{String.valueOf(tripdata.noOfLitres)}"
                     tools:text="17 L"
-                    android:paddingStart="10dp"
+                    android:padding="@dimen/_5sdp"
                     android:textColor="@color/blackColor"/>
 
             </LinearLayout>
@@ -169,7 +169,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{tripdata.saveDateInString}"
                         tools:text="10-10-2019"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/_12sdp"
                         android:textColor="@color/blackColor" />
 
                 </LinearLayout>
@@ -206,7 +206,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{tripdata.saveTimeInString}"
                        tools:text="10-10-2019"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/_12sdp"
                         android:textColor="@color/blackColor" />
 
                 </LinearLayout>
@@ -245,7 +245,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="13dp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:text="Initial Odometer" />
 
                     <TextView
@@ -253,7 +253,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{String.valueOf(tripdata.intialOdometer)}"
                         tools:text="342010"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/_12sdp"
                         android:textColor="@color/blackColor" />
 
                 </LinearLayout>
@@ -282,7 +282,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:text="Final Odometer"
                          />
 
@@ -291,7 +291,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{String.valueOf(tripdata.finalOdometer)}"
                         tools:text="35202"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/_12sdp"
                         android:textColor="@color/blackColor" />
 
                 </LinearLayout>
@@ -329,7 +329,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="13dp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:text="Origin" />
 
                     <TextView
@@ -337,7 +337,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{tripdata.origin}"
                         tools:text="Enterprise Lahore"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/_12sdp"
                         android:textColor="@color/blackColor" />
 
                 </LinearLayout>
@@ -366,7 +366,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:text="Destination"
                         />
 
@@ -375,7 +375,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{tripdata.destination}"
                         tools:text="Sabzazar Lahore"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/_12sdp"
                         android:textColor="@color/blackColor" />
 
                 </LinearLayout>
@@ -399,7 +399,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
+                    android:padding="@dimen/_5sdp"
                     android:gravity="center"
                     android:layout_marginBottom="10dp"
                     android:text="Overall Expense"/>
@@ -410,7 +410,7 @@
                     android:text="@{String.valueOf(tripdata.totalExpenses)}"
                     tools:text="RS 2000.00/-"
                     android:textStyle="bold"
-                    android:paddingStart="10dp"
+                    android:padding="@dimen/_10sdp"
                     android:textSize="20sp"
                     android:textColor="@color/blueDark"
                     />
@@ -421,8 +421,8 @@
             <!-- Button Layout-->
             <Button
                 android:id="@+id/btn_edit"
-                android:layout_width="100dp"
-                android:layout_height="35dp"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_25sdp"
                 android:text="Edit"
                 android:textStyle="bold"
                 android:textAllCaps="false"
@@ -439,8 +439,8 @@
 
             <Button
                 android:id="@+id/btn_delete"
-                android:layout_width="100dp"
-                android:layout_height="35dp"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_25sdp"
                 android:text="Delete"
                 android:textStyle="bold"
                 android:textAllCaps="false"
@@ -449,7 +449,7 @@
                 android:layout_marginBottom="15dp"
                 android:drawableStart="@drawable/automate_delete_dialog_icon"
                 android:textColor="@color/whiteColor"
-                android:background="@drawable/app_button_background"
+                android:background="@drawable/button_red_background"
                 app:layout_constraintStart_toEndOf="@id/btn_edit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/total_expenses_layout"
@@ -457,8 +457,8 @@
 
             <Button
               android:id="@+id/btn_close"
-              android:layout_width="100dp"
-              android:layout_height="35dp"
+              android:layout_width="@dimen/_100sdp"
+              android:layout_height="@dimen/_25sdp"
               android:text="Close"
               android:paddingStart="15dp"
               android:textStyle="bold"
@@ -467,7 +467,7 @@
               android:layout_marginBottom="15dp"
               android:drawableStart="@drawable/automate_close_dialog_icon"
               android:textColor="@color/whiteColor"
-              android:background="@drawable/app_button_background"
+              android:background="@drawable/button_grey_background"
               app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintBottom_toBottomOf="parent"
               app:layout_constraintStart_toEndOf="@id/btn_delete"
@@ -478,11 +478,11 @@
                 android:id="@+id/dialog_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="@dimen/_50sdp"
                 android:text="Trip"
                 android:textStyle="bold"
                 android:textColor="@color/blackColor"
-                android:textSize="20sp"
+                android:textSize="@dimen/_16sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -493,9 +493,9 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bottom_sheet_background_trip"
         android:scaleType="center"
-        android:src="@drawable/automate_add_trip_icon"
+        android:elevation="@dimen/_1sdp"
+        android:src="@drawable/automate_trip_dialgoue_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

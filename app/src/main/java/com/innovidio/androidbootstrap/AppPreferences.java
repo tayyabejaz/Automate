@@ -3,6 +3,8 @@ package com.innovidio.androidbootstrap;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -37,6 +39,9 @@ public class AppPreferences {
     private boolean mBulkUpdate = false;
 
     public static int SELECTED_CAR_ID = 1;
+    public static boolean AUTO_DRIVE_DETECT;
+    public static String TRIP_TYPE;
+    public static String SPEED_LIMIT;
 
     /**
      * Enum representing your setting names or key for your setting.

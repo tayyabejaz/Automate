@@ -7,7 +7,11 @@
             type="com.innovidio.androidbootstrap.entity.Trip" />
 
         <variable
-            name="fueldate"
+            name="lastTrip"
+            type="com.innovidio.androidbootstrap.entity.Trip" />
+
+        <variable
+            name="fueldata"
             type="com.innovidio.androidbootstrap.entity.FuelUp" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -91,7 +95,8 @@
                     android:id="@+id/tv_total_fuelups_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="18"
+                    android:text="@{String.valueOf(fueldata.totalFuelUps)}"
+                    tools:text="18"
                     android:textColor="@color/whiteColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -148,7 +153,8 @@
                     android:id="@+id/tv_consumption_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0.0 Litres"
+                    android:text="@{String.valueOf(fueldata.liters)}"
+                    tools:text="0.0 Litres"
                     android:textColor="@color/whiteColor"
                     app:layout_constraintBottom_toTopOf="@id/tv_fuel_average_value"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -171,7 +177,8 @@
                     android:id="@+id/tv_fuel_average_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="12.05/litres"
+                    android:text="@{String.valueOf(fueldata.fuelAverage)}"
+                    tools:text="12.05/litres"
                     android:textColor="@color/whiteColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -240,7 +247,8 @@
                     android:id="@+id/tv_total_trip_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5"
+                    android:text="@{String.valueOf(tripdata.totalTrips)}"
+                    tools:text="5"
                     android:textColor="@color/whiteColor"
                     app:layout_constraintBottom_toTopOf="@id/tv_total_distance_value"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -263,7 +271,8 @@
                     android:id="@+id/tv_total_distance_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="256km"
+                    android:text="@{String.valueOf(tripdata.totalDistance)}"
+                    tools:text="256km"
                     android:textColor="@color/whiteColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -324,7 +333,7 @@
                     android:id="@+id/tv_date_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{tripdata.saveDateInString}"
+                    android:text="@{lastTrip.saveDateInString}"
                     tools:text="15-10-2019"
                     android:textColor="@color/whiteColor"
                     app:layout_constraintBottom_toTopOf="@id/tv_triptype_title"
@@ -348,7 +357,7 @@
                     android:id="@+id/tv_triptype_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{tripdata.tripType}"
+                    android:text="@{lastTrip.tripType}"
                     tools:text="Official"
                     android:textColor="@color/whiteColor"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -373,7 +382,7 @@
                     android:id="@+id/tv_car_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{tripdata.carname}"
+                    android:text="@{lastTrip.carname}"
                     tools:text="Honda Civic"
                     android:textColor="@color/whiteColor"
                     app:layout_constraintBottom_toTopOf="@id/tv_date_title"
