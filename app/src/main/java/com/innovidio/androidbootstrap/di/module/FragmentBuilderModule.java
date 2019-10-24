@@ -1,16 +1,16 @@
 package com.innovidio.androidbootstrap.di.module;
 
-import com.innovidio.androidbootstrap.fragment.AddCarWash;
-import com.innovidio.androidbootstrap.fragment.AddCustomCar;
-import com.innovidio.androidbootstrap.fragment.AddFuelUp;
-import com.innovidio.androidbootstrap.fragment.AddNewCar;
-import com.innovidio.androidbootstrap.fragment.AddServices;
-import com.innovidio.androidbootstrap.fragment.AddTrip;
+import com.innovidio.androidbootstrap.fragment.FragmentAddCarWash;
+import com.innovidio.androidbootstrap.fragment.FragmentAddCustomCar;
+import com.innovidio.androidbootstrap.fragment.FragmentAddFuelUp;
+import com.innovidio.androidbootstrap.fragment.FragmentAddNewCar;
+import com.innovidio.androidbootstrap.fragment.FragmentAddServices;
+import com.innovidio.androidbootstrap.fragment.FragmentAddTrip;
 import com.innovidio.androidbootstrap.fragment.BaseFragment;
-import com.innovidio.androidbootstrap.fragment.DriveFragment;
-import com.innovidio.androidbootstrap.fragment.MainDashboardFragment;
-import com.innovidio.androidbootstrap.fragment.MaintainFragment;
-import com.innovidio.androidbootstrap.fragment.SettingsFragment;
+import com.innovidio.androidbootstrap.fragment.FragmentDrive;
+import com.innovidio.androidbootstrap.fragment.FragmentMainDashboard;
+import com.innovidio.androidbootstrap.fragment.FragmentMaintain;
+import com.innovidio.androidbootstrap.fragment.FragmentSettings;
 
 import dagger.Module;
 import dagger.Provides;
@@ -22,34 +22,34 @@ public abstract class FragmentBuilderModule {
     abstract BaseFragment contributeBaseFragment();
 
     @ContributesAndroidInjector
-    abstract MainDashboardFragment contributeMainDashboardFragment();
+    abstract FragmentMainDashboard contributeMainDashboardFragment();
 
     @ContributesAndroidInjector
-    abstract SettingsFragment contributeSettingsFragment();
+    abstract FragmentSettings contributeSettingsFragment();
 
     @ContributesAndroidInjector
-    abstract MaintainFragment contributeMaintainFragment();
+    abstract FragmentMaintain contributeMaintainFragment();
 
     @ContributesAndroidInjector
-    abstract DriveFragment contributeDriveFragment();
+    abstract FragmentDrive contributeDriveFragment();
 
     @ContributesAndroidInjector
-    abstract AddCarWash contributeAddCarWashFragment();
+    abstract FragmentAddCarWash contributeAddCarWashFragment();
 
     @ContributesAndroidInjector
-    abstract AddFuelUp contributeAddFuelUpFragment();
+    abstract FragmentAddFuelUp contributeAddFuelUpFragment();
 
     @ContributesAndroidInjector
-    abstract AddServices contributeAddServiceFragment();
+    abstract FragmentAddServices contributeAddServiceFragment();
 
     @ContributesAndroidInjector
-    abstract AddTrip contributeAddTripFragment();
+    abstract FragmentAddTrip contributeAddTripFragment();
 
     @ContributesAndroidInjector
-    abstract AddNewCar contributeAddNewCarFragment();
+    abstract FragmentAddNewCar contributeAddNewCarFragment();
 
     @ContributesAndroidInjector
-    abstract AddCustomCar contributeAddCustomCarFragment();
+    abstract FragmentAddCustomCar contributeAddCustomCarFragment();
 
     @Provides
     static String firstInjectionString() {

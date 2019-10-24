@@ -6,27 +6,27 @@
     app:startDestination="@id/navigationStartingFragment">
     <fragment
         android:id="@+id/driveFragment"
-        android:name="com.innovidio.androidbootstrap.fragment.DriveFragment"
+        android:name="com.innovidio.androidbootstrap.fragment.FragmentDrive"
         android:label="fragment_drive"
         tools:layout="@layout/fragment_drive" />
     <fragment
         android:id="@+id/mainDashboardFragment"
-        android:name="com.innovidio.androidbootstrap.fragment.MainDashboardFragment"
+        android:name="com.innovidio.androidbootstrap.fragment.FragmentMainDashboard"
         android:label="fragment_main_dashboard"
         tools:layout="@layout/fragment_main_dashboard" />
     <fragment
         android:id="@+id/maintainFragment"
-        android:name="com.innovidio.androidbootstrap.fragment.MaintainFragment"
+        android:name="com.innovidio.androidbootstrap.fragment.FragmentMaintain"
         android:label="fragment_maintain"
         tools:layout="@layout/fragment_maintain" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.innovidio.androidbootstrap.fragment.SettingsFragment"
+        android:name="com.innovidio.androidbootstrap.fragment.FragmentSettings"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/navigationStartingFragment"
-        android:name="com.innovidio.androidbootstrap.fragment.NavigationStartingFragment"
+        android:name="com.innovidio.androidbootstrap.fragment.FragmentNavigationStarting"
         android:label="fragment_navigation_starting"
         tools:layout="@layout/fragment_navigation_starting">
 

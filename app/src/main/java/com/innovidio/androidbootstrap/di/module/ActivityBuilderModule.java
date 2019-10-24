@@ -3,6 +3,7 @@ package com.innovidio.androidbootstrap.di.module;
 import com.innovidio.androidbootstrap.activity.FilterResultActivity;
 import com.innovidio.androidbootstrap.activity.FormActivity;
 import com.innovidio.androidbootstrap.activity.MainActivity;
+import com.innovidio.androidbootstrap.activity.UserProfileActivity;
 import com.innovidio.androidbootstrap.dashboard.SpeedDashboardActivity;
 
 import dagger.Module;
@@ -21,7 +22,11 @@ public abstract class ActivityBuilderModule {
     abstract FilterResultActivity contributeFilteredResultActivity();
 
     @ContributesAndroidInjector
+    abstract UserProfileActivity contributeUserProfileActivity();
+
+    @ContributesAndroidInjector
     abstract SpeedDashboardActivity contributeSpeedDashboardActivity();
+
 
 
 }

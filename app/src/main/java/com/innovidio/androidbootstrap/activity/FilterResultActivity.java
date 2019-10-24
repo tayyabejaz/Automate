@@ -97,6 +97,7 @@ public class FilterResultActivity extends DaggerAppCompatActivity implements Tim
                 timeLineItemList.addAll(timeLineItems);
                 timelineAdapter.updateData(timeLineItemList);
                 binding.rvFilterResults.setAdapter(timelineAdapter);
+
             }
         });
     }

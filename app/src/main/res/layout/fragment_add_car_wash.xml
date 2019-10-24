@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/mainDashboardGray"
-        tools:context=".fragment.AddCarWash">
+        tools:context=".fragment.FragmentAddCarWash">
 
         <EditText
             android:id="@+id/et_additional_note"

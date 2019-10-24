@@ -52,7 +52,7 @@ import static com.innovidio.androidbootstrap.Constants.TRIP_FORM;
  * A simple {@link Fragment} subclass.
  */
 
-public class MainDashboardFragment extends DaggerFragment implements TimelineItemClickListener, View.OnClickListener {
+public class FragmentMainDashboard extends DaggerFragment implements TimelineItemClickListener, View.OnClickListener {
 
     private TimelineAdapter timelineAdapter;
     private FragmentMainDashboardBinding binding;
@@ -68,7 +68,7 @@ public class MainDashboardFragment extends DaggerFragment implements TimelineIte
 
     private List<TimeLineItem> timeLineItemList = new ArrayList<>();
 
-    public MainDashboardFragment() {
+    public FragmentMainDashboard() {
         // Required empty public constructor
     }
 

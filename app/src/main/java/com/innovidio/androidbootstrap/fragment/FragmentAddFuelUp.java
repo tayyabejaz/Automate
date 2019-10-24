@@ -23,12 +23,12 @@ import java.util.Calendar;
 
 import dagger.android.support.DaggerFragment;
 
-public class AddFuelUp extends DaggerFragment {
+public class FragmentAddFuelUp extends DaggerFragment {
 
     private FragmentAddFuelUpBinding fuelUpBinding;
     private final Calendar calenderInstance = Calendar.getInstance();
 
-    public AddFuelUp() {
+    public FragmentAddFuelUp() {
         // Required empty public constructor
     }
 

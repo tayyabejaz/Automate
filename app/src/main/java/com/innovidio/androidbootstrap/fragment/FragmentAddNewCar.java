@@ -27,7 +27,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
-public class AddNewCar extends DaggerFragment implements ActivityBtnClickListener {
+public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClickListener {
 
 
     private FragmentClickListener fragmentClickListener;
@@ -42,7 +42,7 @@ public class AddNewCar extends DaggerFragment implements ActivityBtnClickListene
     private GeneralSpinnerAdapter adapterSubmodel;
     private String year, make, model, submodel;
 
-    public AddNewCar(FragmentClickListener listener) {
+    public FragmentAddNewCar(FragmentClickListener listener) {
         // Required empty public constructor
         this.fragmentClickListener = listener;
     }

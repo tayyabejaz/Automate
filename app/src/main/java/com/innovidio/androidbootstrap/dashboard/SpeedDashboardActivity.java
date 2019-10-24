@@ -264,6 +264,7 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
 
         String userid;
         userid = SharedPreferenceHelper.getInstance().getStringValue(Constants.userid, "");
+
        // carname = SharedPreferenceHelper.getInstance().getStringValue(Constants.carnameselectedfortrip, "");
         carname = "Suzuki WagonR 2019";
        // Toast.makeText(this, ""+carname, Toast.LENGTH_SHORT).show();

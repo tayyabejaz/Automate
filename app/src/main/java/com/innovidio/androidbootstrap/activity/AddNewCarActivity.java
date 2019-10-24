@@ -7,8 +7,8 @@ import android.os.Bundle;
 
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.databinding.ActivityAddNewCarBinding;
-import com.innovidio.androidbootstrap.fragment.AddCustomCar;
-import com.innovidio.androidbootstrap.fragment.AddNewCar;
+import com.innovidio.androidbootstrap.fragment.FragmentAddCustomCar;
+import com.innovidio.androidbootstrap.fragment.FragmentAddNewCar;
 import com.innovidio.androidbootstrap.interfaces.ActivityBtnClickListener;
 import com.innovidio.androidbootstrap.interfaces.FragmentClickListener;
 
@@ -21,7 +21,7 @@ public class AddNewCarActivity extends AppCompatActivity implements FragmentClic
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_add_new_car);
 
-        AddNewCar addNewCar = new AddNewCar(this);
+        FragmentAddNewCar addNewCar = new FragmentAddNewCar(this);
         onActivityBtnClickListener=(ActivityBtnClickListener) addNewCar;
         getSupportFragmentManager().beginTransaction().add(R.id.fl_newcar_fragment,addNewCar).commit();
     }
@@ -41,15 +41,15 @@ public class AddNewCarActivity extends AppCompatActivity implements FragmentClic
 
     @Override
     public void onCustomFragmentClick() {
-        AddCustomCar addCustomCar = new AddCustomCar(this);
-        onActivityBtnClickListener=(ActivityBtnClickListener) addCustomCar;
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_newcar_fragment,addCustomCar).commit();
+        FragmentAddCustomCar fragmentAddCustomCar = new FragmentAddCustomCar(this);
+        onActivityBtnClickListener=(ActivityBtnClickListener) fragmentAddCustomCar;
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_newcar_fragment, fragmentAddCustomCar).commit();
     }
 
     @Override
     public void onGoDefaultClick() {
-        AddNewCar addNewCar = new AddNewCar(this);
+        FragmentAddNewCar addNewCar = new FragmentAddNewCar(this);
         onActivityBtnClickListener=(ActivityBtnClickListener) addNewCar;
-        getSupportFragmentManager().beginTransaction().replace(R.id.fl_newcar_fragment,new AddNewCar(this)).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_newcar_fragment,new FragmentAddNewCar(this)).commit();
     }
 }

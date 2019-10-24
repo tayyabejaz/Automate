@@ -12,10 +12,10 @@ import android.view.ViewGroup;
 
 import com.innovidio.androidbootstrap.R;
 
-public class MaintainFragment extends Fragment  {
+public class FragmentMaintain extends Fragment  {
 
 
-    public MaintainFragment() {
+    public FragmentMaintain() {
         // Required empty public constructor
     }
 

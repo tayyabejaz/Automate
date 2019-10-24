@@ -106,7 +106,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         initializeListeners();
         initializeAdapters();
         initList();
-        addDummyValues();
+//        addDummyValues();
         carApiQueries();
         fuelUpData();
         getCarsData();
@@ -114,7 +114,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     private void initializeAdapters() {
         initList();
-        customMainSpinnerAdapter = new CustomMainSpinnerAdapter(this,this::onSpinnerItemClick, carArrayList);
+        customMainSpinnerAdapter = new CustomMainSpinnerAdapter(this,this::onSpinnerItemClick,null, carArrayList,0);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
 
@@ -354,12 +354,9 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     private void initList() {
         AppPreferences.SELECTED_CAR_ID = appPreferences.getInt(AppPreferences.Key.SAVED_CAR_ID);
-        carViewModel.getAllCars().observe(this, new Observer<List<Car>>() {
-            @Override
-            public void onChanged(List<Car> cars) {
-                carArrayList = cars;
-                customMainSpinnerAdapter.updateAdapterList(carArrayList);
-            }
+        carViewModel.getAllCars().observe(this, cars -> {
+            carArrayList = cars;
+            customMainSpinnerAdapter.updateAdapterList(carArrayList);
         });
 
         carViewModel.getCarById(AppPreferences.SELECTED_CAR_ID).observe(this, new Observer<Car>() {

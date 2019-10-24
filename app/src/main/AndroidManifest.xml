@@ -26,8 +26,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".activity.FilterResultActivity"></activity>
+        <activity android:name=".activity.ActivityPrivacyPolicy"></activity>
+        <activity android:name=".activity.UserPreferencesActivity" />
+        <activity
+            android:name=".activity.UserProfileActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activity.FilterResultActivity" />
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

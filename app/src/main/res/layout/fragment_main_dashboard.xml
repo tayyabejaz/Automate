@@ -45,6 +45,6 @@
 
         <variable
             name="firstFragmentData"
-            type="com.innovidio.androidbootstrap.fragment.MainDashboardFragment" />
+            type="com.innovidio.androidbootstrap.fragment.FragmentMainDashboard" />
     </data>
 </layout>

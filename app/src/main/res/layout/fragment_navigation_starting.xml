@@ -4,7 +4,7 @@
     <data>
         <variable
             name="MainSpinnerData"
-            type="com.innovidio.androidbootstrap.fragment.NavigationStartingFragment" />
+            type="com.innovidio.androidbootstrap.fragment.FragmentNavigationStarting" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

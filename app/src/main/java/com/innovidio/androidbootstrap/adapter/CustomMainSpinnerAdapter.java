@@ -2,6 +2,7 @@ package com.innovidio.androidbootstrap.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.databinding.ItemCustomSpinnerBinding;
 import com.innovidio.androidbootstrap.entity.Car;
+import com.innovidio.androidbootstrap.interfaces.OnCarEditDeleteListener;
 import com.innovidio.androidbootstrap.interfaces.SpinnerItemClickListener;
 
 import java.util.ArrayList;
@@ -21,11 +23,15 @@ public class CustomMainSpinnerAdapter extends RecyclerView.Adapter<CustomMainSpi
     private Context context;
     private List<Car> carList = new ArrayList<>();
     SpinnerItemClickListener spinnerItemClickListener;
+    private OnCarEditDeleteListener onCarEditDeleteListener;
+    private int adaptertype;
 
-    public CustomMainSpinnerAdapter(Context context, SpinnerItemClickListener spinnerItemClickListener, List<Car> cars) {
+    public CustomMainSpinnerAdapter(Context context, SpinnerItemClickListener spinnerItemClickListener, OnCarEditDeleteListener listener, List<Car> cars, int adapter_type) {
         this.context = context;
         this.carList = cars;
         this.spinnerItemClickListener = spinnerItemClickListener;
+        this.onCarEditDeleteListener = listener;
+        this.adaptertype = adapter_type;
     }
 
     @NonNull
@@ -42,9 +48,35 @@ public class CustomMainSpinnerAdapter extends RecyclerView.Adapter<CustomMainSpi
         Car car = carList.get(position);
         holder.bind(car);
 
-        holder.itemView.setOnClickListener(view->{
-            spinnerItemClickListener.onSpinnerItemClick(car);
-        });
+        if (adaptertype == 1) {
+            holder.itemView.findViewById(R.id.item_edit_icon).setVisibility(View.VISIBLE);
+            holder.itemView.findViewById(R.id.item_delete_icon).setVisibility(View.VISIBLE);
+        } else {
+            holder.itemView.findViewById(R.id.item_edit_icon).setVisibility(View.GONE);
+            holder.itemView.findViewById(R.id.item_delete_icon).setVisibility(View.GONE);
+        }
+
+
+        if (spinnerItemClickListener != null) {
+            holder.itemView.setOnClickListener(view ->
+            {
+                spinnerItemClickListener.onSpinnerItemClick(car);
+            });
+        }
+
+        if (onCarEditDeleteListener != null) {
+            holder.itemView.findViewById(R.id.item_edit_icon).setOnClickListener(view -> {
+                onCarEditDeleteListener.onEditClicked();
+            });
+
+            holder.itemView.findViewById(R.id.item_delete_icon).setOnClickListener(view -> {
+                onCarEditDeleteListener.onDeleteClicked(car);
+            });
+
+            holder.itemView.setOnClickListener(view -> {
+                onCarEditDeleteListener.onDetailClicked(car);
+            });
+        }
     }
 
     @Override
@@ -66,10 +98,11 @@ public class CustomMainSpinnerAdapter extends RecyclerView.Adapter<CustomMainSpi
             binding.executePendingBindings();
 
         }
+
     }
 
-    public void updateAdapterList(List<Car> cars){
-        carList =  cars;
+    public void updateAdapterList(List<Car> cars) {
+        carList = cars;
         notifyDataSetChanged();
     }
 }

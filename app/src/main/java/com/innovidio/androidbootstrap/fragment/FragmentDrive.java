@@ -21,12 +21,13 @@ import com.innovidio.androidbootstrap.databinding.FragmentDriveBinding;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DriveFragment extends Fragment {
+public class FragmentDrive extends Fragment  {
 
     FragmentDriveBinding binding;
 
 
-    public DriveFragment() {
+
+    public FragmentDrive() {
         // Required empty public constructor
     }
 
