@@ -83,4 +83,7 @@ dependencies {
 
     implementation 'com.github.anastr:speedviewlib:1.4.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation 'com.github.blocoio:faker:1.2.8'
+
 }

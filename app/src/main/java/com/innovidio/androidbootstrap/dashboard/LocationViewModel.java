@@ -49,6 +49,7 @@ public class LocationViewModel extends AndroidViewModel implements LocationListe
     private LocationManager mLocationManager;
 
     private final MutableLiveData<DataManager> locationMutableLiveData = new MutableLiveData<DataManager>();
+    private final MutableLiveData<String> speedexceedMutableLiveData = new MutableLiveData<String>();
 
 
     //  private boolean isTimerRunning = false;
@@ -57,7 +58,6 @@ public class LocationViewModel extends AndroidViewModel implements LocationListe
         return speedexceedMutableLiveData;
     }
 
-    private final MutableLiveData<String> speedexceedMutableLiveData = new MutableLiveData<String>();
 
 
     @SuppressLint("MissingPermission")
@@ -155,7 +155,6 @@ public class LocationViewModel extends AndroidViewModel implements LocationListe
             }*/
 
             if (SharedPreferenceHelper.getInstance().getStringValue(speedunits, KM_HR).equals(KM_HR)) {
-                // if (SharedPreferenceHelper.getInstance().getStringValue(speedunits, KM_HR).equals(KM_HR)) {
                 currentSpeed = String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6) /*+ "km/h"*/;
                 data.setCurrentSpeed(currentSpeed);
                 data.setTotalAvgSpeed(currentSpeed);
@@ -181,7 +180,7 @@ public class LocationViewModel extends AndroidViewModel implements LocationListe
                 } else {
                     speedLimit *= 0.5399568;
                 }
-            } else if (SharedPreferenceHelper.getInstance().getStringValue(METER_UNIT, KM_HR).equals(M_HR)) {
+            } else if(SharedPreferenceHelper.getInstance().getStringValue(METER_UNIT, KM_HR).equals(M_HR)) {
                 if (SharedPreferenceHelper.getInstance().getStringValue(METER_UNIT, KM_HR).equals(KM_HR)) {
                     speedLimit /= 0.62137119;
                 } else if (SharedPreferenceHelper.getInstance().getStringValue(METER_UNIT, KM_HR).equals(M_HR)) {
@@ -236,7 +235,6 @@ public class LocationViewModel extends AndroidViewModel implements LocationListe
 
     @Override
     public void onGpsStatusChanged(int event) {
-
         switch (event) {
             case GpsStatus.GPS_EVENT_SATELLITE_STATUS:
                 break;

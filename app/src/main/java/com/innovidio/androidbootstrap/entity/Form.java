@@ -18,7 +18,7 @@ public class Form {
     @PrimaryKey(autoGenerate = true)
     private int Id;
     private String title;
-    private String carId;
+    private int carId;
     private String location;
     @ColumnInfo(name = "startDate")
     @TypeConverters(DateConverter.class)
@@ -52,11 +52,11 @@ public class Form {
         this.title = title;
     }
 
-    public String getCarId() {
+    public int getCarId() {
         return carId;
     }
 
-    public void setCarId(String carId) {
+    public void setCarId(int carId) {
         this.carId = carId;
     }
 

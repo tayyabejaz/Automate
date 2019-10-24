@@ -8,7 +8,9 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 public class UtilClass {
 
@@ -28,12 +30,27 @@ public class UtilClass {
         return field.getText().length() > 0;
     }
 
-    public static void showTimePicker(Context context, Calendar calendarInstance, TimePickerDialog.OnTimeSetListener time){
+    public static void showTimePicker(Context context, Calendar calendarInstance, TimePickerDialog.OnTimeSetListener time) {
         new TimePickerDialog(context, time, calendarInstance.get(Calendar.HOUR_OF_DAY), calendarInstance.get(Calendar.MINUTE), false).show();
     }
 
-    public static void showDatePicker(Context context,Calendar calenderInstance,DatePickerDialog.OnDateSetListener date){
+    public static void showDatePicker(Context context, Calendar calenderInstance, DatePickerDialog.OnDateSetListener date) {
         new DatePickerDialog(context, date, calenderInstance.get(Calendar.YEAR), calenderInstance.get(Calendar.MONTH), calenderInstance.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    public static int getRandomNo(int min, int max) {
+//        final int min = 20;
+//        final int max = 80;
+        final int random = new Random().nextInt((max - min) + 1) + min;
+
+        return random;
+    }
+
+    public static Date addDays(Date date, int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days); //minus number would decrement the days
+        return cal.getTime();
     }
 
 }

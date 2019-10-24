@@ -1,8 +1,13 @@
 package com.innovidio.androidbootstrap.activity;
 
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,18 +15,25 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.location.DetectedActivity;
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.IconProvider;
+import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.adapter.CustomMainSpinnerAdapter;
 import com.innovidio.androidbootstrap.dashboard.SetSpeedLimit;
 import com.innovidio.androidbootstrap.databinding.ActivityMainBinding;
@@ -29,7 +41,9 @@ import com.innovidio.androidbootstrap.databinding.DialogFilterListBinding;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
 import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
+import com.innovidio.androidbootstrap.driveDetect.BackgroundDetectedActivitiesService;
 import com.innovidio.androidbootstrap.entity.Car;
+import com.innovidio.androidbootstrap.entity.Form;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
@@ -52,6 +66,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
+import io.bloco.faker.Faker;
 
 import static com.innovidio.androidbootstrap.Constants.ACTIVITY;
 import static com.innovidio.androidbootstrap.Constants.CAR_WASH_FORM;
@@ -62,6 +77,9 @@ import static com.innovidio.androidbootstrap.Constants.TRIP_FORM;
 
 public class MainActivity extends DaggerAppCompatActivity implements View.OnClickListener, SpinnerItemClickListener {
     private static final String TAG = "MainActivityLog";
+    private static final int MY_PERMISSION_LOCATION = 1000;
+
+    int odoMeter = 10000;
 
     @Inject
     FuelDao fuelDao;
@@ -92,6 +110,8 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     private NavController navigationController;
     private boolean isUp, isDown = false;
 
+    BroadcastReceiver broadcastReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,10 +126,21 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         initializeListeners();
         initializeAdapters();
         initList();
-//        addDummyValues();
         carApiQueries();
         fuelUpData();
         getCarsData();
+        checkAndRequestWeatherPermissions();
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(Constants.BROADCAST_DETECTED_ACTIVITY)) {
+                    int type = intent.getIntExtra("type", -1);
+                    int confidence = intent.getIntExtra("confidence", 0);
+                    handleUserActivity(type, confidence);
+                }
+            }
+        };
     }
 
     private void initializeAdapters() {
@@ -146,69 +177,118 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding.toolbarFilterIcon.setOnClickListener(this);
     }
 
-    private void addDummyValues() {
-        Car car = new Car();
-        car.setId(1);
-        car.setModelName("Carrola");
-        car.setManufacturer("Toyota");
-        car.setRegistrationNo("LXA 5039");
-        car.setMakeYear(2019);
-        car.setSubModel("1.3");
-        car.setEngineFuel("Petrol");
-        car.setFuelCapacityInLiters(20);
-        car.setEnginecc(1000);
-        car.setCurrentOdomaterReading(23403);
-        car.setFuelEconomyCityPer100km(13);
-        car.setFuelEconomyMixedPer100km(15);
-        car.setModelDrive("Front Wheel");
-        car.setTransmissionType("Manual");
-        carViewModel.addCar(car);
+    private void runDummyData(){
+        for (int i=0; i<10;i++)
+            addDummyValues(i);
+    }
+
+    private void addDummyValues(int i) {
+        Faker faker = new Faker();
+//        Car car = new Car();
+//        car.setId(1);
+//        car.setModelName("Carrola");
+//        car.setManufacturer("Toyota");
+//        car.setRegistrationNo("LXA 5039");
+//        car.setMakeYear(2019);
+//        car.setSubModel("1.3");
+//        car.setEngineFuel("Petrol");
+//        car.setFuelCapacityInLiters(20);
+//        car.setEnginecc(1000);
+//        car.setCurrentOdomaterReading(23403);
+//        car.setFuelEconomyCityPer100km(13);
+//        car.setFuelEconomyMixedPer100km(15);
+//        car.setModelDrive("Front Wheel");
+//        car.setTransmissionType("Manual");
+//        carViewModel.addCar(car);
 
 
         FuelUp fuelUp = new FuelUp();
         //   fuelUp.setId(1);
-        fuelUp.setCarname("Honda");
+        fuelUp.setCarname("Honda Civic 2018");
         fuelUp.setCarId(1);
-        fuelUp.setLiters(10);
-        fuelUp.setSaveDate(new Date());
-        fuelUp.setLocation("Lahore");
-        fuelUp.setOdometerreading(252000);
-        fuelUp.setPerunitfuelprice(113);
-        fuelUp.setTotalprice(2000);
-        fuelUp.setTripId(12);
-        fuelUp.setFuelType("Petrol");
 
+        fuelUp.setSaveDate(faker.date.backward(UtilClass.getRandomNo(1, 50)));
+        fuelUp.setLocation(faker.address.streetAddress());
+        fuelUp.setOdometerreading(UtilClass.getRandomNo(10000, 50000));
+        int unitPrice =  UtilClass.getRandomNo(100, 120);
+        int totalLitters = UtilClass.getRandomNo(1, 10);
+        fuelUp.setPerunitfuelprice(unitPrice);
+        fuelUp.setLiters(totalLitters);
+        fuelUp.setTotalprice(unitPrice * totalLitters);
+        fuelUp.setFuelType("Petrol");
         //fuelDao.insert(fuelUp);
         fuelUpViewModel.addFuelUp(fuelUp);
 
+
+        odoMeter +=  UtilClass.getRandomNo(1000, 2000);
+        Date saveDate = faker.date.backward(UtilClass.getRandomNo(1, 50));
+
+        Date nextDate = UtilClass.addDays(saveDate, UtilClass.getRandomNo(20, 100));
+        String[] servicecategories = getResources().getStringArray(R.array.service_list);
+        String serviceName = servicecategories[UtilClass.getRandomNo(0, 32)];
+        int serviceCost =  UtilClass.getRandomNo(1000, 10000);
+
+        Date DateForForm =  UtilClass.addDays(saveDate, UtilClass.getRandomNo(20, 100));
+        Form  form = new Form();
+        form.setId(i);
+        form.setCarId(1);
+        form.setLocation(faker.address.streetAddress());
+        form.setStartDate(DateForForm);
+        Date dateForm = UtilClass.addDays(DateForForm, UtilClass.getRandomNo(1, 5));
+        form.setEndDate(dateForm);
+        form.setSaveDate(dateForm);
+        form.setTitle(serviceName);
+
+
         Maintenance maintenance = new Maintenance();
         // maintenance.setId(122);
-        maintenance.setSaveDate(new Date());
+        maintenance.setSaveDate(saveDate);
         maintenance.setCarId(1);
-        maintenance.setMaintenanceCost(1200);
-        maintenance.setMaintenanceLocation("Lahore");
-        maintenance.setMaintenanceOdometerReading("2520");
+        maintenance.setMaintenanceName(serviceName);
+        maintenance.setMaintenanceCost(UtilClass.getRandomNo(1000, 10000));
+        maintenance.setMaintenanceLocation(faker.address.streetAddress());
+        maintenance.setMaintenanceOdometerReading(odoMeter);
         maintenance.setAlarmON(true);
-        maintenance.setFormId(10);
-        maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
-        maintenance.setNextMaintenanceDate(new Date());
-        maintenance.setMaintenanceName("Service2");
+        maintenance.setFormId(i);
+        if (UtilClass.getRandomNo(0, 10)%2==0){
+            maintenance.setMaintenanceType(TimeLineItem.Type.CAR_WASH);
+            maintenance.setMaintenanceName("Clean/Wash");
+        }else{
+            maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
+            maintenance.setMaintenanceName(serviceName);
+        }
+
+        maintenance.setNextMaintenanceDate(nextDate);
+
 
         //maintenanceDao.insert(maintenance);
         maintenanceViewModel.addMaintenanceService(maintenance);
 
         Trip trip = new Trip();
         // trip.setId(22);
-        trip.setAvgspeed(150);
+        trip.setAvgspeed(UtilClass.getRandomNo(50, 80));
         trip.setCarId(1);
-        trip.setCarname("Honda2");
-        trip.setDestination("Islamabad");
-        trip.setDistanceCovered(100);
-        trip.setFueleconomypertrip(10);
-        trip.setMaxspeed(200);
-        trip.setSaveDate(new Date());
-        trip.setTripTitle("lhr_to_islamabad");
-        trip.setTripType("Personal");
+        trip.setOrigin(faker.address.city());
+        trip.setCarname("Honda Civic 2018");
+        trip.setDestination(faker.address.city());
+        trip.setIntialOdometer(odoMeter+UtilClass.getRandomNo(1000, 2000));
+        odoMeter+=odoMeter+UtilClass.getRandomNo(1000, 2000);
+        trip.setFinalOdometer(odoMeter);
+        trip.setDistanceCovered(UtilClass.getRandomNo(100, 2000));
+        trip.setFueleconomypertrip(UtilClass.getRandomNo(10, 20));
+        trip.setMaxspeed(UtilClass.getRandomNo(50, 100));
+        trip.setSaveDate(faker.date.backward(UtilClass.getRandomNo(1, 50)));
+        trip.setTripTitle("Trip with " + faker.name.title());
+        if (UtilClass.getRandomNo(0, 10)%2==0) {
+            trip.setTripType("Personal");
+        }else{
+            trip.setTripType("Business");
+        }
+        int noOfLitters =  UtilClass.getRandomNo(10, 30);
+        int unitPriceinLit = UtilClass.getRandomNo(100, 120);
+        trip.setNoOfLitres(noOfLitters);
+        trip.setTotalExpenses(unitPriceinLit * noOfLitters);
+        trip.setFuelCostPerUnit(unitPriceinLit);
 
         // tripDao.insert(trip);
         tripViewModel.addTrip(trip);
@@ -525,4 +605,126 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             startActivity(filterIntent);
         });
     }
+
+    public void toolbarAlaramsClick(View view) {
+        runDummyData();
+        Toast.makeText(this, "Dummy data added", Toast.LENGTH_SHORT).show();
+    }
+
+
+
+    // fencing api code
+    // todo fencing api
+
+    private void checkAndRequestWeatherPermissions() {
+        if ((ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) &&
+                (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) &&
+                (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED)
+        ) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Log.i(TAG, "Permission previously denied and app shouldn't ask again.  Skipping" +
+                        " weather snapshot.");
+            } else {
+                ActivityCompat.requestPermissions(
+                        MainActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSION_LOCATION
+                );
+            }
+        }
+    }
+
+
+    private void handleUserActivity(int type, int confidence) {
+        String label = getString(R.string.activity_unknown);
+        int icon = R.drawable.ic_still;
+
+        switch (type) {
+            case DetectedActivity.IN_VEHICLE: {
+                label = getString(R.string.activity_in_vehicle);
+                icon = R.drawable.ic_driving;
+                break;
+            }
+            case DetectedActivity.ON_BICYCLE: {
+                label = getString(R.string.activity_on_bicycle);
+                icon = R.drawable.ic_on_bicycle;
+                break;
+            }
+            case DetectedActivity.ON_FOOT: {
+                label = getString(R.string.activity_on_foot);
+                icon = R.drawable.ic_walking;
+                break;
+            }
+            case DetectedActivity.RUNNING: {
+                label = getString(R.string.activity_running);
+                icon = R.drawable.ic_running;
+                break;
+            }
+            case DetectedActivity.STILL: {
+                label = getString(R.string.activity_still);
+                break;
+            }
+            case DetectedActivity.TILTING: {
+                label = getString(R.string.activity_tilting);
+                icon = R.drawable.ic_tilting;
+                break;
+            }
+            case DetectedActivity.WALKING: {
+                label = getString(R.string.activity_walking);
+                icon = R.drawable.ic_walking;
+                startDrive();
+                break;
+            }
+            case DetectedActivity.UNKNOWN: {
+                label = getString(R.string.activity_unknown);
+                break;
+            }
+        }
+
+        Log.e(TAG, "User activity: " + label + ", Confidence: " + confidence);
+
+        if (confidence > Constants.CONFIDENCE) {
+//            txtActivity.setText(label);
+//            txtConfidence.setText("Confidence: " + confidence);
+//            imgActivity.setImageResource(icon);
+        }
+    }
+
+
+    private void startDrive(){
+        Intent i = new Intent(this, SetSpeedLimit.class);
+        startActivity(i);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startTracking();
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
+                new IntentFilter(Constants.BROADCAST_DETECTED_ACTIVITY));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+    }
+
+    private void startTracking() {
+        Intent intent = new Intent(MainActivity.this, BackgroundDetectedActivitiesService.class);
+        startService(intent);
+    }
+
+    private void stopTracking() {
+        Intent intent = new Intent(MainActivity.this, BackgroundDetectedActivitiesService.class);
+        stopService(intent);
+    }
+
 }

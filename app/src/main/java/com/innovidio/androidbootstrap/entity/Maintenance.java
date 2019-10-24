@@ -40,14 +40,14 @@ public class Maintenance implements TimeLineItem {
     @TypeConverters(DateConverter.class)
     private Date saveDate;
     private String maintenanceLocation;
-    private String maintenanceOdometerReading;
+    private int maintenanceOdometerReading;
 
     public Maintenance(){
 
     }
 
     @Ignore
-    public Maintenance(int formId, int carId, String maintenancename, int maintenanceprice, Date maintenancelifetime, boolean alramOn, TimeLineItem.Type maintenancetype, Date saveDate, String location, String odometerReading) {
+    public Maintenance(int formId, int carId, String maintenancename, int maintenanceprice, Date maintenancelifetime, boolean alramOn, TimeLineItem.Type maintenancetype, Date saveDate, String location, int odometerReading) {
         this.maintenanceName = maintenancename;
         this.formId = formId;
         this.carId = carId;
@@ -76,11 +76,11 @@ public class Maintenance implements TimeLineItem {
         this.maintenanceLocation = maintenanceLocation;
     }
 
-    public String getMaintenanceOdometerReading() {
+    public int getMaintenanceOdometerReading() {
         return maintenanceOdometerReading;
     }
 
-    public void setMaintenanceOdometerReading(String maintenanceOdometerReading) {
+    public void setMaintenanceOdometerReading(int maintenanceOdometerReading) {
         this.maintenanceOdometerReading = maintenanceOdometerReading;
     }
 

@@ -82,6 +82,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:onClick="toolbarAlaramsClick"
                 android:id="@+id/toolbar_notification_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"

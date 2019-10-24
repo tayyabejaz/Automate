@@ -105,7 +105,7 @@ public class TimeLineViewModel extends ViewModel {
         timeLineItems.addAll(trips);
         timeLineItems.addAll(maintenances);
         timeLineItems.addAll(fuelUps);
-        timeLineItems = Sorting.sortList(timeLineItems);
+        timeLineItems = Sorting.sortList(timeLineItems, Sorting.Type.DSC);
         List<TimeLineItem> finalTimeLineItems = timeLineItems;
         timeLineLiveDataMerger.addSource(maintenanceLiveData, value -> timeLineLiveDataMerger.setValue(finalTimeLineItems));
     }
@@ -132,7 +132,7 @@ public class TimeLineViewModel extends ViewModel {
             timeLineItems.addAll(tripsList);
         }
 
-        timeLineItems = Sorting.sortList(timeLineItems);
+        timeLineItems = Sorting.sortList(timeLineItems, Sorting.Type.DSC);
         List<TimeLineItem> finalTimeLineItems = timeLineItems;
         timeLineFilteredLiveDataMerger.addSource(maintenanceLiveData, value -> timeLineFilteredLiveDataMerger.setValue(finalTimeLineItems));
     }
