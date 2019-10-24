@@ -71,7 +71,7 @@ public class FragmentMaintain extends DaggerFragment {
     }
 
     private void timeLineFilteredData() {
-        timeLineViewModel.getFilteredTimelineMergerData(1, false, false, true, false).observe(this, timeLineItems -> {
+        timeLineViewModel.getFilteredTimelineMergerData(1, false, false, true, true).observe(this, timeLineItems -> {
             if (timeLineItems != null && timeLineItems.size() > 0) {
                 timeLineItemList.addAll(timeLineItems);
                 timelineAdapter.updateData(timeLineItemList);

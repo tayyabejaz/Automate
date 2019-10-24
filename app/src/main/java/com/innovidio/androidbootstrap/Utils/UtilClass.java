@@ -1,10 +1,23 @@
 package com.innovidio.androidbootstrap.Utils;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.databinding.DataBindingUtil;
+
+import com.innovidio.androidbootstrap.AppPreferences;
+import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.activity.MainActivity;
+import com.innovidio.androidbootstrap.dashboard.SpeedDashboardActivity;
+import com.innovidio.androidbootstrap.databinding.DialogDriveSelectionBinding;
+import com.innovidio.androidbootstrap.driveDetect.BackgroundDetectedActivitiesService;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -53,4 +66,119 @@ public class UtilClass {
         return cal.getTime();
     }
 
+    public static void showStartTripDialog(Context context) {
+        DialogDriveSelectionBinding dialogBinding;
+        dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_drive_selection, null, false);
+        View dialogView = dialogBinding.getRoot();
+
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        final AlertDialog exitDialog = dialogBuilder.create();
+        exitDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        exitDialog.setView(dialogView);
+        exitDialog.show();
+
+        dialogBinding.numberpickerSpeedLimit.setMinValue(60);
+        dialogBinding.numberpickerSpeedLimit.setMaxValue(240);
+        dialogBinding.numberpickerSpeedLimit.computeScroll();
+        dialogBinding.numberpickerSpeedLimit.setFormatter(i -> String.format("%03d kmph", i));
+
+        dialogBinding.numberpickerSpeedLimit.setOnValueChangedListener((numberPicker, i, i1) -> {
+            AppPreferences.SPEED_LIMIT = "" + i1;
+        });
+
+        dialogBinding.numberpickerSpeedLimit.setOnValueChangedListener((numberPicker, i, i1) -> {
+            dialogBinding.numberpickerSpeedLimit.setValue((i1 < i) ? i - 10 : i + 10);
+        });
+
+        dialogBinding.btnCommercial.setOnClickListener(view -> {
+            AppPreferences.TRIP_TYPE = "Commercial";
+            dialogBinding.btnCommercial.setSelected(true);
+            dialogBinding.btnCommercial.setTextColor(context.getResources().getColor(R.color.whiteColor));
+
+            dialogBinding.btnPersonal.setSelected(false);
+            dialogBinding.btnPersonal.setTextColor(context.getResources().getColor(R.color.blackColor));
+
+            dialogBinding.btnOfficial.setSelected(false);
+            dialogBinding.btnOfficial.setTextColor(context.getResources().getColor(R.color.blackColor));
+
+            dialogBinding.btnCustom.setSelected(false);
+            dialogBinding.btnCustom.setTextColor(context.getResources().getColor(R.color.blackColor));
+        });
+
+        dialogBinding.btnPersonal.setOnClickListener(view -> {
+            AppPreferences.TRIP_TYPE = "Personal";
+            dialogBinding.btnCommercial.setSelected(false);
+            dialogBinding.btnCommercial.setTextColor(context.getResources().getColor(R.color.blackColor));
+
+            dialogBinding.btnPersonal.setSelected(true);
+            dialogBinding.btnPersonal.setTextColor(context.getResources().getColor(R.color.whiteColor));
+
+            dialogBinding.btnOfficial.setSelected(false);
+            dialogBinding.btnOfficial.setTextColor(context.getResources().getColor(R.color.blackColor));
+
+            dialogBinding.btnCustom.setSelected(false);
+            dialogBinding.btnCustom.setTextColor(context.getResources().getColor(R.color.blackColor));
+        });
+
+        dialogBinding.btnOfficial.setOnClickListener(view -> {
+            AppPreferences.TRIP_TYPE = "Official";
+            dialogBinding.btnCommercial.setSelected(false);
+            dialogBinding.btnCommercial.setTextColor(context.getResources().getColor(R.color.blackColor));
+
+            dialogBinding.btnPersonal.setSelected(false);
+            dialogBinding.btnPersonal.setTextColor(context.getResources().getColor(R.color.blackColor));
+
+            dialogBinding.btnOfficial.setSelected(true);
+            dialogBinding.btnOfficial.setTextColor(context.getResources().getColor(R.color.whiteColor));
+
+            dialogBinding.btnCustom.setSelected(false);
+            dialogBinding.btnCustom.setTextColor(context.getResources().getColor(R.color.blackColor));
+        });
+
+        dialogBinding.btnCustom.setOnClickListener(view -> {
+            AppPreferences.TRIP_TYPE = "Custom";
+            dialogBinding.btnCommercial.setSelected(false);
+            dialogBinding.btnCommercial.setTextColor(context.getResources().getColor(R.color.blackColor));
+
+            dialogBinding.btnPersonal.setSelected(false);
+            dialogBinding.btnPersonal.setTextColor(context.getResources().getColor(R.color.blackColor));
+
+            dialogBinding.btnOfficial.setSelected(false);
+            dialogBinding.btnOfficial.setTextColor(context.getResources().getColor(R.color.blackColor));
+
+            dialogBinding.btnCustom.setSelected(true);
+            dialogBinding.btnCustom.setTextColor(context.getResources().getColor(R.color.whiteColor));
+        });
+
+        dialogBinding.btnStartDrive.setOnClickListener(view -> {
+            startDrive(context);
+        });
+
+        dialogBinding.switchDriveDetect.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                AppPreferences.AUTO_DRIVE_DETECT = true;
+                startTracking(context);
+            } else {
+                AppPreferences.AUTO_DRIVE_DETECT = false;
+                stopTracking(context);
+            }
+        });
+    }
+
+    private static void startDrive(Context context) {
+        Intent i = new Intent(context, SpeedDashboardActivity.class);
+        context.startActivity(i);
+    }
+
+
+    public static void startTracking(Context context) {
+        Intent intent = new Intent(context, BackgroundDetectedActivitiesService.class);
+        context.startService(intent);
+    }
+
+    public static void stopTracking(Context context) {
+        Intent intent = new Intent(context, BackgroundDetectedActivitiesService.class);
+        context.stopService(intent);
+    }
 }
