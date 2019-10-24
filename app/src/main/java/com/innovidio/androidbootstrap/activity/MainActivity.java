@@ -106,7 +106,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         initializeListeners();
         initializeAdapters();
         initList();
-     //   addDummyValues();
+        addDummyValues();
         carApiQueries();
         fuelUpData();
         getCarsData();
@@ -147,22 +147,22 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     }
 
     private void addDummyValues() {
-        Car car = new Car();
-        car.setId(1);
-        car.setModelName("Carrola");
-        car.setManufacturer("Toyota");
-        car.setRegistrationNo("LXA 5039");
-        car.setMakeYear(2019);
-        car.setSubModel("1.3");
-        car.setEngineFuel("Petrol");
-        car.setFuelCapacityInLiters(20);
-        car.setEnginecc(1000);
-        car.setCurrentOdomaterReading(23403);
-        car.setFuelEconomyCityPer100km(13);
-        car.setFuelEconomyMixedPer100km(15);
-        car.setModelDrive("Front Wheel");
-        car.setTransmissionType("Manual");
-        carViewModel.addCar(car);
+//        Car car = new Car();
+//        car.setId(1);
+//        car.setModelName("Carrola");
+//        car.setManufacturer("Toyota");
+//        car.setRegistrationNo("LXA 5039");
+//        car.setMakeYear(2019);
+//        car.setSubModel("1.3");
+//        car.setEngineFuel("Petrol");
+//        car.setFuelCapacityInLiters(20);
+//        car.setEnginecc(1000);
+//        car.setCurrentOdomaterReading(23403);
+//        car.setFuelEconomyCityPer100km(13);
+//        car.setFuelEconomyMixedPer100km(15);
+//        car.setModelDrive("Front Wheel");
+//        car.setTransmissionType("Manual");
+//        carViewModel.addCar(car);
 
 
         FuelUp fuelUp = new FuelUp();
