@@ -45,5 +45,11 @@ public interface Constants {
     ///
     String KM_HR = "KM/hr";
     String M_HR ="M/hr";
+
+
+    // awarness api constants
+    String BROADCAST_DETECTED_ACTIVITY = "activity_intent";
+    long DETECTION_INTERVAL_IN_MILLISECONDS = 30 * 1000;
+    int CONFIDENCE = 70;
 }
 
