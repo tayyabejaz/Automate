@@ -35,7 +35,6 @@ public class Maintenance implements TimeLineItem {
     @ColumnInfo(name = "maintenanceType")
     @TypeConverters(EnumTypeConverters.class)
     private Type maintenanceType;
-    // todo is save date added here or not?
     @ColumnInfo(name = "saveDate")
     @TypeConverters(DateConverter.class)
     private Date saveDate;

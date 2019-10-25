@@ -16,6 +16,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 
+import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.Utils.DateConverter;
 import com.innovidio.androidbootstrap.db.dao.PreferencesDao;
 import com.innovidio.androidbootstrap.entity.Preferences;
@@ -34,6 +35,8 @@ import static com.innovidio.androidbootstrap.Constants.speedunits;
 public class LocationViewModel extends AndroidViewModel implements LocationListener, GpsStatus.Listener {
     public static String currentSpeed;
 
+    @Inject
+    AppPreferences appPreferences;
 
     @Inject
     PreferencesDao preferencesDao;
@@ -127,6 +130,11 @@ public class LocationViewModel extends AndroidViewModel implements LocationListe
             lastLat = currentLat;
             lastLon = currentLon;
             data.setFirstTime(false);
+
+            FullAddress fullAddress =  AddressClass.getAddressFromLatLon(getApplication().getApplicationContext(), currentLat, currentLon);
+            if (fullAddress!=null){
+                appPreferences.put(AppPreferences.Key.SAVED_CAR_ID, fullAddress.getAddress());
+            }
         }
 
         lastlocation.setLatitude(lastLat);

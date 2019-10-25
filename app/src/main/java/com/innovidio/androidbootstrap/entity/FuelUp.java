@@ -30,7 +30,6 @@ public class FuelUp implements TimeLineItem {
     private int perunitfuelprice;
     private int totalprice;
     private String location;
-    // todo is save date added here or not?
     @ColumnInfo(name = "saveDate")
     @TypeConverters(DateConverter.class)
     private Date saveDate;

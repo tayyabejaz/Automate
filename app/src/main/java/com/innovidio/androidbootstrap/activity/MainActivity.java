@@ -34,7 +34,6 @@ import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.IconProvider;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.adapter.CustomMainSpinnerAdapter;
-import com.innovidio.androidbootstrap.dashboard.SetSpeedLimit;
 import com.innovidio.androidbootstrap.databinding.ActivityMainBinding;
 import com.innovidio.androidbootstrap.databinding.DialogFilterListBinding;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
@@ -191,7 +190,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             String modelName = modelList[i];
             int yearName = yearList[i];
             Car car = new Car();
-            car.setId(1);
 
             car.setModelName(modelName);
             car.setManufacturer(makeName);
@@ -687,12 +685,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         Log.e(TAG, "Confidence: " + confidence);
 
 
-    }
-
-
-    private void startDrive() {
-        Intent i = new Intent(this, SetSpeedLimit.class);
-        startActivity(i);
     }
 
     @Override

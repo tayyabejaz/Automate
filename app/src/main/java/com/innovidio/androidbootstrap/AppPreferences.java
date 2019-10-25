@@ -57,7 +57,9 @@ public class AppPreferences {
          */
         SAMPLE_STR,
         SAMPLE_INT,
-        SAVED_CAR_ID
+        SAVED_CAR_ID,
+        START_LOCATION,
+        END_LOCATION
 
     }
 
