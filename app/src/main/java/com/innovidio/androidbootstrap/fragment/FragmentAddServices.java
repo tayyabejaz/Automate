@@ -136,16 +136,14 @@ public class FragmentAddServices extends DaggerFragment implements OnSingleServi
                 });
 
                 if (!TextUtils.isEmpty(singleMaintenance.etServiceLife.getText().toString())) {
-//                maintenance.setMaintenanceLife(Integer.parseInt(singleMaintenance.etServiceLife.getText().toString()));
                     life = singleMaintenance.etServiceLife.getText().toString();
-
                 }
 
                 singleMaintenance.spinnerServiceTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         String lifeDays = adapterView.getItemAtPosition(i).toString();
-                        life = life + "" + lifeDays;
+                        life = life + lifeDays;
                     }
 
                     @Override

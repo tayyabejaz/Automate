@@ -45,17 +45,17 @@
                 android:padding="@dimen/_10sdp">
 
                 <ImageView
-                    android:id="@+id/item_edit_icon"
+                    android:id="@+id/single_item_edit_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/automate_edit_dark_grey_icon"
-                    app:layout_constraintEnd_toStartOf="@id/item_delete_icon"
+                    app:layout_constraintEnd_toStartOf="@id/singleitem_delete_icon"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/item_delete_icon"
+                    android:id="@+id/singleitem_delete_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_5sdp"
@@ -145,7 +145,7 @@
                     android:text="Service Type"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/item_edit_icon" />
+                    app:layout_constraintTop_toBottomOf="@id/single_item_edit_icon" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.databinding.ItemSingleMaintenanceBinding;
 import com.innovidio.androidbootstrap.entity.Maintenance;
-import com.innovidio.androidbootstrap.interfaces.OnCarEditDeleteListener;
 import com.innovidio.androidbootstrap.interfaces.OnSingleServiceCardListener;
 
 import java.util.ArrayList;
@@ -45,6 +44,14 @@ public class SingleMaintenanceAdapter extends RecyclerView.Adapter<SingleMainten
     public void onBindViewHolder(@NonNull SingleMaintenanceViewHolder holder, int position) {
         Maintenance maintenance = dataList.get(position);
         holder.bind(maintenance);
+
+        holder.itemView.findViewById(R.id.single_item_edit_icon).setOnClickListener(view -> {
+            listener.onEditClick(maintenance);
+        });
+
+        holder.itemView.findViewById(R.id.singleitem_delete_icon).setOnClickListener(view -> {
+            listener.onDeleteClick(maintenance);
+        });
     }
 
     @Override
@@ -65,9 +72,10 @@ public class SingleMaintenanceAdapter extends RecyclerView.Adapter<SingleMainten
             binding.setItemSingleMaintenance(maintenance);
             binding.executePendingBindings();
         }
+
     }
 
-    public void updateList(List<Maintenance> dataList){
+    public void updateList(List<Maintenance> dataList) {
         this.dataList = dataList;
         notifyDataSetChanged();
     }
