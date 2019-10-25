@@ -27,7 +27,6 @@ public class Form {
     @ColumnInfo(name = "endDate")
     @TypeConverters(DateConverter.class)
     private Date endDate;
-    // todo is save date added here or not?
     @ColumnInfo(name = "saveDate")
     @TypeConverters(DateConverter.class)
     private Date saveDate;

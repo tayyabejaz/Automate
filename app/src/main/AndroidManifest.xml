@@ -48,9 +48,6 @@
         <activity
             android:name=".dashboard.SpeedDashboardActivity"
             android:launchMode="singleTask" />
-        <activity
-            android:name=".dashboard.SetSpeedLimit"
-            android:screenOrientation="portrait" />
 
         <service android:name=".service.FloatingViewService" />
 

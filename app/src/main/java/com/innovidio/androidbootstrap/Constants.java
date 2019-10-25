@@ -51,5 +51,6 @@ public interface Constants {
     String BROADCAST_DETECTED_ACTIVITY = "activity_intent";
     long DETECTION_INTERVAL_IN_MILLISECONDS = 30 * 1000;
     int CONFIDENCE = 70;
+
 }
 

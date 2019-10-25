@@ -34,7 +34,6 @@ import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.IconProvider;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.adapter.CustomMainSpinnerAdapter;
-import com.innovidio.androidbootstrap.dashboard.SetSpeedLimit;
 import com.innovidio.androidbootstrap.databinding.ActivityMainBinding;
 import com.innovidio.androidbootstrap.databinding.DialogFilterListBinding;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
@@ -183,25 +182,32 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     private void addDummyValues(int i) {
         Faker faker = new Faker();
 
-//        String[] carList = getResources().getStringArray(R.array.carList);
-//        String carName = carList[UtilClass.getRandomNo(0, 2)];
-//        Car car = new Car();
-//        car.setId(1);
-//
-//        car.setModelName(carName);
-//        car.setManufacturer("Toyota");
-//        car.setRegistrationNo("LXA 5039");
-//        car.setMakeYear(2019);
-//        car.setSubModel("1.3");
-//        car.setEngineFuel("Petrol");
-//        car.setFuelCapacityInLiters(20);
-//        car.setEnginecc(1000);
-//        car.setCurrentOdomaterReading(23403);
-//        car.setFuelEconomyCityPer100km(13);
-//        car.setFuelEconomyMixedPer100km(15);
-//        car.setModelDrive("Front Wheel");
-//        car.setTransmissionType("Manual");
-//        carViewModel.addCar(car);
+        if (i<3){
+            String[] makeList = getResources().getStringArray(R.array.makeList);
+            String[] modelList = getResources().getStringArray(R.array.modelList);
+            int[] yearList = getResources().getIntArray(R.array.yearList);
+            String makeName = makeList[i];
+            String modelName = modelList[i];
+            int yearName = yearList[i];
+            Car car = new Car();
+
+            car.setModelName(modelName);
+            car.setManufacturer(makeName);
+            car.setRegistrationNo("LXA "+UtilClass.getRandomNo(2250, 9999));
+            car.setMakeYear(yearName);
+            car.setSubModel("1.3");
+            car.setEngineFuel("Petrol");
+            car.setFuelCapacityInLiters(UtilClass.getRandomNo(10, 20));
+            car.setEnginecc(UtilClass.getRandomNo(660, 2000));
+            car.setCurrentOdomaterReading(UtilClass.getRandomNo(10000, 30000));
+            car.setFuelEconomyCityPer100km(UtilClass.getRandomNo(8, 19));
+            car.setFuelEconomyMixedPer100km(UtilClass.getRandomNo(8, 19));
+            car.setModelDrive("Front Wheel");
+            car.setTransmissionType("Manual");
+            carViewModel.addCar(car);
+        }
+
+
 
 
         FuelUp fuelUp = new FuelUp();
@@ -608,7 +614,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         });
     }
 
-    public void toolbarAlaramsClick(View view) {
+    public void toolbarAlarmsClick(View view) {
         runDummyData();
         Toast.makeText(this, "Dummy data added", Toast.LENGTH_SHORT).show();
     }
@@ -681,12 +687,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     }
 
-
-    private void startDrive() {
-        Intent i = new Intent(this, SetSpeedLimit.class);
-        startActivity(i);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -699,7 +699,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     protected void onPause() {
         super.onPause();
 
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+       // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
 
 
