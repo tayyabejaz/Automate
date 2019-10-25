@@ -40,8 +40,6 @@ public interface Constants {
     String FILTER_MAINTENANCE = "filter_maintenance";
     String FILTER_TRIPS = "filter_trips";
     String FILTER_CARWASH = "filter_carwash";
-
-
     ///
     String KM_HR = "KM/hr";
     String M_HR ="M/hr";
