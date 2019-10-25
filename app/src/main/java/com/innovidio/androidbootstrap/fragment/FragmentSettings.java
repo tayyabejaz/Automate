@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
-import com.innovidio.androidbootstrap.Utils.CustomDialog;
+import com.innovidio.androidbootstrap.Utils.CustomDeleteDialog;
 import com.innovidio.androidbootstrap.activity.AddNewCarActivity;
 import com.innovidio.androidbootstrap.activity.UserPreferencesActivity;
 import com.innovidio.androidbootstrap.activity.UserProfileActivity;
@@ -46,7 +46,7 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
 
     private FragmentSettingsBinding settingsBinding;
     private CustomMainSpinnerAdapter adapter;
-    private CustomDialog resetDataDialog, deleteCarDialog;
+    private CustomDeleteDialog resetDataDialog, deleteCarDialog;
     private List<Car> carArrayList = new ArrayList<>();
     private Car carInstance = new Car();
 
@@ -86,7 +86,7 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
     }
 
     private void createDialogs() {
-        resetDataDialog = new CustomDialog(getActivity(), "Reset Data", "Are you sure you want to reset all your app data?", "No", "Yes", R.drawable.automate_reset_app_dialog_icon) {
+        resetDataDialog = new CustomDeleteDialog(getActivity(), "Reset Data", "Are you sure you want to reset all your app data?", "No", "Yes", R.drawable.automate_reset_app_dialog_icon) {
             @Override
             public void onNegativeBtnClick(Dialog dialog) {
                 resetDataDialog.hideDialog();
@@ -100,7 +100,7 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
 
         resetDataDialog.createDialog();
 
-        deleteCarDialog = new CustomDialog(getActivity(), "Delete Car", "Are you sure you want to delete Dialog", "No", "Yes", R.drawable.automate_delete_car_dialog_icon) {
+        deleteCarDialog = new CustomDeleteDialog(getActivity(), "Delete Car", "Are you sure you want to delete Dialog", "No", "Yes", R.drawable.automate_delete_car_dialog_icon) {
             @Override
             public void onNegativeBtnClick(Dialog dialog) {
                 deleteCarDialog.hideDialog();

@@ -35,7 +35,7 @@
                 android:padding="@dimen/_10sdp">
 
                 <Button
-                    android:id="@+id/button_ad_maintenance"
+                    android:id="@+id/button_add_maintenance"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_marginTop="@dimen/_20sdp"
@@ -49,28 +49,16 @@
                     app:layout_constraintTop_toBottomOf="@id/et_price" />
 
                 <EditText
-                    android:id="@+id/et_service_life"
-                    style="@style/EditText_In_Forms"
-                    android:layout_width="0dp"
-                    android:hint="Service Life"
-                    android:paddingStart="@dimen/_20sdp"
-                    android:paddingEnd="@dimen/_20sdp"
-                    app:layout_constraintBottom_toTopOf="@id/et_price"
-                    app:layout_constraintEnd_toStartOf="@id/ll_service_time"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ll_service_list" />
-
-                <EditText
                     android:id="@+id/et_price"
                     style="@style/EditText_In_Forms"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:hint="Enter Price"
                     android:paddingStart="@dimen/_20sdp"
                     android:paddingEnd="@dimen/_20sdp"
-                    app:layout_constraintBottom_toTopOf="@id/button_ad_maintenance"
+                    app:layout_constraintBottom_toTopOf="@id/button_add_maintenance"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ll_service_time" />
+                    app:layout_constraintTop_toBottomOf="@id/ll_service" />
 
                 <TextView
                     android:id="@+id/tv_currency"
@@ -114,34 +102,65 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_add_maintenance"
                     app:layout_goneMarginBottom="@dimen/_10sdp" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/ll_service_time"
+                <EditText
+                    android:id="@+id/et_odometer_reading"
                     style="@style/EditText_In_Forms"
-                    android:layout_width="0dp"
-                    app:layout_constraintBottom_toTopOf="@id/et_price"
+                    android:hint="Enter Odometer Reading"
+                    android:paddingStart="@dimen/_20sdp"
+                    android:paddingEnd="@dimen/_20sdp"
+                    app:layout_constraintTop_toBottomOf="@id/ll_service_list"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/et_service_life"
-                    app:layout_constraintTop_toBottomOf="@id/ll_service_list">
+                    app:layout_constraintBottom_toTopOf="@id/ll_service"
+                    />
 
-                    <Spinner
-                        android:id="@+id/spinner_service_time"
+                <LinearLayout
+                    android:id="@+id/ll_service"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/et_odometer_reading"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/et_price"
+                    >
+
+                    <EditText
+                        android:id="@+id/et_service_life"
+                        style="@style/EditText_In_Forms"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:entries="@array/calendar_list"
-                        android:paddingStart="@dimen/_10sdp"
-                        android:paddingEnd="@dimen/_10sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:hint="Service Life"
+                        android:layout_weight="1"
+                        android:paddingStart="@dimen/_20sdp"
+                        android:paddingEnd="@dimen/_20sdp" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ll_service_time"
+                        style="@style/EditText_In_Forms"
+                        android:layout_width="0dp"
+                        android:layout_weight="1">
+
+                        <Spinner
+                            android:id="@+id/spinner_service_time"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:entries="@array/calendar_list"
+                            android:paddingStart="@dimen/_10sdp"
+                            android:paddingEnd="@dimen/_10sdp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/ll_service_list"
                     style="@style/EditText_In_Forms"
                     android:layout_marginBottom="@dimen/_10sdp"
-                    app:layout_constraintBottom_toTopOf="@id/et_service_life"
+                    app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_description">

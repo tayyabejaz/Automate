@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.innovidio.androidbootstrap.R;
 
-public abstract class CustomDialog {
+public abstract class CustomDeleteDialog {
 
 
     private Dialog dialog;
@@ -25,7 +25,7 @@ public abstract class CustomDialog {
     private int imageView;
 
 
-    public CustomDialog(Context context, String titleText, String bodyText, String btnNegativeText, String btnPositiveText, int imageResource) {
+    public CustomDeleteDialog(Context context, String titleText, String bodyText, String btnNegativeText, String btnPositiveText, int imageResource) {
         this.context = context;
         this.dialogTitleText = titleText;
         this.dialogBodyText = bodyText;
