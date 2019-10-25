@@ -714,7 +714,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     protected void onPause() {
         super.onPause();
 
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+       // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
 
     private void startTracking() {
