@@ -34,6 +34,23 @@
 
     <string name="running">Route in process…</string>
 
+    <string name="activity_in_vehicle">In Vehicle</string>
+
+    <string name="activity_on_bicycle">On Bicycle</string>
+    <string name="activity_on_foot">On Foot</string>
+
+    <string name="activity_running">Running</string>
+
+    <string name="activity_still">Still</string>
+
+
+    <string name="activity_tilting">Tilting</string>
+
+    <string name="activity_walking">walking</string>
+
+
+    <!--    for drive detect-->
+    <string name="activity_unknown">Unknown</string>
     <string-array name="model_year">
         <item> 2019 </item>
         <item> 2019 </item>
@@ -68,11 +85,25 @@
         <item> 1990 </item>
     </string-array>
 
-<string-array name="carList">
-    <item> Suzuki WagonR 2019 </item>
-    <item> Suzuki Ciaz 2016 </item>
-    <item> Honda Civic 2015 </item>
-</string-array>
+    <string-array name="makeList">
+        <item>Suzuki</item>
+        <item>Toyota</item>
+        <item>Honda</item>
+    </string-array>
+
+    <string-array name="modelList">
+        <item>WagonR</item>
+        <item>Accord</item>
+        <item>Civic</item>
+    </string-array>
+
+
+    <integer-array name="yearList">
+        <item>2019</item>
+        <item>2016</item>
+        <item>2015</item>
+    </integer-array>
+
     <string-array name="service_list">
         <item>Check Battery and Contacts</item>
         <item>Check Exhaust System</item>
@@ -108,7 +139,6 @@
         <item>Check/Inspect Suspension System</item>
         <item>Rotate and Balance Tires</item>
     </string-array>
-
     <string-array name="parts_categories">
         <item>Oil and Oil Filter</item>
         <item>Windshield Wiper Blades</item>
@@ -124,7 +154,6 @@
         <item>Water pump</item>
         <item>Muffler</item>
     </string-array>
-
     <string-array name="otherexpenses_categories">
         <item>Car Insurance</item>
         <item>Tracker Navigation</item>
@@ -132,28 +161,14 @@
         <item>Annual Registration</item>
         <item>Tolls</item>
     </string-array>
-
-
     <string-array name="lifetime_categories">
         <item>weeks</item>
         <item>month</item>
         <item>year</item>
     </string-array>
-
     <string-array name="calendar_list">
         <item> Months </item>
         <item> Days </item>
         <item> Years </item>
     </string-array>
-
-
-<!--    for drive detect-->
-    <string name="activity_in_vehicle">In Vehicle</string>
-    <string name="activity_on_bicycle">On Bicycle</string>
-    <string name="activity_on_foot">On Foot</string>
-    <string name="activity_running">Running</string>
-    <string name="activity_still">Still</string>
-    <string name="activity_tilting">Tilting</string>
-    <string name="activity_walking">walking</string>
-    <string name="activity_unknown">Unknown</string>
 </resources>
