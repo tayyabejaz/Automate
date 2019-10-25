@@ -44,6 +44,27 @@ public class FuelUp implements TimeLineItem {
     }
 
     private String fuelType;
+    @Ignore
+    private int totalFuelUps;
+
+    public int getTotalFuelUps() {
+        return totalFuelUps;
+    }
+
+    public void setTotalFuelUps(int totalFuelUps) {
+        this.totalFuelUps = totalFuelUps;
+    }
+
+    public float getFuelAverage() {
+        return fuelAverage;
+    }
+
+    public void setFuelAverage(float fuelAverage) {
+        this.fuelAverage = fuelAverage;
+    }
+
+    @Ignore
+    private float fuelAverage;
 
     public FuelUp() {
 
@@ -58,7 +79,7 @@ public class FuelUp implements TimeLineItem {
         this.totalprice = totalprice;
         this.location = location;
         this.tripId = tripId;
-        this.saveDate =  saveDate;
+        this.saveDate = saveDate;
         this.fuelType = fuelType;
     }
 

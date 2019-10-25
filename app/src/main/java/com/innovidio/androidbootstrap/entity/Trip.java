@@ -39,6 +39,27 @@ public class Trip implements TimeLineItem {
     private String origin;
     private int intialOdometer;
     private int finalOdometer;
+    @Ignore
+    private int totalTrips;
+
+    public int getTotalTrips() {
+        return totalTrips;
+    }
+
+    public void setTotalTrips(int totalTrips) {
+        this.totalTrips = totalTrips;
+    }
+
+    public int getTotalDistance() {
+        return totalDistance;
+    }
+
+    public void setTotalDistance(int totalDistance) {
+        this.totalDistance = totalDistance;
+    }
+
+    @Ignore
+    private int totalDistance;
 
 
     public int getCarId() {
@@ -200,6 +221,7 @@ public class Trip implements TimeLineItem {
     public String getTripType() {
         return tripType;
     }
+
 
 //    public Date getStarttime() {
 //        return startTime;

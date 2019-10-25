@@ -68,7 +68,11 @@
         <item> 1990 </item>
     </string-array>
 
-
+<string-array name="carList">
+    <item> Suzuki WagonR 2019 </item>
+    <item> Suzuki Ciaz 2016 </item>
+    <item> Honda Civic 2015 </item>
+</string-array>
     <string-array name="service_list">
         <item>Check Battery and Contacts</item>
         <item>Check Exhaust System</item>

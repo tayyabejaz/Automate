@@ -27,14 +27,15 @@
 
                 <Button
                     android:id="@+id/btn_edit"
-                    android:layout_width="100dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
                     android:background="@drawable/app_button_background"
                     android:drawableStart="@drawable/automate_edit_dialog_icon"
-                    android:paddingStart="15dp"
+                    android:paddingStart="@dimen/_15sdp"
                     android:text="Edit"
+                    android:textSize="@dimen/_10sdp"
                     android:textAllCaps="false"
                     android:textColor="@color/whiteColor"
                     android:textStyle="bold"
@@ -45,16 +46,16 @@
 
                 <Button
                     android:id="@+id/btn_delete"
-                    android:layout_width="100dp"
-                    android:layout_height="35dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="@drawable/app_button_background"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:background="@drawable/button_red_background"
                     android:drawableStart="@drawable/automate_delete_dialog_icon"
-                    android:paddingStart="15dp"
+                    android:paddingStart="@dimen/_15sdp"
                     android:text="Delete"
                     android:textAllCaps="false"
                     android:textColor="@color/whiteColor"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/_10sdp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/btn_close"
@@ -63,14 +64,15 @@
 
                 <Button
                     android:id="@+id/btn_close"
-                    android:layout_width="100dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="@drawable/app_button_background"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:background="@drawable/button_grey_background"
                     android:drawableStart="@drawable/automate_close_dialog_icon"
-                    android:paddingStart="15dp"
+                    android:paddingStart="@dimen/_15sdp"
                     android:text="Close"
+                    android:textSize="@dimen/_10sdp"
                     android:textAllCaps="false"
                     android:textColor="@color/whiteColor"
                     android:textStyle="bold"
@@ -83,8 +85,8 @@
                     android:id="@+id/fuel_type_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
                     android:orientation="horizontal"
                     android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@id/fuel_location"
@@ -95,7 +97,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:padding="@dimen/_10sdp"
                         android:scaleType="center"
                         android:src="@drawable/automate_fuel_dialog_icon" />
 
@@ -125,14 +127,14 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:padding="@dimen/_10sdp"
                         android:scaleType="center"
                         android:src="@drawable/automate_location_dialog_icon" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="5dp"
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:text="@{maintenancedata.maintenanceLocation}"
@@ -158,14 +160,14 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:padding="@dimen/_10sdp"
                         android:scaleType="center"
                         android:src="@drawable/automate_odometer_dialog_icon" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginStart="5dp"
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:text="@{String.valueOf(maintenancedata.maintenanceOdometerReading)}"
@@ -192,7 +194,6 @@
                     android:layout_height="wrap_content"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:orientation="horizontal"
-                    tools:itemCount="10"
                     tools:listitem="@layout/item_service_dialog_recycler"
                     app:layout_constraintTop_toBottomOf="@id/tv_type_service"
                     app:layout_constraintStart_toStartOf="parent"
@@ -204,12 +205,12 @@
                     android:id="@+id/calender_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="25dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
                     android:orientation="horizontal"
-                    android:padding="1dp"
+                    android:padding="@dimen/_5sdp"
                     app:layout_constraintBottom_toTopOf="@id/fuel_type_layout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -230,7 +231,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginBottom="13dp"
+                            android:layout_marginBottom="@dimen/_10sdp"
                             android:src="@drawable/automate_date_dialog_icon" />
 
                         <TextView
@@ -238,7 +239,7 @@
                             android:layout_height="wrap_content"
                             android:text="@{maintenancedata.saveDateInString}"
                             android:textColor="@color/blackColor"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/_12sdp"
                             tools:text="10-10-2019" />
 
                     </LinearLayout>
@@ -275,7 +276,7 @@
                             android:layout_height="wrap_content"
                             android:text="@{maintenancedata.saveTimeInString}"
                             android:textColor="@color/blackColor"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/_12sdp"
                             tools:text="11:29" />
 
                     </LinearLayout>
@@ -319,10 +320,10 @@
                     android:id="@+id/dialog_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="@dimen/_50sdp"
                     android:text="Maintenance"
                     android:textColor="@color/blackColor"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/_16sdp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -335,9 +336,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bottom_sheet_background_service"
             android:scaleType="center"
-            android:src="@drawable/automate_add_service_icon"
+            android:elevation="@dimen/_1sdp"
+            android:src="@drawable/automate_maintenance_dialgoue_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

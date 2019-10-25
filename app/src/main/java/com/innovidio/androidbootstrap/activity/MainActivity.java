@@ -17,7 +17,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -41,7 +40,6 @@ import com.innovidio.androidbootstrap.databinding.DialogFilterListBinding;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
 import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
-import com.innovidio.androidbootstrap.driveDetect.BackgroundDetectedActivitiesService;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.Form;
 import com.innovidio.androidbootstrap.entity.FuelUp;
@@ -72,7 +70,6 @@ import static com.innovidio.androidbootstrap.Constants.ACTIVITY;
 import static com.innovidio.androidbootstrap.Constants.CAR_WASH_FORM;
 import static com.innovidio.androidbootstrap.Constants.FUEL_UP_FORM;
 import static com.innovidio.androidbootstrap.Constants.SERVICE_FORM;
-import static com.innovidio.androidbootstrap.Constants.TRIP_FORM;
 
 
 public class MainActivity extends DaggerAppCompatActivity implements View.OnClickListener, SpinnerItemClickListener {
@@ -117,6 +114,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         navigationController = Navigation.findNavController(MainActivity.this, R.id.nav_main_host);
+        navigationController.navigate(R.id.mainDashboardFragment);
 
         // only need if activity is not extends with DaggerAppCompatActivity or not added in di builder module
         // timeLineViewModel = new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
@@ -129,7 +127,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         carApiQueries();
         fuelUpData();
         getCarsData();
-        checkAndRequestWeatherPermissions();
+        checkLocationAndStoragePermissions();
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -145,7 +143,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     private void initializeAdapters() {
         initList();
-        customMainSpinnerAdapter = new CustomMainSpinnerAdapter(this,this::onSpinnerItemClick,null, carArrayList,0);
+        customMainSpinnerAdapter = new CustomMainSpinnerAdapter(this, this::onSpinnerItemClick, null, carArrayList, 0);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
 
@@ -177,16 +175,20 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding.toolbarFilterIcon.setOnClickListener(this);
     }
 
-    private void runDummyData(){
-        for (int i=0; i<10;i++)
+    private void runDummyData() {
+        for (int i = 0; i < 10; i++)
             addDummyValues(i);
     }
 
     private void addDummyValues(int i) {
         Faker faker = new Faker();
+
+//        String[] carList = getResources().getStringArray(R.array.carList);
+//        String carName = carList[UtilClass.getRandomNo(0, 2)];
 //        Car car = new Car();
 //        car.setId(1);
-//        car.setModelName("Carrola");
+//
+//        car.setModelName(carName);
 //        car.setManufacturer("Toyota");
 //        car.setRegistrationNo("LXA 5039");
 //        car.setMakeYear(2019);
@@ -210,7 +212,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         fuelUp.setSaveDate(faker.date.backward(UtilClass.getRandomNo(1, 50)));
         fuelUp.setLocation(faker.address.streetAddress());
         fuelUp.setOdometerreading(UtilClass.getRandomNo(10000, 50000));
-        int unitPrice =  UtilClass.getRandomNo(100, 120);
+        int unitPrice = UtilClass.getRandomNo(100, 120);
         int totalLitters = UtilClass.getRandomNo(1, 10);
         fuelUp.setPerunitfuelprice(unitPrice);
         fuelUp.setLiters(totalLitters);
@@ -220,16 +222,16 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         fuelUpViewModel.addFuelUp(fuelUp);
 
 
-        odoMeter +=  UtilClass.getRandomNo(1000, 2000);
+        odoMeter += UtilClass.getRandomNo(1000, 2000);
         Date saveDate = faker.date.backward(UtilClass.getRandomNo(1, 50));
 
         Date nextDate = UtilClass.addDays(saveDate, UtilClass.getRandomNo(20, 100));
         String[] servicecategories = getResources().getStringArray(R.array.service_list);
         String serviceName = servicecategories[UtilClass.getRandomNo(0, 32)];
-        int serviceCost =  UtilClass.getRandomNo(1000, 10000);
+        int serviceCost = UtilClass.getRandomNo(1000, 10000);
 
-        Date DateForForm =  UtilClass.addDays(saveDate, UtilClass.getRandomNo(20, 100));
-        Form  form = new Form();
+        Date DateForForm = UtilClass.addDays(saveDate, UtilClass.getRandomNo(20, 100));
+        Form form = new Form();
         form.setId(i);
         form.setCarId(1);
         form.setLocation(faker.address.streetAddress());
@@ -250,10 +252,10 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         maintenance.setMaintenanceOdometerReading(odoMeter);
         maintenance.setAlarmON(true);
         maintenance.setFormId(i);
-        if (UtilClass.getRandomNo(0, 10)%2==0){
+        if (UtilClass.getRandomNo(0, 10) % 2 == 0) {
             maintenance.setMaintenanceType(TimeLineItem.Type.CAR_WASH);
             maintenance.setMaintenanceName("Clean/Wash");
-        }else{
+        } else {
             maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
             maintenance.setMaintenanceName(serviceName);
         }
@@ -271,20 +273,20 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         trip.setOrigin(faker.address.city());
         trip.setCarname("Honda Civic 2018");
         trip.setDestination(faker.address.city());
-        trip.setIntialOdometer(odoMeter+UtilClass.getRandomNo(1000, 2000));
-        odoMeter+=odoMeter+UtilClass.getRandomNo(1000, 2000);
+        trip.setIntialOdometer(odoMeter + UtilClass.getRandomNo(1000, 2000));
+        odoMeter += odoMeter + UtilClass.getRandomNo(1000, 2000);
         trip.setFinalOdometer(odoMeter);
         trip.setDistanceCovered(UtilClass.getRandomNo(100, 2000));
         trip.setFueleconomypertrip(UtilClass.getRandomNo(10, 20));
         trip.setMaxspeed(UtilClass.getRandomNo(50, 100));
         trip.setSaveDate(faker.date.backward(UtilClass.getRandomNo(1, 50)));
         trip.setTripTitle("Trip with " + faker.name.title());
-        if (UtilClass.getRandomNo(0, 10)%2==0) {
+        if (UtilClass.getRandomNo(0, 10) % 2 == 0) {
             trip.setTripType("Personal");
-        }else{
+        } else {
             trip.setTripType("Business");
         }
-        int noOfLitters =  UtilClass.getRandomNo(10, 30);
+        int noOfLitters = UtilClass.getRandomNo(10, 30);
         int unitPriceinLit = UtilClass.getRandomNo(100, 120);
         trip.setNoOfLitres(noOfLitters);
         trip.setTotalExpenses(unitPriceinLit * noOfLitters);
@@ -396,7 +398,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 break;
 
             case R.id.iv_add_trip:
-                startFormActivity(TRIP_FORM);
+                UtilClass.showStartTripDialog(this);
                 break;
 
             case R.id.main_activity_spinner:
@@ -452,7 +454,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     private void setSpinnerItem(Car car) {
         String name = car.getManufacturer() + " " + car.getModelName() + " " + car.getMakeYear();
         mainBinding.mainActivitySpinner.setText(name);
-        AppPreferences.SELECTED_CAR_ID =  car.getId();
+        AppPreferences.SELECTED_CAR_ID = car.getId();
     }
 
     public void slideUp(View view) {
@@ -481,11 +483,12 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         animate.setDuration(duration);
         animate.setFillAfter(true);
         view.startAnimation(animate);
+        view.setVisibility(View.GONE);
     }
 
     public void slideBackToTop(View view, View view2, int duration) {
 
-        view.setVisibility(View.INVISIBLE);
+        view.setVisibility(View.GONE);
         TranslateAnimation animate = new TranslateAnimation(
                 0,                 // fromXDelta
                 0,                 // toXDelta
@@ -542,7 +545,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding.bottomSheet.ivAddSpeedometer.setImageDrawable(IconProvider.getSpeedometer(this).getDrawable());
         mainBinding.bottomSheet.ivAddSpeedometer.setBackground(IconProvider.getSpeedometer(this).getBackground());
     }
-
 
     public void startFormActivity(String formType) {
         Intent intent = new Intent(this, FormActivity.class);
@@ -611,12 +613,10 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         Toast.makeText(this, "Dummy data added", Toast.LENGTH_SHORT).show();
     }
 
-
-
     // fencing api code
     // todo fencing api
 
-    private void checkAndRequestWeatherPermissions() {
+    private void checkLocationAndStoragePermissions() {
         if ((ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) &&
                 (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -642,62 +642,47 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
 
     private void handleUserActivity(int type, int confidence) {
-        String label = getString(R.string.activity_unknown);
-        int icon = R.drawable.ic_still;
+
 
         switch (type) {
-            case DetectedActivity.IN_VEHICLE: {
-                label = getString(R.string.activity_in_vehicle);
-                icon = R.drawable.ic_driving;
+            case DetectedActivity.IN_VEHICLE:
+            case DetectedActivity.RUNNING: {
+                if (confidence > Constants.CONFIDENCE) {
+                    UtilClass.showStartTripDialog(this);
+                }
                 break;
             }
             case DetectedActivity.ON_BICYCLE: {
-                label = getString(R.string.activity_on_bicycle);
-                icon = R.drawable.ic_on_bicycle;
+
                 break;
             }
-            case DetectedActivity.ON_FOOT: {
-                label = getString(R.string.activity_on_foot);
-                icon = R.drawable.ic_walking;
-                break;
-            }
-            case DetectedActivity.RUNNING: {
-                label = getString(R.string.activity_running);
-                icon = R.drawable.ic_running;
-                break;
-            }
-            case DetectedActivity.STILL: {
-                label = getString(R.string.activity_still);
-                break;
-            }
-            case DetectedActivity.TILTING: {
-                label = getString(R.string.activity_tilting);
-                icon = R.drawable.ic_tilting;
-                break;
-            }
-            case DetectedActivity.WALKING: {
-                label = getString(R.string.activity_walking);
-                icon = R.drawable.ic_walking;
-                startDrive();
-                break;
-            }
-            case DetectedActivity.UNKNOWN: {
-                label = getString(R.string.activity_unknown);
-                break;
-            }
+//            case DetectedActivity.ON_FOOT: {
+//                break;
+//            }
+
+//            case DetectedActivity.STILL: {
+//                break;
+//            }
+//            case DetectedActivity.TILTING: {
+//                break;
+//            }
+//            case DetectedActivity.WALKING: {
+//                startDrive();
+//                break;
+//            }
+//            case DetectedActivity.UNKNOWN: {
+//                break;
+//            }
+
         }
 
-        Log.e(TAG, "User activity: " + label + ", Confidence: " + confidence);
+        Log.e(TAG, "Confidence: " + confidence);
 
-        if (confidence > Constants.CONFIDENCE) {
-//            txtActivity.setText(label);
-//            txtConfidence.setText("Confidence: " + confidence);
-//            imgActivity.setImageResource(icon);
-        }
+
     }
 
 
-    private void startDrive(){
+    private void startDrive() {
         Intent i = new Intent(this, SetSpeedLimit.class);
         startActivity(i);
     }
@@ -705,7 +690,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
-        startTracking();
+        UtilClass.startTracking(this);
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
                 new IntentFilter(Constants.BROADCAST_DETECTED_ACTIVITY));
     }
@@ -717,14 +702,5 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
        // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
 
-    private void startTracking() {
-        Intent intent = new Intent(MainActivity.this, BackgroundDetectedActivitiesService.class);
-        startService(intent);
-    }
-
-    private void stopTracking() {
-        Intent intent = new Intent(MainActivity.this, BackgroundDetectedActivitiesService.class);
-        stopService(intent);
-    }
 
 }

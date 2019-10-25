@@ -27,7 +27,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.ActivityPrivacyPolicy"></activity>
+        <activity android:name=".activity.PrivacyPolicyActivity"></activity>
         <activity android:name=".activity.UserPreferencesActivity" />
         <activity
             android:name=".activity.UserProfileActivity"

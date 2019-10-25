@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.databinding.ActivityPrivacyPolicyBinding;
 
-public class ActivityPrivacyPolicy extends AppCompatActivity {
+public class PrivacyPolicyActivity extends AppCompatActivity {
 
     private ActivityPrivacyPolicyBinding binding;
 

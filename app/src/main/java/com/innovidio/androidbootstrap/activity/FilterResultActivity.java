@@ -79,7 +79,7 @@ public class FilterResultActivity extends DaggerAppCompatActivity implements Tim
     }
 
     private void initializeAdapters() {
-        timelineAdapter = new TimelineAdapter(this, this, timeLineItemList, Constants.FILTERED_ADAPTER);
+        timelineAdapter = new TimelineAdapter(this, null, timeLineItemList, Constants.FILTERED_ADAPTER);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         binding.rvFilterResults.setLayoutManager(layoutManager);
     }

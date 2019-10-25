@@ -44,16 +44,16 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:padding="@dimen/_10sdp"
                     android:scaleType="center"
                     android:src="@drawable/automate_cash_dialog_icon"
                    />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:textColor="@color/blackColor"
                     android:gravity="center_vertical"
                     android:text="@{String.valueOf(carwashdata.maintenanceCost)}"
@@ -78,15 +78,15 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:padding="@dimen/_10sdp"
                     android:scaleType="center"
                     android:src="@drawable/automate_location_dialog_icon" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:textColor="@color/blackColor"
                     android:gravity="center_vertical"
                     android:text="@{carwashdata.maintenanceLocation}"
@@ -111,15 +111,15 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
+                    android:padding="@dimen/_10sdp"
                     android:scaleType="center"
                     android:src="@drawable/automate_odometer_dialog_icon" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:textColor="@color/blackColor"
                     android:gravity="center_vertical"
                     android:text="@{String.valueOf(carwashdata.maintenanceOdometerReading)}"
@@ -262,7 +262,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="13dp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:src="@drawable/automate_date_dialog_icon" />
 
                     <TextView
@@ -270,7 +270,7 @@
                         android:layout_height="wrap_content"
                         android:text="@{carwashdata.saveDateInString}"
                         tools:text="10-10-2019"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/_12sdp"
                         android:textColor="@color/blackColor" />
 
                 </LinearLayout>
@@ -306,8 +306,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@{carwashdata.saveTimeInString}"
-                        tools:text="10-10-2019"
-                        android:textSize="14sp"
+                        tools:text="11:00 pm"
+                        android:textSize="@dimen/_12sdp"
                         android:textColor="@color/blackColor" />
 
                 </LinearLayout>
@@ -330,7 +330,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
+                    android:padding="@dimen/_5sdp"
                     android:gravity="center"
                     android:layout_marginBottom="10dp"
                     android:text="Overall Expense"/>
@@ -341,8 +341,8 @@
                     android:text="@{String.valueOf(carwashdata.maintenanceCost)}"
                     tools:text="RS 2000.00/-"
                     android:textStyle="bold"
-                    android:paddingStart="10dp"
-                    android:textSize="20sp"
+                    android:padding="@dimen/_10sdp"
+                    android:textSize="@dimen/_16sdp"
                     android:textColor="@color/blueDark"
                     />
 
@@ -379,7 +379,7 @@
                 android:layout_marginBottom="15dp"
                 android:drawableStart="@drawable/automate_delete_dialog_icon"
                 android:textColor="@color/whiteColor"
-                android:background="@drawable/app_button_background"
+                android:background="@drawable/button_red_background"
                 app:layout_constraintStart_toEndOf="@id/btn_edit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/total_expenses_layout"
@@ -397,7 +397,7 @@
               android:layout_marginBottom="15dp"
               android:drawableStart="@drawable/automate_close_dialog_icon"
               android:textColor="@color/whiteColor"
-              android:background="@drawable/app_button_background"
+              android:background="@drawable/button_grey_background"
               app:layout_constraintEnd_toEndOf="parent"
               app:layout_constraintBottom_toBottomOf="parent"
               app:layout_constraintStart_toEndOf="@id/btn_delete"
@@ -408,11 +408,11 @@
                 android:id="@+id/dialog_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="@dimen/_50sdp"
                 android:text="Car Wash"
                 android:textStyle="bold"
                 android:textColor="@color/blackColor"
-                android:textSize="20sp"
+                android:textSize="@dimen/_16sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -423,9 +423,8 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bottom_sheet_background_carwash"
         android:scaleType="center"
-        android:src="@drawable/automate_add_car_wash"
+        android:src="@drawable/automate_car_wash_dialgoue_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

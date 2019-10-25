@@ -64,7 +64,14 @@
         <item name="android:layout_height"> wrap_content </item>
         <item name="android:padding"> @dimen/_5sdp </item>
         <item name="android:layout_marginTop"> @dimen/_10sdp </item>
+    </style>
 
+    <style name="NumberPickerTheme" parent="Theme.AppCompat.Light">
+        <item name="colorAccent"> @color/blueTextColor  </item>
+        <item name="colorControlNormal"> @color/gray_dialog_colour </item>
+        <item name="android:textColorPrimary"> @color/blueTextColor </item>
+        <item name="android:background"> @color/whiteColor </item>
+        <item name="android:textSize"> @dimen/_20sdp </item>
     </style>
 
 </resources>
