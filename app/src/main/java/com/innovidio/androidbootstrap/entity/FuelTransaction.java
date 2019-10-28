@@ -6,23 +6,31 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
+import com.innovidio.androidbootstrap.db.converters.TransactionTypeConverters;
 
 import java.util.Date;
 
 
 @Entity
-public class FuelAccount {
+public class FuelTransaction {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private int carId;
-    private int fuelAdd;
-    private int fuelConsume;
+    private int fuelQuantity;
+    @ColumnInfo(name = "transactionType")
+    @TypeConverters(TransactionTypeConverters.class)
+    private TransactionType transactionType; //(Debit, Credit)
     private int odoMeterReading;
-    private int reserveFuel;
+    private int feulBallance;
     private String note;
     @ColumnInfo(name = "saveDate")
     @TypeConverters(DateConverter.class)
     private Date saveDate;
+
+
+    public enum TransactionType{
+        Credit,Debit
+    }
 
     public int getId() {
         return id;
@@ -40,20 +48,20 @@ public class FuelAccount {
         this.carId = carId;
     }
 
-    public int getFuelAdd() {
-        return fuelAdd;
+    public int getFuelQuantity() {
+        return fuelQuantity;
     }
 
-    public void setFuelAdd(int fuelAdd) {
-        this.fuelAdd = fuelAdd;
+    public void setFuelQuantity(int fuelQuantity) {
+        this.fuelQuantity = fuelQuantity;
     }
 
-    public int getFuelConsume() {
-        return fuelConsume;
+    public TransactionType getTransactionType() {
+        return transactionType;
     }
 
-    public void setFuelConsume(int fuelConsume) {
-        this.fuelConsume = fuelConsume;
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
     }
 
     public int getOdoMeterReading() {
@@ -64,12 +72,12 @@ public class FuelAccount {
         this.odoMeterReading = odoMeterReading;
     }
 
-    public int getReserveFuel() {
-        return reserveFuel;
+    public int getFeulBallance() {
+        return feulBallance;
     }
 
-    public void setReserveFuel(int reserveFuel) {
-        this.reserveFuel = reserveFuel;
+    public void setFeulBallance(int feulBallance) {
+        this.feulBallance = feulBallance;
     }
 
     public String getNote() {

@@ -8,7 +8,7 @@ public class DataManager {
     private boolean isFirstTime;
     private double distanceM;
     private double curSpeed;
-    private double maxSpeed;
+    private int maxSpeed;
     private long time;
     private int currentIncomingSpeed = 0;
     private int currentIncomingSpeedCounter = 0;
@@ -28,18 +28,18 @@ public class DataManager {
         return location;
     }
 
-    public String getCurrentSpeed() {
+    public Double getCurrentSpeed() {
         return currentSpeed;
     }
 
-    public void setCurrentSpeed(String currentSpeed) {
+    public void setCurrentSpeed(Double currentSpeed) {
         this.currentSpeed = currentSpeed;
     }
 
-    private String currentSpeed;
+    private Double currentSpeed;
 
 
-    public String getTotalAvgSpeed() {
+    public int getTotalAvgSpeed() {
         return totalAvgSpeed;
     }
 
@@ -58,11 +58,12 @@ public class DataManager {
             finalavgspeed = currentIncomingSpeed / currentIncomingSpeedCounter;
 
         }
-        this.totalAvgSpeed = String.valueOf(finalavgspeed);
+       // this.totalAvgSpeed = String.valueOf(finalavgspeed);
+        this.totalAvgSpeed = finalavgspeed;
         Log.d("incoming speed: ", "" + totalAvgSpeed + "\t" + " total speed: " + "" + currentIncomingSpeed + "\t" + "final avg speed: " + ""+ finalavgspeed);
     }
 
-    private String totalAvgSpeed;
+    private int totalAvgSpeed;
 
     public double getTotalavg() {
         return totalavg;
@@ -113,7 +114,7 @@ public class DataManager {
 
     }
 
-    public double getMaxSpeed() {
+    public int getMaxSpeed() {
         return maxSpeed;
     }
 
@@ -140,7 +141,7 @@ public class DataManager {
         return average;
     }*/
 
-    public void setCurSpeed(double curSpeed) {
+    public void setCurSpeed(int curSpeed) {
         this.curSpeed = curSpeed;
         if (curSpeed > maxSpeed){
             maxSpeed = curSpeed;

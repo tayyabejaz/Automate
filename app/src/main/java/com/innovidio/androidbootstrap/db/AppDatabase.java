@@ -11,6 +11,7 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.innovidio.androidbootstrap.db.converters.EnumTypeConverters;
+import com.innovidio.androidbootstrap.db.converters.TransactionTypeConverters;
 import com.innovidio.androidbootstrap.db.converters.UnitTypeEnumConverters;
 import com.innovidio.androidbootstrap.db.dao.AlarmDao;
 import com.innovidio.androidbootstrap.db.dao.CarDao;
@@ -59,7 +60,8 @@ import java.util.Date;
 @TypeConverters(
         {
                 //TODO add you typeConverters here
-                IntegerListConverter.class, DateConverter.class, StringListConverter.class, EnumTypeConverters.class, UnitTypeEnumConverters.class
+                IntegerListConverter.class, DateConverter.class, StringListConverter.class,
+                EnumTypeConverters.class, UnitTypeEnumConverters.class, TransactionTypeConverters.class
         }
 )
 

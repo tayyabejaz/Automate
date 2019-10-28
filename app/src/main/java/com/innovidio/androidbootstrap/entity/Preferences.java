@@ -29,7 +29,7 @@ public class Preferences {
     @TypeConverters(UnitTypeEnumConverters.class)
     private UnitTypeEnum speedUnit;
     private int speedLimit = 0;
-    private float fuelUnitPrice;
+    private Double fuelUnitPrice;
 
 
     public int getId() {
@@ -96,11 +96,11 @@ public class Preferences {
         this.speedLimit = speedLimit;
     }
 
-    public float getFuelUnitPrice() {
+    public Double getFuelUnitPrice() {
         return fuelUnitPrice;
     }
 
-    public void setFuelUnitPrice(float fuelUnitPrice) {
+    public void setFuelUnitPrice(Double fuelUnitPrice) {
         this.fuelUnitPrice = fuelUnitPrice;
     }
 

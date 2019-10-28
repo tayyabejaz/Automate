@@ -59,12 +59,15 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.material.snackbar.Snackbar;
+import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.activity.MainActivity;
 import com.innovidio.androidbootstrap.databinding.ActivitySpeedDashboardBinding;
 import com.innovidio.androidbootstrap.entity.Preferences;
+import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.service.FloatingViewService;
+import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -76,19 +79,25 @@ import java.util.TimeZone;
 
 import javax.inject.Inject;
 
+
+import dagger.android.support.DaggerAppCompatActivity;
+
+import static com.innovidio.androidbootstrap.BaseApplication.context;
 import static com.innovidio.androidbootstrap.Constants.KM_HR;
 import static com.innovidio.androidbootstrap.Constants.M_HR;
 
-public class SpeedDashboardActivity extends AppCompatActivity implements GpsStatus.Listener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+public class SpeedDashboardActivity extends DaggerAppCompatActivity implements GpsStatus.Listener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
     private static final String TAG = "SpeedDashboardActivity";
     private static final String CHANNEL_ID = "channelId";
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 1;
-    public static String currentSpeed;
+    public static Double currentSpeed;
     public boolean isTimeSet = false;
     ActivitySpeedDashboardBinding binding;
     SpeedDashboardModel speedDashboardModel;
     int maximumspeed = 280;
-    String maxSpeed, avgSpeed, distance;
+    int maxSpeed;
+    int avgSpeed;
+    Double distance;
     long[] vibrate = {500, 1000};
     Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     //  HistorySaveDialog historySaveDialog;
@@ -109,6 +118,7 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
     boolean isPlaing = false;
     Uri notification1 = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     int counter = 0;
+    @Inject
     LocationViewModel locationViewModel;
     Location previouslocation = new Location("previous");
     boolean isstart = true;
@@ -125,6 +135,12 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
     String userid;
     String distanceUnits;
     String carfueleconomyperkm;
+
+    @Inject
+    AppPreferences appPreferences;
+
+    @Inject
+    TripViewModel tripViewModel;
 
     public static Preferences preferences = null;
     // Timer timer;
@@ -184,7 +200,7 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
         preferences.setDistanceUnit(Preferences.UnitTypeEnum.KM);
         preferences.setSpeedUnit(Preferences.UnitTypeEnum.KM_HR);
         preferences.setFuelUnit(Preferences.UnitTypeEnum.Liters);
-        preferences.setFuelUnitPrice(113);
+        preferences.setFuelUnitPrice(113.09d);
 
 
         PointerSpeedometer pointerSpeedometer = (PointerSpeedometer) findViewById(R.id.iv_imageSpeedometer);
@@ -326,7 +342,7 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
             }
         });
 
-        locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
+       // locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
         locationViewModel.getLocationMutableLiveData().observe(this, new Observer<DataManager>() {
             @Override
             public void onChanged(@Nullable DataManager dataManager) {
@@ -363,7 +379,7 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                 }
 
 
-                double maxSpeedTemp = 0;
+                int maxSpeedTemp = 0;
                 try {
                     maxSpeedTemp = dataManager.getMaxSpeed();
                 } catch (NullPointerException e) {
@@ -465,22 +481,25 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                 Log.d("maxspeed", maxSpeedTemp + "\t" + "speedavg" + averageTemp + "\t" + "distance" + distanceTemp);
 
 
-                maxSpeed = String.format("%.0f", maxSpeedTemp) + " " + speedUnits;
-                speedDashboardModel.setMaxSpeedView(maxSpeed);
+              //  maxSpeed = String.format("%.0f", maxSpeedTemp) + " " + speedUnits;
+                maxSpeed = maxSpeedTemp;
+                speedDashboardModel.setMaxSpeedView(String.format("%.0f", maxSpeedTemp + " " + speedUnits));
 
                 // avgSpeed =  String.format("%.0f", averageTemp)+ speedUnits;
                 try {
-                    avgSpeed = dataManager.getTotalAvgSpeed() + " " + speedUnits;
+                  //  avgSpeed = dataManager.getTotalAvgSpeed() + " " + speedUnits;
+                    avgSpeed = dataManager.getTotalAvgSpeed();
                 } catch (NullPointerException e) {
                     e.printStackTrace();
-                    avgSpeed = "0";
+                    avgSpeed =0;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                speedDashboardModel.setAvgSpeedView(avgSpeed);
+                speedDashboardModel.setAvgSpeedView(avgSpeed + " " + speedUnits);
 
-                distance = String.format("%.2f", distanceTemp) + " " + distanceUnits;
-                speedDashboardModel.setDistanceView(distance);
+               // distance = String.format("%.2f", distanceTemp) + " " + distanceUnits;
+                distance = distanceTemp;
+                speedDashboardModel.setDistanceView(String.format("%.2f", distanceTemp) + " " + distanceUnits);
 
                 binding.setViewModel(speedDashboardModel);
 
@@ -493,10 +512,10 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                 }
 
                 if (currentSpeed != null) {
-                    binding.currentSpeed.setText(currentSpeed);
+                    binding.currentSpeed.setText(currentSpeed+"");
                     //binding.ivImageSpeedometer.speedTo(Integer.parseInt(currentSpeed));
                     //binding.ivImageSpeedometer.speedTo(Integer.parseInt(currentSpeed));
-                    pointerSpeedometer.speedTo(Integer.parseInt(currentSpeed));
+                    pointerSpeedometer.speedTo(Integer.parseInt(currentSpeed+""));
                 } else {
                     binding.currentSpeed.setText("0");
                    // binding.ivImageSpeedometer.speedTo(0);
@@ -504,7 +523,7 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                     pointerSpeedometer.speedTo(0);
                 }
 
-                if (currentSpeed != null && Integer.parseInt(currentSpeed) < speedLimit) {
+                if (currentSpeed != null && Integer.parseInt(currentSpeed+"") < speedLimit) {
                     binding.currentSpeed.setTextColor(getResources().getColor(R.color.whiteColor));
                     binding.speedUnit.setTextColor(getResources().getColor(R.color.whiteColor));
                     binding.textTime.setTextColor(getResources().getColor(R.color.whiteColor));
@@ -546,7 +565,7 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
             @Override
             public void onChanged(@Nullable String s) {
                 if (s != null) {
-                        if (currentSpeed != null && Integer.parseInt(currentSpeed) > speedLimit) {
+                        if (currentSpeed != null && Integer.parseInt(currentSpeed+"") > speedLimit) {
                             if (mp != null && !mp.isPlaying()) {
                                 //  mp.setLooping(true);
                                 mp.start();
@@ -1110,7 +1129,7 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                     isFinished = true;
 
 
-                    if (currentSpeed != null && Integer.parseInt(currentSpeed) > speedLimit) {
+                    if (currentSpeed != null && Integer.parseInt(currentSpeed+"") > speedLimit) {
                         createNotification(String.valueOf(speedLimit));
 
 
@@ -1216,6 +1235,11 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
     }
 
     public void finishDriveDialog() {
+
+        FullAddress fullAddress =  AddressClass.getAddressFromLatLon(this, locationViewModel.currentLat, locationViewModel.currentLon);
+        appPreferences.put(AppPreferences.Key.END_LOCATION, fullAddress.getAddress());
+
+
         AlertDialog.Builder builder1 = new AlertDialog.Builder(SpeedDashboardActivity.this);
         builder1.setMessage("Do you want to quit drive?");
         builder1.setCancelable(true);
@@ -1235,9 +1259,9 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
                         triptype = SharedPreferenceHelper.getInstance().getStringValue(Constants.triptype, "");
                         starttime = LocationViewModel.startTime;
 
-                        if (maxSpeed!=null && avgSpeed!=null && distance!=null)
+                        if (maxSpeed!=0 && avgSpeed!=0 && distance!=null)
                         {
-                            String str = distance;
+                            String str = distance+"";
                             String[] distancestring = str.split("\\s+");
 
                             double carfueleconomyindouble = Double.parseDouble(carfueleconomyperkm);
@@ -1249,19 +1273,41 @@ public class SpeedDashboardActivity extends AppCompatActivity implements GpsStat
 //                            String key = usertripsdatabase.push().getKey();
 //                            Trip trip = new Trip(carname, triptype, startTime, endtime, maxSpeed, avgSpeed, distance, date, dateinmillis, fueleconomypertrip);
 //                            usertripsdatabase.child(key).setValue(trip);
+
+                            Trip trip = new Trip();
+                            trip.setCarId(MainActivity.carID);
+                            trip.setTripType(triptype);
+                            trip.setStartTime(new Date(starttime));
+                            trip.setEndTime(new Date(endtime));
+                            trip.setMaxspeed(maxSpeed);
+                            trip.setAvgspeed(avgSpeed);
+                            trip.setDistanceCovered(distance);
+                            trip.setSaveDate(new Date(date));
+                            trip.setFueleconomypertrip(fueleconomycalculated);
+                            trip.setNoOfLitres((int) (distance/fueleconomycalculated));
+                            trip.setIntialOdometer(appPreferences.getInt(AppPreferences.Key.START_ODOMETER)); // not set yet
+                            double finalOdoMeter =  appPreferences.getInt(AppPreferences.Key.START_ODOMETER) + distance;
+                            trip.setFinalOdometer((int) finalOdoMeter); // not set yet
+                            trip.setFuelCostPerUnit(preferences.getFuelUnitPrice()); // not set yet
+                            trip.setOrigin(appPreferences.getString(AppPreferences.Key.START_LOCATION));
+                            trip.setDestination(appPreferences.getString(AppPreferences.Key.END_LOCATION)); // not set yet
+
+                            tripViewModel.addTrip(trip);
+
+
                             Toast.makeText(SpeedDashboardActivity.this, "Your trip is saved.", Toast.LENGTH_SHORT).show();
 
                             Intent i  = new Intent(SpeedDashboardActivity.this , MainActivity.class);
                             startActivity(i);
                             finish();
                         }
-                        else if(maxSpeed == null && avgSpeed == null && distance == null)
+                        else if(maxSpeed == 0 && avgSpeed == 0 && distance == null)
                         {
                             // todo save trip here
 //                            String key = usertripsdatabase.push().getKey();
 //                            Trip trip = new Trip(carname, triptype, startTime, endtime, "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits , ""), "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits , ""), "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(Constants.distanceunits , ""), date, dateinmillis, "0");
 //                            usertripsdatabase.child(key).setValue(trip);
-                            Toast.makeText(SpeedDashboardActivity.this, "Your trip is saved.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SpeedDashboardActivity.this, "Your trip is not saved.", Toast.LENGTH_SHORT).show();
 
                             Intent i  = new Intent(SpeedDashboardActivity.this , MainActivity.class);
                             startActivity(i);

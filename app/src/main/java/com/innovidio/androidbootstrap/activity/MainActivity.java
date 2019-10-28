@@ -107,6 +107,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     private boolean isUp, isDown = false;
 
     BroadcastReceiver broadcastReceiver;
+    public static int carID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,8 +212,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
 
         FuelUp fuelUp = new FuelUp();
-        //   fuelUp.setId(1);
-        fuelUp.setCarname("Honda Civic 2018");
+        //   fuelUp.setId(1)
         fuelUp.setCarId(1);
 
         fuelUp.setSaveDate(faker.date.backward(UtilClass.getRandomNo(1, 50)));
@@ -282,8 +282,8 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         trip.setIntialOdometer(odoMeter + UtilClass.getRandomNo(1000, 2000));
         odoMeter += odoMeter + UtilClass.getRandomNo(1000, 2000);
         trip.setFinalOdometer(odoMeter);
-        trip.setDistanceCovered(UtilClass.getRandomNo(100, 2000));
-        trip.setFueleconomypertrip(UtilClass.getRandomNo(10, 20));
+        trip.setDistanceCovered((double) UtilClass.getRandomNo(100, 2000));
+        trip.setFueleconomypertrip((double) UtilClass.getRandomNo(10, 20));
         trip.setMaxspeed(UtilClass.getRandomNo(50, 100));
         trip.setSaveDate(faker.date.backward(UtilClass.getRandomNo(1, 50)));
         trip.setTripTitle("Trip with " + faker.name.title());
@@ -293,9 +293,9 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             trip.setTripType("Business");
         }
         int noOfLitters = UtilClass.getRandomNo(10, 30);
-        int unitPriceinLit = UtilClass.getRandomNo(100, 120);
+        Double unitPriceinLit = Double.valueOf(UtilClass.getRandomNo(100, 120));
         trip.setNoOfLitres(noOfLitters);
-        trip.setTotalExpenses(unitPriceinLit * noOfLitters);
+        trip.setTotalExpenses((unitPriceinLit * noOfLitters));
         trip.setFuelCostPerUnit(unitPriceinLit);
 
         // tripDao.insert(trip);

@@ -3,11 +3,8 @@ package com.innovidio.androidbootstrap.repository;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
-import com.innovidio.androidbootstrap.db.dao.FuelAccountDao;
 import com.innovidio.androidbootstrap.db.dao.OdoMeterAccountDao;
-import com.innovidio.androidbootstrap.entity.FuelAccount;
 import com.innovidio.androidbootstrap.entity.OdoMeterAccount;
 
 import java.util.Date;
@@ -57,7 +54,7 @@ public class OdoMeterAccountRepository {
         }.execute();
     }
 
-    public LiveData<List<FuelAccount>> getAllOdoMeterAccount(){
+    public LiveData<List<OdoMeterAccount>> getAllOdoMeterAccount(){
         return this.odoMeterAccountDao.getAllOdoMeterAccount();
     }
 

@@ -14,9 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 
 import com.innovidio.androidbootstrap.AppPreferences;
+import com.innovidio.androidbootstrap.BaseApplication;
 import com.innovidio.androidbootstrap.Utils.DateConverter;
 import com.innovidio.androidbootstrap.db.dao.PreferencesDao;
 import com.innovidio.androidbootstrap.entity.Preferences;
@@ -32,14 +34,16 @@ import static com.innovidio.androidbootstrap.Constants.SPEED_LIMIT;
 import static com.innovidio.androidbootstrap.Constants.SPEED_LIMIT_METER_TYPE;
 import static com.innovidio.androidbootstrap.Constants.speedunits;
 
-public class LocationViewModel extends AndroidViewModel implements LocationListener, GpsStatus.Listener {
-    public static String currentSpeed;
+public class LocationViewModel extends ViewModel implements LocationListener, GpsStatus.Listener {
+    public static Double currentSpeed;
+    private final Context context;
 
     @Inject
     AppPreferences appPreferences;
 
     @Inject
     PreferencesDao preferencesDao;
+
     Location lastlocation = new Location("last");
     double currentLon = 0;
     double currentLat = 0;
@@ -56,16 +60,14 @@ public class LocationViewModel extends AndroidViewModel implements LocationListe
 
 
     //  private boolean isTimerRunning = false;
-
     public MutableLiveData<String> getSpeedexceedMutableLiveData() {
         return speedexceedMutableLiveData;
     }
 
-
-
     @SuppressLint("MissingPermission")
-    public LocationViewModel(@NonNull Application application) {
-        super(application);
+    @Inject
+    public LocationViewModel(Context context) {
+this.context = context;
         data = new DataManager();
         data.setFirstTime(true);
 
@@ -74,9 +76,7 @@ public class LocationViewModel extends AndroidViewModel implements LocationListe
             isTimeSet = true;
         }
 
-        mLocationManager = (LocationManager) getApplication().getSystemService(Context.LOCATION_SERVICE);
-
-
+        mLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         try {
             if (mLocationManager.getAllProviders().indexOf(LocationManager.GPS_PROVIDER) >= 0) {
                 mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, (android.location.LocationListener) this);
@@ -92,7 +92,6 @@ public class LocationViewModel extends AndroidViewModel implements LocationListe
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public MutableLiveData<DataManager> getLocationMutableLiveData() {
@@ -131,9 +130,9 @@ public class LocationViewModel extends AndroidViewModel implements LocationListe
             lastLon = currentLon;
             data.setFirstTime(false);
 
-            FullAddress fullAddress =  AddressClass.getAddressFromLatLon(getApplication().getApplicationContext(), currentLat, currentLon);
+            FullAddress fullAddress =  AddressClass.getAddressFromLatLon(context, currentLat, currentLon);
             if (fullAddress!=null){
-                appPreferences.put(AppPreferences.Key.SAVED_CAR_ID, fullAddress.getAddress());
+                appPreferences.put(AppPreferences.Key.START_LOCATION, fullAddress.getAddress());
             }
         }
 
@@ -154,7 +153,7 @@ public class LocationViewModel extends AndroidViewModel implements LocationListe
 //           KM_HR).equals(
 //           KM_HR))
 //            {
-            data.setCurSpeed(location.getSpeed() * 3.6);
+            data.setCurSpeed((int) (location.getSpeed() * 3.6));
             //  }
             /*else if (SharedPreferenceHelper.getInstance().getStringValue(AppConstant.speedunits ,
            KM_HR).equals("M/hr"))
@@ -163,18 +162,19 @@ public class LocationViewModel extends AndroidViewModel implements LocationListe
             }*/
 
             if (SharedPreferenceHelper.getInstance().getStringValue(speedunits, KM_HR).equals(KM_HR)) {
-                currentSpeed = String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6) /*+ "km/h"*/;
+              ///  currentSpeed = String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6) /*+ "km/h"*/;
+                currentSpeed = Double.parseDouble(String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6)) /*+ "km/h"*/;
                 data.setCurrentSpeed(currentSpeed);
-                data.setTotalAvgSpeed(currentSpeed);
+                data.setTotalAvgSpeed(currentSpeed+"km/h");
             } else if (SharedPreferenceHelper.getInstance().getStringValue(speedunits, KM_HR).equals(M_HR)) {
-                currentSpeed = String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6 * 0.62137119)/* + "mi/h"*/;
+                currentSpeed = Double.parseDouble(String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6 * 0.62137119));
                 data.setCurrentSpeed(currentSpeed);
-                data.setTotalAvgSpeed(currentSpeed);
+                data.setTotalAvgSpeed(currentSpeed + "mi/h");
 
             } else {
-                currentSpeed = String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6 * 0.5399568) /*+ "kn"*/;
+                currentSpeed = Double.parseDouble(String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6 * 0.5399568));
                 data.setCurrentSpeed(currentSpeed);
-                data.setTotalAvgSpeed(currentSpeed);
+                data.setTotalAvgSpeed(currentSpeed + "kn");
 
             }
 
@@ -212,8 +212,8 @@ public class LocationViewModel extends AndroidViewModel implements LocationListe
                 if (currentSpeed != null) {
 
 
-                    if (Integer.parseInt(currentSpeed) > speedLimit && speedLimit != 0) {
-                        speedexceedMutableLiveData.setValue(currentSpeed);
+                    if (currentSpeed > speedLimit && speedLimit != 0) {
+                        speedexceedMutableLiveData.setValue(currentSpeed+"");
                     }
                 }
 
