@@ -19,10 +19,13 @@ import androidx.lifecycle.ViewModel;
 
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.BaseApplication;
-import com.innovidio.androidbootstrap.Utils.DateConverter;
+import com.innovidio.androidbootstrap.Utils.UtilClass;
+import com.innovidio.androidbootstrap.db.converters.DateConverter;
 import com.innovidio.androidbootstrap.db.dao.PreferencesDao;
 import com.innovidio.androidbootstrap.entity.Preferences;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -50,7 +53,7 @@ public class LocationViewModel extends ViewModel implements LocationListener, Gp
     double lastLon = 0;
     double lastLat = 0;
     boolean isTimeSet = false;
-    public static String startTime;
+    public static Date startTime;
     public static int speedLimit;
     DataManager data;
     private LocationManager mLocationManager;
@@ -72,7 +75,8 @@ this.context = context;
         data.setFirstTime(true);
 
         if (!isTimeSet) {
-            startTime = DateConverter.getTimeFormateForUS("hh:mm a", Locale.US);
+            startTime = Calendar.getInstance().getTime();
+           // startTime = DateConverter.getTimeFormateForUS("hh:mm a", Locale.US);
             isTimeSet = true;
         }
 
@@ -165,16 +169,19 @@ this.context = context;
               ///  currentSpeed = String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6) /*+ "km/h"*/;
                 currentSpeed = Double.parseDouble(String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6)) /*+ "km/h"*/;
                 data.setCurrentSpeed(currentSpeed);
-                data.setTotalAvgSpeed(currentSpeed+"km/h");
+               // data.setTotalAvgSpeed(currentSpeed+"km/h");
+                data.setTotalAvgSpeed(currentSpeed+"");
             } else if (SharedPreferenceHelper.getInstance().getStringValue(speedunits, KM_HR).equals(M_HR)) {
                 currentSpeed = Double.parseDouble(String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6 * 0.62137119));
                 data.setCurrentSpeed(currentSpeed);
-                data.setTotalAvgSpeed(currentSpeed + "mi/h");
+             //   data.setTotalAvgSpeed(currentSpeed + "mi/h");
+                data.setTotalAvgSpeed(currentSpeed + "");
 
             } else {
                 currentSpeed = Double.parseDouble(String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6 * 0.5399568));
                 data.setCurrentSpeed(currentSpeed);
-                data.setTotalAvgSpeed(currentSpeed + "kn");
+                //data.setTotalAvgSpeed(currentSpeed + "kn");
+                data.setTotalAvgSpeed(currentSpeed + "");
 
             }
 

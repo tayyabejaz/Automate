@@ -62,8 +62,10 @@ import com.google.android.material.snackbar.Snackbar;
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.activity.MainActivity;
 import com.innovidio.androidbootstrap.databinding.ActivitySpeedDashboardBinding;
+import com.innovidio.androidbootstrap.db.converters.DateConverter;
 import com.innovidio.androidbootstrap.entity.Preferences;
 import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.service.FloatingViewService;
@@ -201,6 +203,12 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
         preferences.setSpeedUnit(Preferences.UnitTypeEnum.KM_HR);
         preferences.setFuelUnit(Preferences.UnitTypeEnum.Liters);
         preferences.setFuelUnitPrice(113.09d);
+
+        if (preferences.getSpeedUnit() == Preferences.UnitTypeEnum.KM_HR){
+            distanceUnitsfromdatabase = "KM";
+        }else{
+            distanceUnitsfromdatabase = "Miles";
+        }
 
 
         PointerSpeedometer pointerSpeedometer = (PointerSpeedometer) findViewById(R.id.iv_imageSpeedometer);
@@ -483,7 +491,8 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
 
               //  maxSpeed = String.format("%.0f", maxSpeedTemp) + " " + speedUnits;
                 maxSpeed = maxSpeedTemp;
-                speedDashboardModel.setMaxSpeedView(String.format("%.0f", maxSpeedTemp + " " + speedUnits));
+               // speedDashboardModel.setMaxSpeedView(String.format("%.0f", maxSpeedTemp) + " " + speedUnits);
+                speedDashboardModel.setMaxSpeedView(maxSpeedTemp + " " + speedUnits);
 
                 // avgSpeed =  String.format("%.0f", averageTemp)+ speedUnits;
                 try {
@@ -515,7 +524,7 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
                     binding.currentSpeed.setText(currentSpeed+"");
                     //binding.ivImageSpeedometer.speedTo(Integer.parseInt(currentSpeed));
                     //binding.ivImageSpeedometer.speedTo(Integer.parseInt(currentSpeed));
-                    pointerSpeedometer.speedTo(Integer.parseInt(currentSpeed+""));
+                    pointerSpeedometer.speedTo((int) Double.parseDouble(currentSpeed+""));
                 } else {
                     binding.currentSpeed.setText("0");
                    // binding.ivImageSpeedometer.speedTo(0);
@@ -523,7 +532,7 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
                     pointerSpeedometer.speedTo(0);
                 }
 
-                if (currentSpeed != null && Integer.parseInt(currentSpeed+"") < speedLimit) {
+                if (currentSpeed != null && currentSpeed < speedLimit) {
                     binding.currentSpeed.setTextColor(getResources().getColor(R.color.whiteColor));
                     binding.speedUnit.setTextColor(getResources().getColor(R.color.whiteColor));
                     binding.textTime.setTextColor(getResources().getColor(R.color.whiteColor));
@@ -1250,14 +1259,8 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
                     public void onClick(DialogInterface dialog, int id) {
                         String triptype, starttime, endtime;
                         dialog.cancel();
-                        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.US); //dd-MM-yyyy
-                        Calendar calender = Calendar.getInstance();
-                        TimeZone ccme = calender.getTimeZone();
-                        timeFormat.setTimeZone(ccme);
-                        endtime = timeFormat.format(new Date());
 
                         triptype = SharedPreferenceHelper.getInstance().getStringValue(Constants.triptype, "");
-                        starttime = LocationViewModel.startTime;
 
                         if (maxSpeed!=0 && avgSpeed!=0 && distance!=null)
                         {
@@ -1274,26 +1277,26 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
 //                            Trip trip = new Trip(carname, triptype, startTime, endtime, maxSpeed, avgSpeed, distance, date, dateinmillis, fueleconomypertrip);
 //                            usertripsdatabase.child(key).setValue(trip);
 
+                            Date currentTime = Calendar.getInstance().getTime();
+
                             Trip trip = new Trip();
                             trip.setCarId(MainActivity.carID);
                             trip.setTripType(triptype);
-                            trip.setStartTime(new Date(starttime));
-                            trip.setEndTime(new Date(endtime));
+                            trip.setStartTime(LocationViewModel.startTime);
+                            trip.setEndTime(currentTime); // or end time
                             trip.setMaxspeed(maxSpeed);
                             trip.setAvgspeed(avgSpeed);
-                            trip.setDistanceCovered(distance);
-                            trip.setSaveDate(new Date(date));
-                            trip.setFueleconomypertrip(fueleconomycalculated);
-                            trip.setNoOfLitres((int) (distance/fueleconomycalculated));
+                            trip.setDistanceCovered(UtilClass.getRoundFigureValue(distance));
+                            trip.setSaveDate(currentTime);
+                            trip.setFueleconomypertrip(UtilClass.getRoundFigureValue(fueleconomycalculated));
+                            trip.setNoOfLitres((int) (distance/13f));
                             trip.setIntialOdometer(appPreferences.getInt(AppPreferences.Key.START_ODOMETER)); // not set yet
                             double finalOdoMeter =  appPreferences.getInt(AppPreferences.Key.START_ODOMETER) + distance;
                             trip.setFinalOdometer((int) finalOdoMeter); // not set yet
                             trip.setFuelCostPerUnit(preferences.getFuelUnitPrice()); // not set yet
                             trip.setOrigin(appPreferences.getString(AppPreferences.Key.START_LOCATION));
                             trip.setDestination(appPreferences.getString(AppPreferences.Key.END_LOCATION)); // not set yet
-
                             tripViewModel.addTrip(trip);
-
 
                             Toast.makeText(SpeedDashboardActivity.this, "Your trip is saved.", Toast.LENGTH_SHORT).show();
 

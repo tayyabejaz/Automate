@@ -19,11 +19,15 @@ import com.innovidio.androidbootstrap.dashboard.SpeedDashboardActivity;
 import com.innovidio.androidbootstrap.databinding.DialogDriveSelectionBinding;
 import com.innovidio.androidbootstrap.driveDetect.BackgroundDetectedActivitiesService;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
+import java.util.TimeZone;
 
 public class UtilClass {
 
@@ -181,4 +185,34 @@ public class UtilClass {
         Intent intent = new Intent(context, BackgroundDetectedActivitiesService.class);
         context.stopService(intent);
     }
+
+
+    public static Date getTime(String time){
+        Date startTimeDate = null, endTimeDate = null;
+        SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss a", Locale.US);
+        try {
+            startTimeDate= formatter.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return startTimeDate;
+    }
+
+    public static String getTimeFormateForUS(String pattern, Locale locale ){
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.US); //dd-MM-yyyy
+        Calendar calender = Calendar.getInstance();
+        TimeZone ccme = calender.getTimeZone();
+        timeFormat.setTimeZone(ccme);
+        String startTime = timeFormat.format(new Date());
+        return startTime;
+    }
+
+
+    public static Double getRoundFigureValue(Double number){
+        NumberFormat formatter = new DecimalFormat("#0.00");
+        Double roundFigureNo =  Double.parseDouble(formatter.format(number));
+        return roundFigureNo;
+    }
+
+
 }

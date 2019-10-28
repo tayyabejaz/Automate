@@ -46,7 +46,7 @@ public class DataManager {
     public void setTotalAvgSpeed(String totalAvgSpeed) {
 
         int finalavgspeed;
-        currentIncomingSpeed = currentIncomingSpeed + (Integer.parseInt(totalAvgSpeed));
+        currentIncomingSpeed = currentIncomingSpeed + (int)(Double.parseDouble(totalAvgSpeed));
         currentIncomingSpeedCounter++;
         if (currentIncomingSpeed >= Integer.MAX_VALUE-500)
         {

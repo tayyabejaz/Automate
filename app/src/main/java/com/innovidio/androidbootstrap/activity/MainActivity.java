@@ -234,7 +234,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         Date nextDate = UtilClass.addDays(saveDate, UtilClass.getRandomNo(20, 100));
         String[] servicecategories = getResources().getStringArray(R.array.service_list);
         String serviceName = servicecategories[UtilClass.getRandomNo(0, 32)];
-        int serviceCost = UtilClass.getRandomNo(1000, 10000);
 
         Date DateForForm = UtilClass.addDays(saveDate, UtilClass.getRandomNo(20, 100));
         Form form = new Form();
@@ -265,7 +264,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
             maintenance.setMaintenanceName(serviceName);
         }
-
         maintenance.setNextMaintenanceDate(nextDate);
 
 
