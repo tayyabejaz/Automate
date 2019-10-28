@@ -23,8 +23,6 @@ public abstract class FuelDao extends BaseDao<FuelUp> {
     @Query("SELECT * FROM FuelUp WHERE id =:id")
     public abstract LiveData<FuelUp> getFuelUpById(int id);
 
-    @Query("SELECT * FROM FuelUp WHERE carname =:carName")
-    public abstract LiveData<List<FuelUp>> getFuelUpByCarName(String carName);
 
     @Query("SELECT * FROM FuelUp WHERE carId =:carId")
     public abstract LiveData<List<FuelUp>> getAllFuelUpsForTimeline(int carId);

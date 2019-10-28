@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 
-import com.innovidio.androidbootstrap.entity.FuelAccount;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.OdoMeterAccount;
 
@@ -17,7 +16,7 @@ public abstract class OdoMeterAccountDao extends BaseDao<OdoMeterAccount> {
     public abstract LiveData<List<FuelUp>> getOdoMeterAccountOrderById();
 
     @Query("SELECT * FROM OdoMeterAccount")
-    public abstract LiveData<List<FuelAccount>> getAllOdoMeterAccount();
+    public abstract LiveData<List<OdoMeterAccount>> getAllOdoMeterAccount();
 
     @Query("SELECT * FROM OdoMeterAccount WHERE id =:id")
     public abstract LiveData<OdoMeterAccount> getOdoMeterAccountById(int id);

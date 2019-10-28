@@ -21,8 +21,6 @@ import java.util.Date;
 public class FuelUp implements TimeLineItem {
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private String carname;
-    // optional for trips and without trip/ regular use
     private int tripId;
     private int carId;
     private int odometerreading;
@@ -71,7 +69,6 @@ public class FuelUp implements TimeLineItem {
 
     @Ignore
     public FuelUp(String carname, int odometerreading, int tripId, int liters, int perunitfuelprice, int totalprice, String location, Date saveDate, String fuelType) {
-        this.carname = carname;
         this.odometerreading = odometerreading;
         this.liters = liters;
         this.perunitfuelprice = perunitfuelprice;
@@ -92,10 +89,6 @@ public class FuelUp implements TimeLineItem {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setCarname(String carname) {
-        this.carname = carname;
     }
 
     public void setTripId(int tripId) {
@@ -133,10 +126,6 @@ public class FuelUp implements TimeLineItem {
 
     public int getId() {
         return id;
-    }
-
-    public String getCarname() {
-        return carname;
     }
 
     public int getOdometerreading() {

@@ -31,10 +31,16 @@ public class Trip implements TimeLineItem {
     private String tripType;
     private int maxspeed;
     private int avgspeed;
-    private int distanceCovered;
-    private int fueleconomypertrip;
-    private int fuelCostPerUnit;
-    private int totalExpenses;
+    @ColumnInfo(name = "startTime")
+    @TypeConverters(DateConverter.class)
+    private Date startTime;
+    @ColumnInfo(name = "endTime")
+    @TypeConverters(DateConverter.class)
+    private Date endTime;
+    private Double distanceCovered;
+    private Double fueleconomypertrip;
+    private Double fuelCostPerUnit;
+    private Double totalExpenses;
     private int noOfLitres;
     private String origin;
     private int intialOdometer;
@@ -111,7 +117,7 @@ public class Trip implements TimeLineItem {
     }
 
     @Ignore
-    public Trip(String tripTitle, String destination, String carname, String triptype, int maxspeed, int avgspeed, int distanceCovered, int fueleconomypertrip, Date saveDate, int fuelCostPerUnit, int totalExpenses, int noOfLitres) {
+    public Trip(String tripTitle, String destination, String carname, String triptype, int maxspeed, int avgspeed, Double distanceCovered, Double fueleconomypertrip, Date saveDate, Double fuelCostPerUnit, Double totalExpenses, int noOfLitres) {
         this.tripTitle = tripTitle;
         this.destination = destination;
         this.carname = carname;
@@ -129,19 +135,19 @@ public class Trip implements TimeLineItem {
         this.noOfLitres = noOfLitres;
     }
 
-    public int getFuelCostPerUnit() {
+    public Double getFuelCostPerUnit() {
         return fuelCostPerUnit;
     }
 
-    public void setFuelCostPerUnit(int fuelCostPerUnit) {
+    public void setFuelCostPerUnit(Double fuelCostPerUnit) {
         this.fuelCostPerUnit = fuelCostPerUnit;
     }
 
-    public int getTotalExpenses() {
+    public Double getTotalExpenses() {
         return totalExpenses;
     }
 
-    public void setTotalExpenses(int totalExpenses) {
+    public void setTotalExpenses(Double totalExpenses) {
         this.totalExpenses = totalExpenses;
     }
 
@@ -189,11 +195,11 @@ public class Trip implements TimeLineItem {
         this.avgspeed = avgspeed;
     }
 
-    public void setDistanceCovered(int distanceCovered) {
+    public void setDistanceCovered(Double distanceCovered) {
         this.distanceCovered = distanceCovered;
     }
 
-    public void setFueleconomypertrip(int fueleconomypertrip) {
+    public void setFueleconomypertrip(Double fueleconomypertrip) {
         this.fueleconomypertrip = fueleconomypertrip;
     }
 
@@ -239,7 +245,7 @@ public class Trip implements TimeLineItem {
         return avgspeed;
     }
 
-    public int getDistanceCovered() {
+    public Double getDistanceCovered() {
         return distanceCovered;
     }
 //
@@ -247,7 +253,7 @@ public class Trip implements TimeLineItem {
 //        return tripdate;
 //    }
 
-    public int getFueleconomypertrip() {
+    public Double getFueleconomypertrip() {
         return fueleconomypertrip;
     }
 
@@ -269,6 +275,22 @@ public class Trip implements TimeLineItem {
     public String getSaveTimeInString() {
         DateFormat format = new SimpleDateFormat("hh:mm");
         return format.format(this.saveDate);
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     public String getDestination() {

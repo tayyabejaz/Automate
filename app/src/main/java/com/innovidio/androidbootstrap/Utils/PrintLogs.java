@@ -14,7 +14,6 @@ public class PrintLogs {
         switch (item.getType()) {
             case FUEL:
                 FuelUp fuelUp = (FuelUp) item;
-                Log.d(TAG, "timeLine: FuelUp: " + fuelUp.getCarname());
                 Log.d(TAG, "timeLine: FuelUp: " + fuelUp.getSaveDateInString());
                 break;
 

@@ -245,8 +245,7 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
 
 
         FuelUp fuelUp = new FuelUp();
-        //   fuelUp.setId(1);
-        fuelUp.setCarname("Honda Civic 2018");
+        //   fuelUp.setId(1)
         fuelUp.setCarId(1);
 
         fuelUp.setSaveDate(faker.date.backward(UtilClass.getRandomNo(1, 50)));
@@ -268,7 +267,6 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
         Date nextDate = UtilClass.addDays(saveDate, UtilClass.getRandomNo(20, 100));
         String[] servicecategories = getResources().getStringArray(R.array.service_list);
         String serviceName = servicecategories[UtilClass.getRandomNo(0, 32)];
-        int serviceCost = UtilClass.getRandomNo(1000, 10000);
 
         Date DateForForm = UtilClass.addDays(saveDate, UtilClass.getRandomNo(20, 100));
         Form form = new Form();
@@ -299,7 +297,6 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
             maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
             maintenance.setMaintenanceName(serviceName);
         }
-
         maintenance.setNextMaintenanceDate(nextDate);
 
 
@@ -316,8 +313,8 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
         trip.setIntialOdometer(odoMeter + UtilClass.getRandomNo(1000, 2000));
         odoMeter += odoMeter + UtilClass.getRandomNo(1000, 2000);
         trip.setFinalOdometer(odoMeter);
-        trip.setDistanceCovered(UtilClass.getRandomNo(100, 2000));
-        trip.setFueleconomypertrip(UtilClass.getRandomNo(10, 20));
+        trip.setDistanceCovered((double) UtilClass.getRandomNo(100, 2000));
+        trip.setFueleconomypertrip((double) UtilClass.getRandomNo(10, 20));
         trip.setMaxspeed(UtilClass.getRandomNo(50, 100));
         trip.setSaveDate(faker.date.backward(UtilClass.getRandomNo(1, 50)));
         trip.setTripTitle("Trip with " + faker.name.title());
@@ -327,9 +324,9 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
             trip.setTripType("Business");
         }
         int noOfLitters = UtilClass.getRandomNo(10, 30);
-        int unitPriceinLit = UtilClass.getRandomNo(100, 120);
+        Double unitPriceinLit = Double.valueOf(UtilClass.getRandomNo(100, 120));
         trip.setNoOfLitres(noOfLitters);
-        trip.setTotalExpenses(unitPriceinLit * noOfLitters);
+        trip.setTotalExpenses((unitPriceinLit * noOfLitters));
         trip.setFuelCostPerUnit(unitPriceinLit);
 
         // tripDao.insert(trip);

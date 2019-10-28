@@ -6,9 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.innovidio.androidbootstrap.db.dao.FuelAccountDao;
-import com.innovidio.androidbootstrap.db.dao.FuelDao;
-import com.innovidio.androidbootstrap.entity.FuelAccount;
-import com.innovidio.androidbootstrap.entity.FuelUp;
+import com.innovidio.androidbootstrap.entity.FuelTransaction;
 
 import java.util.Date;
 import java.util.List;
@@ -26,42 +24,42 @@ public class FuelAccountRepository {
         this.fuelAccountDao = fuelAccountDao;
     }
 
-    public void addFuelUp(FuelAccount fuelAccount){
+    public void addFuelUp(FuelTransaction fuelTransaction){
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                fuelAccountDao.insert(fuelAccount);
+                fuelAccountDao.insert(fuelTransaction);
                 return null;
             }
         }.execute();
     }
 
-    public void deleteFuelUp(FuelAccount fuelAccount){
+    public void deleteFuelUp(FuelTransaction fuelTransaction){
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                fuelAccountDao.delete(fuelAccount);
+                fuelAccountDao.delete(fuelTransaction);
                 return null;
             }
         }.execute();
     }
 
 
-    public void updateFuelUp(FuelAccount fuelAccount){
+    public void updateFuelUp(FuelTransaction fuelTransaction){
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                fuelAccountDao.update(fuelAccount);
+                fuelAccountDao.update(fuelTransaction);
                 return null;
             }
         }.execute();
     }
 
-    public LiveData<List<FuelAccount>> getAllFuelUps(){
+    public LiveData<List<FuelTransaction>> getAllFuelUps(){
         return this.fuelAccountDao.getAllFuelUps();
     }
 
-    public LiveData<FuelAccount> getRecentFuelUp(){
+    public LiveData<FuelTransaction> getRecentFuelUp(){
         return this.fuelAccountDao.getRecentFuelUp();
     }
 

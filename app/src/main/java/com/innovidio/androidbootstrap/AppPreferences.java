@@ -59,7 +59,10 @@ public class AppPreferences {
         SAMPLE_INT,
         SAVED_CAR_ID,
         START_LOCATION,
-        END_LOCATION
+        END_LOCATION,
+        START_ODOMETER,
+        END_ODOMETER,
+        START_TIME_DATE,
 
     }
 

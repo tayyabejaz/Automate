@@ -3,9 +3,7 @@ package com.innovidio.androidbootstrap.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.innovidio.androidbootstrap.entity.FuelAccount;
 import com.innovidio.androidbootstrap.entity.OdoMeterAccount;
-import com.innovidio.androidbootstrap.repository.FuelAccountRepository;
 import com.innovidio.androidbootstrap.repository.OdoMeterAccountRepository;
 
 import java.util.List;
@@ -33,7 +31,7 @@ public class OdoMeterViewModel extends ViewModel {
         odoMeterAccountRepository.updateOdoMeter(fuelUp);
     }
 
-    public LiveData<List<FuelAccount>> getAllOdoMeter(){
+    public LiveData<List<OdoMeterAccount>> getAllOdoMeter(){
         return this.odoMeterAccountRepository.getAllOdoMeterAccount();
     }
 
