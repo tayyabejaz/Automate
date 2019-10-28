@@ -36,7 +36,7 @@
 
                     <ImageView
                         android:id="@+id/iv_add_carwash"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:scaleType="center"
                         app:layout_constraintEnd_toStartOf="@id/iv_add_triprec"
@@ -48,6 +48,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:scaleType="center"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toStartOf="@id/iv_add_speedometer"
                         app:layout_constraintStart_toEndOf="@id/iv_add_carwash"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -57,6 +58,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:scaleType="center"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/iv_add_triprec"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -65,6 +67,7 @@
                         android:id="@+id/tv_add_triprec"
                         style="@style/bottom_sheet_text"
                         android:text="@string/trip_rec"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/iv_add_triprec"
                         app:layout_constraintStart_toStartOf="@id/iv_add_triprec"
@@ -73,8 +76,10 @@
 
                     <TextView
                         android:id="@+id/tv_add_carwash"
+                        android:layout_width="0dp"
                         style="@style/bottom_sheet_text"
                         android:text="@string/car_wash"
+                        android:gravity="center"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/iv_add_carwash"
                         app:layout_constraintStart_toStartOf="@id/iv_add_carwash"
@@ -84,6 +89,7 @@
                         android:id="@+id/tv_add_speedometer"
                         style="@style/bottom_sheet_text"
                         android:text="@string/speedometer"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="@id/iv_add_speedometer"
                         app:layout_constraintStart_toStartOf="@id/iv_add_speedometer"

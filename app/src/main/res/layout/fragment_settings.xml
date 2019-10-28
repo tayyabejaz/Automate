@@ -64,13 +64,13 @@
                         android:id="@+id/button_edit_profile"
                         android:layout_width="@dimen/_90sdp"
                         android:layout_height="@dimen/_30sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:background="@drawable/app_button_background"
                         android:drawableLeft="@drawable/automate_edit_dialog_icon"
                         android:fontFamily="@font/roboto_medium"
                         android:gravity="center"
                         android:padding="@dimen/_10sdp"
                         android:text="Edit"
-                        android:layout_marginTop="@dimen/_8sdp"
                         android:textColor="@color/whiteColor"
                         android:textSize="@dimen/_8sdp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -241,8 +241,8 @@
                             android:id="@+id/iv_privacy_policy"
                             style="@style/imageviewSetting"
                             android:src="@drawable/automate_privacy_policy_settings_icon"
-                            app:layout_constraintEnd_toStartOf="@id/tv_privacy_policy"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/tv_privacy_policy"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -286,8 +286,8 @@
                             android:id="@+id/iv_rate_us"
                             style="@style/imageviewSetting"
                             android:src="@drawable/automate_rate_us_settings_icon"
-                            app:layout_constraintEnd_toStartOf="@id/tv_rate_us"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/tv_rate_us"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -322,7 +322,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_10sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/ll_generate_demo_data"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/ll_rate_us">
@@ -357,6 +357,52 @@
                             app:layout_constraintEnd_toEndOf="@id/tv_share"
                             app:layout_constraintStart_toStartOf="@id/tv_share"
                             app:layout_constraintTop_toBottomOf="@id/tv_share"
+
+                            />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ll_generate_demo_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ll_share">
+
+                        <ImageView
+                            android:id="@+id/iv_demo_data"
+                            style="@style/imageviewSetting"
+                            android:src="@drawable/automate_bottom_nav_open_icon"
+                            android:tint="@color/blackColor"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/tv_demo_data"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_demo_data"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Generate Demo Data"
+                            android:textColor="@color/blackColor"
+                            android:textSize="@dimen/_14sdp"
+                            app:layout_constraintBottom_toTopOf="@id/tv_demo_data_description"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_demo_data"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_demo_data_description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="This tab is used to generate demo data"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@id/tv_demo_data"
+                            app:layout_constraintStart_toStartOf="@id/tv_demo_data"
+                            app:layout_constraintTop_toBottomOf="@id/tv_demo_data"
 
                             />
 

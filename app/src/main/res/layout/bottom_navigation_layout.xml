@@ -29,6 +29,7 @@
                 android:src="@drawable/bottom_navigation_dashboard_selector" />
 
             <TextView
+                android:id="@+id/tv_dashboard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
@@ -55,6 +56,7 @@
                 android:src="@drawable/bottom_navigation_drive_selector" />
 
             <TextView
+                android:id="@+id/tv_drive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Drive"
@@ -91,6 +93,7 @@
                 android:src="@drawable/bottom_navigation_maintain_selector" />
 
             <TextView
+                android:id="@+id/tv_maintain"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Maintain"
@@ -117,6 +120,7 @@
                 android:src="@drawable/bottom_navigation_settings_selector" />
 
             <TextView
+                android:id="@+id/tv_settings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Settings"

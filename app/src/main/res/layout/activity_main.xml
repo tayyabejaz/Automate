@@ -82,7 +82,6 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:onClick="toolbarAlarmsClick"
                 android:id="@+id/toolbar_notification_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -90,22 +89,9 @@
                 android:visibility="visible"
                 android:src="@drawable/automate_reminders_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/toolbar_filter_icon"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/toolbar_title"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/toolbar_filter_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:src="@drawable/automate_sort_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/toolbar_notification_icon"
-                app:layout_constraintTop_toTopOf="parent"
-
-                />
 
             <TextView
                 android:id="@+id/toolbar_title"

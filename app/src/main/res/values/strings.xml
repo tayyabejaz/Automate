@@ -1,7 +1,12 @@
 <resources>
-    <string name="app_name">AutoMate New</string>
+    <integer-array name="yearList">
+        <item>2019</item>
+        <item>2016</item>
+        <item>2015</item>
+    </integer-array>
 
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">AutoMate New</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fuel_up">Fuel Up</string>
     <string name="car_wash">Car Wash</string>
@@ -23,34 +28,35 @@
     <string name="rupees">Rupees</string>
     <string name="form_total_price">Total Price</string>
     <string name="form_select_services">Select Services</string>
-    <string name="form_get_location">Get Location?</string>
 
+    <string name="form_get_location">Get Location?</string>
     <string name="currency_unit"> RS </string>
     <string name="liquid_unit"> L </string>
     <string name="speed_unit"> Km/h </string>
     <string name="distance_unit"> Km </string>
-    <string name="add_custom_car">Add Custom Car</string>
 
+
+    <string name="add_custom_car">Add Custom Car</string>
 
     <string name="running">Route in process…</string>
 
     <string name="activity_in_vehicle">In Vehicle</string>
-
     <string name="activity_on_bicycle">On Bicycle</string>
+
     <string name="activity_on_foot">On Foot</string>
 
     <string name="activity_running">Running</string>
 
-    <string name="activity_still">Still</string>
 
+    <string name="activity_still">Still</string>
 
     <string name="activity_tilting">Tilting</string>
 
-    <string name="activity_walking">walking</string>
-
 
     <!--    for drive detect-->
+    <string name="activity_walking">walking</string>
     <string name="activity_unknown">Unknown</string>
+
     <string-array name="model_year">
         <item> 2019 </item>
         <item> 2019 </item>
@@ -91,18 +97,12 @@
         <item>Honda</item>
     </string-array>
 
+
     <string-array name="modelList">
         <item>WagonR</item>
         <item>Accord</item>
         <item>Civic</item>
     </string-array>
-
-
-    <integer-array name="yearList">
-        <item>2019</item>
-        <item>2016</item>
-        <item>2015</item>
-    </integer-array>
 
     <string-array name="service_list">
         <item>Check Battery and Contacts</item>

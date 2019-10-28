@@ -24,6 +24,33 @@
                     android:id="@+id/top_fragmented_layout"
                     layout="@layout/item_boxes_main_fragment"/>
 
+                <LinearLayout
+                    android:id="@+id/ll_filter_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/blackColor"
+                        android:fontFamily="@font/roboto_medium"
+                        android:padding="@dimen/_5sdp"
+                        android:text="Filter"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:tint="@color/blackColor"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/automate_sort_icon"/>
+
+                </LinearLayout>
+
+
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_main_fragment"
                     android:layout_width="match_parent"

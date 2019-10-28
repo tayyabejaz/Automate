@@ -4,29 +4,30 @@ package com.innovidio.androidbootstrap.fragment;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
-import com.innovidio.androidbootstrap.adapter.ServiceDialogAdapter;
+import com.innovidio.androidbootstrap.activity.FilterResultActivity;
 import com.innovidio.androidbootstrap.activity.FormActivity;
+import com.innovidio.androidbootstrap.adapter.ServiceDialogAdapter;
 import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
 import com.innovidio.androidbootstrap.databinding.DialogAddFuelCapacityBinding;
 import com.innovidio.androidbootstrap.databinding.DialogCarwashDetailsBinding;
+import com.innovidio.androidbootstrap.databinding.DialogFilterListBinding;
 import com.innovidio.androidbootstrap.databinding.DialogFuelupDetailsBinding;
 import com.innovidio.androidbootstrap.databinding.DialogMaintenanceDetailsBinding;
 import com.innovidio.androidbootstrap.databinding.DialogTripDetailsBinding;
 import com.innovidio.androidbootstrap.databinding.FragmentMainDashboardBinding;
-import com.innovidio.androidbootstrap.di.viewmodel.ViewModelProviderFactory;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
@@ -36,8 +37,10 @@ import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
 import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
@@ -74,7 +77,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
 
     private void init() {
         timeLineData();
-       // timeLineFilteredData();
+        // timeLineFilteredData();
 
         timelineAdapter = new TimelineAdapter(getContext(), this, timeLineItemList, 0);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -99,6 +102,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         return v;
     }
 
+
     private void timeLineData() {
         timeLineViewModel.getAllTimelineMergerData().observe(this, timeLineItems -> {
             if (timeLineItems != null && timeLineItems.size() > 0) {
@@ -119,8 +123,10 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
             }
         });
     }
+
     private void initializeListeners() {
         binding.topFragmentedLayout.firstAddFuel.setOnClickListener(this);
+        binding.llFilterLayout.setOnClickListener(this);
     }
 
     private void showFuelTypeDialog(FuelUp fuelUp) {
@@ -265,7 +271,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         exitDialog.show();
     }
 
-    public void startFormActivity(String formType){
+    public void startFormActivity(String formType) {
         Intent intent = new Intent(getContext(), FormActivity.class);
         intent.putExtra(ACTIVITY, formType);
         startActivity(intent);
@@ -297,6 +303,59 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
             case R.id.first_add_fuel:
                 showAddFuelUpDialog();
                 break;
+
+            case R.id.ll_filter_layout:
+                showFilterDialog();
+                break;
         }
+    }
+
+    private void showFilterDialog() {
+        DialogFilterListBinding binding;
+        binding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_filter_list, null, false);
+        View dialogView = binding.getRoot();
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        final AlertDialog exitDialog = dialogBuilder.create();
+        exitDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        exitDialog.setView(dialogView);
+        exitDialog.show();
+
+        Intent filterIntent = new Intent(getActivity(), FilterResultActivity.class);
+
+        binding.checkboxCarwash.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                filterIntent.putExtra(Constants.FILTER_CARWASH, true);
+            } else {
+                filterIntent.removeExtra(Constants.FILTER_CARWASH);
+            }
+        });
+
+        binding.checkboxFuelups.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                filterIntent.putExtra(Constants.FILTER_FUEL_UPS, true);
+            } else {
+                filterIntent.removeExtra(Constants.FILTER_FUEL_UPS);
+            }
+        });
+
+        binding.checkboxMaintenance.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                filterIntent.putExtra(Constants.FILTER_MAINTENANCE, true);
+            } else {
+                filterIntent.removeExtra(Constants.FILTER_MAINTENANCE);
+            }
+        });
+
+        binding.checkboxTrips.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                filterIntent.putExtra(Constants.FILTER_TRIPS, true);
+            } else {
+                filterIntent.removeExtra(Constants.FILTER_TRIPS);
+            }
+        });
+
+        binding.btnFilteredResult.setOnClickListener(view -> {
+            startActivity(filterIntent);
+        });
     }
 }

@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
-import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -114,6 +113,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         navigationController = Navigation.findNavController(MainActivity.this, R.id.nav_main_host);
         navigationController.navigate(R.id.mainDashboardFragment);
+        setSelectionForBottomButton(true, false, false, false);
 
         // only need if activity is not extends with DaggerAppCompatActivity or not added in di builder module
         // timeLineViewModel = new ViewModelProvider(this, providerFactory).get(TimeLineViewModel.class);
@@ -171,7 +171,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding.mainActivitySpinner.setOnClickListener(this);
         mainBinding.spinnerCustomLayout.ivCancelLayout.setOnClickListener(this);
         mainBinding.spinnerCustomLayout.btnCarSpinnerLayout.setOnClickListener(this);
-        mainBinding.toolbarFilterIcon.setOnClickListener(this);
+        mainBinding.toolbarNotificationIcon.setOnClickListener(this);
     }
 
     private void runDummyData() {
@@ -182,7 +182,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     private void addDummyValues(int i) {
         Faker faker = new Faker();
 
-        if (i<3){
+        if (i < 3) {
             String[] makeList = getResources().getStringArray(R.array.makeList);
             String[] modelList = getResources().getStringArray(R.array.modelList);
             int[] yearList = getResources().getIntArray(R.array.yearList);
@@ -193,7 +193,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
             car.setModelName(modelName);
             car.setManufacturer(makeName);
-            car.setRegistrationNo("LXA "+UtilClass.getRandomNo(2250, 9999));
+            car.setRegistrationNo("LXA " + UtilClass.getRandomNo(2250, 9999));
             car.setMakeYear(yearName);
             car.setSubModel("1.3");
             car.setEngineFuel("Petrol");
@@ -206,8 +206,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             car.setTransmissionType("Manual");
             carViewModel.addCar(car);
         }
-
-
 
 
         FuelUp fuelUp = new FuelUp();
@@ -363,19 +361,31 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_dashboard:
-                navigationController.navigate(R.id.mainDashboardFragment);
+                if (navigationController.getCurrentDestination().getId() != R.id.mainDashboardFragment) {
+                    navigationController.navigate(R.id.mainDashboardFragment);
+                    setSelectionForBottomButton(true, false, false, false);
+                }
                 break;
 
             case R.id.ll_drive:
-                navigationController.navigate(R.id.driveFragment);
+                if (navigationController.getCurrentDestination().getId() != R.id.driveFragment) {
+                    navigationController.navigate(R.id.driveFragment);
+                    setSelectionForBottomButton(false, true, false, false);
+                }
                 break;
 
             case R.id.ll_maintain:
-                navigationController.navigate(R.id.maintainFragment);
+                if (navigationController.getCurrentDestination().getId() != R.id.maintainFragment) {
+                    navigationController.navigate(R.id.maintainFragment);
+                    setSelectionForBottomButton(false, false, true, false);
+                }
                 break;
 
             case R.id.ll_settings:
-                navigationController.navigate(R.id.settingsFragment);
+                if (navigationController.getCurrentDestination().getId() != R.id.settingsFragment) {
+                    navigationController.navigate(R.id.settingsFragment);
+                    setSelectionForBottomButton(false, false, false, true);
+                }
                 break;
 
             case R.id.iv_add:
@@ -426,8 +436,8 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 startActivity(new Intent(MainActivity.this, AddNewCarActivity.class));
                 break;
 
-            case R.id.toolbar_filter_icon:
-                showFilterDialog();
+            case R.id.toolbar_notification_icon:
+                startActivity(new Intent(this, ReminderActivity.class));
                 break;
         }
     }
@@ -614,11 +624,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         });
     }
 
-    public void toolbarAlarmsClick(View view) {
-        runDummyData();
-        Toast.makeText(this, "Dummy data added", Toast.LENGTH_SHORT).show();
-    }
-
     // fencing api code
     // todo fencing api
 
@@ -699,7 +704,38 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     protected void onPause() {
         super.onPause();
 
-       // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+    }
+
+    private void setSelectionForBottomButton(boolean dashboard, boolean drive, boolean maintain, boolean settings) {
+        mainBinding.bottomNav.llDashboard.setSelected(dashboard);
+        mainBinding.bottomNav.llDrive.setSelected(drive);
+        mainBinding.bottomNav.llMaintain.setSelected(maintain);
+        mainBinding.bottomNav.llSettings.setSelected(settings);
+
+        if (dashboard) {
+            mainBinding.bottomNav.tvDashboard.setTextColor(this.getResources().getColor(R.color.blueTextColor));
+            mainBinding.bottomNav.tvDrive.setTextColor(this.getResources().getColor(R.color.gray_dialog_colour));
+            mainBinding.bottomNav.tvMaintain.setTextColor(this.getResources().getColor(R.color.gray_dialog_colour));
+            mainBinding.bottomNav.tvSettings.setTextColor(this.getResources().getColor(R.color.gray_dialog_colour));
+        } else if (drive) {
+            mainBinding.bottomNav.tvDashboard.setTextColor(this.getResources().getColor(R.color.gray_dialog_colour));
+            mainBinding.bottomNav.tvDrive.setTextColor(this.getResources().getColor(R.color.blueTextColor));
+            mainBinding.bottomNav.tvMaintain.setTextColor(this.getResources().getColor(R.color.gray_dialog_colour));
+            mainBinding.bottomNav.tvSettings.setTextColor(this.getResources().getColor(R.color.gray_dialog_colour));
+        } else if (maintain) {
+            mainBinding.bottomNav.tvDashboard.setTextColor(this.getResources().getColor(R.color.gray_dialog_colour));
+            mainBinding.bottomNav.tvDrive.setTextColor(this.getResources().getColor(R.color.gray_dialog_colour));
+            mainBinding.bottomNav.tvMaintain.setTextColor(this.getResources().getColor(R.color.blueTextColor));
+            mainBinding.bottomNav.tvSettings.setTextColor(this.getResources().getColor(R.color.gray_dialog_colour));
+        } else if (settings) {
+            mainBinding.bottomNav.tvDashboard.setTextColor(this.getResources().getColor(R.color.gray_dialog_colour));
+            mainBinding.bottomNav.tvDrive.setTextColor(this.getResources().getColor(R.color.gray_dialog_colour));
+            mainBinding.bottomNav.tvMaintain.setTextColor(this.getResources().getColor(R.color.gray_dialog_colour));
+            mainBinding.bottomNav.tvSettings.setTextColor(this.getResources().getColor(R.color.blueTextColor));
+        }
+
+
     }
 
 

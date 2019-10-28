@@ -3,6 +3,7 @@ package com.innovidio.androidbootstrap.di.module;
 import com.innovidio.androidbootstrap.activity.FilterResultActivity;
 import com.innovidio.androidbootstrap.activity.FormActivity;
 import com.innovidio.androidbootstrap.activity.MainActivity;
+import com.innovidio.androidbootstrap.activity.ReminderActivity;
 import com.innovidio.androidbootstrap.activity.UserProfileActivity;
 import com.innovidio.androidbootstrap.dashboard.SpeedDashboardActivity;
 
@@ -27,6 +28,7 @@ public abstract class ActivityBuilderModule {
     @ContributesAndroidInjector
     abstract SpeedDashboardActivity contributeSpeedDashboardActivity();
 
-
+    @ContributesAndroidInjector
+    abstract ReminderActivity contributeReminderActivity();
 
 }

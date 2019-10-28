@@ -351,8 +351,8 @@
 
             <Button
                 android:id="@+id/btn_edit"
-                android:layout_width="100dp"
-                android:layout_height="35dp"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_25sdp"
                 android:text="Edit"
                 android:textStyle="bold"
                 android:textAllCaps="false"
@@ -369,8 +369,8 @@
 
             <Button
                 android:id="@+id/btn_delete"
-                android:layout_width="100dp"
-                android:layout_height="35dp"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_25sdp"
                 android:text="Delete"
                 android:textStyle="bold"
                 android:textAllCaps="false"
@@ -387,8 +387,8 @@
 
           <Button
               android:id="@+id/btn_close"
-              android:layout_width="100dp"
-              android:layout_height="35dp"
+              android:layout_width="@dimen/_80sdp"
+              android:layout_height="@dimen/_25sdp"
               android:text="Close"
               android:paddingStart="15dp"
               android:textStyle="bold"

@@ -3,8 +3,8 @@
     android:shape="oval">
 
     <size
-        android:width="60dp"
-        android:height="60dp" />
+        android:width="@dimen/_50sdp"
+        android:height="@dimen/_50sdp" />
 
     <solid android:color="@color/car_wash" />
 
