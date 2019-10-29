@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.innovidio.androidbootstrap.entity.Form;
+import com.innovidio.androidbootstrap.entity.FormWithMaintenance;
 import com.innovidio.androidbootstrap.repository.FormRepository;
 
 import java.util.List;
@@ -35,8 +36,8 @@ public class FormViewModel extends ViewModel {
     }
 
 
-    public void addForm(Form form){
-        this.formRepository.addForm(form);
+    public LiveData<Boolean> addForm(Form form){
+        return this.formRepository.addForm(form);
     }
 
     public void deleteMaintenanceService(Form form){
@@ -46,6 +47,5 @@ public class FormViewModel extends ViewModel {
     public void updateMaintenanceService(Form form){
         this.formRepository.updateForm(form);
     }
-
 
 }

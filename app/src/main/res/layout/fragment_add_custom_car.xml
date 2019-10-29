@@ -51,6 +51,7 @@
                 android:id="@+id/et_year_of_manu"
                 style="@style/EditText_In_Forms"
                 android:hint="Select Year of Manufacture eg 2019"
+                android:inputType="number"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"
                 android:layout_margin="@dimen/_10sdp"
@@ -74,7 +75,7 @@
             <EditText
                 android:id="@+id/et_model_of_car"
                 style="@style/EditText_In_Forms"
-                android:hint="Select Model of your Caar e.g ILX"
+                android:hint="Select Model of your Car e.g ILX"
                 android:paddingStart="@dimen/_20sdp"
                 android:paddingEnd="@dimen/_20sdp"
                 android:layout_margin="@dimen/_10sdp"
