@@ -14,7 +14,7 @@ import java.util.List;
 import static androidx.room.OnConflictStrategy.REPLACE;
 
 @Dao
-public abstract class FormDao extends BaseDao<Form> {
+public abstract class FormDao extends BaseDao<Form>{
 
     @Query("SELECT * FROM Form")
     public abstract LiveData<List<Form>> getAllFormsMaintenance();
@@ -26,6 +26,19 @@ public abstract class FormDao extends BaseDao<Form> {
     public abstract LiveData<List<Form>> getAllFormByCardId(int carId);
 
     @Query("SELECT * FROM Form  ORDER BY id DESC LIMIT 1")
-    public abstract LiveData<Form> getRecentForm();
 
+    public abstract  LiveData<Form> getRecentForm();
+
+    @Query("SELECT * FROM Form")
+    @Transaction
+    public abstract LiveData<List<FormWithMaintenance>> getAllFormWithMaintenance();
+
+    @Query("SELECT * FROM Form WHERE id=:formId")
+    @Transaction
+    public abstract LiveData<FormWithMaintenance> getFormWithMaintenance(int formId);
+
+
+//    @Insert(onConflict = REPLACE)
+//    @Transaction
+//    public abstract long insertFormWithMaintenance(FormWithMaintenance formWithMaintenance);
 }

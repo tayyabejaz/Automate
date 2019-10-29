@@ -31,7 +31,7 @@ public class FormRepository {
 
 
     public LiveData<Boolean> addForm(Form form) {
-        MutableLiveData<Boolean> liveData =  new MutableLiveData<Boolean>() ;
+        MutableLiveData<Boolean> liveData = new MutableLiveData<Boolean>();
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -77,6 +77,25 @@ public class FormRepository {
 
     public LiveData<Form> getRecentForm() {
         return this.formDao.getRecentForm();
+    }
+
+//    public void insertFormWithMaintenance(FormWithMaintenance formWithMaintenance){
+//        new AsyncTask<Void, Void, Void>() {
+//            @Override
+//            protected Void doInBackground(Void... voids) {
+//                formDao.insertFormWithMaintenance(formWithMaintenance);
+//                return null;
+//            }
+//        }.execute();
+//    }
+
+
+    public LiveData<List<FormWithMaintenance>> getAllFormWithMaintenance() {
+        return formDao.getAllFormWithMaintenance();
+    }
+
+    public LiveData<FormWithMaintenance> getFormWithMaintenance(int id) {
+        return formDao.getFormWithMaintenance(id);
     }
 
 }

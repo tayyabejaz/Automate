@@ -40,6 +40,7 @@ import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.Form;
+import com.innovidio.androidbootstrap.entity.FormWithMaintenance;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
@@ -50,6 +51,7 @@ import com.innovidio.androidbootstrap.network.dto.CarModelName;
 import com.innovidio.androidbootstrap.network.dto.CarTrimsInfo;
 import com.innovidio.androidbootstrap.viewmodel.CarQueryViewModel;
 import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
+import com.innovidio.androidbootstrap.viewmodel.FormViewModel;
 import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
 import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
@@ -99,6 +101,9 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     @Inject
     TimeLineViewModel timeLineViewModel;
 
+    @Inject
+    FormViewModel formViewModel;
+
     private ActivityMainBinding mainBinding;
     private List<Car> carArrayList = new ArrayList<>();
     private CustomMainSpinnerAdapter customMainSpinnerAdapter;
@@ -128,6 +133,18 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         fuelUpData();
         getCarsData();
         checkLocationAndStoragePermissions();
+
+
+        // todo just to check if it works
+//        Form form = new Form();
+//        Maintenance maintenance = new Maintenance();
+//        List<Maintenance> maintenanceList = new ArrayList<>();
+//        maintenanceList.add(maintenance);
+//        FormWithMaintenance formWithMaintenance = new FormWithMaintenance();
+//        formWithMaintenance.form =  form;
+//        formWithMaintenance.setMaintenanceList(maintenanceList);
+//        formViewModel.insertFormWithMaintenance(formWithMaintenance);
+
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override

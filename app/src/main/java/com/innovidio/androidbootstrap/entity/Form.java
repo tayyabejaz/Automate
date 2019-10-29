@@ -16,7 +16,7 @@ import java.util.Date;
 public class Form {
 
     @PrimaryKey(autoGenerate = true)
-    private int Id;
+    private int id;
     private String title;
     private int carId;
     private String location;
@@ -36,11 +36,11 @@ public class Form {
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public String getTitle() {

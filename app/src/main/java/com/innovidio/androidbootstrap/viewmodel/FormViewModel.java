@@ -48,4 +48,16 @@ public class FormViewModel extends ViewModel {
         this.formRepository.updateForm(form);
     }
 
+//    public void insertFormWithMaintenance(FormWithMaintenance form){
+//        this.formRepository.insertFormWithMaintenance(form);
+//    }
+
+    public LiveData<List<FormWithMaintenance>> getAllFormWithMaintenance() {
+        return formRepository.getAllFormWithMaintenance();
+    }
+
+    public LiveData<FormWithMaintenance> getFormWithMaintenance(int id) {
+        return formRepository.getFormWithMaintenance(id);
+    }
+
 }
