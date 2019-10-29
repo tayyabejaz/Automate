@@ -1262,8 +1262,7 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
 
                         triptype = SharedPreferenceHelper.getInstance().getStringValue(Constants.triptype, "");
 
-                        if (maxSpeed!=0 && avgSpeed!=0 && distance!=null)
-                        {
+                        if (maxSpeed!=0 && avgSpeed!=0 && distance!=null) {
                             String str = distance+"";
                             String[] distancestring = str.split("\\s+");
 
@@ -1304,8 +1303,7 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
                             startActivity(i);
                             finish();
                         }
-                        else if(maxSpeed == 0 && avgSpeed == 0 && distance == null)
-                        {
+                        else if(maxSpeed == 0 && avgSpeed == 0 && distance == 0.0f) {
                             // todo save trip here
 //                            String key = usertripsdatabase.push().getKey();
 //                            Trip trip = new Trip(carname, triptype, startTime, endtime, "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits , ""), "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits , ""), "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(Constants.distanceunits , ""), date, dateinmillis, "0");

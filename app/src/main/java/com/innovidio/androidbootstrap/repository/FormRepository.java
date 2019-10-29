@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import com.innovidio.androidbootstrap.db.dao.FormDao;
 import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
 import com.innovidio.androidbootstrap.entity.Form;
+import com.innovidio.androidbootstrap.entity.FormWithMaintenance;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.MaintenanceWithAlarms;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
@@ -74,6 +75,26 @@ public class FormRepository {
     public LiveData<Form> getRecentForm(){
         return this.formDao.getRecentForm();
     }
+
+//    public void insertFormWithMaintenance(FormWithMaintenance formWithMaintenance){
+//        new AsyncTask<Void, Void, Void>() {
+//            @Override
+//            protected Void doInBackground(Void... voids) {
+//                formDao.insertFormWithMaintenance(formWithMaintenance);
+//                return null;
+//            }
+//        }.execute();
+//    }
+
+
+    public LiveData<List<FormWithMaintenance>> getAllFormWithMaintenance() {
+        return formDao.getAllFormWithMaintenance();
+    }
+
+    public LiveData<FormWithMaintenance> getFormWithMaintenance(int id) {
+        return formDao.getFormWithMaintenance(id);
+    }
+
 }
 
 
