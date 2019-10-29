@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.innovidio.androidbootstrap.R;
@@ -24,9 +25,11 @@ import com.innovidio.androidbootstrap.activity.MainActivity;
 import com.innovidio.androidbootstrap.adapter.GeneralSpinnerAdapter;
 import com.innovidio.androidbootstrap.databinding.FragmentAddCarWashBinding;
 import com.innovidio.androidbootstrap.entity.Car;
+import com.innovidio.androidbootstrap.entity.Form;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
+import com.innovidio.androidbootstrap.viewmodel.FormViewModel;
 import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
 
 import java.util.ArrayList;
@@ -48,6 +51,9 @@ public class FragmentAddCarWash extends DaggerFragment {
 
     @Inject
     CarViewModel carViewModel;
+
+    @Inject
+    FormViewModel formViewModel;
 
 
     private GeneralSpinnerAdapter carAdapter;
@@ -91,7 +97,6 @@ public class FragmentAddCarWash extends DaggerFragment {
                     String carMake = cars.get(i).getManufacturer();
                     String carModel = cars.get(i).getModelName();
                     String carSubmodel = cars.get(i).getSubModel();
-
 
 
                     String finalName = carMake + "_" + carModel + "_" + carSubmodel + "_" + carYear;
@@ -146,16 +151,17 @@ public class FragmentAddCarWash extends DaggerFragment {
                 timeForEntry = carWashBinding.etCarwashTime.getText().toString();
             }
 
-            String dateInString = dateForEntry + "T" + timeForEntry + "Z";
-            Date date1 = UtilClass.convertToDate(dateInString);
+            String dateInString = dateForEntry + " " + timeForEntry;
+//            Date date1 = UtilClass.convertToDate(dateInString);
+//
+//            Log.d("TAYYAB", "" + date1);
 
-            maintenance.setSaveDate(date1);
+            maintenance.setSaveDate(new Date());
 
-            if (TextUtils.isEmpty(carWashBinding.etOdometerReading.getText())){
+            if (TextUtils.isEmpty(carWashBinding.etOdometerReading.getText())) {
                 isEmpty = true;
                 carWashBinding.etOdometerReading.setError("Please enter your current odometer reading");
-            }
-            else {
+            } else {
                 maintenance.setMaintenanceOdometerReading(Integer.parseInt(carWashBinding.etOdometerReading.getText().toString()));
             }
 
@@ -174,25 +180,57 @@ public class FragmentAddCarWash extends DaggerFragment {
                 isEmpty = true;
                 carWashBinding.etCarwashCost.setError("Enter your Car Wash Cost");
             }
+            Form form = createForm();
 
-            if (!isEmpty) {
-                maintenance.setMaintenanceName("General Car Wash");
-                maintenance.setMaintenanceLife(0);
-                maintenance.setMaintenanceType(TimeLineItem.Type.CAR_WASH);
-                maintenance.setNextMaintenanceDate(new Date());
-                maintenance.setAlarmON(false);
-                maintenanceViewModel.addMaintenanceService(maintenance);
-                Toast.makeText(getActivity(), "Data Submitted Successfully", Toast.LENGTH_SHORT).show();
-                getActivity().finish();
-            } else {
-                Toast.makeText(getActivity(), "All fields are Necessary. Please fill all fields", Toast.LENGTH_SHORT).show();
-            }
-
+            LiveData<Boolean> booleanLiveData = formViewModel.addForm(createForm());
+            booleanLiveData.observe(this, new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean formSaved) {
+                    if (formSaved) {
+                        LiveData<Form> lastForm = formViewModel.getLastForm();
+                        lastForm.observe(getActivity(), new Observer<Form>() {
+                            @Override
+                            public void onChanged(Form form) {
+                                addMaintenance(form.getId(), maintenance);
+                                //maintenance.setFormId(form.getId());
+                            }
+                        });
+                    }
+                }
+            });
         });
     }
 
     private void initializeAdapter() {
         carAdapter = new GeneralSpinnerAdapter(getActivity(), carDataList);
         carWashBinding.spinnerSelectCar.setAdapter(carAdapter);
+    }
+
+    private Form createForm() {
+        Form form = new Form();
+        form.setCarId(MainActivity.carID);
+        form.setStartDate(new Date());
+        form.setEndDate(new Date());
+        form.setSaveDate(new Date());
+        form.setLocation(carWashBinding.etCarwashLocation.getText().toString());
+        form.setTitle("Car Wash");
+        return form;
+    }
+
+    private void addMaintenance(int formID, Maintenance maintenance) {
+        if (!isEmpty) {
+            maintenance.setFormId(formID);
+            maintenance.setCarId(MainActivity.carID);
+            maintenance.setMaintenanceName("Car Wash");
+            maintenance.setMaintenanceLife(0);
+            maintenance.setMaintenanceType(TimeLineItem.Type.CAR_WASH);
+            maintenance.setNextMaintenanceDate(new Date());
+            maintenance.setAlarmON(false);
+            maintenanceViewModel.addMaintenanceService(maintenance);
+            Toast.makeText(getActivity(), "Data Submitted Successfully", Toast.LENGTH_SHORT).show();
+            getActivity().finish();
+        } else {
+            Toast.makeText(getActivity(), "All fields are Necessary. Please fill all fields", Toast.LENGTH_SHORT).show();
+        }
     }
 }

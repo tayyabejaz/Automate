@@ -3,6 +3,7 @@ package com.innovidio.androidbootstrap.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,11 @@ import androidx.databinding.DataBindingUtil;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.adapter.GeneralSpinnerAdapter;
 import com.innovidio.androidbootstrap.databinding.FragmentAddNewCarBinding;
+import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.interfaces.ActivityBtnClickListener;
 import com.innovidio.androidbootstrap.interfaces.FragmentClickListener;
 import com.innovidio.androidbootstrap.viewmodel.CarQueryViewModel;
+import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
 
 import java.util.ArrayList;
 
@@ -29,7 +32,10 @@ import dagger.android.support.DaggerFragment;
 
 public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClickListener {
 
+    @Inject
+    CarViewModel carViewModel;
 
+    private Car car = new Car();
     private FragmentClickListener fragmentClickListener;
     private FragmentAddNewCarBinding binding;
     @Inject
@@ -81,21 +87,21 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                 make = adapterView.getItemAtPosition(i).toString();
-                                if (make!=null) {
+                                if (make != null) {
                                     getCarModelsByYearAndMake(year, make);
-                                        binding.spinnerModelOfCar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                            @Override
-                                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                                model = adapterView.getItemAtPosition(i).toString();
-                                                if (model != null)
-                                                    getCarTrimsByYearMakeModel(year, make, model);
-                                            }
+                                    binding.spinnerModelOfCar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                            model = adapterView.getItemAtPosition(i).toString();
+                                            if (model != null)
+                                                getCarTrimsByYearMakeModel(year, make, model);
+                                        }
 
-                                            @Override
-                                            public void onNothingSelected(AdapterView<?> adapterView) {
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> adapterView) {
 
-                                            }
-                                        });
+                                        }
+                                    });
                                 }
                             }
 
@@ -129,6 +135,25 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
                 }
             });
         }
+
+
+        if (!TextUtils.isEmpty(binding.etCarRegNo.getText())) {
+            car.setRegistrationNo(binding.etCarRegNo.getText().toString());
+        } else {
+            binding.etCarRegNo.setError("Enter you car registration number");
+        }
+
+        if(year != null){
+            car.setMakeYear(Integer.parseInt(year));
+        }
+
+        if(make != null){
+            car.setModelName(make);
+        }
+
+//        if (model != null){
+
+//        }
     }
 
     private void initializeAdapters() {

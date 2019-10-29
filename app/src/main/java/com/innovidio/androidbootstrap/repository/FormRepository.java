@@ -3,16 +3,12 @@ package com.innovidio.androidbootstrap.repository;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.innovidio.androidbootstrap.db.dao.FormDao;
-import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
 import com.innovidio.androidbootstrap.entity.Form;
 import com.innovidio.androidbootstrap.entity.FormWithMaintenance;
-import com.innovidio.androidbootstrap.entity.Maintenance;
-import com.innovidio.androidbootstrap.entity.MaintenanceWithAlarms;
-import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,27 +19,35 @@ public class FormRepository {
 
     FormDao formDao;
 
+
     @Inject
-    public FormRepository(FormDao formDao){
-        this.formDao =  formDao;
+    public FormRepository(FormDao formDao) {
+        this.formDao = formDao;
     }
 
-    public LiveData<List<Form>> getAllForms(){
+    public LiveData<List<Form>> getAllForms() {
         return this.formDao.getAllFormsMaintenance();
     }
 
 
-    public void addForm(Form form){
+    public LiveData<Boolean> addForm(Form form) {
+        MutableLiveData<Boolean> liveData = new MutableLiveData<Boolean>();
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
-                formDao.insert(form);
+                long a = formDao.insert(form);
+                if (a > 0) {
+                    liveData.postValue(true);
+                }else{
+                    liveData.postValue(false);
+                }
                 return null;
             }
         }.execute();
+        return liveData;
     }
 
-    public void deleteForm(Form form){
+    public void deleteForm(Form form) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -53,7 +57,7 @@ public class FormRepository {
         }.execute();
     }
 
-    public void updateForm(Form form){
+    public void updateForm(Form form) {
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... voids) {
@@ -63,16 +67,37 @@ public class FormRepository {
         }.execute();
     }
 
-    public LiveData<Form> getFormById(int id){
+//    public void updateForm(Form form) {
+//
+//
+//        executeRunale(()->{
+//            formDao.update(form);
+//        });
+//    }
+//
+//   void executeRunale(Runnable runnable){
+//
+//       new AsyncTask<Void, Void, Void>() {
+//           @Override
+//           protected Void doInBackground(Void... voids) {
+//               runnable.run();
+////               formDao.update(form);
+//               return null;
+//           }
+//       }.execute();
+//
+//    }
+
+    public LiveData<Form> getFormById(int id) {
         return this.formDao.getFormMaintenanceById(id);
     }
 
-    public LiveData<List<Form>> getAllFormByCardId(int carId){
+    public LiveData<List<Form>> getAllFormByCardId(int carId) {
         return this.formDao.getAllFormByCardId(carId);
     }
 
 
-    public LiveData<Form> getRecentForm(){
+    public LiveData<Form> getRecentForm() {
         return this.formDao.getRecentForm();
     }
 

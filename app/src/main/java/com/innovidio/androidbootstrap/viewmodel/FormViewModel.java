@@ -36,8 +36,8 @@ public class FormViewModel extends ViewModel {
     }
 
 
-    public void addForm(Form form){
-        this.formRepository.addForm(form);
+    public LiveData<Boolean> addForm(Form form){
+        return this.formRepository.addForm(form);
     }
 
     public void deleteMaintenanceService(Form form){

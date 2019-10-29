@@ -21,7 +21,7 @@ public abstract class PreferencesDao extends BaseDao<Preferences> {
 
 
     @Query("SELECT * FROM Preferences")
-    public abstract LiveData<List<Preferences>> getAllPreferences();
+    public abstract List<Preferences> getAllPreferences();
 
 }
 
