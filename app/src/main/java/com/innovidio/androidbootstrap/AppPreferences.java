@@ -3,6 +3,8 @@ package com.innovidio.androidbootstrap;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.innovidio.androidbootstrap.entity.Preferences;
+
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
@@ -43,6 +45,8 @@ public class AppPreferences {
     public static String TRIP_TYPE;
     public static String SPEED_LIMIT;
 
+    public static Preferences preferences;
+
     /**
      * Enum representing your setting names or key for your setting.
      */
@@ -63,6 +67,7 @@ public class AppPreferences {
         START_ODOMETER,
         END_ODOMETER,
         START_TIME_DATE,
+        DISTANCE_UNIT
 
     }
 
