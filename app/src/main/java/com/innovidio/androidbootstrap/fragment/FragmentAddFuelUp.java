@@ -23,8 +23,8 @@ import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.adapter.GeneralCarSpinnerAdapter;
+import com.innovidio.androidbootstrap.databinding.DialogFuelTypeBinding;
 import com.innovidio.androidbootstrap.databinding.FragmentAddFuelUpBinding;
-import com.innovidio.androidbootstrap.databinding.FuelTypeDialogBinding;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
@@ -237,7 +237,7 @@ public class FragmentAddFuelUp extends DaggerFragment {
     }
 
     private void showFuelTypeDialog() {
-        FuelTypeDialogBinding dialogBinding;
+        DialogFuelTypeBinding dialogBinding;
         dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_fuel_type, null, false);
         View dialogView = dialogBinding.getRoot();
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
@@ -297,6 +297,5 @@ public class FragmentAddFuelUp extends DaggerFragment {
     private String calculateTotal(float pricePerUnit, float totalLiters) {
         float total = pricePerUnit * totalLiters;
         return String.valueOf(total);
-
     }
 }
