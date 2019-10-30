@@ -9,8 +9,6 @@ import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -21,11 +19,12 @@ import androidx.databinding.DataBindingUtil;
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
-import com.innovidio.androidbootstrap.entity.models.FullAddress;
 import com.innovidio.androidbootstrap.activity.SpeedDashboardActivity;
 import com.innovidio.androidbootstrap.databinding.DialogDriveSelectionBinding;
 import com.innovidio.androidbootstrap.driveDetect.BackgroundDetectedActivitiesService;
 import com.innovidio.androidbootstrap.entity.Preferences;
+import com.innovidio.androidbootstrap.entity.Trip;
+import com.innovidio.androidbootstrap.entity.models.FullAddress;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -45,7 +44,8 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TimeZone;
 import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.innovidio.androidbootstrap.AppPreferences.Key.SPEED_LIMIT;
 
 public class UtilClass {
 
@@ -105,7 +105,7 @@ public class UtilClass {
     }
 
     public static void showStartTripDialog(Context context) {
-        AtomicInteger SPEED_LIMIT = new AtomicInteger();
+        AppPreferences appPreferences = new AppPreferences(context);
 
         DialogDriveSelectionBinding dialogBinding;
         dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_drive_selection, null, false);
@@ -123,16 +123,18 @@ public class UtilClass {
         dialogBinding.numberpickerSpeedLimit.computeScroll();
         dialogBinding.numberpickerSpeedLimit.setFormatter(i -> String.format("%03d kmph", i));
 
-        dialogBinding.numberpickerSpeedLimit.setOnValueChangedListener((numberPicker, i, i1) -> {
-            SPEED_LIMIT.set(90);
-        });
-
+        appPreferences.put(SPEED_LIMIT, 60);
+        dialogBinding.btnCommercial.setSelected(true);
+        dialogBinding.btnCommercial.setTextColor(context.getResources().getColor(R.color.whiteColor));
         dialogBinding.numberpickerSpeedLimit.setOnValueChangedListener((numberPicker, i, i1) -> {
             dialogBinding.numberpickerSpeedLimit.setValue((i1 < i) ? i - 10 : i + 10);
+
+            appPreferences.put(SPEED_LIMIT, numberPicker.getValue());
         });
 
+
         dialogBinding.btnCommercial.setOnClickListener(view -> {
-            AppPreferences.TRIP_TYPE = "Commercial";
+            appPreferences.put(AppPreferences.Key.TRIP_TYPE, Trip.TripType.COMMERCIAL.name());
             dialogBinding.btnCommercial.setSelected(true);
             dialogBinding.btnCommercial.setTextColor(context.getResources().getColor(R.color.whiteColor));
 
@@ -147,7 +149,7 @@ public class UtilClass {
         });
 
         dialogBinding.btnPersonal.setOnClickListener(view -> {
-            AppPreferences.TRIP_TYPE = "Personal";
+            appPreferences.put(AppPreferences.Key.TRIP_TYPE, Trip.TripType.PERSONAL.name());
             dialogBinding.btnCommercial.setSelected(false);
             dialogBinding.btnCommercial.setTextColor(context.getResources().getColor(R.color.blackColor));
 
@@ -162,7 +164,7 @@ public class UtilClass {
         });
 
         dialogBinding.btnOfficial.setOnClickListener(view -> {
-            AppPreferences.TRIP_TYPE = "Official";
+            appPreferences.put(AppPreferences.Key.TRIP_TYPE, Trip.TripType.OFFICIAL.name());
             dialogBinding.btnCommercial.setSelected(false);
             dialogBinding.btnCommercial.setTextColor(context.getResources().getColor(R.color.blackColor));
 
@@ -177,7 +179,7 @@ public class UtilClass {
         });
 
         dialogBinding.btnCustom.setOnClickListener(view -> {
-            AppPreferences.TRIP_TYPE = "Custom";
+            appPreferences.put(AppPreferences.Key.TRIP_TYPE, Trip.TripType.CUSTOM.name());
             dialogBinding.btnCommercial.setSelected(false);
             dialogBinding.btnCommercial.setTextColor(context.getResources().getColor(R.color.blackColor));
 
@@ -192,15 +194,17 @@ public class UtilClass {
         });
 
         dialogBinding.btnStartDrive.setOnClickListener(view -> {
-            startDrive(context, SPEED_LIMIT.get());
+            appPreferences.put(AppPreferences.Key.START_ODOMETER, Integer.parseInt(dialogBinding.etInitialOdometer.getText().toString()));
+
+            startDrive(context);
         });
 
         dialogBinding.switchDriveDetect.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
-                AppPreferences.AUTO_DRIVE_DETECT = true;
+                appPreferences.put(AppPreferences.Key.DRIVE_DETECT, true);
                 startTracking(context);
             } else {
-                AppPreferences.AUTO_DRIVE_DETECT = false;
+                appPreferences.put(AppPreferences.Key.DRIVE_DETECT, false);
                 stopTracking(context);
             }
         });
@@ -208,7 +212,7 @@ public class UtilClass {
 
     public static FullAddress getAddressFromLatLon(Context context, Location location) {
         double latitude = location.getLatitude();
-        double longitude =  location.getLongitude();
+        double longitude = location.getLongitude();
         Geocoder geocoder;
         FullAddress fullAddress = new FullAddress();
         List<Address> addresses = null;
@@ -216,6 +220,12 @@ public class UtilClass {
 
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            if (addresses == null) {
+                return null;
+            }
+            if (addresses.size() < 1) {
+                return null;
+            }
             String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
             String city = addresses.get(0).getLocality();
             String state = addresses.get(0).getAdminArea();
@@ -238,9 +248,9 @@ public class UtilClass {
     }
 
 
-    private static void startDrive(Context context, int speedLimit) {
+    private static void startDrive(Context context) {
         Intent i = new Intent(context, SpeedDashboardActivity.class);
-        i.putExtra(Constants.SPEED_LIMIT, speedLimit);
+//        i.putExtra(Constants.SPEED_LIMIT, speedLimit);
         context.startActivity(i);
     }
 
@@ -284,7 +294,7 @@ public class UtilClass {
     }
 
 
-    public static Preferences getDefaultPreferences(){
+    public static Preferences getDefaultPreferences() {
         Preferences preferences = new Preferences();
         preferences.setId(1);
         preferences.setSpeedLimit(90);
@@ -299,12 +309,12 @@ public class UtilClass {
     }
 
 
-    public static ArrayList<String> getCountriesListFromLocale(){
+    public static ArrayList<String> getCountriesListFromLocale() {
         Locale[] locales = Locale.getAvailableLocales();
         ArrayList<String> countries = new ArrayList<String>();
         for (Locale locale : locales) {
             String country = locale.getDisplayCountry();
-            if (country.trim().length()>0 && !countries.contains(country)) {
+            if (country.trim().length() > 0 && !countries.contains(country)) {
                 countries.add(country);
             }
         }
@@ -312,29 +322,28 @@ public class UtilClass {
         for (String country : countries) {
             System.out.println(country);
         }
-        System.out.println( "# countries found: " + countries.size());
+        System.out.println("# countries found: " + countries.size());
         return countries;
     }
 
-    public static ArrayList<String> getCurrenciesListFromLocale(){
+    public static ArrayList<String> getCurrenciesListFromLocale() {
         Locale[] locales = Locale.getAvailableLocales();
         ArrayList<String> currencies = new ArrayList<String>();
         for (Locale locale : locales) {
-           currencies.add(Utils.getCurrencySymbol(Currency.getInstance(locale).getCurrencyCode()));
+            currencies.add(Utils.getCurrencySymbol(Currency.getInstance(locale).getCurrencyCode()));
         }
         return currencies;
     }
 
-    public static String getMyCountry(){
+    public static String getMyCountry() {
         Locale locale = ConfigurationCompat.getLocales(Resources.getSystem().getConfiguration()).get(0);
         return locale.getDisplayCountry();
     }
 
 
-
-
     static class Utils {
         public static SortedMap<Currency, Locale> currencyLocaleMap;
+
         static {
             currencyLocaleMap = new TreeMap<Currency, Locale>(new Comparator<Currency>() {
                 public int compare(Currency c1, Currency c2) {
@@ -359,8 +368,7 @@ public class UtilClass {
     }
 
 
-
-    public static ArrayList<String> getCurrenciesList(){
+    public static ArrayList<String> getCurrenciesList() {
         // reference  https://android-er.blogspot.com/2014/05/display-available-currencies.html
         Set<Currency> availableCurrenciesSet;
         List<Currency> availableCurrenciesList;
@@ -379,8 +387,6 @@ public class UtilClass {
 
         return currenciesList;
     }
-
-
 
 
 }

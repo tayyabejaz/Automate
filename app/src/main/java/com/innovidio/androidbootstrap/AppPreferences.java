@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 
 import com.innovidio.androidbootstrap.entity.Preferences;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -42,7 +40,7 @@ public class AppPreferences {
 
     public static boolean AUTO_DRIVE_DETECT;
     public static String TRIP_TYPE;
-    public static int SELECTED_CAR_ID =1;
+    public static int SELECTED_CAR_ID = 1;
 
     public static Preferences preferences;
 
@@ -61,7 +59,8 @@ public class AppPreferences {
         DISTANCE_UNIT,
         SPEED_LIMIT,
         FUEL_ECONOMY,
-        TRIP_TYPE
+        TRIP_TYPE,
+        DRIVE_DETECT
 
 
     }

@@ -7,6 +7,8 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
+import com.innovidio.androidbootstrap.db.converters.EnumTypeConverters;
+import com.innovidio.androidbootstrap.db.converters.TripTypeConverters;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
 import java.text.DateFormat;
@@ -28,7 +30,9 @@ public class Trip implements TimeLineItem {
     private String destination;
     // private String tripdate;
     private String carname;
-    private String tripType;
+    @ColumnInfo(name = "tripType")
+    @TypeConverters(TripTypeConverters.class)
+    private TripType tripType;
     private int maxspeed;
     private int avgspeed;
     @ColumnInfo(name = "startTime")
@@ -117,7 +121,7 @@ public class Trip implements TimeLineItem {
     }
 
     @Ignore
-    public Trip(String tripTitle, String destination, String carname, String triptype, int maxspeed, int avgspeed, Double distanceCovered, Double fueleconomypertrip, Date saveDate, Double fuelCostPerUnit, Double totalExpenses, int noOfLitres) {
+    public Trip(String tripTitle, String destination, String carname, TripType triptype, int maxspeed, int avgspeed, Double distanceCovered, Double fueleconomypertrip, Date saveDate, Double fuelCostPerUnit, Double totalExpenses, int noOfLitres) {
         this.tripTitle = tripTitle;
         this.destination = destination;
         this.carname = carname;
@@ -179,11 +183,14 @@ public class Trip implements TimeLineItem {
 //        this.tripdate = tripdate;
 //    }
 
+//    private String getTripTypeInString(){
+//        return TripTypeConverters;
+//    }
     public void setCarname(String carname) {
         this.carname = carname;
     }
 
-    public void setTripType(String tripType) {
+    public void setTripType(TripType tripType) {
         this.tripType = tripType;
     }
 
@@ -224,7 +231,7 @@ public class Trip implements TimeLineItem {
         return carname;
     }
 
-    public String getTripType() {
+    public TripType getTripType() {
         return tripType;
     }
 

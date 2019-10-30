@@ -38,8 +38,6 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
-import static com.innovidio.androidbootstrap.AppPreferences.Key.SELECTED_CAR_ID;
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -93,9 +91,11 @@ public class FragmentAddCarWash extends DaggerFragment {
         initializeAdapter();
 
         carViewModel.getAllCars().observe(this, cars -> {
-            carDataList.addAll(cars);
-            carAdapter.notifyDataSetChanged();
-            carID = cars.get(0).getId();
+            if (cars.size() > 0) {
+                carDataList.addAll(cars);
+                carAdapter.notifyDataSetChanged();
+                carID = cars.get(0).getId();
+            }
         });
         //TIME PICKER
         TimePickerDialog.OnTimeSetListener time = (timePicker, i, i1) -> {

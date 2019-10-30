@@ -23,8 +23,8 @@ import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.adapter.GeneralCarSpinnerAdapter;
+import com.innovidio.androidbootstrap.databinding.DialogFuelTypeBinding;
 import com.innovidio.androidbootstrap.databinding.FragmentAddFuelUpBinding;
-import com.innovidio.androidbootstrap.databinding.FuelTypeDialogBinding;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
@@ -90,9 +90,11 @@ public class FragmentAddFuelUp extends DaggerFragment {
         super.onViewCreated(view, savedInstanceState);
 
         carViewModel.getAllCars().observe(this, cars -> {
-            carDataList.addAll(cars);
-            carAdapter.notifyDataSetChanged();
-            carID = cars.get(0).getId();
+            if (cars.size() > 0) {
+                carDataList.addAll(cars);
+                carAdapter.notifyDataSetChanged();
+                carID = cars.get(0).getId();
+            }
         });
 
         Log.d("TAYYAB", "CAR ID: " + carID);
@@ -237,7 +239,7 @@ public class FragmentAddFuelUp extends DaggerFragment {
     }
 
     private void showFuelTypeDialog() {
-        FuelTypeDialogBinding dialogBinding;
+        DialogFuelTypeBinding dialogBinding;
         dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_fuel_type, null, false);
         View dialogView = dialogBinding.getRoot();
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());

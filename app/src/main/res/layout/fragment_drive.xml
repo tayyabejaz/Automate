@@ -357,7 +357,7 @@
                     android:id="@+id/tv_triptype_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{lastTrip.tripType}"
+                    android:text="OFFICIAL"
                     tools:text="Official"
                     android:textColor="@color/whiteColor"
                     app:layout_constraintBottom_toBottomOf="parent"
