@@ -38,7 +38,6 @@ public class AppPreferences {
     private SharedPreferences.Editor mEditor;
     private boolean mBulkUpdate = false;
 
-    public static int SELECTED_CAR_ID = 1;
     public static boolean AUTO_DRIVE_DETECT;
     public static String TRIP_TYPE;
     public static String SPEED_LIMIT;
@@ -57,12 +56,13 @@ public class AppPreferences {
          */
         SAMPLE_STR,
         SAMPLE_INT,
-        SAVED_CAR_ID,
+        SELECTED_CAR_ID,
         START_LOCATION,
         END_LOCATION,
         START_ODOMETER,
         END_ODOMETER,
         START_TIME_DATE,
+
 
     }
 

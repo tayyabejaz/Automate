@@ -34,12 +34,12 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
 
     @Inject
     CarViewModel carViewModel;
+    @Inject
+    CarQueryViewModel carQueryViewModel;
 
     private Car car = new Car();
     private FragmentClickListener fragmentClickListener;
     private FragmentAddNewCarBinding binding;
-    @Inject
-    CarQueryViewModel carQueryViewModel;
     private ArrayList<String> makerData = new ArrayList<>();
     private ArrayList<String> modelData = new ArrayList<>();
     private ArrayList<String> subModelData = new ArrayList<>();
@@ -47,6 +47,7 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
     private GeneralSpinnerAdapter adapterModel;
     private GeneralSpinnerAdapter adapterSubmodel;
     private String year, make, model, submodel;
+    private boolean isEmpty;
 
     public FragmentAddNewCar(FragmentClickListener listener) {
         // Required empty public constructor
@@ -79,6 +80,8 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 year = adapterView.getItemAtPosition(i).toString();
+                Log.e("TAYYAB", "YEAR: " + year);
+                isEmpty = false;
                 if (i != 0) {
                     getCarMakes(year);
 
@@ -87,12 +90,16 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                 make = adapterView.getItemAtPosition(i).toString();
+                                Log.e("TAYYAB", "Make: " + make);
+                                isEmpty = false;
                                 if (make != null) {
                                     getCarModelsByYearAndMake(year, make);
                                     binding.spinnerModelOfCar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                         @Override
                                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                             model = adapterView.getItemAtPosition(i).toString();
+                                            Log.e("TAYYAB", "MODEL: " + model);
+                                            isEmpty = false;
                                             if (model != null)
                                                 getCarTrimsByYearMakeModel(year, make, model);
                                         }
@@ -127,6 +134,8 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     submodel = adapterView.getItemAtPosition(i).toString();
+                    Log.e("TAYYAB", "SUBMODEL: " + submodel);
+                    isEmpty = false;
                 }
 
                 @Override
@@ -137,23 +146,6 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
         }
 
 
-        if (!TextUtils.isEmpty(binding.etCarRegNo.getText())) {
-            car.setRegistrationNo(binding.etCarRegNo.getText().toString());
-        } else {
-            binding.etCarRegNo.setError("Enter you car registration number");
-        }
-
-        if(year != null){
-            car.setMakeYear(Integer.parseInt(year));
-        }
-
-        if(make != null){
-            car.setModelName(make);
-        }
-
-//        if (model != null){
-
-//        }
     }
 
     private void initializeAdapters() {
@@ -206,8 +198,58 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
         });
     }
 
+    private void checkEnteries() {
+        if (!TextUtils.isEmpty(binding.etCarRegNo.getText())) {
+            car.setRegistrationNo(binding.etCarRegNo.getText().toString());
+        } else {
+            binding.etCarRegNo.setError("Enter you car registration number");
+        }
+
+        if (!TextUtils.isEmpty(binding.etCurrentOdometer.getText())) {
+            isEmpty = false;
+            car.setCurrentOdomaterReading(Integer.parseInt(binding.etCurrentOdometer.getText().toString()));
+        } else {
+            isEmpty = true;
+            binding.etCurrentOdometer.setError("Enter your current Odometer reading");
+        }
+
+        if (year != null) {
+            isEmpty = false;
+            car.setMakeYear(Integer.parseInt(year));
+        } else {
+            isEmpty = true;
+        }
+
+        if (make != null) {
+            isEmpty = false;
+            car.setManufacturer(make);
+        } else {
+            isEmpty = true;
+        }
+
+        if (model != null) {
+            isEmpty = false;
+            car.setModelName(model);
+        } else {
+            isEmpty = true;
+        }
+
+        if (submodel != null) {
+            isEmpty = false;
+            car.setSubModel(submodel);
+        } else {
+            isEmpty = true;
+        }
+    }
+
     @Override
     public void onSubmitButtonClick(Context context) {
-        Toast.makeText(context, "Add new Car fragment", Toast.LENGTH_SHORT).show();
+        checkEnteries();
+        if (isEmpty) {
+            Toast.makeText(context, "All fields are required", Toast.LENGTH_SHORT).show();
+        } else {
+            Log.d("FORM_SUBMISSION", "onSubmitButtonClick: Car Added Successfully");
+            carViewModel.addCar(car);
+        }
     }
 }

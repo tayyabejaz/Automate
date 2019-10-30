@@ -48,6 +48,8 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import io.bloco.faker.Faker;
 
+import static com.innovidio.androidbootstrap.AppPreferences.Key.SELECTED_CAR_ID;
+
 public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteListener {
 
     @Inject
@@ -149,13 +151,13 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
     }
 
     private void initList() {
-        AppPreferences.SELECTED_CAR_ID = appPreferences.getInt(AppPreferences.Key.SAVED_CAR_ID);
+        appPreferences.put(SELECTED_CAR_ID,1);
         carViewModel.getAllCars().observe(this, cars -> {
             carArrayList = cars;
             adapter.updateAdapterList(carArrayList);
         });
 
-        carViewModel.getCarById(AppPreferences.SELECTED_CAR_ID).observe(this, new Observer<Car>() {
+        carViewModel.getCarById(appPreferences.getInt(SELECTED_CAR_ID)).observe(this, new Observer<Car>() {
             @Override
             public void onChanged(Car car) {
                 if (car != null) {
@@ -165,7 +167,7 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
 
             private void setSpinnerItem(Car car) {
                 String name = car.getManufacturer() + " " + car.getModelName() + " " + car.getMakeYear();
-                AppPreferences.SELECTED_CAR_ID = car.getId();
+                appPreferences.put(SELECTED_CAR_ID,car.getId());
             }
         });
     }

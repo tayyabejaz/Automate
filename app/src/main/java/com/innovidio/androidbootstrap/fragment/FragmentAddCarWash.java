@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 
+import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.activity.MainActivity;
@@ -40,6 +41,8 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
+import static com.innovidio.androidbootstrap.AppPreferences.Key.SELECTED_CAR_ID;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -53,6 +56,9 @@ public class FragmentAddCarWash extends DaggerFragment {
 
     @Inject
     FormViewModel formViewModel;
+
+    @Inject
+    AppPreferences appPreferences;
 
 
     private GeneralSpinnerAdapter carAdapter;
@@ -205,7 +211,7 @@ public class FragmentAddCarWash extends DaggerFragment {
 
     private Form createForm() {
         Form form = new Form();
-        form.setCarId(MainActivity.carID);
+        form.setCarId(appPreferences.getInt(SELECTED_CAR_ID));
         form.setStartDate(new Date());
         form.setEndDate(new Date());
         form.setSaveDate(new Date());

@@ -7,17 +7,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.databinding.DataBindingUtil;
 
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
-import com.innovidio.androidbootstrap.activity.MainActivity;
 import com.innovidio.androidbootstrap.dashboard.SpeedDashboardActivity;
 import com.innovidio.androidbootstrap.databinding.DialogDriveSelectionBinding;
 import com.innovidio.androidbootstrap.driveDetect.BackgroundDetectedActivitiesService;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -30,36 +29,45 @@ import java.util.TimeZone;
 
 public class UtilClass {
 
-    public static void updateTime(Calendar calendarInstance, TextView timeField) {
-        String myFormat = "hh:mm"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+    public static String updateTime(Calendar calendarInstance, TextView timeField) {
+        String myFormat = "HH:mm"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.getDefault());
         timeField.setText(sdf.format(calendarInstance.getTime()));
+        return sdf.format(calendarInstance.getTime());
     }
 
-    public static void updateDate(Calendar calendar, TextView dateField) {
-        String myFormat = "MM/dd/yyyy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+    public static String updateDate(Calendar calendar, TextView dateField) {
+        String myFormat = "dd-MMM-yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.getDefault());
         dateField.setText(sdf.format(calendar.getTime()));
+        return sdf.format(calendar.getTime());
     }
+
+    public static Date convertToDate(String dateInString, String timeInString) {
+
+        String finalDate = dateInString + " " + timeInString;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.getDefault());
+
+        Date date = null;
+
+        try {
+            date = formatter.parse(finalDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+
+    }
+
 
     public static void showTimePicker(Context context, Calendar calendarInstance, TimePickerDialog.OnTimeSetListener time) {
-        new TimePickerDialog(context, time, calendarInstance.get(Calendar.HOUR_OF_DAY), calendarInstance.get(Calendar.MINUTE), false).show();
+        new TimePickerDialog(context, time, calendarInstance.get(Calendar.HOUR_OF_DAY), calendarInstance.get(Calendar.MINUTE), true).show();
     }
 
     public static void showDatePicker(Context context, Calendar calenderInstance, DatePickerDialog.OnDateSetListener date) {
         new DatePickerDialog(context, date, calenderInstance.get(Calendar.YEAR), calenderInstance.get(Calendar.MONTH), calenderInstance.get(Calendar.DAY_OF_MONTH)).show();
     }
 
-    public static Date convertToDate(String dateInString) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date date = format.parse(dateInString);
-            return date;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return new Date();
-    }
 
     public static int getRandomNo(int min, int max) {
 //        final int min = 20;
@@ -193,18 +201,18 @@ public class UtilClass {
     }
 
 
-    public static Date getTime(String time){
+    public static Date getTime(String time) {
         Date startTimeDate = null, endTimeDate = null;
         SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss a", Locale.US);
         try {
-            startTimeDate= formatter.parse(time);
+            startTimeDate = formatter.parse(time);
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return startTimeDate;
     }
 
-    public static String getTimeFormateForUS(String pattern, Locale locale ){
+    public static String getTimeFormateForUS(String pattern, Locale locale) {
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.US); //dd-MM-yyyy
         Calendar calender = Calendar.getInstance();
         TimeZone ccme = calender.getTimeZone();
@@ -214,9 +222,9 @@ public class UtilClass {
     }
 
 
-    public static Double getRoundFigureValue(Double number){
+    public static Double getRoundFigureValue(Double number) {
         NumberFormat formatter = new DecimalFormat("#0.00");
-        Double roundFigureNo =  Double.parseDouble(formatter.format(number));
+        Double roundFigureNo = Double.parseDouble(formatter.format(number));
         return roundFigureNo;
     }
 
