@@ -5,10 +5,9 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.innovidio.androidbootstrap.db.dao.FuelAccountDao;
+import com.innovidio.androidbootstrap.db.dao.FuelTransactionDao;
 import com.innovidio.androidbootstrap.entity.FuelTransaction;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,10 +16,10 @@ import javax.inject.Singleton;
 @Singleton
 public class FuelAccountRepository {
 
-    FuelAccountDao fuelAccountDao;
+    FuelTransactionDao fuelAccountDao;
 
     @Inject
-    public FuelAccountRepository(FuelAccountDao fuelAccountDao){
+    public FuelAccountRepository(FuelTransactionDao fuelAccountDao){
         this.fuelAccountDao = fuelAccountDao;
     }
 

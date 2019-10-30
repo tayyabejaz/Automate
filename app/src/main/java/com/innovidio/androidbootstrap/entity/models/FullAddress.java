@@ -1,4 +1,4 @@
-package com.innovidio.androidbootstrap.dashboard;
+package com.innovidio.androidbootstrap.entity.models;
 
 public class FullAddress {
 

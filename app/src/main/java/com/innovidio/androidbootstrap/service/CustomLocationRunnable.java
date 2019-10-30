@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.innovidio.androidbootstrap.BaseApplication;
-import com.innovidio.androidbootstrap.dashboard.SpeedDashboardActivity;
+import com.innovidio.androidbootstrap.activity.SpeedDashboardActivity;
 
 
 public final class CustomLocationRunnable implements Runnable {

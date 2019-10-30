@@ -11,10 +11,10 @@ import java.util.Date;
 import java.util.List;
 
 @Dao
-public abstract class FuelAccountDao extends BaseDao<FuelTransaction> {
+public abstract class FuelTransactionDao extends BaseDao<FuelTransaction> {
 
     @Query("SELECT * FROM FuelTransaction ORDER BY id desc")
-    public abstract LiveData<List<FuelUp>> getFuelUpsOrderById();
+    public abstract LiveData<List<FuelTransaction>> getFuelUpsOrderById();
 
     @Query("SELECT * FROM FuelTransaction")
     public abstract LiveData<List<FuelTransaction>> getAllFuelUps();

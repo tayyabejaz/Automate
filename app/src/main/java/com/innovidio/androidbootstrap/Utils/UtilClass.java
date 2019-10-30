@@ -5,28 +5,47 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.core.os.ConfigurationCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.innovidio.androidbootstrap.AppPreferences;
+import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
-import com.innovidio.androidbootstrap.activity.MainActivity;
-import com.innovidio.androidbootstrap.dashboard.SpeedDashboardActivity;
+import com.innovidio.androidbootstrap.entity.models.FullAddress;
+import com.innovidio.androidbootstrap.activity.SpeedDashboardActivity;
 import com.innovidio.androidbootstrap.databinding.DialogDriveSelectionBinding;
 import com.innovidio.androidbootstrap.driveDetect.BackgroundDetectedActivitiesService;
+import com.innovidio.androidbootstrap.entity.Preferences;
+
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.Set;
+import java.util.SortedMap;
 import java.util.TimeZone;
+import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class UtilClass {
 
@@ -77,6 +96,8 @@ public class UtilClass {
     }
 
     public static void showStartTripDialog(Context context) {
+        AtomicInteger SPEED_LIMIT = new AtomicInteger();
+
         DialogDriveSelectionBinding dialogBinding;
         dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.dialog_drive_selection, null, false);
         View dialogView = dialogBinding.getRoot();
@@ -94,7 +115,7 @@ public class UtilClass {
         dialogBinding.numberpickerSpeedLimit.setFormatter(i -> String.format("%03d kmph", i));
 
         dialogBinding.numberpickerSpeedLimit.setOnValueChangedListener((numberPicker, i, i1) -> {
-            AppPreferences.SPEED_LIMIT = "" + i1;
+            SPEED_LIMIT.set(90);
         });
 
         dialogBinding.numberpickerSpeedLimit.setOnValueChangedListener((numberPicker, i, i1) -> {
@@ -162,7 +183,7 @@ public class UtilClass {
         });
 
         dialogBinding.btnStartDrive.setOnClickListener(view -> {
-            startDrive(context);
+            startDrive(context, SPEED_LIMIT.get());
         });
 
         dialogBinding.switchDriveDetect.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -176,8 +197,41 @@ public class UtilClass {
         });
     }
 
-    private static void startDrive(Context context) {
+    public static FullAddress getAddressFromLatLon(Context context, Location location) {
+        double latitude = location.getLatitude();
+        double longitude =  location.getLongitude();
+        Geocoder geocoder;
+        FullAddress fullAddress = new FullAddress();
+        List<Address> addresses = null;
+        geocoder = new Geocoder(context, Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String city = addresses.get(0).getLocality();
+            String state = addresses.get(0).getAdminArea();
+            String country = addresses.get(0).getCountryName();
+            String postalCode = addresses.get(0).getPostalCode();
+            String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+
+            fullAddress.setAddress(address);
+            fullAddress.setCity(city);
+            fullAddress.setState(state);
+            fullAddress.setCountry(country);
+            fullAddress.setPostalCode(postalCode);
+            fullAddress.setKnownName(knownName);
+            return fullAddress;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    private static void startDrive(Context context, int speedLimit) {
         Intent i = new Intent(context, SpeedDashboardActivity.class);
+        i.putExtra(Constants.SPEED_LIMIT, speedLimit);
         context.startActivity(i);
     }
 
@@ -219,6 +273,105 @@ public class UtilClass {
         Double roundFigureNo =  Double.parseDouble(formatter.format(number));
         return roundFigureNo;
     }
+
+
+    public static Preferences getDefaultPreferences(){
+        Preferences preferences = new Preferences();
+        preferences.setId(1);
+        preferences.setSpeedLimit(90);
+        preferences.setCountry("Pakistan");
+        preferences.setAutoDetect(false);
+        preferences.setCurrency("Rs");
+        preferences.setDistanceUnit(Constants.KM);
+        preferences.setSpeedUnit(Constants.KM_HR);
+        preferences.setFuelUnit(Constants.LITTERS);
+        preferences.setFuelUnitPrice(113.09d);
+        return preferences;
+    }
+
+
+    public static ArrayList<String> getCountriesListFromLocale(){
+        Locale[] locales = Locale.getAvailableLocales();
+        ArrayList<String> countries = new ArrayList<String>();
+        for (Locale locale : locales) {
+            String country = locale.getDisplayCountry();
+            if (country.trim().length()>0 && !countries.contains(country)) {
+                countries.add(country);
+            }
+        }
+        Collections.sort(countries);
+        for (String country : countries) {
+            System.out.println(country);
+        }
+        System.out.println( "# countries found: " + countries.size());
+        return countries;
+    }
+
+    public static ArrayList<String> getCurrenciesListFromLocale(){
+        Locale[] locales = Locale.getAvailableLocales();
+        ArrayList<String> currencies = new ArrayList<String>();
+        for (Locale locale : locales) {
+           currencies.add(Utils.getCurrencySymbol(Currency.getInstance(locale).getCurrencyCode()));
+        }
+        return currencies;
+    }
+
+    public static String getMyCountry(){
+        Locale locale = ConfigurationCompat.getLocales(Resources.getSystem().getConfiguration()).get(0);
+        return locale.getDisplayCountry();
+    }
+
+
+
+
+    static class Utils {
+        public static SortedMap<Currency, Locale> currencyLocaleMap;
+        static {
+            currencyLocaleMap = new TreeMap<Currency, Locale>(new Comparator<Currency>() {
+                public int compare(Currency c1, Currency c2) {
+                    return c1.getCurrencyCode().compareTo(c2.getCurrencyCode());
+                }
+            });
+            for (Locale locale : Locale.getAvailableLocales()) {
+                try {
+                    Currency currency = Currency.getInstance(locale);
+                    currencyLocaleMap.put(currency, locale);
+                } catch (Exception e) {
+                }
+            }
+        }
+
+
+        public static String getCurrencySymbol(String currencyCode) {
+            Currency currency = Currency.getInstance(currencyCode);
+            System.out.println(currencyCode + ":-" + currency.getSymbol(currencyLocaleMap.get(currency)));
+            return currency.getSymbol(currencyLocaleMap.get(currency));
+        }
+    }
+
+
+
+    public static ArrayList<String> getCurrenciesList(){
+        // reference  https://android-er.blogspot.com/2014/05/display-available-currencies.html
+        Set<Currency> availableCurrenciesSet;
+        List<Currency> availableCurrenciesList;
+        ArrayList<String> currenciesList = new ArrayList<>();
+        availableCurrenciesSet = Currency.getAvailableCurrencies();
+        availableCurrenciesList = new ArrayList<Currency>(availableCurrenciesSet);
+
+        for (Currency currency : availableCurrenciesList) {
+            currenciesList.add(currency.getSymbol());
+        }
+
+        Collections.sort(currenciesList);
+        for (String country : currenciesList) {
+            System.out.println(country);
+        }
+
+        return currenciesList;
+    }
+
+
 
 
 }

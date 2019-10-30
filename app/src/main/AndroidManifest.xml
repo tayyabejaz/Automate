@@ -33,7 +33,7 @@
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".activity.MainActivity" />
         <activity
-            android:name=".dashboard.SpeedDashboardActivity"
+            android:name=".activity.SpeedDashboardActivity"
             android:launchMode="singleTask" />
 
         <service android:name=".service.FloatingViewService" />
@@ -46,6 +46,15 @@
             android:name=".driveDetect.DetectedActivitiesIntentService"
             android:exported="false" />
         <service android:name=".driveDetect.BackgroundDetectedActivitiesService" />
+
+
+        <receiver android:name=".alarms.AlarmReceiver"/>
+        <receiver android:name=".alarms.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

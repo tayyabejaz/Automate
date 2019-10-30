@@ -111,7 +111,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     private boolean isUp, isDown = false;
 
     BroadcastReceiver broadcastReceiver;
-    public static int carID = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -710,7 +709,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
-        UtilClass.startTracking(this);
+      //  UtilClass.startTracking(this);
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
                 new IntentFilter(Constants.BROADCAST_DETECTED_ACTIVITY));
     }

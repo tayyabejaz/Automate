@@ -1,8 +1,6 @@
 package com.innovidio.androidbootstrap.fragment;
 
 
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +14,6 @@ import androidx.fragment.app.Fragment;
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
-import com.innovidio.androidbootstrap.dashboard.SpeedDashboardActivity;
-import com.innovidio.androidbootstrap.databinding.DialogDriveSelectionBinding;
 import com.innovidio.androidbootstrap.databinding.FragmentDriveBinding;
 
 import javax.inject.Inject;

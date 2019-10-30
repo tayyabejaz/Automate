@@ -21,14 +21,21 @@ import android.widget.TextView;
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
-import com.innovidio.androidbootstrap.dashboard.SharedPreferenceHelper;
-import com.innovidio.androidbootstrap.dashboard.SpeedDashboardActivity;
+import com.innovidio.androidbootstrap.activity.SpeedDashboardActivity;
+import com.innovidio.androidbootstrap.repository.PreferencesRepository;
 
 import java.util.Locale;
 
 import javax.inject.Inject;
 
+import static com.innovidio.androidbootstrap.Constants.KM_HR;
+import static com.innovidio.androidbootstrap.Constants.M_HR;
+
 public class FloatingViewService extends Service {
+
+
+    @Inject
+    PreferencesRepository prefRepo;
 
     @Inject
     AppPreferences appPreferences;
@@ -101,16 +108,15 @@ public class FloatingViewService extends Service {
         //The root element of the expanded view layout
         final View expandedView = mFloatingView.findViewById(R.id.expanded_container);
 
-
         currspeed = (TextView) mFloatingView.findViewById(R.id.current_speed);
         currspeed.setText("0");
 
         //Speed Units
         speedunits = (TextView) mFloatingView.findViewById(R.id.units);
        // if (appPreferences.getString(AppPreferences.Key.DISTANCE_UNIT))
-        if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_UNIT, "km/h").equals("km/h")) {
+        if (prefRepo.getSpeedUnit().equals(KM_HR)) {
             speedunits.setText("KMPH");
-        } else if ((SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_UNIT, "km/h").equals("mph"))) {
+        } else if (prefRepo.getSpeedUnit().equals(M_HR)) {
             speedunits.setText("MPH");
         }
 
@@ -212,21 +218,17 @@ public class FloatingViewService extends Service {
 
 
     public void setFloatingWindowSSpeed(Location location) {
-
-        if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_UNIT, "km/h").equals("km/h")) {
+        if (prefRepo.getSpeedUnit().equals(KM_HR)) {
             //  Toast.makeText(getApplicationContext(), "In Kmph Speed", Toast.LENGTH_SHORT).show();
             currentSpeed = String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6) /*+ "km/h"*/;
 
-        } else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_UNIT, "km/h").equals("mph")) {
+        } else if (prefRepo.getSpeedUnit().equals(M_HR)) {
             currentSpeed = String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6 * 0.62137119)/* + "mi/h"*/;
             // EventBus.getDefault().post(new ServiceSpeedModel(currentSpeed));
         } else {
             currentSpeed = String.format(Locale.ENGLISH, "%.0f", location.getSpeed() * 3.6 * 0.5399568) /*+ "kn"*/;
         }
-
-
         currspeed.setText(currentSpeed);
-
     }
 
 

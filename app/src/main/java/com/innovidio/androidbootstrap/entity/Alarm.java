@@ -24,6 +24,7 @@ public class Alarm {
     @ColumnInfo(name = "executionTIme")
     @TypeConverters(DateConverter.class)
     private Date executionTIme;
+    private boolean isActive;
 
     public Alarm(){
 
@@ -83,4 +84,11 @@ public class Alarm {
         this.executionTIme = executionTIme;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 }

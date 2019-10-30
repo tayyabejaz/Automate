@@ -36,7 +36,7 @@ public class FragmentAddCustomCar extends DaggerFragment implements ActivityBtnC
     private FragmentClickListener listener;
     private FragmentAddCustomCarBinding binding;
     private Car car = new Car();
-    private boolean isEmpty = true;
+
 
     public FragmentAddCustomCar(FragmentClickListener clickListener) {
         // Required empty public constructor
@@ -64,82 +64,51 @@ public class FragmentAddCustomCar extends DaggerFragment implements ActivityBtnC
 
     }
 
-    private void checkEnteries() {
-        if (!TextUtils.isEmpty(binding.etCarRegNo.getText())) {
-            car.setRegistrationNo(binding.etCarRegNo.getText().toString());
-            isEmpty = false;
-        } else {
+    private boolean checkEnteries() {
+        if (TextUtils.isEmpty(binding.etCarRegNo.getText())) {
             binding.etCarRegNo.setError("Registration Number is required");
-            isEmpty = true;
-        }
-
-        if (!TextUtils.isEmpty(binding.etYearOfManu.getText())) {
-            isEmpty = false;
-            car.setMakeYear(Integer.parseInt(binding.etYearOfManu.getText().toString()));
-        } else {
-            isEmpty = true;
+            return false;
+        } else if (TextUtils.isEmpty(binding.etYearOfManu.getText())) {
             binding.etYearOfManu.setError("Car Year is required");
-        }
-
-        if (!TextUtils.isEmpty(binding.etMakeOfCar.getText())) {
-            isEmpty = false;
-            car.setManufacturer(binding.etMakeOfCar.getText().toString());
-        } else {
-            isEmpty = true;
+            return false;
+        } else if (TextUtils.isEmpty(binding.etMakeOfCar.getText())) {
             binding.etMakeOfCar.setError("Car Manufacturer is required");
-        }
-
-        if (!TextUtils.isEmpty(binding.etModelOfCar.getText())) {
-            isEmpty = false;
-            car.setModelName(binding.etModelOfCar.getText().toString());
-        } else {
-            isEmpty = true;
+            return false;
+        } else if (TextUtils.isEmpty(binding.etModelOfCar.getText())) {
             binding.etModelOfCar.setError("Car Model Is necessary");
-        }
-
-        if (!TextUtils.isEmpty(binding.etSubModelOfCar.getText())) {
-            car.setSubModel(binding.etSubModelOfCar.getText().toString());
-        } else {
+            return false;
+        } else if (TextUtils.isEmpty(binding.etSubModelOfCar.getText())) {
             binding.etSubModelOfCar.setError("Car Trim is necessary");
-        }
-
-        if (!TextUtils.isEmpty(binding.etFuelType.getText())) {
-            isEmpty = false;
-            car.setEngineFuel(binding.etFuelType.getText().toString());
-        } else {
-            isEmpty = true;
+            return false;
+        } else if (TextUtils.isEmpty(binding.etFuelType.getText())) {
             binding.etFuelType.setError("Enter Car Fuel Type");
-        }
-
-        if (!TextUtils.isEmpty(binding.etFuelCapacity.getText())) {
-            isEmpty = false;
-            car.setFuelCapacityInLiters(Integer.parseInt(binding.etFuelCapacity.getText().toString()));
-        } else {
-            isEmpty = true;
+            return false;
+        } else if (TextUtils.isEmpty(binding.etFuelCapacity.getText())) {
             binding.etFuelCapacity.setError("Enter you car Fuel Capacity");
-        }
-
-        if (!TextUtils.isEmpty(binding.etEngineDisplacement.getText())) {
-            isEmpty = false;
-            car.setEnginecc(Integer.parseInt(binding.etEngineDisplacement.getText().toString()));
-        } else {
-            isEmpty = true;
+            return false;
+        } else if (TextUtils.isEmpty(binding.etEngineDisplacement.getText())) {
             binding.etEngineDisplacement.setError("Enter your Engine Displacement");
-        }
-
-        if (!TextUtils.isEmpty(binding.etCurrentOdometer.getText())) {
-            isEmpty = false;
-            car.setCurrentOdomaterReading(Integer.parseInt(binding.etCurrentOdometer.getText().toString()));
-        } else {
-            isEmpty = true;
+            return false;
+        } else if (TextUtils.isEmpty(binding.etCurrentOdometer.getText())) {
             binding.etCurrentOdometer.setError("Enter your current Odometer reading");
+            return false;
         }
+        car.setRegistrationNo(binding.etCarRegNo.getText().toString());
+        car.setMakeYear(Integer.parseInt(binding.etYearOfManu.getText().toString()));
+        car.setManufacturer(binding.etMakeOfCar.getText().toString());
+        car.setModelName(binding.etModelOfCar.getText().toString());
+        car.setSubModel(binding.etSubModelOfCar.getText().toString());
+        car.setEngineFuel(binding.etFuelType.getText().toString());
+        car.setFuelCapacityInLiters(Integer.parseInt(binding.etFuelCapacity.getText().toString()));
+        car.setEnginecc(Integer.parseInt(binding.etEngineDisplacement.getText().toString()));
+        car.setCurrentOdomaterReading(Integer.parseInt(binding.etCurrentOdometer.getText().toString()));
+
+        return true;
     }
 
     @Override
     public void onSubmitButtonClick(Context context) {
-        checkEnteries();
-        if (isEmpty) {
+        if (!checkEnteries()) {
             Toast.makeText(context, "Please Enter all the required fields", Toast.LENGTH_SHORT).show();
         } else {
             Log.d("FORM_SUBMISSION", "onSubmitButtonClick: Custom Car Added Successfully ");

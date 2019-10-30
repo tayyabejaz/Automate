@@ -50,6 +50,7 @@
                             app:layout_constraintTop_toBottomOf="@id/tv_drive_detect">
 
                             <RadioButton
+                                android:id="@+id/radio_yes"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -58,11 +59,13 @@
                                 android:textColor="@color/blackColor" />
 
                             <RadioButton
+                                android:id="@+id/radio_no"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/blueTextColor"
                                 android:text="No"
+                                android:checked="true"
                                 android:textColor="@color/blackColor" />
 
                         </RadioGroup>
@@ -90,6 +93,7 @@
                     app:layout_constraintTop_toBottomOf="@id/card_drive_detect">
 
                     <Spinner
+                        android:id="@+id/countries_spinner"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:entries="@array/model_year"
@@ -109,6 +113,7 @@
                     app:layout_constraintTop_toBottomOf="@id/layout_user_country">
 
                     <Spinner
+                        android:id="@+id/currency_spinner"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:entries="@array/model_year"
@@ -151,6 +156,7 @@
                             app:layout_constraintTop_toBottomOf="@id/tv_fuel_unit">
 
                             <RadioButton
+                                android:id="@+id/radio_gallons"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -159,11 +165,13 @@
                                 android:textColor="@color/blackColor" />
 
                             <RadioButton
+                                android:id="@+id/radio_litters"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/blueTextColor"
                                 android:text="Liters"
+                                android:checked="true"
                                 android:textColor="@color/blackColor" />
 
                         </RadioGroup>
@@ -212,16 +220,17 @@
                             app:layout_constraintTop_toBottomOf="@id/tv_distance_unit">
 
                             <RadioButton
-                                android:id="@+id/rb_km"
+                                android:id="@+id/radio_km"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/blueTextColor"
                                 android:text="KM"
+                                android:checked="true"
                                 android:textColor="@color/blackColor" />
 
                             <RadioButton
-                                android:id="@+id/rb_miles"
+                                android:id="@+id/radio_miles"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -275,19 +284,22 @@
                             app:layout_constraintTop_toBottomOf="@id/tv_speed_unit">
 
                             <RadioButton
+                                android:id="@+id/radio_miles_per_hr"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/blueTextColor"
-                                android:text="mph"
+                                android:text="Miles/h"
                                 android:textColor="@color/blackColor" />
 
                             <RadioButton
+                                android:id="@+id/radio_kms_per_hr"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/blueTextColor"
-                                android:text="Kmph"
+                                android:text="KM/h"
+                                android:checked="true"
                                 android:textColor="@color/blackColor" />
 
                         </RadioGroup>
@@ -311,12 +323,12 @@
                     style="@style/EditText_In_Forms"
                     android:hint="Set Fuel Per Unit Price"
                     android:paddingStart="@dimen/_25sdp"
+                    android:inputType="numberDecimal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/card_speed_unit"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="@dimen/_30sdp"
-                    />
+                    android:layout_marginBottom="@dimen/_30sdp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

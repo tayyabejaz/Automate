@@ -44,11 +44,19 @@ public interface Constants {
     String KM_HR = "KM/hr";
     String M_HR ="M/hr";
 
+    String KM = "KM";
+    String MILES ="Miles";
+
+    String LITTERS ="Litters";
+    String GALLONS ="Gallons";
+
 
     // awarness api constants
     String BROADCAST_DETECTED_ACTIVITY = "activity_intent";
     long DETECTION_INTERVAL_IN_MILLISECONDS = 30 * 1000;
     int CONFIDENCE = 70;
+
+    String ALARM_ID = "alarmId";
 
 }
 

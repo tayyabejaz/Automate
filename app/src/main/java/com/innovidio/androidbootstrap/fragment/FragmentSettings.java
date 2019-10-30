@@ -149,24 +149,9 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
     }
 
     private void initList() {
-        AppPreferences.SELECTED_CAR_ID = appPreferences.getInt(AppPreferences.Key.SAVED_CAR_ID);
         carViewModel.getAllCars().observe(this, cars -> {
             carArrayList = cars;
             adapter.updateAdapterList(carArrayList);
-        });
-
-        carViewModel.getCarById(AppPreferences.SELECTED_CAR_ID).observe(this, new Observer<Car>() {
-            @Override
-            public void onChanged(Car car) {
-                if (car != null) {
-                    setSpinnerItem(car);
-                }
-            }
-
-            private void setSpinnerItem(Car car) {
-                String name = car.getManufacturer() + " " + car.getModelName() + " " + car.getMakeYear();
-                AppPreferences.SELECTED_CAR_ID = car.getId();
-            }
         });
     }
 
@@ -226,7 +211,6 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
             String modelName = modelList[i];
             int yearName = yearList[i];
             Car car = new Car();
-
             car.setModelName(modelName);
             car.setManufacturer(makeName);
             car.setRegistrationNo("LXA " + UtilClass.getRandomNo(2250, 9999));

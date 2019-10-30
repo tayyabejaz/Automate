@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
+import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.activity.MainActivity;
@@ -208,7 +209,7 @@ public class FragmentAddCarWash extends DaggerFragment {
 
     private Form createForm() {
         Form form = new Form();
-        form.setCarId(MainActivity.carID);
+        form.setCarId(AppPreferences.SELECTED_CAR_ID);
         form.setStartDate(new Date());
         form.setEndDate(new Date());
         form.setSaveDate(new Date());
@@ -220,7 +221,7 @@ public class FragmentAddCarWash extends DaggerFragment {
     private void addMaintenance(int formID, Maintenance maintenance) {
         if (!isEmpty) {
             maintenance.setFormId(formID);
-            maintenance.setCarId(MainActivity.carID);
+            maintenance.setCarId(AppPreferences.SELECTED_CAR_ID);
             maintenance.setMaintenanceName("Car Wash");
             maintenance.setMaintenanceLife(0);
             maintenance.setMaintenanceType(TimeLineItem.Type.CAR_WASH);

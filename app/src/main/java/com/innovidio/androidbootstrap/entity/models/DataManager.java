@@ -1,4 +1,4 @@
-package com.innovidio.androidbootstrap.dashboard;
+package com.innovidio.androidbootstrap.entity.models;
 
 import android.location.Location;
 import android.util.Log;

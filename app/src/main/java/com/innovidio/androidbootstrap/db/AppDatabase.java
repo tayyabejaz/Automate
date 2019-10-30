@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.db.converters.EnumTypeConverters;
 import com.innovidio.androidbootstrap.db.converters.TransactionTypeConverters;
 import com.innovidio.androidbootstrap.db.converters.UnitTypeEnumConverters;
@@ -17,6 +18,7 @@ import com.innovidio.androidbootstrap.db.dao.AlarmDao;
 import com.innovidio.androidbootstrap.db.dao.CarDao;
 import com.innovidio.androidbootstrap.db.dao.FormDao;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
+import com.innovidio.androidbootstrap.db.dao.FuelTransactionDao;
 import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
 import com.innovidio.androidbootstrap.db.dao.PreferencesDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
@@ -24,6 +26,7 @@ import com.innovidio.androidbootstrap.db.dao.UserDao;
 import com.innovidio.androidbootstrap.entity.Alarm;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.Form;
+import com.innovidio.androidbootstrap.entity.FuelTransaction;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Preferences;
@@ -50,6 +53,7 @@ import java.util.Date;
                 Car.class,
                 Form.class,
                 FuelUp.class,
+                FuelTransaction.class,
                 Maintenance.class,
                 Trip.class
 
@@ -73,6 +77,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao getUserDao();
 
     public abstract PreferencesDao getPreferencesDao();
+
+    public abstract FuelTransactionDao getFuelTransactionDao();
 
     public abstract AlarmDao getAlarmDao();
 //
@@ -104,7 +110,7 @@ public abstract class AppDatabase extends RoomDatabase {
                         public void onCreate(@NonNull SupportSQLiteDatabase db) {
                             super.onCreate(db);
                             sQLiteDatabase = db;
-                            populateData();
+                            instance.populateData();
                         }
 
                         @Override
@@ -116,7 +122,7 @@ public abstract class AppDatabase extends RoomDatabase {
         return instance;
     }
 
-    public static void populateData() {
+    public void populateData() {
 
         // for processing direct query
         /*
@@ -137,6 +143,8 @@ public abstract class AppDatabase extends RoomDatabase {
         List<Breed> breeds = jsonAdapter.fromJson(json);
         return breeds;
         */
+
+
 
     }
 

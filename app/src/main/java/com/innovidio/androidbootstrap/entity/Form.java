@@ -14,7 +14,6 @@ import java.util.Date;
 
 @Entity
 public class Form {
-
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String title;

@@ -7,11 +7,11 @@
 
         <variable
             name="viewModel"
-            type="com.innovidio.androidbootstrap.dashboard.SpeedDashboardModel" />
+            type="com.innovidio.androidbootstrap.entity.models.SpeedDashboardModel" />
 
         <variable
             name="activity"
-            type="com.innovidio.androidbootstrap.dashboard.SpeedDashboardActivity" />
+            type="com.innovidio.androidbootstrap.activity.SpeedDashboardActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

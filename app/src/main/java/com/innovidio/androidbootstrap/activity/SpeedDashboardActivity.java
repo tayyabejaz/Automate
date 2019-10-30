@@ -1,4 +1,4 @@
-package com.innovidio.androidbootstrap.dashboard;
+package com.innovidio.androidbootstrap.activity;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -14,7 +14,6 @@ import android.content.IntentSender;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.GpsStatus;
-import android.location.Location;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
@@ -39,12 +38,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.github.anastr.speedviewlib.PointerSpeedometer;
 import com.google.android.gms.common.ConnectionResult;
@@ -63,29 +60,28 @@ import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
-import com.innovidio.androidbootstrap.activity.MainActivity;
+import com.innovidio.androidbootstrap.entity.models.SpeedDashboardModel;
 import com.innovidio.androidbootstrap.databinding.ActivitySpeedDashboardBinding;
-import com.innovidio.androidbootstrap.db.converters.DateConverter;
-import com.innovidio.androidbootstrap.entity.Preferences;
 import com.innovidio.androidbootstrap.entity.Trip;
+import com.innovidio.androidbootstrap.entity.models.DataManager;
+import com.innovidio.androidbootstrap.entity.models.FullAddress;
+import com.innovidio.androidbootstrap.repository.PreferencesRepository;
 import com.innovidio.androidbootstrap.service.FloatingViewService;
+import com.innovidio.androidbootstrap.viewmodel.LocationViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import javax.inject.Inject;
 
 
 import dagger.android.support.DaggerAppCompatActivity;
 
-import static com.innovidio.androidbootstrap.BaseApplication.context;
+import static com.innovidio.androidbootstrap.Constants.KM;
 import static com.innovidio.androidbootstrap.Constants.KM_HR;
+import static com.innovidio.androidbootstrap.Constants.MILES;
 import static com.innovidio.androidbootstrap.Constants.M_HR;
 
 public class SpeedDashboardActivity extends DaggerAppCompatActivity implements GpsStatus.Listener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
@@ -93,7 +89,6 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
     private static final String CHANNEL_ID = "channelId";
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 1;
     public static Double currentSpeed;
-    public boolean isTimeSet = false;
     ActivitySpeedDashboardBinding binding;
     SpeedDashboardModel speedDashboardModel;
     int maximumspeed = 280;
@@ -102,41 +97,26 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
     Double distance;
     long[] vibrate = {500, 1000};
     Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-    //  HistorySaveDialog historySaveDialog;
     boolean isClickHudBtn = false;
     Notification.Builder notification;
     GoogleApiClient googleApiClient;
     ScaleAnimation scaleAnimation;
-    boolean isminimizepressed = false;
-    int tempvalue = 0;
     boolean alreadyinitialized = false;
     CountDownTimer countDownTimer;
     boolean isFinished = true;
     boolean notificationalarm = false;
     int speedLimit;
     int Notificationid = 1;
-    boolean speedlimitdialogclicked = false;
     MediaPlayer mp;
     boolean isPlaing = false;
     Uri notification1 = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     int counter = 0;
     @Inject
     LocationViewModel locationViewModel;
-    Location previouslocation = new Location("previous");
     boolean isstart = true;
-    String speedUnits;
-    String distanceUnitsfromdatabase;
-//    DatabaseReference usertripsdatabase;
     private LocationManager mLocationManager;
-    //  private DataManager dataManagerLocal = new DataManager();
     private DataManager data;
-    String date;
-    long dateinmillis;
-  //  DatabaseReference usercompleteprofile;
-    private String carname;
-    String userid;
-    String distanceUnits;
-    String carfueleconomyperkm;
+    Double carfueleconomyperkm;
 
     @Inject
     AppPreferences appPreferences;
@@ -144,9 +124,9 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
     @Inject
     TripViewModel tripViewModel;
 
-    public static Preferences preferences = null;
-    // Timer timer;
-    //  Location locationp=new Location("Enterprise building , thokr lahore pakistn");
+    @Inject
+    PreferencesRepository prefRepo;
+
     private BroadcastReceiver mBatteryLevelReciver = new BroadcastReceiver() {
 
         @Override
@@ -193,80 +173,34 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
         binding = DataBindingUtil.setContentView(this, R.layout.activity_speed_dashboard);
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
-        preferences = new Preferences();
-        preferences.setId(1);
-        preferences.setSpeedLimit(90);
-        preferences.setCountry("Pakistan");
-        preferences.setAutoDetect(false);
-        preferences.setCurrency("Rs");
-        preferences.setDistanceUnit(Preferences.UnitTypeEnum.KM);
-        preferences.setSpeedUnit(Preferences.UnitTypeEnum.KM_HR);
-        preferences.setFuelUnit(Preferences.UnitTypeEnum.Liters);
-        preferences.setFuelUnitPrice(113.09d);
-
-        if (preferences.getSpeedUnit() == Preferences.UnitTypeEnum.KM_HR){
-            distanceUnitsfromdatabase = "KM";
-        }else{
-            distanceUnitsfromdatabase = "Miles";
-        }
-
-
         PointerSpeedometer pointerSpeedometer = (PointerSpeedometer) findViewById(R.id.iv_imageSpeedometer);
         pointerSpeedometer.setMaxSpeed(maximumspeed);
-       // PointerSpeedometer pointerSpeedometer = (PointerSpeedometer) findViewById(R.id.iv_imageSpeedometer);
 
-        carfueleconomyperkm = SharedPreferenceHelper.getInstance().getStringValue(Constants.carfueleconomyperkm , "0.7");
-        userid = SharedPreferenceHelper.getInstance().getStringValue(Constants.userid , "");
+        if (getIntent().hasExtra(Constants.SPEED_LIMIT)){
+            appPreferences.put(AppPreferences.Key.SPEED_LIMIT, getIntent().getStringExtra(Constants.SPEED_LIMIT));
+        }
 
-        //distanceUnits = "KM";
-        distanceUnits = preferences.getDistanceUnit().name();
-        Log.d("speedunits: " , SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits , ""));
-        Log.d("distanceunits: " , SharedPreferenceHelper.getInstance().getStringValue(Constants.distanceunits , ""));
+        carfueleconomyperkm = appPreferences.getDouble(AppPreferences.Key.FUEL_ECONOMY , 0.7f);
 
-        //binding.ivImageSpeedometer.setMaxSpeed(maximumspeed);
-     //  speedLimit = SharedPreferenceHelper.getInstance().getIntegerValue(Constants.SPEED_LIMIT, 0);
-        speedLimit = preferences.getSpeedLimit();
+        Log.d("speedunits: " , prefRepo.getSpeedUnit()+ "");
+        Log.d("distanceunits: " , prefRepo.getDistanceUnit()+ "");
 
-        if (speedLimit == 0)
-        {
+        speedLimit = prefRepo.getSpeedLimit();
+
+        if (speedLimit == 0){
             binding.textAlarm.setVisibility(View.GONE);
             binding.textSpeedlimit.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             binding.textAlarm.setVisibility(View.VISIBLE);
             binding.textSpeedlimit.setVisibility(View.VISIBLE);
         }
 
-        if (preferences.getSpeedUnit() == Preferences.UnitTypeEnum.KM_HR){
-       // if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, KM_HR).equals(KM_HR)) {
-            binding.textAlarm.setText(/*"Speed Limit " + */String.valueOf(speedLimit) + "KMPH");
-        } if (preferences.getSpeedUnit() == Preferences.UnitTypeEnum.M_HR){
-        //} else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, KM_HR).equals(M_HR)) {
-            binding.textAlarm.setText(/*"Speed Limit " + */String.valueOf(speedLimit) + "MPH");
-        }
-        //  Toast.makeText(this, "Limit alarm value: "+FuturisticSettingsActivity.limitalarmpressed, Toast.LENGTH_SHORT).show();
+        binding.textAlarm.setText(speedLimit +" "+ prefRepo.getSpeedUnit());
         Snackbar snackbar = Snackbar
                 .make(binding.maincontainer, "The data will appear as soon as we detect your movement", Snackbar.LENGTH_LONG);
         snackbar.show();
 
-        date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-        Date date1 = new Date();
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        try {
-            date1 = (Date)formatter.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        long output=date1.getTime()/1000L;
-        String str= Long.toString(output);
-        dateinmillis = Long.parseLong(str) * 1000;
-
-        Log.d("datedateinmillis" , ""+dateinmillis);
-
         if (Build.VERSION.SDK_INT >= 21) {
-
-
             Drawable drawable1 = getResources().getDrawable(R.drawable.minimize);
             DrawableCompat.setTint(drawable1, ContextCompat.getColor(this, R.color.whiteColor));
             binding.minimizeIcon.setImageDrawable(drawable1);
@@ -283,16 +217,6 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
             DrawableCompat.setTint(wrappedDrawable1, ContextCompat.getColor(SpeedDashboardActivity.this, R.color.whiteColor));
             binding.minimizeIcon.setImageDrawable(wrappedDrawable1);
         }
-        // binding.chronometer.setBase(System.currentTimeMillis());
-
-
-        String userid;
-        userid = SharedPreferenceHelper.getInstance().getStringValue(Constants.userid, "");
-
-       // carname = SharedPreferenceHelper.getInstance().getStringValue(Constants.carnameselectedfortrip, "");
-        carname = "Suzuki WagonR 2019";
-       // Toast.makeText(this, ""+carname, Toast.LENGTH_SHORT).show();
-     //   usertripsdatabase = FirebaseDatabase.getInstance().getReference("usertrips").child(userid).child(carname);
 
         speedDashboardModel = new SpeedDashboardModel();
 
@@ -316,30 +240,23 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
             }
         });
 
-        if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.KM_HR) {
-       //     if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, KM_HR).equals(KM_HR)) {
+        if (prefRepo.getSpeedUnit().equals(KM_HR)) {
             speedDashboardModel.setSpeedView("0");
-            speedDashboardModel.setUnitView("KMPH");
-            speedDashboardModel.setDistanceView("0 M");
-            speedDashboardModel.setMaxSpeedView("0 KMPH");
-            speedDashboardModel.setAvgSpeedView("0 KMPH");
+            speedDashboardModel.setUnitView(prefRepo.getSpeedUnit());
+            speedDashboardModel.setDistanceView("0 "+KM_HR);
+            speedDashboardModel.setMaxSpeedView("0 "+KM_HR);
+            speedDashboardModel.setAvgSpeedView("0 "+KM_HR);
         } else {
             speedDashboardModel.setSpeedView("0");
-            speedDashboardModel.setUnitView("MPH");
-            speedDashboardModel.setDistanceView("0 M");
-            speedDashboardModel.setMaxSpeedView("0 MPH");
-            speedDashboardModel.setAvgSpeedView("0 MPH");
+            speedDashboardModel.setUnitView(prefRepo.getSpeedUnit());
+            speedDashboardModel.setDistanceView("0 "+M_HR);
+            speedDashboardModel.setMaxSpeedView("0 "+M_HR);
+            speedDashboardModel.setAvgSpeedView("0 "+M_HR);
         }
 
-        if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.KM_HR) {
-      //  if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, KM_HR).equals(KM_HR)) {
-            binding.speedUnit.setText("KMPH");
-        } else {
-            binding.speedUnit.setText("MPH");
-        }
+        binding.speedUnit.setText(prefRepo.getSpeedUnit());
 
         binding.chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-            boolean isPair = true;
 
             @Override
             public void onChronometerTick(Chronometer chrono) {
@@ -349,8 +266,6 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
                 locationViewModel.setChronoTimerMutableLiveData(time);
             }
         });
-
-       // locationViewModel = ViewModelProviders.of(this).get(LocationViewModel.class);
         locationViewModel.getLocationMutableLiveData().observe(this, new Observer<DataManager>() {
             @Override
             public void onChanged(@Nullable DataManager dataManager) {
@@ -408,62 +323,34 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
 
                 double averageTemp = average;
 
-                // Log.d("saad", "before update: " + averageTemp);
-                if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.KM_HR) {
-              //  if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, KM_HR).equals(KM_HR)) {
-                    speedUnits = "KMPH";
-                    /*if (distanceTemp <= 1000.0) {
-                        distanceUnits = "m";
-                    } else {
-                        distanceTemp /= 1000.0;
-                        distanceUnits = "km";
-                    }*/
+                if (prefRepo.getSpeedUnit().equals(KM_HR)) {
                     try {
-                        if (distanceUnitsfromdatabase.equals("KM")) {
+                        if (prefRepo.getDistanceUnit().equals(KM)) {
                             distanceTemp = distanceTemp * 0.001;
-                            distanceUnits = "KM";
-                        } else if (distanceUnitsfromdatabase.equals("Miles")) {
+                        } else if (prefRepo.getDistanceUnit().equals(MILES)) {
                             distanceTemp = distanceTemp * 0.000621371;
-                            distanceUnits = "M";
-                        }
-                        else
-                        {
+                        } else {
                             distanceTemp = distanceTemp * 0.001;
-                            distanceUnits = "KM";
                         }
                     }
-                    catch (NullPointerException e)
-                    {
+                    catch (NullPointerException e) {
                         e.printStackTrace();
                     }
-                    catch (Exception e)
-                    {
+                    catch (Exception e){
                         e.printStackTrace();
                     }
 
-
-
-                }
-                else if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.M_HR) {
-                //else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits, KM_HR).equals(M_HR)) {
+                } else if (prefRepo.getSpeedUnit().equals(M_HR)) {
                     try {
                         maxSpeedTemp *= 0.62137119;
-                        if (distanceUnitsfromdatabase.equals("KM")) {
+                        if (prefRepo.getDistanceUnit().equals(KM)) {
                             distanceTemp = distanceTemp * 0.001;
-                            distanceUnits = "KM";
-                        } else if (distanceUnitsfromdatabase.equals("Miles")) {
+                        } else if (prefRepo.getDistanceUnit().equals(MILES)) {
                             distanceTemp = distanceTemp * 0.000621371;
-                            distanceUnits = "M";
-                        }
-                        else
-                        {
+                        } else {
                             distanceTemp = distanceTemp * 0.001;
-                            distanceUnits = "KM";
                         }
-
-                        // distanceTemp = distanceTemp / 1000.0 * 0.62137119;
                         averageTemp *= 0.62137119;
-                        speedUnits = "MPH";
                     }
                     catch (NullPointerException e)
                     {
@@ -473,18 +360,9 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
                     {
                         e.printStackTrace();
                     }
+                }
 
-                   // distanceUnits = "mi";
-                } /*else {
-                    maxSpeedTemp *= 0.5399568;
-                    distanceTemp = distanceTemp / 1000.0 * 0.5399568;
-                    averageTemp *= 0.5399568;
-                    speedUnits = "knot";
-                    distanceUnits = "kn";
-                }*/
-
-
-                speedDashboardModel.setUnitView(speedUnits);
+                speedDashboardModel.setUnitView(prefRepo.getSpeedUnit());
 
                 Log.d("maxspeed", maxSpeedTemp + "\t" + "speedavg" + averageTemp + "\t" + "distance" + distanceTemp);
 
@@ -492,7 +370,7 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
               //  maxSpeed = String.format("%.0f", maxSpeedTemp) + " " + speedUnits;
                 maxSpeed = maxSpeedTemp;
                // speedDashboardModel.setMaxSpeedView(String.format("%.0f", maxSpeedTemp) + " " + speedUnits);
-                speedDashboardModel.setMaxSpeedView(maxSpeedTemp + " " + speedUnits);
+                speedDashboardModel.setMaxSpeedView(maxSpeedTemp + " " + prefRepo.getSpeedUnit());
 
                 // avgSpeed =  String.format("%.0f", averageTemp)+ speedUnits;
                 try {
@@ -504,11 +382,11 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                speedDashboardModel.setAvgSpeedView(avgSpeed + " " + speedUnits);
+                speedDashboardModel.setAvgSpeedView(avgSpeed + " " + prefRepo.getSpeedUnit());
 
                // distance = String.format("%.2f", distanceTemp) + " " + distanceUnits;
                 distance = distanceTemp;
-                speedDashboardModel.setDistanceView(String.format("%.2f", distanceTemp) + " " + distanceUnits);
+                speedDashboardModel.setDistanceView(String.format("%.2f", distanceTemp) + " " + prefRepo.getDistanceUnit());
 
                 binding.setViewModel(speedDashboardModel);
 
@@ -572,9 +450,9 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
 
         locationViewModel.getSpeedexceedMutableLiveData().observe(this, new Observer<String>() {
             @Override
-            public void onChanged(@Nullable String s) {
-                if (s != null) {
-                        if (currentSpeed != null && Integer.parseInt(currentSpeed+"") > speedLimit) {
+            public void onChanged(@Nullable String value) {
+                if (value != null) {
+                        if (currentSpeed != null && currentSpeed > speedLimit) {
                             if (mp != null && !mp.isPlaying()) {
                                 //  mp.setLooping(true);
                                 mp.start();
@@ -594,18 +472,7 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
             }
         });
 
-        {
-
-
-        }
-        if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.KM_HR) {
-       // if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_UNIT, "km/h").equals("KM/hr")) {
-            binding.speedUnit.setText("km/h");
-        }else if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.M_HR) {
-      //  else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_UNIT, "km/h").equals("M/hr")) {
-            binding.speedUnit.setText("mph");
-        }
-
+        binding.speedUnit.setText(prefRepo.getSpeedUnit());
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -1244,9 +1111,14 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
     }
 
     public void finishDriveDialog() {
-
-        FullAddress fullAddress =  AddressClass.getAddressFromLatLon(this, locationViewModel.currentLat, locationViewModel.currentLon);
-        appPreferences.put(AppPreferences.Key.END_LOCATION, fullAddress.getAddress());
+        FullAddress startFullAddress =  UtilClass.getAddressFromLatLon(this, locationViewModel.getInitialLocation());
+        FullAddress endFullAddress =  UtilClass.getAddressFromLatLon(this, locationViewModel.getLastLocation());
+        if (startFullAddress!=null){
+            appPreferences.put(AppPreferences.Key.START_LOCATION, startFullAddress.getAddress());
+        }
+        if (endFullAddress!=null){
+            appPreferences.put(AppPreferences.Key.END_LOCATION, endFullAddress.getAddress());
+        }
 
 
         AlertDialog.Builder builder1 = new AlertDialog.Builder(SpeedDashboardActivity.this);
@@ -1260,26 +1132,22 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
                         String triptype, starttime, endtime;
                         dialog.cancel();
 
-                        triptype = SharedPreferenceHelper.getInstance().getStringValue(Constants.triptype, "");
+                        triptype = appPreferences.getString(AppPreferences.Key.TRIP_TYPE, "Personal");
 
                         if (maxSpeed!=0 && avgSpeed!=0 && distance!=null) {
                             String str = distance+"";
                             String[] distancestring = str.split("\\s+");
 
-                            double carfueleconomyindouble = Double.parseDouble(carfueleconomyperkm);
-                            Double fueleconomycalculated = Double.parseDouble(distancestring[0]) * carfueleconomyindouble;
+                           // double carfueleconomyindouble = Double.parseDouble(carfueleconomyperkm);
+                            Double fueleconomycalculated = Double.parseDouble(distancestring[0]) * carfueleconomyperkm;
                            // String fueleconomypertrip = String.valueOf(fueleconomycalculated);
                             String fueleconomypertrip = String.format("%.3f" , fueleconomycalculated);
                            // fueleconomypertrip = String.format("%.3f" , fueleconomypertrip);
-                            // todo save trip here
-//                            String key = usertripsdatabase.push().getKey();
-//                            Trip trip = new Trip(carname, triptype, startTime, endtime, maxSpeed, avgSpeed, distance, date, dateinmillis, fueleconomypertrip);
-//                            usertripsdatabase.child(key).setValue(trip);
 
                             Date currentTime = Calendar.getInstance().getTime();
 
                             Trip trip = new Trip();
-                            trip.setCarId(MainActivity.carID);
+                            trip.setCarId(AppPreferences.SELECTED_CAR_ID);
                             trip.setTripType(triptype);
                             trip.setStartTime(LocationViewModel.startTime);
                             trip.setEndTime(currentTime); // or end time
@@ -1292,9 +1160,9 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
                             trip.setIntialOdometer(appPreferences.getInt(AppPreferences.Key.START_ODOMETER)); // not set yet
                             double finalOdoMeter =  appPreferences.getInt(AppPreferences.Key.START_ODOMETER) + distance;
                             trip.setFinalOdometer((int) finalOdoMeter); // not set yet
-                            trip.setFuelCostPerUnit(preferences.getFuelUnitPrice()); // not set yet
-                            trip.setOrigin(appPreferences.getString(AppPreferences.Key.START_LOCATION));
-                            trip.setDestination(appPreferences.getString(AppPreferences.Key.END_LOCATION)); // not set yet
+                            trip.setFuelCostPerUnit(prefRepo.getFuelUnitPrice()); // not set yet
+                            trip.setOrigin(appPreferences.getString(AppPreferences.Key.START_LOCATION, "Address not found."));
+                            trip.setDestination(appPreferences.getString(AppPreferences.Key.END_LOCATION, "Address not found.")); // not set yet
                             tripViewModel.addTrip(trip);
 
                             Toast.makeText(SpeedDashboardActivity.this, "Your trip is saved.", Toast.LENGTH_SHORT).show();
@@ -1304,21 +1172,12 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
                             finish();
                         }
                         else if(maxSpeed == 0 && avgSpeed == 0 && distance == 0.0f) {
-                            // todo save trip here
-//                            String key = usertripsdatabase.push().getKey();
-//                            Trip trip = new Trip(carname, triptype, startTime, endtime, "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits , ""), "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(Constants.speedunits , ""), "0" + " "+SharedPreferenceHelper.getInstance().getStringValue(Constants.distanceunits , ""), date, dateinmillis, "0");
-//                            usertripsdatabase.child(key).setValue(trip);
                             Toast.makeText(SpeedDashboardActivity.this, "Your trip is not saved.", Toast.LENGTH_SHORT).show();
-
                             Intent i  = new Intent(SpeedDashboardActivity.this , MainActivity.class);
                             startActivity(i);
                             finish();
                         }
 
-
-                        /*Intent i = new Intent(SpeedDashboardActivity.this , HomeActivity.class);
-                        startActivity(i);
-                        finish();*/
                     }
                 });
 
@@ -1369,19 +1228,8 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
                             try {
                                 speedLimit = Integer.parseInt(newspeededittext.getText().toString());
                                 LocationViewModel.speedLimit = Integer.parseInt(newspeededittext.getText().toString());
-
-                                preferences.setSpeedLimit(Integer.parseInt(newspeededittext.getText().toString()));
-                               //SharedPreferenceHelper.getInstance().setIntegerValue(Constants.SPEED_LIMIT, Integer.parseInt(newspeededittext.getText().toString()));
-
-                                // FuturisticSettingsActivity.limitalarmpressed = true;
-                                if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.KM_HR) {
-                               // if (SharedPreferenceHelper.getInstance().getStringValue(Constants.SPEED_LIMIT_METER_TYPE, "km/h").equals("km/h")) {
-                                    binding.textAlarm.setText(newspeededittext.getText().toString() + "km/h");
-                                }
-                                if (preferences.getSpeedUnit()==Preferences.UnitTypeEnum.M_HR) {
-                               // else if (SharedPreferenceHelper.getInstance().getStringValue(Constants.SPEED_LIMIT_METER_TYPE, "km/h").equals("mph")) {
-                                    binding.textAlarm.setText(newspeededittext.getText().toString() + "mph");
-                                }
+                                prefRepo.setSpeedLimit(Integer.parseInt(newspeededittext.getText().toString()));
+                                binding.textAlarm.setText(newspeededittext.getText().toString() + prefRepo.getSpeedUnit());
                             } catch (NullPointerException e) {
                                 e.printStackTrace();
                             } catch (Exception e) {
