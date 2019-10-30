@@ -30,7 +30,7 @@ public class PreferencesViewModel extends ViewModel {
         this.preferencesRepository.updatePreferences(preferences);
     }
 
-    public LiveData<Preferences> getUserById(int id) {
+    public LiveData<Preferences> getPrefById(int id) {
         return this.preferencesRepository.getPreferencesById(id);
     }
 }

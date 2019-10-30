@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 public class Preferences {
     @PrimaryKey(autoGenerate = true)
     private int id;
-    private boolean isAutoDetect = false;
+    private boolean isAutoDetect;
     private String country;
     private String currency;
    // @ColumnInfo(name = "fuelUnit")

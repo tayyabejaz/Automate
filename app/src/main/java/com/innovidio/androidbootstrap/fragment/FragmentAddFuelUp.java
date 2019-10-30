@@ -299,6 +299,5 @@ public class FragmentAddFuelUp extends DaggerFragment {
     private String calculateTotal(float pricePerUnit, float totalLiters) {
         float total = pricePerUnit * totalLiters;
         return String.valueOf(total);
-
     }
 }

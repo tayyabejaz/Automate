@@ -22,6 +22,7 @@ import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.CustomDeleteDialog;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.activity.AddNewCarActivity;
+import com.innovidio.androidbootstrap.activity.PrivacyPolicyActivity;
 import com.innovidio.androidbootstrap.activity.UserPreferencesActivity;
 import com.innovidio.androidbootstrap.activity.UserProfileActivity;
 import com.innovidio.androidbootstrap.adapter.CustomMainSpinnerAdapter;
@@ -67,7 +68,6 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
     private CustomMainSpinnerAdapter adapter;
     private CustomDeleteDialog resetDataDialog, deleteCarDialog;
     private List<Car> carArrayList = new ArrayList<>();
-    private Car carInstance = new Car();
 
     int odoMeter = 10000;
 
@@ -108,6 +108,18 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
         settingsBinding.llGenerateDemoData.setOnClickListener(view1 -> {
             runDummyData();
         });
+
+        settingsBinding.llPrivacyPolicy.setOnClickListener(view1 -> {
+            startActivity(new Intent(getContext(), PrivacyPolicyActivity.class));
+        });
+
+        settingsBinding.llRateUs.setOnClickListener(view1 -> {
+            UtilClass.rateUs(getContext());
+        });
+
+        settingsBinding.llShare.setOnClickListener(view1 -> {
+            UtilClass.shareApp(getContext());
+        });
     }
 
     private void createDialogs() {
@@ -120,6 +132,9 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
             @Override
             public void onPositiveBtnClick(Dialog dialog) {
                 //TODO: Reset Data ---- Delete Database
+                UtilClass.clearAppData(getContext());
+                appPreferences.clear();
+              //  UtilClass.restartApplication(getContext());
             }
         };
 
@@ -204,7 +219,6 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
 
     private void addDummyValues(int i) {
         Faker faker = new Faker();
-
         if (i < 3) {
             String[] makeList = getResources().getStringArray(R.array.makeList);
             String[] modelList = getResources().getStringArray(R.array.modelList);

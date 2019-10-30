@@ -51,7 +51,7 @@
 
                             <RadioButton
                                 android:id="@+id/radio_yes"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/blueTextColor"
@@ -60,7 +60,7 @@
 
                             <RadioButton
                                 android:id="@+id/radio_no"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/blueTextColor"
@@ -157,7 +157,7 @@
 
                             <RadioButton
                                 android:id="@+id/radio_gallons"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/blueTextColor"
@@ -166,7 +166,7 @@
 
                             <RadioButton
                                 android:id="@+id/radio_litters"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/blueTextColor"
@@ -221,7 +221,7 @@
 
                             <RadioButton
                                 android:id="@+id/radio_km"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/blueTextColor"
@@ -231,7 +231,7 @@
 
                             <RadioButton
                                 android:id="@+id/radio_miles"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/blueTextColor"
@@ -285,7 +285,7 @@
 
                             <RadioButton
                                 android:id="@+id/radio_miles_per_hr"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/blueTextColor"
@@ -294,7 +294,7 @@
 
                             <RadioButton
                                 android:id="@+id/radio_kms_per_hr"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:buttonTint="@color/blueTextColor"

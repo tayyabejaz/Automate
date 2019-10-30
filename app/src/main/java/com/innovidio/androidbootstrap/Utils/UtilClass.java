@@ -1,17 +1,26 @@
 package com.innovidio.androidbootstrap.Utils;
 
+import android.app.ActivityManager;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.os.ConfigurationCompat;
 import androidx.databinding.DataBindingUtil;
@@ -19,6 +28,8 @@ import androidx.databinding.DataBindingUtil;
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.activity.SplashActivity;
+import com.innovidio.androidbootstrap.entity.models.FullAddress;
 import com.innovidio.androidbootstrap.activity.SpeedDashboardActivity;
 import com.innovidio.androidbootstrap.databinding.DialogDriveSelectionBinding;
 import com.innovidio.androidbootstrap.driveDetect.BackgroundDetectedActivitiesService;
@@ -46,6 +57,8 @@ import java.util.TimeZone;
 import java.util.TreeMap;
 
 import static com.innovidio.androidbootstrap.AppPreferences.Key.SPEED_LIMIT;
+
+import static android.content.Context.ACTIVITY_SERVICE;
 
 public class UtilClass {
 
@@ -300,7 +313,7 @@ public class UtilClass {
         preferences.setSpeedLimit(90);
         preferences.setCountry("Pakistan");
         preferences.setAutoDetect(false);
-        preferences.setCurrency("Rs");
+        preferences.setCurrency("PKR");
         preferences.setDistanceUnit(Constants.KM);
         preferences.setSpeedUnit(Constants.KM_HR);
         preferences.setFuelUnit(Constants.LITTERS);
@@ -388,5 +401,77 @@ public class UtilClass {
         return currenciesList;
     }
 
+
+    public static void clearAppData(Context context) {
+        try {
+            // clearing app data
+            if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
+                ((ActivityManager)context.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
+            } else {
+                String packageName = context.getApplicationContext().getPackageName();
+                Runtime runtime = Runtime.getRuntime();
+                runtime.exec("pm clear "+packageName);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void restartApplication(Context context) {
+        Intent mStartActivity = new Intent(context, SplashActivity.class);
+        int mPendingIntentId = 123456;
+        PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, mPendingIntent);
+        System.exit(0);
+    }
+
+    public static void gotoPrivacyPolicy(Context context, String url){
+        try{
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            context.startActivity(i);
+        }catch (ActivityNotFoundException ex){
+            Toast.makeText(context, "Not Found any Browser.\n"+ex, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public static void rateUs(Context context){
+        context.startActivity(new Intent(Intent.ACTION_VIEW, Uri
+                .parse("market://details?id=" + context.getPackageName())));
+    }
+
+    public static void shareApp(Context context) {
+        // Preventing multiple clicks, using threshold of 1 second
+//        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+//            return;
+//        }
+//        mLastClickTime = SystemClock.elapsedRealtime();
+
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.app_name));
+        String sAux = "\nShare our 'Automate' with your friends and family.\n\n";
+        sAux = sAux + "https://play.google.com/store/apps/details?id=" + context.getPackageName() + " \n\n";
+        i.putExtra(Intent.EXTRA_TEXT, sAux);
+        context.startActivity(Intent.createChooser(i, "choose one"));
+    }
+
+//    public static void firebaseCustomClickEvent(Context context, String eventName){
+//        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+//        Bundle params = new Bundle();
+//        params.putString("cur_time", getCurrentTime());
+//        // params.putString("msg", msg);
+//        mFirebaseAnalytics.logEvent(eventName, params);
+//    }
+//
+//    public static void firebaseCustomClickEvent(Context context, String eventName, String msg){
+//        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
+//        Bundle params = new Bundle();
+//        params.putString("cur_time", getCurrentTime());
+//        params.putString("msg", msg);
+//        mFirebaseAnalytics.logEvent(eventName, params);
+//    }
 
 }
