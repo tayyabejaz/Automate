@@ -58,7 +58,7 @@
     <string name="activity_unknown">Unknown</string>
 
     <string-array name="model_year">
-        <item> 2019 </item>
+        <item> Select Car Year</item>
         <item> 2019 </item>
         <item> 2018 </item>
         <item> 2017 </item>

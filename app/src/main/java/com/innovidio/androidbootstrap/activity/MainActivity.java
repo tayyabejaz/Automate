@@ -40,7 +40,6 @@ import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.Form;
-import com.innovidio.androidbootstrap.entity.FormWithMaintenance;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
@@ -66,6 +65,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerAppCompatActivity;
 import io.bloco.faker.Faker;
 
+import static com.innovidio.androidbootstrap.AppPreferences.Key.SELECTED_CAR_ID;
 import static com.innovidio.androidbootstrap.Constants.ACTIVITY;
 import static com.innovidio.androidbootstrap.Constants.CAR_WASH_FORM;
 import static com.innovidio.androidbootstrap.Constants.FUEL_UP_FORM;
@@ -465,13 +465,13 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     }
 
     private void initList() {
-        AppPreferences.SELECTED_CAR_ID = appPreferences.getInt(AppPreferences.Key.SAVED_CAR_ID);
+
         carViewModel.getAllCars().observe(this, cars -> {
             carArrayList = cars;
             customMainSpinnerAdapter.updateAdapterList(carArrayList);
         });
 
-        carViewModel.getCarById(AppPreferences.SELECTED_CAR_ID).observe(this, new Observer<Car>() {
+        carViewModel.getCarById(appPreferences.getInt(SELECTED_CAR_ID)).observe(this, new Observer<Car>() {
             @Override
             public void onChanged(Car car) {
                 if (car != null) {
@@ -484,7 +484,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     private void setSpinnerItem(Car car) {
         String name = car.getManufacturer() + " " + car.getModelName() + " " + car.getMakeYear();
         mainBinding.mainActivitySpinner.setText(name);
-        AppPreferences.SELECTED_CAR_ID = car.getId();
+        appPreferences.put(SELECTED_CAR_ID, car.getId());
     }
 
     public void slideUp(View view) {
@@ -585,7 +585,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     @Override
     public void onSpinnerItemClick(Car car) {
         closeSpinnerLayout();
-        appPreferences.put(AppPreferences.Key.SAVED_CAR_ID, car.getId());
+        appPreferences.put(SELECTED_CAR_ID, car.getId());
         setSpinnerItem(car);
     }
 

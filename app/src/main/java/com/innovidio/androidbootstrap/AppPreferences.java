@@ -52,7 +52,7 @@ public class AppPreferences {
     public enum Key {
         SAMPLE_STR,
         SAMPLE_INT,
-        SAVED_CAR_ID,
+        SELECTED_CAR_ID,
         START_LOCATION,
         END_LOCATION,
         START_ODOMETER,
@@ -62,6 +62,7 @@ public class AppPreferences {
         SPEED_LIMIT,
         FUEL_ECONOMY,
         TRIP_TYPE
+
 
     }
 

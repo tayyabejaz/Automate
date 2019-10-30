@@ -64,7 +64,20 @@ public class FragmentAddCustomCar extends DaggerFragment implements ActivityBtnC
 
     }
 
-    private boolean checkEnteries() {
+    @Override
+    public void onSubmitButtonClick(Context context) {
+
+        if (!checkEntries()) {
+            Toast.makeText(context, "Please Enter all the required fields", Toast.LENGTH_SHORT).show();
+        } else {
+            Log.d("FORM_SUBMISSION", "onSubmitButtonClick: Custom Car Added Successfully ");
+            carViewModel.addCar(car);
+            //TODO: Exit Activity after submission
+        }
+
+    }
+
+    private boolean checkEntries() {
         if (TextUtils.isEmpty(binding.etCarRegNo.getText())) {
             binding.etCarRegNo.setError("Registration Number is required");
             return false;
@@ -104,17 +117,5 @@ public class FragmentAddCustomCar extends DaggerFragment implements ActivityBtnC
         car.setCurrentOdomaterReading(Integer.parseInt(binding.etCurrentOdometer.getText().toString()));
 
         return true;
-    }
-
-    @Override
-    public void onSubmitButtonClick(Context context) {
-        if (!checkEnteries()) {
-            Toast.makeText(context, "Please Enter all the required fields", Toast.LENGTH_SHORT).show();
-        } else {
-            Log.d("FORM_SUBMISSION", "onSubmitButtonClick: Custom Car Added Successfully ");
-            carViewModel.addCar(car);
-            //TODO: Exit Activity after submission
-        }
-
     }
 }

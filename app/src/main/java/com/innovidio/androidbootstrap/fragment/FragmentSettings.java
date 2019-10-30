@@ -48,6 +48,8 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import io.bloco.faker.Faker;
 
+import static com.innovidio.androidbootstrap.AppPreferences.Key.SELECTED_CAR_ID;
+
 public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteListener {
 
     @Inject
