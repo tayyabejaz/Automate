@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.innovidio.androidbootstrap.AppPreferences;
@@ -187,15 +188,17 @@ public class FragmentAddCarWash extends DaggerFragment {
             }
             Form form = createForm();
 
-            formViewModel.addForm(createForm()).observe(this, new Observer<Boolean>() {
+            LiveData<Boolean> booleanLiveData = formViewModel.addForm(createForm());
+            booleanLiveData.observe(this, new Observer<Boolean>() {
                 @Override
-                public void onChanged(Boolean aBoolean) {
-                    if (aBoolean) {
-                        formViewModel.getLastForm().observe(getActivity(), new Observer<Form>() {
+                public void onChanged(Boolean formSaved) {
+                    if (formSaved) {
+                        LiveData<Form> lastForm = formViewModel.getLastForm();
+                        lastForm.observe(getActivity(), new Observer<Form>() {
                             @Override
                             public void onChanged(Form form) {
                                 addMaintenance(form.getId(), maintenance);
-                                maintenance.setFormId(form.getId());
+                                //maintenance.setFormId(form.getId());
                             }
                         });
                     }

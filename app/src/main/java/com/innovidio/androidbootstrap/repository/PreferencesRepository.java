@@ -18,12 +18,26 @@ import javax.inject.Singleton;
 public class PreferencesRepository {
 
     private PreferencesDao preferencesDao;
+    private Preferences preferences;
 
     @Inject
     public PreferencesRepository(PreferencesDao preferencesDao) {
         this.preferencesDao = preferencesDao;
+        List<Preferences> allPreferences = this.preferencesDao.getAllPreferences();
+        if (allPreferences != null && allPreferences.size() > 0) {
+            preferences = allPreferences.get(0);
+        }
+
     }
 
+    public String getCountry() {
+        return preferences.getCountry();
+    }
+
+    public void setCountry(String country) {
+        preferences.setCountry(country);
+        preferencesDao.update(preferences);
+    }
     public void addPreferences(Preferences preferences) {
         new AsyncTask<Void, Void, Void>() {
             @Override
@@ -54,9 +68,9 @@ public class PreferencesRepository {
         }.execute();
     }
 
-    public LiveData<List<Preferences>> getAllPreferences() {
-        return this.preferencesDao.getAllPreferences();
-    }
+//    public LiveData<List<Preferences>> getAllPreferences() {
+//        return this.preferencesDao.getAllPreferences();
+//    }
 
 
     public LiveData<Preferences> getPreferencesById(int id) {

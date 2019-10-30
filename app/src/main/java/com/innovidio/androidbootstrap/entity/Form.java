@@ -40,7 +40,7 @@ public class Form {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public String getTitle() {

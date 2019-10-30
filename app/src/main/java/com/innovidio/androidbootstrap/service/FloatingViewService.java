@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.dashboard.SharedPreferenceHelper;
@@ -25,8 +26,12 @@ import com.innovidio.androidbootstrap.dashboard.SpeedDashboardActivity;
 
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 public class FloatingViewService extends Service {
 
+    @Inject
+    AppPreferences appPreferences;
     //Current Speed
     TextView currspeed;
     WindowManager.LayoutParams params;
@@ -102,6 +107,7 @@ public class FloatingViewService extends Service {
 
         //Speed Units
         speedunits = (TextView) mFloatingView.findViewById(R.id.units);
+       // if (appPreferences.getString(AppPreferences.Key.DISTANCE_UNIT))
         if (SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_UNIT, "km/h").equals("km/h")) {
             speedunits.setText("KMPH");
         } else if ((SharedPreferenceHelper.getInstance().getStringValue(Constants.METER_UNIT, "km/h").equals("mph"))) {

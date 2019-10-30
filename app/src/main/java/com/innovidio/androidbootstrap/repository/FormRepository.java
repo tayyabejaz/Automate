@@ -38,8 +38,9 @@ public class FormRepository {
                 long a = formDao.insert(form);
                 if (a > 0) {
                     liveData.postValue(true);
+                }else{
+                    liveData.postValue(false);
                 }
-                liveData.postValue(false);
                 return null;
             }
         }.execute();
@@ -65,6 +66,27 @@ public class FormRepository {
             }
         }.execute();
     }
+
+//    public void updateForm(Form form) {
+//
+//
+//        executeRunale(()->{
+//            formDao.update(form);
+//        });
+//    }
+//
+//   void executeRunale(Runnable runnable){
+//
+//       new AsyncTask<Void, Void, Void>() {
+//           @Override
+//           protected Void doInBackground(Void... voids) {
+//               runnable.run();
+////               formDao.update(form);
+//               return null;
+//           }
+//       }.execute();
+//
+//    }
 
     public LiveData<Form> getFormById(int id) {
         return this.formDao.getFormMaintenanceById(id);
