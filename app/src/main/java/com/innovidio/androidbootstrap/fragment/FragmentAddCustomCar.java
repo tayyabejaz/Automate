@@ -165,8 +165,7 @@ public class FragmentAddCustomCar extends DaggerFragment implements ActivityBtnC
         } else if (TextUtils.isEmpty(binding.etSubModelOfCar.getText())) {
             binding.etSubModelOfCar.setError("Car Trim is necessary");
             return false;
-        }
-        else if (TextUtils.isEmpty(binding.etFuelType.getText())) {
+        } else if (TextUtils.isEmpty(binding.etFuelType.getText())) {
             binding.etFuelType.setError("Enter Car Fuel Type");
             return false;
         } else if (TextUtils.isEmpty(binding.etFuelCapacity.getText())) {

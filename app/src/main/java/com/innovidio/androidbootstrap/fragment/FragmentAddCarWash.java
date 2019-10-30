@@ -6,7 +6,6 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +16,11 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
-import com.innovidio.androidbootstrap.activity.MainActivity;
-import com.innovidio.androidbootstrap.adapter.GeneralSpinnerAdapter;
+import com.innovidio.androidbootstrap.adapter.GeneralCarSpinnerAdapter;
 import com.innovidio.androidbootstrap.databinding.FragmentAddCarWashBinding;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.Form;
@@ -36,7 +33,6 @@ import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -62,9 +58,10 @@ public class FragmentAddCarWash extends DaggerFragment {
     AppPreferences appPreferences;
 
 
-    private GeneralSpinnerAdapter carAdapter;
-    private ArrayList<String> carDataList = new ArrayList<>();
+    private GeneralCarSpinnerAdapter carAdapter;
+    private ArrayList<Car> carDataList = new ArrayList<>();
     private FragmentAddCarWashBinding carWashBinding;
+    private int carID;
     private Maintenance maintenance = new Maintenance();
     private final Calendar todaysCalender = Calendar.getInstance();
     private String dateForEntry, timeForEntry;
@@ -95,27 +92,16 @@ public class FragmentAddCarWash extends DaggerFragment {
 
         initializeAdapter();
 
-        carViewModel.getAllCars().observe(this, new Observer<List<Car>>() {
-            @Override
-            public void onChanged(List<Car> cars) {
-                for (int i = 0; i < cars.size(); i++) {
-                    String carYear = String.valueOf(cars.get(i).getMakeYear());
-                    String carMake = cars.get(i).getManufacturer();
-                    String carModel = cars.get(i).getModelName();
-                    String carSubmodel = cars.get(i).getSubModel();
-
-
-                    String finalName = carMake + "_" + carModel + "_" + carSubmodel + "_" + carYear;
-                    carDataList.add(finalName);
-                    carAdapter.notifyDataSetChanged();
-                }
-            }
+        carViewModel.getAllCars().observe(this, cars -> {
+            carDataList.addAll(cars);
+            carAdapter.notifyDataSetChanged();
+            carID = cars.get(0).getId();
         });
         //TIME PICKER
         TimePickerDialog.OnTimeSetListener time = (timePicker, i, i1) -> {
             todaysCalender.set(Calendar.HOUR_OF_DAY, i);
             todaysCalender.set(Calendar.MINUTE, i1);
-            UtilClass.updateTime(todaysCalender, carWashBinding.etCarwashTime);
+            timeForEntry = UtilClass.updateTime(todaysCalender, carWashBinding.etCarwashTime);
         };
 
         carWashBinding.etCarwashTime.setOnClickListener(view1 -> {
@@ -126,7 +112,7 @@ public class FragmentAddCarWash extends DaggerFragment {
             todaysCalender.set(Calendar.YEAR, i);
             todaysCalender.set(Calendar.MONTH, i1);
             todaysCalender.set(Calendar.DAY_OF_MONTH, i2);
-            UtilClass.updateDate(todaysCalender, carWashBinding.etCarwashDate);
+            dateForEntry = UtilClass.updateDate(todaysCalender, carWashBinding.etCarwashDate);
         };
 
 
@@ -140,76 +126,67 @@ public class FragmentAddCarWash extends DaggerFragment {
 
 
         carWashBinding.btnSaveCarWashData.setOnClickListener(view1 -> {
-
-            if (TextUtils.isEmpty(carWashBinding.etCarwashDate.getText())) {
-                carWashBinding.etCarwashDate.setError("Please enter the date");
-                isEmpty = true;
-            } else {
-                isEmpty = false;
-                dateForEntry = carWashBinding.etCarwashDate.getText().toString();
-            }
-
-            if (TextUtils.isEmpty(carWashBinding.etCarwashTime.getText())) {
-                carWashBinding.etCarwashTime.setError("Please enter the time");
-                isEmpty = true;
-            } else {
-                isEmpty = false;
-                timeForEntry = carWashBinding.etCarwashTime.getText().toString();
-            }
-
-            String dateInString = dateForEntry + " " + timeForEntry;
-//            Date date1 = UtilClass.convertToDate(dateInString);
-//
-//            Log.d("TAYYAB", "" + date1);
-
-            maintenance.setSaveDate(new Date());
-
-            if (TextUtils.isEmpty(carWashBinding.etOdometerReading.getText())) {
-                isEmpty = true;
-                carWashBinding.etOdometerReading.setError("Please enter your current odometer reading");
-            } else {
-                maintenance.setMaintenanceOdometerReading(Integer.parseInt(carWashBinding.etOdometerReading.getText().toString()));
-            }
-
-            if (!TextUtils.isEmpty(carWashBinding.etCarwashLocation.getText())) {
-                isEmpty = false;
-                maintenance.setMaintenanceLocation(carWashBinding.etCarwashLocation.getText().toString());
-            } else {
-                isEmpty = true;
-                carWashBinding.etCarwashLocation.setError("Location is necessary");
-            }
-
-            if (!TextUtils.isEmpty(carWashBinding.etCarwashCost.getText())) {
-                isEmpty = false;
-                maintenance.setMaintenanceCost(Integer.parseInt(carWashBinding.etCarwashCost.getText().toString()));
-            } else {
-                isEmpty = true;
-                carWashBinding.etCarwashCost.setError("Enter your Car Wash Cost");
-            }
-            Form form = createForm();
-
-            LiveData<Boolean> booleanLiveData = formViewModel.addForm(createForm());
-            booleanLiveData.observe(this, new Observer<Boolean>() {
-                @Override
-                public void onChanged(Boolean formSaved) {
+            if (checkEmptyEntries()) {
+                LiveData<Boolean> booleanLiveData = formViewModel.addForm(createForm());
+                booleanLiveData.observe(this, formSaved -> {
                     if (formSaved) {
                         LiveData<Form> lastForm = formViewModel.getLastForm();
-                        lastForm.observe(getActivity(), new Observer<Form>() {
-                            @Override
-                            public void onChanged(Form form) {
-                                addMaintenance(form.getId(), maintenance);
-                                //maintenance.setFormId(form.getId());
-                            }
+                        lastForm.observe(getActivity(), form -> {
+                            addMaintenance(form.getId());
                         });
                     }
-                }
-            });
+                });
+            } else {
+                Toast.makeText(getActivity(), "All Fields are required", Toast.LENGTH_SHORT).show();
+            }
+
+
         });
     }
 
     private void initializeAdapter() {
-        carAdapter = new GeneralSpinnerAdapter(getActivity(), carDataList);
+        carAdapter = new GeneralCarSpinnerAdapter(getActivity(), carDataList);
         carWashBinding.spinnerSelectCar.setAdapter(carAdapter);
+    }
+
+    private boolean checkEmptyEntries() {
+        if (TextUtils.isEmpty(carWashBinding.etCarwashDate.getText())) {
+            carWashBinding.etCarwashDate.setError("Please enter the date");
+            return false;
+        } else if (TextUtils.isEmpty(carWashBinding.etCarwashTime.getText())) {
+            carWashBinding.etCarwashTime.setError("Please enter the time");
+            return false;
+        } else if (TextUtils.isEmpty(carWashBinding.etOdometerReading.getText())) {
+            carWashBinding.etOdometerReading.setError("Please enter your current odometer reading");
+            return false;
+        } else if (TextUtils.isEmpty(carWashBinding.etCarwashLocation.getText())) {
+            carWashBinding.etCarwashLocation.setError("Location is necessary");
+            return false;
+        } else if (TextUtils.isEmpty(carWashBinding.etCarwashCost.getText())) {
+            carWashBinding.etCarwashCost.setError("Enter your Car Wash Cost");
+            return false;
+        }
+
+        dateForEntry = carWashBinding.etCarwashDate.getText().toString();
+        timeForEntry = carWashBinding.etCarwashTime.getText().toString();
+        maintenance.setMaintenanceOdometerReading(Integer.parseInt(carWashBinding.etOdometerReading.getText().toString()));
+        maintenance.setMaintenanceLocation(carWashBinding.etCarwashLocation.getText().toString());
+        maintenance.setMaintenanceCost(Integer.parseInt(carWashBinding.etCarwashCost.getText().toString()));
+
+        maintenance.setCarId(carID);
+        maintenance.setMaintenanceName("Car Wash");
+        maintenance.setMaintenanceLife(0);
+        maintenance.setMaintenanceType(TimeLineItem.Type.CAR_WASH);
+        maintenance.setNextMaintenanceDate(new Date());
+        maintenance.setAlarmON(false);
+
+        Date convertedDate = UtilClass.convertToDate(dateForEntry, timeForEntry);
+        if (convertedDate == null) {
+            convertedDate = new Date();
+        }
+        maintenance.setSaveDate(convertedDate);
+
+        return true;
     }
 
     private Form createForm() {
@@ -223,20 +200,16 @@ public class FragmentAddCarWash extends DaggerFragment {
         return form;
     }
 
-    private void addMaintenance(int formID, Maintenance maintenance) {
-        if (!isEmpty) {
+    private void addMaintenance(int formID) {
+        if (checkEmptyEntries()) {
             maintenance.setFormId(formID);
-            maintenance.setCarId(MainActivity.carID);
-            maintenance.setMaintenanceName("Car Wash");
-            maintenance.setMaintenanceLife(0);
-            maintenance.setMaintenanceType(TimeLineItem.Type.CAR_WASH);
-            maintenance.setNextMaintenanceDate(new Date());
-            maintenance.setAlarmON(false);
             maintenanceViewModel.addMaintenanceService(maintenance);
             Toast.makeText(getActivity(), "Data Submitted Successfully", Toast.LENGTH_SHORT).show();
+
+            //TODO: Show Successful dialog
             getActivity().finish();
-        } else {
-            Toast.makeText(getActivity(), "All fields are Necessary. Please fill all fields", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

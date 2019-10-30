@@ -124,7 +124,6 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
 
@@ -144,8 +143,6 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
                 }
             });
         }
-
-
     }
 
     private void initializeAdapters() {
@@ -165,7 +162,7 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
                 }
                 adapterMaker.notifyDataSetChanged();
                 binding.spinnerMakeOfCar.setAdapter(adapterMaker);
-
+                make = makerData.get(0);
             }
         });
     }
@@ -180,12 +177,13 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
                 }
                 adapterModel.notifyDataSetChanged();
                 binding.spinnerModelOfCar.setAdapter(adapterModel);
+                model = modelData.get(0);
             }
         });
     }
 
-    private void getCarTrimsByYearMakeModel(String year, String make, String subModel) {
-        carQueryViewModel.getCarTrimsByYearMakeModel(year, make, subModel).observe(this, carTrimsInfos -> {
+    private void getCarTrimsByYearMakeModel(String year, String make, String model) {
+        carQueryViewModel.getCarTrimsByYearMakeModel(year, make, model).observe(this, carTrimsInfos -> {
             if (carTrimsInfos != null && carTrimsInfos.size() > 0) {
                 Log.e("FromFragment", "CarTrimsInfo: " + carTrimsInfos.get(0).getModelEngineCc());
                 subModelData.clear();
@@ -194,62 +192,42 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
                 }
                 adapterSubmodel.notifyDataSetChanged();
                 binding.spinnerSubModelOfCar.setAdapter(adapterSubmodel);
+                submodel = subModelData.get(0);
             }
         });
     }
 
-    private void checkEnteries() {
-        if (!TextUtils.isEmpty(binding.etCarRegNo.getText())) {
-            car.setRegistrationNo(binding.etCarRegNo.getText().toString());
-        } else {
+    private boolean checkEmptyEnteries() {
+
+        if (TextUtils.isEmpty(binding.etCarRegNo.getText())) {
             binding.etCarRegNo.setError("Enter you car registration number");
-        }
-
-        if (!TextUtils.isEmpty(binding.etCurrentOdometer.getText())) {
-            isEmpty = false;
-            car.setCurrentOdomaterReading(Integer.parseInt(binding.etCurrentOdometer.getText().toString()));
-        } else {
-            isEmpty = true;
+            return false;
+        } else if (TextUtils.isEmpty(binding.etCurrentOdometer.getText())) {
             binding.etCurrentOdometer.setError("Enter your current Odometer reading");
+            return false;
+        } else if (year == null && make == null && model == null && submodel == null) {
+            return false;
         }
-
-        if (year != null) {
-            isEmpty = false;
-            car.setMakeYear(Integer.parseInt(year));
-        } else {
-            isEmpty = true;
-        }
-
-        if (make != null) {
-            isEmpty = false;
-            car.setManufacturer(make);
-        } else {
-            isEmpty = true;
-        }
-
-        if (model != null) {
-            isEmpty = false;
-            car.setModelName(model);
-        } else {
-            isEmpty = true;
-        }
-
-        if (submodel != null) {
-            isEmpty = false;
-            car.setSubModel(submodel);
-        } else {
-            isEmpty = true;
-        }
+        car.setRegistrationNo(binding.etCarRegNo.getText().toString());
+        car.setCurrentOdomaterReading(Integer.parseInt(binding.etCurrentOdometer.getText().toString()));
+        car.setMakeYear(Integer.parseInt(year));
+        car.setManufacturer(make);
+        car.setModelName(model);
+        car.setSubModel(submodel);
+        return true;
     }
+
 
     @Override
     public void onSubmitButtonClick(Context context) {
-        checkEnteries();
-        if (isEmpty) {
-            Toast.makeText(context, "All fields are required", Toast.LENGTH_SHORT).show();
-        } else {
+
+        if (checkEmptyEnteries()) {
             Log.d("FORM_SUBMISSION", "onSubmitButtonClick: Car Added Successfully");
             carViewModel.addCar(car);
+            //TODO: Make a succesful Dialog and then Finish Activity
+            getActivity().finish();
+        } else {
+            Toast.makeText(context, "All fields are required", Toast.LENGTH_SHORT).show();
         }
     }
 }

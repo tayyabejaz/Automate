@@ -5,12 +5,14 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,18 +22,21 @@ import androidx.databinding.DataBindingUtil;
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
+import com.innovidio.androidbootstrap.adapter.GeneralCarSpinnerAdapter;
 import com.innovidio.androidbootstrap.databinding.FragmentAddFuelUpBinding;
+import com.innovidio.androidbootstrap.databinding.FuelTypeDialogBinding;
+import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.FuelUp;
+import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
 import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
-
-import static com.innovidio.androidbootstrap.AppPreferences.Key.SELECTED_CAR_ID;
 
 public class FragmentAddFuelUp extends DaggerFragment {
 
@@ -41,9 +46,15 @@ public class FragmentAddFuelUp extends DaggerFragment {
     @Inject
     AppPreferences appPreferences;
 
+    @Inject
+    CarViewModel carViewModel;
+
     private FuelUp fuelUp = new FuelUp();
 
+    private GeneralCarSpinnerAdapter carAdapter;
+    private ArrayList<Car> carDataList = new ArrayList<>();
     private String sDate, sTime;
+    private int carID;
     private boolean isEmpty;
     private FragmentAddFuelUpBinding binding;
     private final Calendar calenderInstance = Calendar.getInstance();
@@ -59,7 +70,7 @@ public class FragmentAddFuelUp extends DaggerFragment {
         binding.tvFuelType.setText("Petrol");
         binding.etPricePerUnit.setText("113");
         binding.etNoOfLitre.setText("10");
-        binding.etFuelupCost.setText("1130");
+        binding.etFuelupCost.setText(calculateTotal(Float.parseFloat(binding.etPricePerUnit.getText().toString()), Float.parseFloat(binding.etNoOfLitre.getText().toString())));
         binding.tvFuelupLocation.setText("Lahore");
     }
 
@@ -77,6 +88,30 @@ public class FragmentAddFuelUp extends DaggerFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        carViewModel.getAllCars().observe(this, cars -> {
+            carDataList.addAll(cars);
+            carAdapter.notifyDataSetChanged();
+            carID = cars.get(0).getId();
+        });
+
+        Log.d("TAYYAB", "CAR ID: " + carID);
+
+        initializeAdapter();
+
+
+        binding.spinnerCarSelection.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                carID = carDataList.get(i).getId();
+                Log.d("TAYYAB", "CAR ID: " + carID);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         DatePickerDialog.OnDateSetListener date = (datePicker, i, i1, i2) -> {
             calenderInstance.set(Calendar.YEAR, i);
@@ -107,42 +142,114 @@ public class FragmentAddFuelUp extends DaggerFragment {
             showFuelTypeDialog();
         });
 
-
         binding.btnSaveFuelupData.setOnClickListener(view1 -> {
-            checkEnteries();
-            if (isEmpty) {
-                Toast.makeText(getContext(), "All Fields are Required", Toast.LENGTH_SHORT).show();
-            } else {
+            if (checkEntries()) {
                 fuelUpViewModel.addFuelUp(fuelUp);
                 Log.d("FORM_SUBMISSION", "showFuelTypeDialog: FuelUp Added Successfully");
                 Toast.makeText(getActivity(), "Fuel Up added Successfully", Toast.LENGTH_SHORT).show();
-                //TODO: Make a DIALOG FOR SUCCESFULL ADDITION
+                //TODO: Make a DIALOG FOR SUCCESSFUL ADDITION
                 getActivity().finish();
+            } else {
+                Toast.makeText(getContext(), "All Fields are Required", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        //Checking the Text Change and Manipulate values
+        binding.etPricePerUnit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.d("TAYYAB", "i = " + i + "  i1 = " + i1 + "  i2 = " + i2);
+                if (charSequence.toString().trim().length() != 0) {
+                    if (binding.etPricePerUnit.getText().length() != 0 && binding.etPricePerUnit.getText().length() != 0) {
+                        binding.etFuelupCost.setText(calculateTotal(Float.parseFloat(binding.etPricePerUnit.getText().toString()), Float.parseFloat(binding.etNoOfLitre.getText().toString())));
+                    }
+                }
+            }
 
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
         });
+
+        binding.etNoOfLitre.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.toString().trim().length() != 0) {
+                    if (binding.etPricePerUnit.getText().length() != 0 && binding.etPricePerUnit.getText().length() != 0) {
+                        binding.etFuelupCost.setText(calculateTotal(Float.parseFloat(binding.etPricePerUnit.getText().toString()), Float.parseFloat(binding.etNoOfLitre.getText().toString())));
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+    }
+
+    private boolean checkEntries() {
+
+        fuelUp.setCarId(carID);
+
+        Date convertedDate = UtilClass.convertToDate(sDate, sTime);
+        if (convertedDate == null) {
+            convertedDate = new Date();
+        }
+        fuelUp.setSaveDate(convertedDate);
+
+        if (TextUtils.isEmpty(binding.etOdometerReading.getText())) {
+            binding.etOdometerReading.setError("Enter your Odometer Reading");
+            return false;
+        } else if (TextUtils.isEmpty(binding.tvFuelType.getText())) {
+            binding.tvFuelType.setError("Select the Fuel Type");
+            return false;
+        } else if (TextUtils.isEmpty(binding.etPricePerUnit.getText())) {
+            binding.etPricePerUnit.setError("Enter Price Per Unit");
+            return false;
+        } else if (TextUtils.isEmpty(binding.etNoOfLitre.getText())) {
+            binding.etNoOfLitre.setError("How much Litres you have fueled up");
+            return false;
+        } else if (TextUtils.isEmpty(binding.tvFuelupLocation.getText())) {
+            binding.tvFuelupLocation.setError("Enter the Fuel Up Location");
+            return false;
+        }
+
+        fuelUp.setOdometerreading(Integer.parseInt(binding.etOdometerReading.getText().toString()));
+        fuelUp.setFuelType(binding.tvFuelType.getText().toString());
+        fuelUp.setPerunitfuelprice(Integer.parseInt(binding.etPricePerUnit.getText().toString()));
+        fuelUp.setLiters(Integer.parseInt(binding.etNoOfLitre.getText().toString()));
+        fuelUp.setLocation(binding.tvFuelupLocation.getText().toString());
+        return true;
     }
 
     private void showFuelTypeDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater
-        LayoutInflater inflater = (getActivity()).getLayoutInflater();
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the
-        // dialog layout
+        FuelTypeDialogBinding dialogBinding;
+        dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_fuel_type, null, false);
+        View dialogView = dialogBinding.getRoot();
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        final AlertDialog fuelTypeDialog = dialogBuilder.create();
+        fuelTypeDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        fuelTypeDialog.setView(dialogView);
+        fuelTypeDialog.show();
 
-        builder.setCancelable(true);
-        View view = inflater.inflate(R.layout.fuel_type_dialog, null);
-        RadioGroup radioGroup = view.findViewById(R.id.rg_fuel_type);
-        view.setBackgroundColor(getActivity().getResources().getColor(android.R.color.transparent));
-        builder.setView(view)
-                // Add action buttons
-                .setPositiveButton("OK", (dialog, id) -> {
-                    dialog.dismiss();
-                });
-
-        radioGroup.setOnCheckedChangeListener((radioGroup1, i) -> {
+        dialogBinding.btnDone.setOnClickListener(view -> {
+            fuelTypeDialog.dismiss();
+        });
+        dialogBinding.rgFuelType.setOnCheckedChangeListener((radioGroup1, i) -> {
             switch (i) {
                 case R.id.rb_petrol:
                     binding.tvFuelType.setText("Petrol");
@@ -180,61 +287,16 @@ public class FragmentAddFuelUp extends DaggerFragment {
                     break;
             }
         });
-        builder.create();
-        builder.show();
-
-
     }
 
-    private void checkEnteries() {
+    private void initializeAdapter() {
+        carAdapter = new GeneralCarSpinnerAdapter(getActivity(), carDataList);
+        binding.spinnerCarSelection.setAdapter(carAdapter);
+    }
 
-        fuelUp.setCarId(appPreferences.getInt(SELECTED_CAR_ID, 1));
-
-        Date convertedDate = UtilClass.convertToDate(sDate, sTime);
-        if (convertedDate == null) {
-            convertedDate = new Date();
-        }
-        fuelUp.setSaveDate(convertedDate);
-
-        if (!TextUtils.isEmpty(binding.etOdometerReading.getText())) {
-            fuelUp.setOdometerreading(Integer.parseInt(binding.etOdometerReading.getText().toString()));
-            isEmpty = false;
-        } else {
-            isEmpty = true;
-            binding.etOdometerReading.setError("Enter your Odometer Reading");
-        }
-
-        if (!TextUtils.isEmpty(binding.tvFuelType.getText())) {
-            isEmpty = false;
-            fuelUp.setFuelType(binding.tvFuelType.getText().toString());
-        } else {
-            isEmpty = true;
-            binding.tvFuelType.setError("Select the Fuel Type");
-        }
-
-        if (!TextUtils.isEmpty(binding.etPricePerUnit.getText())) {
-            isEmpty = false;
-            fuelUp.setPerunitfuelprice(Integer.parseInt(binding.etPricePerUnit.getText().toString()));
-        } else {
-            isEmpty = true;
-            binding.etPricePerUnit.setError("Enter Price Per Unit");
-        }
-
-        if (!TextUtils.isEmpty(binding.etNoOfLitre.getText())) {
-            isEmpty = false;
-            fuelUp.setLiters(Integer.parseInt(binding.etNoOfLitre.getText().toString()));
-        } else {
-            isEmpty = true;
-            binding.etNoOfLitre.setError("How much Litres you have fueled up");
-        }
-
-        if (!TextUtils.isEmpty(binding.tvFuelupLocation.getText())) {
-            isEmpty = false;
-            fuelUp.setLocation(binding.tvFuelupLocation.getText().toString());
-        } else {
-            isEmpty = true;
-            binding.tvFuelupLocation.setError("Enter the Fuel Up Location");
-        }
+    private String calculateTotal(float pricePerUnit, float totalLiters) {
+        float total = pricePerUnit * totalLiters;
+        return String.valueOf(total);
 
     }
 }

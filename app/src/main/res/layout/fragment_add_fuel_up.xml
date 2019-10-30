@@ -6,13 +6,58 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topbar"
+            android:layout_width="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/main_app_gradient"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_carwash_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/automate_back_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/btn_save_fuelup_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/automate_done_form_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Fuel Up"
+                android:textAllCaps="true"
+                android:textColor="@color/whiteColor"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_save_fuelup_data"
+                app:layout_constraintStart_toEndOf="@id/iv_carwash_back"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/topbar"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/topbar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -32,9 +77,10 @@
                 <EditText
                     android:id="@+id/tv_fuelup_location"
                     style="@style/EditText_In_Forms"
+                    android:layout_marginBottom="@dimen/_20sdp"
                     android:drawableLeft="@drawable/automate_location_form_icon"
                     android:hint="@string/enter_form_location"
-                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:inputType="text"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -57,6 +103,7 @@
                     style="@style/EditText_In_Forms"
                     android:drawableStart="@drawable/automate_unit_price_form_icon"
                     android:hint="@string/form_enter_price_per_unit"
+                    android:inputType="numberDecimal"
                     android:paddingEnd="30dp"
                     app:layout_constraintBottom_toTopOf="@id/et_no_of_litre"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -68,6 +115,7 @@
                     style="@style/EditText_In_Forms"
                     android:drawableStart="@drawable/automate_number_of_liters_form_icon"
                     android:hint="@string/form_enter_no_of_litres"
+                    android:inputType="number"
                     android:paddingEnd="30dp"
                     app:layout_constraintBottom_toTopOf="@id/et_fuelup_cost"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -84,8 +132,8 @@
 
                 <TextView
                     android:id="@+id/tv_fuelup_date"
-                    android:layout_width="0dp"
                     style="@style/EditText_In_Forms"
+                    android:layout_width="0dp"
                     android:drawableLeft="@drawable/automate_set_date_form_icon"
                     android:hint="Set Date"
                     app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
@@ -95,27 +143,14 @@
 
                 <TextView
                     android:id="@+id/tv_fuelup_time"
-                    android:layout_width="0dp"
                     style="@style/EditText_In_Forms"
+                    android:layout_width="0dp"
                     android:drawableLeft="@drawable/automate_set_time_form_icon"
                     android:hint="Set Time"
                     app:layout_constraintBottom_toTopOf="@id/et_odometer_reading"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_fuelup_date"
                     app:layout_constraintTop_toBottomOf="@id/et_car_selection" />
-
-                <TextView
-                    android:id="@+id/et_car_selection"
-                    style="@style/EditText_In_Forms"
-                    android:layout_marginStart="50dp"
-                    android:layout_marginEnd="50dp"
-                    android:drawableLeft="@drawable/automate_select_car_placeholder"
-                    android:drawableRight="@drawable/automate_dropdown_icon"
-                    android:hint="Select Your Car"
-                    app:layout_constraintBottom_toTopOf="@id/tv_fuelup_date"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_selectcar" />
 
                 <TextView
                     android:id="@+id/tv_fuel_type"
@@ -177,55 +212,35 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/et_car_selection"
+                    style="@style/EditText_In_Forms"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginEnd="50dp"
+                    android:drawableLeft="@drawable/automate_select_car_placeholder"
+                    android:drawableRight="@drawable/automate_dropdown_icon"
+                    android:hint="Select Your Car"
+                    app:layout_constraintBottom_toTopOf="@id/tv_fuelup_date"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_selectcar">
+
+                    <Spinner
+                        android:id="@+id/spinner_car_selection"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/topbar"
-            android:layout_width="0dp"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/main_app_gradient"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/iv_carwash_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:padding="@dimen/_5sdp"
-                android:src="@drawable/automate_back_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/btn_save_fuelup_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/automate_done_form_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:text="Fuel Up"
-                android:textAllCaps="true"
-                android:textColor="@color/whiteColor"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_save_fuelup_data"
-                app:layout_constraintStart_toEndOf="@id/iv_carwash_back"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
