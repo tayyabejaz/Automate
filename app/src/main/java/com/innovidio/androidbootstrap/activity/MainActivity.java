@@ -709,16 +709,17 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
-      //  UtilClass.startTracking(this);
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver,
                 new IntentFilter(Constants.BROADCAST_DETECTED_ACTIVITY));
+
+        UtilClass.startTracking(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        // LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
 
     private void setSelectionForBottomButton(boolean dashboard, boolean drive, boolean maintain, boolean settings) {
