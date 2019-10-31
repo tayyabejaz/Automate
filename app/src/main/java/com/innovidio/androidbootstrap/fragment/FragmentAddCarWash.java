@@ -191,7 +191,7 @@ public class FragmentAddCarWash extends DaggerFragment {
 
     private Form createForm() {
         Form form = new Form();
-        form.setCarId(AppPreferences.SELECTED_CAR_ID);
+        form.setCarId(appPreferences.getInt(AppPreferences.Key.SELECTED_CAR_ID,1));
         form.setStartDate(new Date());
         form.setEndDate(new Date());
         form.setSaveDate(new Date());
@@ -203,7 +203,7 @@ public class FragmentAddCarWash extends DaggerFragment {
     private void addMaintenance(int formID) {
         if (checkEmptyEntries()) {
             maintenance.setFormId(formID);
-            maintenance.setCarId(AppPreferences.SELECTED_CAR_ID);
+            maintenance.setCarId(appPreferences.getInt(AppPreferences.Key.SELECTED_CAR_ID, 1));
             maintenance.setMaintenanceName("Car Wash");
             maintenance.setMaintenanceLife(0);
             maintenance.setMaintenanceType(TimeLineItem.Type.CAR_WASH);

@@ -7,6 +7,8 @@ import com.innovidio.androidbootstrap.activity.ReminderActivity;
 import com.innovidio.androidbootstrap.activity.UserPreferencesActivity;
 import com.innovidio.androidbootstrap.activity.UserProfileActivity;
 import com.innovidio.androidbootstrap.activity.SpeedDashboardActivity;
+import com.innovidio.androidbootstrap.alarms.AlarmReceiver;
+import com.innovidio.androidbootstrap.alarms.BootReceiver;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -34,5 +36,11 @@ public abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector
     abstract UserPreferencesActivity contributeUserPreferencesActivity();
+
+    @ContributesAndroidInjector
+    abstract BootReceiver contributeBootReceiver();
+
+    @ContributesAndroidInjector
+    abstract AlarmReceiver contributeAlarmReceiver();
 
 }

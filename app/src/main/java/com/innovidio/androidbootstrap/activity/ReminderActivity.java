@@ -68,6 +68,9 @@ public class ReminderActivity extends DaggerAppCompatActivity implements OnAlarm
                 if (alarms != null) {
                     datalist = alarms;
                     adapter.updateList(datalist);
+                    if (datalist.size()>0){
+                        binding.llEmptyState.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
         });

@@ -32,7 +32,7 @@ public class AlarmViewModel extends ViewModel {
     }
 
     public LiveData<List<Alarm>> getAllAlarms(){
-        return this.alarmRepository.getAllAlarms();
+        return this.alarmRepository.getAllAlarmsLiveData();
     }
 
     public LiveData<Alarm> getAlarmById(int id){

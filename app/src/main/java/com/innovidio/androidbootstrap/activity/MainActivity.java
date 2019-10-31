@@ -191,129 +191,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding.toolbarNotificationIcon.setOnClickListener(this);
     }
 
-    private void runDummyData() {
-        for (int i = 0; i < 10; i++)
-            addDummyValues(i);
-    }
-
-    private void addDummyValues(int i) {
-        Faker faker = new Faker();
-
-        if (i < 3) {
-            String[] makeList = getResources().getStringArray(R.array.makeList);
-            String[] modelList = getResources().getStringArray(R.array.modelList);
-            int[] yearList = getResources().getIntArray(R.array.yearList);
-            String makeName = makeList[i];
-            String modelName = modelList[i];
-            int yearName = yearList[i];
-            Car car = new Car();
-
-            car.setModelName(modelName);
-            car.setManufacturer(makeName);
-            car.setRegistrationNo("LXA " + UtilClass.getRandomNo(2250, 9999));
-            car.setMakeYear(yearName);
-            car.setSubModel("1.3");
-            car.setEngineFuel("Petrol");
-            car.setFuelCapacityInLiters(UtilClass.getRandomNo(10, 20));
-            car.setEnginecc(UtilClass.getRandomNo(660, 2000));
-            car.setCurrentOdomaterReading(UtilClass.getRandomNo(10000, 30000));
-            car.setFuelEconomyCityPer100km(UtilClass.getRandomNo(8, 19));
-            car.setFuelEconomyMixedPer100km(UtilClass.getRandomNo(8, 19));
-            car.setModelDrive("Front Wheel");
-            car.setTransmissionType("Manual");
-            carViewModel.addCar(car);
-        }
-
-
-        FuelUp fuelUp = new FuelUp();
-        //   fuelUp.setId(1)
-        fuelUp.setCarId(1);
-
-        fuelUp.setSaveDate(faker.date.backward(UtilClass.getRandomNo(1, 50)));
-        fuelUp.setLocation(faker.address.streetAddress());
-        fuelUp.setOdometerreading(UtilClass.getRandomNo(10000, 50000));
-        int unitPrice = UtilClass.getRandomNo(100, 120);
-        int totalLitters = UtilClass.getRandomNo(1, 10);
-        fuelUp.setPerunitfuelprice(unitPrice);
-        fuelUp.setLiters(totalLitters);
-        fuelUp.setTotalprice(unitPrice * totalLitters);
-        fuelUp.setFuelType("Petrol");
-        //fuelDao.insert(fuelUp);
-        fuelUpViewModel.addFuelUp(fuelUp);
-
-
-        odoMeter += UtilClass.getRandomNo(1000, 2000);
-        Date saveDate = faker.date.backward(UtilClass.getRandomNo(1, 50));
-
-        Date nextDate = UtilClass.addDays(saveDate, UtilClass.getRandomNo(20, 100));
-        String[] servicecategories = getResources().getStringArray(R.array.service_list);
-        String serviceName = servicecategories[UtilClass.getRandomNo(0, 32)];
-
-        Date DateForForm = UtilClass.addDays(saveDate, UtilClass.getRandomNo(20, 100));
-        Form form = new Form();
-        form.setId(i);
-        form.setCarId(1);
-        form.setLocation(faker.address.streetAddress());
-        form.setStartDate(DateForForm);
-        Date dateForm = UtilClass.addDays(DateForForm, UtilClass.getRandomNo(1, 5));
-        form.setEndDate(dateForm);
-        form.setSaveDate(dateForm);
-        form.setTitle(serviceName);
-
-
-        Maintenance maintenance = new Maintenance();
-        // maintenance.setId(122);
-        maintenance.setSaveDate(saveDate);
-        maintenance.setCarId(1);
-        maintenance.setMaintenanceName(serviceName);
-        maintenance.setMaintenanceCost(UtilClass.getRandomNo(1000, 10000));
-        maintenance.setMaintenanceLocation(faker.address.streetAddress());
-        maintenance.setMaintenanceOdometerReading(odoMeter);
-        maintenance.setAlarmON(true);
-        maintenance.setFormId(i);
-        if (UtilClass.getRandomNo(0, 10) % 2 == 0) {
-            maintenance.setMaintenanceType(TimeLineItem.Type.CAR_WASH);
-            maintenance.setMaintenanceName("Clean/Wash");
-        } else {
-            maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
-            maintenance.setMaintenanceName(serviceName);
-        }
-        maintenance.setNextMaintenanceDate(nextDate);
-
-
-        //maintenanceDao.insert(maintenance);
-        maintenanceViewModel.addMaintenanceService(maintenance);
-
-        Trip trip = new Trip();
-        // trip.setId(22);
-        trip.setAvgspeed(UtilClass.getRandomNo(50, 80));
-        trip.setCarId(1);
-        trip.setOrigin(faker.address.city());
-        trip.setCarname("Honda Civic 2018");
-        trip.setDestination(faker.address.city());
-        trip.setIntialOdometer(odoMeter + UtilClass.getRandomNo(1000, 2000));
-        odoMeter += odoMeter + UtilClass.getRandomNo(1000, 2000);
-        trip.setFinalOdometer(odoMeter);
-        trip.setDistanceCovered((double) UtilClass.getRandomNo(100, 2000));
-        trip.setFueleconomypertrip((double) UtilClass.getRandomNo(10, 20));
-        trip.setMaxspeed(UtilClass.getRandomNo(50, 100));
-        trip.setSaveDate(faker.date.backward(UtilClass.getRandomNo(1, 50)));
-        trip.setTripTitle("Trip with " + faker.name.title());
-        if (UtilClass.getRandomNo(0, 10) % 2 == 0) {
-            trip.setTripType(Trip.TripType.PERSONAL);
-        } else {
-            trip.setTripType(Trip.TripType.COMMERCIAL);
-        }
-        int noOfLitters = UtilClass.getRandomNo(10, 30);
-        Double unitPriceinLit = Double.valueOf(UtilClass.getRandomNo(100, 120));
-        trip.setNoOfLitres(noOfLitters);
-        trip.setTotalExpenses((unitPriceinLit * noOfLitters));
-        trip.setFuelCostPerUnit(unitPriceinLit);
-
-        // tripDao.insert(trip);
-        tripViewModel.addTrip(trip);
-    }
-
     private void fuelUpData() {
         Date currentMonth = null;
         fuelUpViewModel.getMonthlyFuelUp(currentMonth).observe(this, new Observer<List<FuelUp>>() {
@@ -416,15 +293,15 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 break;
 
             case R.id.iv_add_carwash:
-                startFormActivity(CAR_WASH_FORM);
+                UtilClass.startFormActivity(this, CAR_WASH_FORM);
                 break;
 
             case R.id.iv_add_fuelup:
-                startFormActivity(FUEL_UP_FORM);
+                UtilClass.startFormActivity(this, FUEL_UP_FORM);
                 break;
 
             case R.id.iv_add_service:
-                startFormActivity(SERVICE_FORM);
+                UtilClass.startFormActivity(this,SERVICE_FORM);
                 break;
 
             case R.id.iv_add_trip:
@@ -465,13 +342,12 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     }
 
     private void initList() {
-
         carViewModel.getAllCars().observe(this, cars -> {
             carArrayList = cars;
             customMainSpinnerAdapter.updateAdapterList(carArrayList);
         });
 
-        carViewModel.getCarById(appPreferences.getInt(SELECTED_CAR_ID)).observe(this, new Observer<Car>() {
+        carViewModel.getCarById(appPreferences.getInt(SELECTED_CAR_ID,1)).observe(this, new Observer<Car>() {
             @Override
             public void onChanged(Car car) {
                 if (car != null) {
@@ -574,12 +450,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
         mainBinding.bottomSheet.ivAddSpeedometer.setImageDrawable(IconProvider.getSpeedometer(this).getDrawable());
         mainBinding.bottomSheet.ivAddSpeedometer.setBackground(IconProvider.getSpeedometer(this).getBackground());
-    }
-
-    public void startFormActivity(String formType) {
-        Intent intent = new Intent(this, FormActivity.class);
-        intent.putExtra(ACTIVITY, formType);
-        startActivity(intent);
     }
 
     @Override

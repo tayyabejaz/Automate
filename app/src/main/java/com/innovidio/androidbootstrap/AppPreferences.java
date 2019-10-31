@@ -37,32 +37,21 @@ public class AppPreferences {
     private SharedPreferences mPref;
     private SharedPreferences.Editor mEditor;
     private boolean mBulkUpdate = false;
-
-    public static boolean AUTO_DRIVE_DETECT;
-    public static String TRIP_TYPE;
-    public static int SELECTED_CAR_ID = 1;
-
     public static Preferences preferences;
 
     /**
      * Enum representing your setting names or key for your setting.
      */
     public enum Key {
-        SAMPLE_STR,
-        SAMPLE_INT,
         SELECTED_CAR_ID,
         START_LOCATION,
         END_LOCATION,
         START_ODOMETER,
         END_ODOMETER,
-        START_TIME_DATE,
-        DISTANCE_UNIT,
         SPEED_LIMIT,
         FUEL_ECONOMY,
         TRIP_TYPE,
         DRIVE_DETECT
-
-
     }
 
     @Inject

@@ -19,6 +19,7 @@ package com.innovidio.androidbootstrap.alarms;
 
 
 import android.app.*;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +31,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.SystemClock;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 import androidx.legacy.content.WakefulBroadcastReceiver;
@@ -38,7 +41,9 @@ import androidx.lifecycle.Observer;
 
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.activity.MainActivity;
+import com.innovidio.androidbootstrap.db.dao.AlarmDao;
 import com.innovidio.androidbootstrap.entity.Alarm;
+import com.innovidio.androidbootstrap.repository.AlarmRepository;
 import com.innovidio.androidbootstrap.viewmodel.AlarmViewModel;
 
 
@@ -52,70 +57,66 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.android.DaggerBroadcastReceiver;
+
 import static com.innovidio.androidbootstrap.Constants.ALARM_ID;
+import static com.innovidio.androidbootstrap.Constants.ALARM_MSG;
+import static com.innovidio.androidbootstrap.Constants.ALARM_TYPE;
 import static com.innovidio.androidbootstrap.Constants.id;
 
 
-public class AlarmReceiver extends WakefulBroadcastReceiver {
+public class AlarmReceiver extends DaggerBroadcastReceiver {
     private AlarmManager mAlarmManager;
     private PendingIntent mPendingIntent;
 
     @Inject
-    AlarmViewModel alarmViewModel;
+    AlarmRepository alarmRepository;
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
         int id = intent.getExtras().getInt(ALARM_ID, 0);
+        String message = intent.getExtras().getString(ALARM_MSG, "Time to maintaining data");
+        String type = intent.getExtras().getString(ALARM_TYPE, "Custom");
+        int maintenanceId = intent.getExtras().getInt(ALARM_TYPE, 0);
 
-      alarmViewModel.getAlarmById(id).observeForever( new Observer<Alarm>() {
-          @Override
-          public void onChanged(Alarm alarm) {
-              if (alarm!=null){
-                  if (alarm.isActive()){
-                      runAlarm(context);
-                  }
-              }
-
-          }
-      });
-
-    }
-
-    private void runAlarm(Context context){
-        try {
-            int mReceivedID= 100 ;//= Integer.parseInt(intent.getStringExtra(ReminderEditActivity.EXTRA_REMINDER_ID));
-            String mTitle = "Title";
-            String mPosterPath = "image url";
-            String mReleaseDate = "reminder.getmReleaseDate()";
-
-            boolean isActive = true;
-            if (isActive) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Date d = null;
-                try {
-                    d = sdf.parse(mReleaseDate);
-                    if (d.before(Calendar.getInstance().getTime())) {
-                        cancelAlarm(context, mReceivedID);
-                    } else {
-                        new showNotification(context, 100, mTitle, mReleaseDate, mPosterPath).execute();
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            } else {
-
+        Log.e("alarmD", message);
+        Toast.makeText(context, "alarm run", Toast.LENGTH_SHORT).show();
+        List<Alarm> alarmList = alarmRepository.getAllAlarms();
+        for (Alarm alarm : alarmList) {
+            if (alarm.getAlarmID() ==  id && alarm.isActive()) {
+                alarm.setExpired(true);
+                runAlarm(context, alarm);
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
+
     }
 
-    public void setAlarm(Context context, Calendar calendar, int ID) {
+    private void runAlarm(Context context, Alarm alarm) {
+//        try {
+//            Date curDate = new Date();
+//            if (alarm.getExecutionTime().after(curDate)){
+//                cancelAlarm(context, mReceivedID);
+//            } else {
+            showNotification(context, alarm);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    public void setAlarm(Context context, Calendar calendar, Alarm alarm) {
         mAlarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        int ID =  alarm.getAlarmID();
+        String message =  alarm.getAlarmMessage();
+        String alarmType =  alarm.getAlarmType().name();
 
         // Put Reminder ID in Intent Extra
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.putExtra(ALARM_ID, ID);
+        intent.putExtra(ALARM_MSG, message);
+        intent.putExtra(ALARM_TYPE, alarmType);
 
         mPendingIntent = PendingIntent.getBroadcast(context, ID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
@@ -178,97 +179,64 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
                 PackageManager.DONT_KILL_APP);
     }
 
-    private class showNotification extends AsyncTask<Void, Void, Bitmap> {
+    private void showNotification (Context context, Alarm alarm){
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra(ALARM_ID, alarm.getAlarmID());
+        //editIntent.putExtra(ReminderEditActivity.EXTRA_REMINDER_ID, Integer.toString(mReceivedID));
+        PendingIntent mClick = PendingIntent.getActivity(context, alarm.getAlarmID(), intent, PendingIntent.FLAG_ONE_SHOT);
+        NotificationCompat.Action action = new NotificationCompat.Action(R.mipmap.ic_launcher_round, "View Details", mClick);
 
-        private Context context;
-        private int mReceivedID;
-        private String mPosterPath;
-        private CharSequence mTitle;
-        private String mReleaseDate;
+        // Create Notification
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String CHANNEL_ID = "my_channel_01";// The id of the channel.
+            CharSequence name = "Upcoming Notifications";// The user-visible name of the channel.
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        showNotification(Context context, int mReceivedID, String mTitle, String mReleaseDate, String mPosterPath) {
-            this.context = context;
-            this.mReceivedID = mReceivedID;
-            this.mTitle = mTitle;
-            this.mReleaseDate = mReleaseDate;
-            this.mPosterPath = mPosterPath;
+            Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setContentTitle(alarm.getAlarmType().name())
+                    .setContentText(alarm.getAlarmMessage())
+                    .setChannelId(CHANNEL_ID)
+                    .setAutoCancel(true)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+//                    .setLargeIcon(image)
+//                    .setStyle(new NotificationCompat.BigPictureStyle()
+//                            .bigPicture(image)
+//                            .bigLargeIcon(null))
+                    .setContentIntent(mClick)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                    .setSound(alarmSound)
+                    .addAction(action)
+                    .build();
+
+            NotificationManager mNotificationManager =
+                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.createNotificationChannel(mChannel);
+
+            mNotificationManager.notify(alarm.getAlarmID(), notification);
+        } else {
+
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
+                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setContentTitle(alarm.getAlarmType().name())
+                    .setContentText(alarm.getAlarmMessage())
+                    .setTicker(alarm.getAlarmMessage())
+                  //  .setLargeIcon(image)
+                  //  .setStyle(new NotificationCompat.BigPictureStyle()
+                  //          .bigPicture(image)
+                  //          .bigLargeIcon(null))
+                    .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                    .setContentIntent(mClick)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setAutoCancel(true)
+                    .addAction(action)
+                    .setOnlyAlertOnce(true);
+            NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            nManager.notify(alarm.getAlarmID(), mBuilder.build());
         }
 
-        @Override
-        protected Bitmap doInBackground(Void... voids) {
-                Bitmap image = null;
-
-                try {
-                    URL url = new URL(mPosterPath);
-                    image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                } catch (IOException ne) {
-                    System.out.println(ne);
-                }
-
-
-            return image;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap image) {
-            super.onPostExecute(image);
-            Intent intent = new Intent(context, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra(ALARM_ID, mReceivedID);
-            //editIntent.putExtra(ReminderEditActivity.EXTRA_REMINDER_ID, Integer.toString(mReceivedID));
-            PendingIntent mClick = PendingIntent.getActivity(context, mReceivedID, intent, PendingIntent.FLAG_ONE_SHOT);
-            NotificationCompat.Action action = new NotificationCompat.Action(R.mipmap.ic_launcher_round, "View Details", mClick);
-
-            // Create Notification
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                String CHANNEL_ID = "my_channel_01";// The id of the channel.
-                CharSequence name = "Upcoming Movies";// The user-visible name of the channel.
-                int importance = NotificationManager.IMPORTANCE_HIGH;
-                NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
-                Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-                Notification notification = new NotificationCompat.Builder(context, CHANNEL_ID)
-                        .setContentTitle(mTitle)
-                        .setContentText("Releasing on " + mReleaseDate)
-                        .setChannelId(CHANNEL_ID)
-                        .setAutoCancel(true)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setLargeIcon(image)
-                        .setStyle(new NotificationCompat.BigPictureStyle()
-                                .bigPicture(image)
-                                .bigLargeIcon(null))
-                        .setContentIntent(mClick)
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-                        .setSound(alarmSound)
-                        .addAction(action)
-                        .build();
-
-                NotificationManager mNotificationManager =
-                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                mNotificationManager.createNotificationChannel(mChannel);
-
-                mNotificationManager.notify(mReceivedID, notification);
-            } else {
-
-                NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle(mTitle)
-                        .setContentText("Releasing on " + mReleaseDate)
-                        .setTicker(mTitle)
-                        .setLargeIcon(image)
-                        .setStyle(new NotificationCompat.BigPictureStyle()
-                                .bigPicture(image)
-                                .bigLargeIcon(null))
-                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                        .setContentIntent(mClick)
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setAutoCancel(true)
-                        .addAction(action)
-                        .setOnlyAlertOnce(true);
-                NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                nManager.notify(mReceivedID, mBuilder.build());
-            }
-        }
     }
 }
