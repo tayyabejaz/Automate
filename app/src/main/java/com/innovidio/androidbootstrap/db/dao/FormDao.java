@@ -26,7 +26,6 @@ public abstract class FormDao extends BaseDao<Form>{
     public abstract LiveData<List<Form>> getAllFormByCardId(int carId);
 
     @Query("SELECT * FROM Form  ORDER BY id DESC LIMIT 1")
-
     public abstract  LiveData<Form> getRecentForm();
 
     @Query("SELECT * FROM Form")

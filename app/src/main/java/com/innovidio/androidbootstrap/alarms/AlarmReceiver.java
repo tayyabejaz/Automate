@@ -41,6 +41,7 @@ import androidx.lifecycle.Observer;
 
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.activity.MainActivity;
+import com.innovidio.androidbootstrap.activity.ReminderActivity;
 import com.innovidio.androidbootstrap.db.dao.AlarmDao;
 import com.innovidio.androidbootstrap.entity.Alarm;
 import com.innovidio.androidbootstrap.repository.AlarmRepository;
@@ -180,7 +181,7 @@ public class AlarmReceiver extends DaggerBroadcastReceiver {
     }
 
     private void showNotification (Context context, Alarm alarm){
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, ReminderActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra(ALARM_ID, alarm.getAlarmID());
         //editIntent.putExtra(ReminderEditActivity.EXTRA_REMINDER_ID, Integer.toString(mReceivedID));

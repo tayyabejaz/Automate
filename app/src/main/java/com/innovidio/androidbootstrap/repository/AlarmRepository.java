@@ -71,4 +71,8 @@ public class AlarmRepository {
     public LiveData<List<Alarm>> getAlarmByType(int type){
         return this.alarmDao.getAlarmByType(type);
     }
+
+    public LiveData<Alarm> getRecentAlarm(){
+        return this.alarmDao.getRecentAlarm();
+    }
 }

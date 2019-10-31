@@ -41,7 +41,7 @@ import dagger.android.support.DaggerFragment;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentAddCarWash extends DaggerFragment {
+public class AddCarWashFragment extends DaggerFragment {
 
     @Inject
     MaintenanceViewModel maintenanceViewModel;
@@ -66,7 +66,7 @@ public class FragmentAddCarWash extends DaggerFragment {
     private boolean isEmpty = true;
 
 
-    public FragmentAddCarWash() {
+    public AddCarWashFragment() {
         // Required empty public constructor
     }
 

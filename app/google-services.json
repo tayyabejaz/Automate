@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "807199587707",
+    "firebase_url": "https://million-dollar-apps.firebaseio.com",
+    "project_id": "million-dollar-apps",
+    "storage_bucket": "million-dollar-apps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807199587707:android:6938fc5418e1fd75",
+        "android_client_info": {
+          "package_name": "com.innovidio.androidbootstrap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807199587707-olep769kmfqbcdqv33ti03t8h226jceg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAF5vL3IhkQNUBSBggaUE6NyxcPu-3bopc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "807199587707-olep769kmfqbcdqv33ti03t8h226jceg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

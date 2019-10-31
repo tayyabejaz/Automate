@@ -6,6 +6,8 @@ import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
@@ -15,16 +17,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.CustomDeleteDialog;
+import com.innovidio.androidbootstrap.Utils.Sorting;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
+import com.innovidio.androidbootstrap.adapter.GeneralCarSpinnerAdapter;
 import com.innovidio.androidbootstrap.adapter.SingleReminderAdapter;
+import com.innovidio.androidbootstrap.alarms.SetAlarm;
 import com.innovidio.androidbootstrap.databinding.ActivityReminderBinding;
 import com.innovidio.androidbootstrap.databinding.DialogAddReminderBinding;
 import com.innovidio.androidbootstrap.entity.Alarm;
+import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.interfaces.OnAlarmCardListener;
 import com.innovidio.androidbootstrap.viewmodel.AlarmViewModel;
+import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -36,8 +46,15 @@ public class ReminderActivity extends DaggerAppCompatActivity implements OnAlarm
     @Inject
     AlarmViewModel alarmViewModel;
 
+    @Inject
+    CarViewModel carViewModel;
+
     private SingleReminderAdapter adapter;
     private ActivityReminderBinding binding;
+    private GeneralCarSpinnerAdapter carAdapter;
+    private int carID;
+    private String sDate, sTime;
+    private ArrayList<Car> carArrayList = new ArrayList<>();
     private List<Alarm> datalist = new ArrayList<>();
     private CustomDeleteDialog deleteDialog;
     private final Calendar todaysCalender = Calendar.getInstance();
@@ -47,6 +64,7 @@ public class ReminderActivity extends DaggerAppCompatActivity implements OnAlarm
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reminder);
         initializeAdapter();
+        checkScreenEmptyState();
     }
 
     private void initializeAdapter() {
@@ -54,6 +72,8 @@ public class ReminderActivity extends DaggerAppCompatActivity implements OnAlarm
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         binding.rvReminderScreen.setLayoutManager(layoutManager);
         binding.rvReminderScreen.setAdapter(adapter);
+
+        carAdapter = new GeneralCarSpinnerAdapter(this, carArrayList);
     }
 
     @Override
@@ -61,17 +81,16 @@ public class ReminderActivity extends DaggerAppCompatActivity implements OnAlarm
         super.onStart();
 
         checkScreenEmptyState();
-
-        alarmViewModel.getAllAlarms().observe(this, new Observer<List<Alarm>>() {
-            @Override
-            public void onChanged(List<Alarm> alarms) {
-                if (alarms != null) {
-                    datalist = alarms;
-                    adapter.updateList(datalist);
-                    if (datalist.size()>0){
-                        binding.llEmptyState.setVisibility(View.INVISIBLE);
+        alarmViewModel.getAllAlarms().observe(this, alarms -> {
+            if (alarms != null) {
+                datalist = alarms;
+                Collections.sort(datalist, new Comparator<Alarm>() {
+                    public int compare(Alarm o1, Alarm o2) {
+                        return o2.getCreationDate().compareTo(o1.getCreationDate());
                     }
-                }
+                });
+                adapter.updateList(datalist);
+                checkScreenEmptyState();
             }
         });
 
@@ -105,11 +124,25 @@ public class ReminderActivity extends DaggerAppCompatActivity implements OnAlarm
             addReminderDialog.setView(dialogView);
             addReminderDialog.show();
 
+//            binding.spinnerSelectCar.setAdapter(carAdapter);
+//
+//            binding.spinnerSelectCar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                @Override
+//                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                    carID = carArrayList.get(i).getId();
+//                }
+//
+//                @Override
+//                public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//                }
+//            });
+
             DatePickerDialog.OnDateSetListener date = (datePicker, i, i1, i2) -> {
                 todaysCalender.set(Calendar.YEAR, i);
                 todaysCalender.set(Calendar.MONTH, i1);
                 todaysCalender.set(Calendar.DAY_OF_MONTH, i2);
-                UtilClass.updateDate(todaysCalender, binding.etDate);
+                sDate = UtilClass.updateDate(todaysCalender, binding.etDate);
             };
 
             binding.etDate.setOnClickListener(view -> {
@@ -119,7 +152,7 @@ public class ReminderActivity extends DaggerAppCompatActivity implements OnAlarm
             TimePickerDialog.OnTimeSetListener time = (timePicker, i, i1) -> {
                 todaysCalender.set(Calendar.HOUR_OF_DAY, i);
                 todaysCalender.set(Calendar.MINUTE, i1);
-                UtilClass.updateTime(todaysCalender, binding.etTime);
+                sTime = UtilClass.updateTime(todaysCalender, binding.etTime);
             };
 
             binding.etTime.setOnClickListener(view -> {
@@ -127,10 +160,23 @@ public class ReminderActivity extends DaggerAppCompatActivity implements OnAlarm
             });
 
             binding.btnSetReminder.setOnClickListener(view -> {
+                alarm1.setExecutionTime(UtilClass.convertToDate(sDate, sTime));
+                alarm1.setActive(true);
+                alarm1.setAlarmType(Alarm.AlarmType.CUSTOM);
+                alarm1.setCreationDate(new Date());
+                alarm1.setExpired(false);
+                alarm1.setAlarmMessage(binding.etReminderName.getText().toString());
                 alarmViewModel.addAlarm(alarm1);
                 datalist.add(alarm1);
                 checkScreenEmptyState();
                 addReminderDialog.dismiss();
+
+                alarmViewModel.getRecentAlarm().observe(this, new Observer<Alarm>() {
+                    @Override
+                    public void onChanged(Alarm alarm) {
+                        SetAlarm.addReminder(ReminderActivity.this,alarm);
+                    }
+                });
             });
         }
     }
@@ -159,5 +205,17 @@ public class ReminderActivity extends DaggerAppCompatActivity implements OnAlarm
     @Override
     public void onEditClicked(Alarm alarm) {
         showAddReminderDialog(alarm);
+    }
+
+    @Override
+    public void onAlarmOnOffButton(Alarm alarm) {
+        if (alarm.isActive()) {
+            alarm.setActive(false);
+            Toast.makeText(this, "Alarm is Active", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            alarm.setActive(true);
+            Toast.makeText(this, "Alarm is not Active", Toast.LENGTH_SHORT).show();
+        }
     }
 }

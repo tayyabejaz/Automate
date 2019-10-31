@@ -2,6 +2,7 @@ package com.innovidio.androidbootstrap.fragment;
 
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.Utils.CustomDeleteDialog;
 import com.innovidio.androidbootstrap.activity.FilterResultActivity;
 import com.innovidio.androidbootstrap.activity.FormActivity;
 import com.innovidio.androidbootstrap.adapter.ServiceDialogAdapter;
@@ -67,6 +69,8 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
     MaintenanceViewModel maintenanceViewModel;
     @Inject
     TripViewModel tripViewModel;
+
+    private CustomDeleteDialog tripDeleteDialog, maintenanceDeleteDialog, fuelDeleteDialog, carWashDeleteDialog;
 
 
     private List<TimeLineItem> timeLineItemList = new ArrayList<>();
@@ -129,6 +133,8 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
     }
 
     private void showFuelTypeDialog(FuelUp fuelUp) {
+
+        createFuelUpDeleteDialog(fuelUp);
         DialogFuelupDetailsBinding fuelupDetailsBinding;
         fuelupDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_fuelup_details, null, false);
         fuelupDetailsBinding.setFuelupdata(fuelUp);
@@ -145,8 +151,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         });
 
         fuelupDetailsBinding.btnDelete.setOnClickListener(view -> {
-            fuelUpViewModel.deleteFuelUp(fuelUp);
-
+            fuelDeleteDialog.showDialog();
             exitDialog.dismiss();
         });
 
@@ -160,6 +165,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
     }
 
     private void showCarWashDialog(Maintenance maintenance) {
+        createCarWashDeleteDialog(maintenance);
         DialogCarwashDetailsBinding carwashDetailsBinding;
         carwashDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_carwash_details, null, false);
         carwashDetailsBinding.setCarwashdata(maintenance);
@@ -176,10 +182,10 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         });
 
         carwashDetailsBinding.btnDelete.setOnClickListener(view -> {
-            maintenanceViewModel.deleteMaintenanceService(maintenance);
+
+            maintenanceDeleteDialog.showDialog();
             exitDialog.dismiss();
         });
-
 
         carwashDetailsBinding.btnEdit.setOnClickListener(view -> {
             startFormActivity(CAR_WASH_FORM);
@@ -191,6 +197,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
     }
 
     private void showMaintenanceDialog(Maintenance maintenance) {
+        createMaintenanceDeleteDialog(maintenance);
         DialogMaintenanceDetailsBinding maintenanceDetailsBinding;
         maintenanceDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_maintenance_details, null, false);
         maintenanceDetailsBinding.setMaintenancedata(maintenance);
@@ -207,7 +214,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         });
 
         maintenanceDetailsBinding.btnDelete.setOnClickListener(view -> {
-            maintenanceViewModel.deleteMaintenanceService(maintenance);
+            maintenanceDeleteDialog.showDialog();
             exitDialog.dismiss();
         });
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
@@ -225,6 +232,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
     }
 
     private void showTripDialog(Trip trip) {
+        createTripDeleteDialog(trip);
         DialogTripDetailsBinding dialogTripDetailsBinding;
         dialogTripDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_trip_details, null, false);
         dialogTripDetailsBinding.setTripdata(trip);
@@ -242,11 +250,10 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         });
 
         dialogTripDetailsBinding.btnDelete.setOnClickListener(view -> {
-            tripViewModel.deleteTrip(trip);
+            tripDeleteDialog.showDialog();
             exitDialog.dismiss();
 
         });
-
 
         dialogTripDetailsBinding.btnEdit.setOnClickListener(view -> {
             startFormActivity(TRIP_FORM);
@@ -270,7 +277,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         exitDialog.show();
     }
 
-    public void startFormActivity(String formType) {
+    private void startFormActivity(String formType) {
         Intent intent = new Intent(getContext(), FormActivity.class);
         intent.putExtra(ACTIVITY, formType);
         startActivity(intent);
@@ -357,4 +364,75 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
             startActivity(filterIntent);
         });
     }
+
+    private void createFuelUpDeleteDialog(FuelUp fuelUp) {
+
+        fuelDeleteDialog = new CustomDeleteDialog(getActivity(), "Confirm Delete", "Are you sure you want to delete this 'Fuel up' entry?", "No", "Yes", R.drawable.automate_delete_fuelup_dialog_icon) {
+            @Override
+            public void onNegativeBtnClick(Dialog dialog) {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onPositiveBtnClick(Dialog dialog) {
+                fuelUpViewModel.deleteFuelUp(fuelUp);
+                dialog.dismiss();
+            }
+        };
+        fuelDeleteDialog.createDialog();
+
+    }
+
+    private void createMaintenanceDeleteDialog(Maintenance maintenance) {
+
+        maintenanceDeleteDialog = new CustomDeleteDialog(getActivity(), "Confirm Delete", "Do you want to delete this 'Maintenance' entry?", "No", "Yes", R.drawable.automate_delete_maintenance_dialog_icon) {
+            @Override
+            public void onNegativeBtnClick(Dialog dialog) {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onPositiveBtnClick(Dialog dialog) {
+                maintenanceViewModel.deleteMaintenanceService(maintenance);
+                dialog.dismiss();
+            }
+        };
+        maintenanceDeleteDialog.createDialog();
+
+    }
+
+    private void createTripDeleteDialog(Trip trip) {
+        tripDeleteDialog = new CustomDeleteDialog(getActivity(), "Confirm Delete", "Are you sure you want to delete this 'Trip' entry?", "No", "Yes", R.drawable.automate_delete_drive_dialog_icon) {
+            @Override
+            public void onNegativeBtnClick(Dialog dialog) {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onPositiveBtnClick(Dialog dialog) {
+                tripViewModel.deleteTrip(trip);
+                dialog.dismiss();
+            }
+        };
+        tripDeleteDialog.createDialog();
+
+    }
+
+    private void createCarWashDeleteDialog(Maintenance carwash) {
+
+        carWashDeleteDialog = new CustomDeleteDialog(getActivity(), "Confirm Delete", "Are you sure you want to delete this 'Car Wash' Entry", "No", "Yes", R.drawable.automate_delete_carwash_dialog_icon) {
+            @Override
+            public void onNegativeBtnClick(Dialog dialog) {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onPositiveBtnClick(Dialog dialog) {
+                maintenanceViewModel.deleteMaintenanceService(carwash);
+                dialog.dismiss();
+            }
+        };
+        carWashDeleteDialog.createDialog();
+    }
+
 }

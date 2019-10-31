@@ -62,7 +62,7 @@
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:padding="@dimen/_5sdp"
-                    android:src="@drawable/automate_reminder_on_dialog_icon"
+                    android:src="@{itemCustomAlarm.active ? @drawable/automate_reminder_on_dialog_icon : @drawable/automate_reminder_off_dialog_icon}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_service_value"
@@ -74,6 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Car"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@id/tv_car_value"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -85,6 +86,7 @@
                     android:layout_height="wrap_content"
                     android:text="Honda Civic 2005 VTI"
                     tools:text="Honda Civic 2005 VTI"
+                    android:visibility="gone"
                     android:textColor="@color/blackColor"
                     app:layout_constraintBottom_toTopOf="@id/tv_service_type"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -96,13 +98,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_5sdp"
-                    android:text="Check Battery and Contacts"
+                    android:text="@{itemCustomAlarm.alarmMessage}"
                     android:textColor="@color/blackColor"
                     app:layout_constraintBottom_toTopOf="@id/tv_price"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_service_type"
-                    tools:text="Check Battery and Contacts" />
+                    tools:text="Call to your Mechanic" />
 
                 <TextView
                     android:id="@+id/tv_price"
@@ -131,7 +133,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_5sdp"
-                    android:text="15-10-2019"
+                    android:text="@{itemCustomAlarm.executionDateInString}"
                     android:textColor="@color/blackColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tv_service_value"
@@ -144,7 +146,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_5sdp"
-                    android:text="11:25 am"
+                    android:text="@{itemCustomAlarm.executionTimeInString}"
                     android:textColor="@color/blackColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/iv_alarm_on"
@@ -157,7 +159,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_5sdp"
-                    android:text="Service Type"
+                    android:text="Reminder Name:"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_car_value" />
@@ -172,7 +174,7 @@
     <data>
 
         <variable
-            name="itemSingleMaintenance"
+            name="itemCustomAlarm"
             type="com.innovidio.androidbootstrap.entity.Alarm" />
     </data>
 </layout>

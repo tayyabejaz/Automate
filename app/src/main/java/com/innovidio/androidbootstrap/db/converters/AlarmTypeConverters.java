@@ -1,7 +1,7 @@
 package com.innovidio.androidbootstrap.db.converters;
 import androidx.room.TypeConverter;
 import com.innovidio.androidbootstrap.entity.Alarm;
-import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
+
 public class AlarmTypeConverters {
 
     @TypeConverter
@@ -18,7 +18,7 @@ public class AlarmTypeConverters {
         return type == null ? null : type.name();
     }
 
-    public static Alarm.AlarmType restoreEnumtoString(String enumName) {
+    public static Alarm.AlarmType restoreEnumToString(String enumName) {
         return enumName == null ? null : Alarm.AlarmType.valueOf(enumName);
     }
 }

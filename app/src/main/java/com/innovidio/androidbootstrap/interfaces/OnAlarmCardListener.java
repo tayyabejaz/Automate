@@ -6,4 +6,5 @@ public interface OnAlarmCardListener {
 
     void onDeleteClicked(Alarm alarm);
     void onEditClicked(Alarm alarm);
+    void onAlarmOnOffButton(Alarm alarm);
 }

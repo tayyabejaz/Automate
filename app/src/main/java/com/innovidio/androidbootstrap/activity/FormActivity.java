@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.databinding.ActivityFormBinding;
-import com.innovidio.androidbootstrap.fragment.FragmentAddCarWash;
+import com.innovidio.androidbootstrap.fragment.AddCarWashFragment;
 import com.innovidio.androidbootstrap.fragment.FragmentAddFuelUp;
 import com.innovidio.androidbootstrap.fragment.FragmentAddServices;
 import com.innovidio.androidbootstrap.fragment.FragmentAddTrip;
@@ -34,7 +34,7 @@ public class FormActivity extends AppCompatActivity {
     private void initializeFragment(String fragmentName) {
         switch (fragmentName) {
             case CAR_WASH_FORM:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fl_form_activity, new FragmentAddCarWash()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_form_activity, new AddCarWashFragment()).commit();
                 break;
 
             case FUEL_UP_FORM:

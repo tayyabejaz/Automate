@@ -8,6 +8,8 @@ import androidx.room.TypeConverters;
 import com.innovidio.androidbootstrap.db.converters.AlarmTypeConverters;
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -90,6 +92,17 @@ public class Alarm {
 
     public Date getExecutionTime() {
         return executionTime;
+    }
+
+    public String getExecutionDateInString() {
+        DateFormat format = new SimpleDateFormat("MMM dd");
+        return format.format(this.executionTime);
+
+    }
+
+    public String getExecutionTimeInString() {
+        DateFormat format = new SimpleDateFormat("hh:mm");
+        return format.format(this.executionTime);
     }
 
     public void setExecutionTime(Date executionTIme) {
