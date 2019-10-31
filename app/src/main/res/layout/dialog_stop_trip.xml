@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="tripData"
+            type="com.innovidio.androidbootstrap.entity.Trip" />
+
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -23,15 +30,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <Button
+                    android:id="@+id/btn_dialog_save_trip"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_30sdp"
+                    android:layout_marginEnd="@dimen/_30sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:background="@drawable/app_button_background"
+                    android:text="Yes! Stop and Save Trip"
+                    android:textColor="@color/whiteColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_consent" />
+
                 <EditText
                     android:id="@+id/et_starting_odometer"
                     style="@style/EditText_In_Forms"
                     android:drawableStart="@drawable/automate_odometer_reading_form_icon"
-                    android:text="Starting Reading"
+                    android:text="@{String.valueOf(tripData.intialOdometer)}"
+                    tools:text="35200"
                     android:textAlignment="center"
-                    app:layout_constraintBottom_toTopOf="@id/tv_final_odometer_reading"
                     android:textColor="@color/blueTextColor"
                     android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@id/tv_final_odometer_reading"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_starting_odometer" />
@@ -40,23 +63,39 @@
                     android:id="@+id/et_final_odometer_reading"
                     style="@style/EditText_In_Forms"
                     android:drawableStart="@drawable/automate_odometer_reading_form_icon"
-                    android:text="Test"
-                    app:layout_constraintBottom_toTopOf="@id/tv_avg_speed"
+                    android:text="@{String.valueOf(tripData.finalOdometer)}"
+                    tools:text="Test"
                     android:textAlignment="center"
                     android:textColor="@color/blueTextColor"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/tv_final_odometer_reading"
+                    app:layout_constraintBottom_toTopOf="@id/tv_avg_speed"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@id/tv_final_odometer_reading" />
+
+                <EditText
+                    android:id="@+id/et_avg_speed"
+                    style="@style/EditText_In_Forms"
+                    android:layout_marginStart="@dimen/_30sdp"
+                    android:layout_marginEnd="@dimen/_30sdp"
+                    android:text="@{String.valueOf(tripData.avgspeed)}"
+                    tools:text="60 km/h"
+                    android:textAlignment="center"
+                    android:textColor="@color/blueTextColor"
+                    app:layout_constraintBottom_toTopOf="@id/tv_traveled_distance"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_avg_speed" />
 
                 <TextView
                     android:id="@+id/tv_starting_odometer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_medium"
+                    android:padding="@dimen/_7sdp"
                     android:text="Starting Odometer Reading"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:padding="@dimen/_5sdp"
                     android:textColor="@color/blackColor"
                     android:textSize="@dimen/_12sdp"
                     app:layout_constraintBottom_toTopOf="@id/et_starting_odometer"
@@ -68,10 +107,10 @@
                     android:id="@+id/tv_top_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_30sdp"
                     android:fontFamily="@font/roboto_medium"
-                    android:text="Stop Drive"
-                   android:layout_marginTop="@dimen/_15sdp"
                     android:padding="@dimen/_5sdp"
+                    android:text="Stop Drive"
                     android:textColor="@color/blackColor"
                     android:textSize="@dimen/_20sdp"
                     app:layout_constraintBottom_toTopOf="@id/tv_description"
@@ -83,9 +122,10 @@
                     android:id="@+id/tv_final_odometer_reading"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:padding="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_medium"
+                    android:padding="@dimen/_7sdp"
                     android:text="Odomter Reading After Trip"
                     android:textColor="@color/blackColor"
                     android:textSize="@dimen/_12sdp"
@@ -99,12 +139,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:layout_margin="@dimen/_5sdp"
                     android:padding="@dimen/_5sdp"
-                    app:layout_constraintBottom_toTopOf="@id/tv_starting_odometer"
-                    android:text="Please make sure this data we fetch for you is correct"
+                    android:text="Please make sure this data \n We fetch for you is correct?"
                     android:textColor="@color/gray_dialog_colour"
-                    android:textSize="@dimen/_11sdp"
+                    android:textSize="@dimen/_10sdp"
+                    app:layout_constraintBottom_toTopOf="@id/tv_starting_odometer"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_top_text" />
@@ -113,82 +152,59 @@
                     android:id="@+id/tv_avg_speed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Avg Speed Limit:"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:padding="@dimen/_7sdp"
+                    android:text="Avg Speed:"
                     android:textColor="@color/blackColor"
                     android:textSize="@dimen/_12sdp"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:fontFamily="@font/roboto_medium"
-                    app:layout_constraintTop_toBottomOf="@id/et_final_odometer_reading"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/et_avg_speed"
-                    />
-
-                <EditText
-                    android:id="@+id/et_avg_speed"
-                    style="@style/EditText_In_Forms"
-                    android:text="60 km/h"
-                    android:textColor="@color/blueTextColor"
-                    android:textAlignment="center"
-                    app:layout_constraintTop_toBottomOf="@id/tv_avg_speed"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/tv_traveled_distance"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintTop_toBottomOf="@id/et_final_odometer_reading" />
 
                 <TextView
                     android:id="@+id/tv_traveled_distance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:padding="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:padding="@dimen/_7sdp"
                     android:text="Your Traveled Distance "
                     app:layout_constraintBottom_toTopOf="@id/tv_traveled_distance_value"
-                    app:layout_constraintTop_toBottomOf="@id/et_avg_speed"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_avg_speed" />
 
                 <TextView
                     android:id="@+id/tv_traveled_distance_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="12Km"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:padding="@dimen/_10sdp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@{String.valueOf(tripData.distanceCovered)}"
+                    tools:text="12Km"
                     android:textColor="@color/blackColor"
-                    android:textSize="@dimen/_20sdp"
-                    app:layout_constraintTop_toBottomOf="@id/tv_traveled_distance"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:textSize="@dimen/_18sdp"
                     app:layout_constraintBottom_toTopOf="@id/tv_user_consent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_traveled_distance" />
 
                 <TextView
                     android:id="@+id/tv_user_consent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/_12sdp"
                     android:layout_margin="@dimen/_5sdp"
                     android:padding="@dimen/_5sdp"
-                    android:text="Are you sure you want to save trip with this data?"
-                    app:layout_constraintTop_toBottomOf="@id/tv_traveled_distance_value"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="Are you sure you want to \n save trip with this data?"
+                    android:textSize="@dimen/_10sdp"
                     app:layout_constraintBottom_toTopOf="@id/btn_dialog_save_trip"
-                    />
-
-                <Button
-                    android:id="@+id/btn_dialog_save_trip"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"
-                    android:text="Yes! Stop and Save Trip"
-                    android:background="@drawable/app_button_background"
-                    android:textColor="@color/whiteColor"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_user_consent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_traveled_distance_value" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

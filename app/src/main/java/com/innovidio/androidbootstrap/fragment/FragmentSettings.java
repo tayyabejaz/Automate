@@ -319,9 +319,9 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
         trip.setSaveDate(faker.date.backward(UtilClass.getRandomNo(1, 50)));
         trip.setTripTitle("Trip with " + faker.name.title());
         if (UtilClass.getRandomNo(0, 10) % 2 == 0) {
-            trip.setTripType("Personal");
+            trip.setTripType(Trip.TripType.PERSONAL);
         } else {
-            trip.setTripType("Business");
+            trip.setTripType(Trip.TripType.OFFICIAL);
         }
         int noOfLitters = UtilClass.getRandomNo(10, 30);
         Double unitPriceinLit = Double.valueOf(UtilClass.getRandomNo(100, 120));

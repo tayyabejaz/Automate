@@ -113,9 +113,23 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_5sdp"
                     android:theme="@style/NumberPickerTheme"
+                    app:layout_constraintBottom_toTopOf="@id/et_initial_odometer"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_speed_limit" />
+
+                <EditText
+                    android:id="@+id/et_initial_odometer"
+                    style="@style/EditText_In_Forms"
+                    android:drawableStart="@drawable/automate_odometer_reading_form_icon"
+                    android:textAlignment="center"
+                    android:text="35258"
+                    android:textColor="@color/blueTextColor"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/numberpicker_speed_limit"
+                    app:layout_constraintBottom_toTopOf="@id/tv_drive_type"
+                    android:textStyle="bold"/>
 
                 <Switch
                     android:id="@+id/switch_drive_detect"
@@ -147,6 +161,7 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/automate_select_car_placeholder"
                     android:drawablePadding="@dimen/_8sdp"
+                    android:visibility="gone"
                     android:padding="@dimen/_5sdp"
                     android:text="Honda CIVIC 2005 VTI"
                     android:textColor="@color/blackColor"
@@ -172,7 +187,7 @@
                     android:text="Select Drive Type"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/numberpicker_speed_limit" />
+                    app:layout_constraintTop_toBottomOf="@id/et_initial_odometer" />
 
                 <TextView
                     android:id="@+id/tv_drive_detect"
