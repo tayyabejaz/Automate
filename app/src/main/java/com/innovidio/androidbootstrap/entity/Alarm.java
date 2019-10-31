@@ -5,6 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
+import com.innovidio.androidbootstrap.db.converters.AlarmTypeConverters;
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
 
 import java.util.Date;
@@ -17,13 +18,15 @@ public class Alarm {
     private int alarmID;
     private int maintenanceId;
     private String alarmMessage;
-    private String alarmType;
+    @ColumnInfo(name = "alarmType")
+    @TypeConverters(AlarmTypeConverters.class)
+    private AlarmType alarmType;
     @ColumnInfo(name = "creationDate")
     @TypeConverters(DateConverter.class)
     private Date creationDate;
-    @ColumnInfo(name = "executionTIme")
+    @ColumnInfo(name = "executionTime")
     @TypeConverters(DateConverter.class)
-    private Date executionTIme;
+    private Date executionTime;
     private boolean isActive;
 
     public Alarm(){
@@ -60,11 +63,11 @@ public class Alarm {
         this.alarmMessage = alarmMessage;
     }
 
-    public String getAlarmType() {
+    public AlarmType getAlarmType() {
         return alarmType;
     }
 
-    public void setAlarmType(String alarmType) {
+    public void setAlarmType(AlarmType alarmType) {
         this.alarmType = alarmType;
     }
 
@@ -76,12 +79,12 @@ public class Alarm {
         this.creationDate = creationDate;
     }
 
-    public Date getExecutionTIme() {
-        return executionTIme;
+    public Date getExecutionTime() {
+        return executionTime;
     }
 
-    public void setExecutionTIme(Date executionTIme) {
-        this.executionTIme = executionTIme;
+    public void setExecutionTime(Date executionTIme) {
+        this.executionTime = executionTIme;
     }
 
     public boolean isActive() {
@@ -90,5 +93,9 @@ public class Alarm {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public enum AlarmType {
+        CUSTOM, MAINTENANCE;
     }
 }

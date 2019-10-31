@@ -4,7 +4,10 @@ package com.innovidio.androidbootstrap.fragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +15,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,8 +50,6 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import io.bloco.faker.Faker;
-
-import static com.innovidio.androidbootstrap.AppPreferences.Key.SELECTED_CAR_ID;
 
 public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteListener {
 
@@ -88,6 +88,18 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        try {
+            PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
+           String version = pInfo.versionName;
+           settingsBinding.tvVersionValue.setText(version);
+            int versionCode = pInfo.versionCode;
+            settingsBinding.tvVersionCodeValue.setText(String.valueOf(versionCode));
+
+        } catch(PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            Log.d("TAYYAB", "PackageManager Catch : "+e.toString());
+        }
 
         //Creating a Dialog
         createDialogs();
@@ -134,7 +146,7 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
                 //TODO: Reset Data ---- Delete Database
                 UtilClass.clearAppData(getContext());
                 appPreferences.clear();
-              //  UtilClass.restartApplication(getContext());
+                //  UtilClass.restartApplication(getContext());
             }
         };
 

@@ -74,6 +74,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Car"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@id/tv_car_value"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -85,6 +86,7 @@
                     android:layout_height="wrap_content"
                     android:text="Honda Civic 2005 VTI"
                     tools:text="Honda Civic 2005 VTI"
+                    android:visibility="gone"
                     android:textColor="@color/blackColor"
                     app:layout_constraintBottom_toTopOf="@id/tv_service_type"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -96,13 +98,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_5sdp"
-                    android:text="Check Battery and Contacts"
+                    android:text="Call to your Mechanic"
                     android:textColor="@color/blackColor"
                     app:layout_constraintBottom_toTopOf="@id/tv_price"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_service_type"
-                    tools:text="Check Battery and Contacts" />
+                    tools:text="Call to your Mechanic" />
 
                 <TextView
                     android:id="@+id/tv_price"
@@ -157,7 +159,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/_5sdp"
-                    android:text="Service Type"
+                    android:text="Reminder Name:"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_car_value" />
@@ -172,7 +174,7 @@
     <data>
 
         <variable
-            name="itemSingleMaintenance"
+            name="itemCustomAlarm"
             type="com.innovidio.androidbootstrap.entity.Alarm" />
     </data>
 </layout>

@@ -1,6 +1,6 @@
 package com.innovidio.androidbootstrap.di.module;
 
-import com.innovidio.androidbootstrap.fragment.FragmentAddCarWash;
+import com.innovidio.androidbootstrap.fragment.AddCarWashFragment;
 import com.innovidio.androidbootstrap.fragment.FragmentAddCustomCar;
 import com.innovidio.androidbootstrap.fragment.FragmentAddFuelUp;
 import com.innovidio.androidbootstrap.fragment.FragmentAddNewCar;
@@ -34,7 +34,7 @@ public abstract class FragmentBuilderModule {
     abstract FragmentDrive contributeDriveFragment();
 
     @ContributesAndroidInjector
-    abstract FragmentAddCarWash contributeAddCarWashFragment();
+    abstract AddCarWashFragment contributeAddCarWashFragment();
 
     @ContributesAndroidInjector
     abstract FragmentAddFuelUp contributeAddFuelUpFragment();
