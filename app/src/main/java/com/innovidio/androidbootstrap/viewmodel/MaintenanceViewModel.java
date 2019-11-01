@@ -1,15 +1,10 @@
 package com.innovidio.androidbootstrap.viewmodel;
 
-import android.widget.Toast;
-
-import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.innovidio.androidbootstrap.entity.Maintenance;
-import com.innovidio.androidbootstrap.entity.MaintenanceWithAlarms;
-import com.innovidio.androidbootstrap.entity.models.TimeLine;
+import com.innovidio.androidbootstrap.entity.MaintenanceWithAlarm;
 import com.innovidio.androidbootstrap.repository.MaintenanceRepository;
 
 import java.util.Date;
@@ -42,8 +37,8 @@ public class MaintenanceViewModel extends ViewModel {
         this.maintenanceRepository.updateMaintenanceService(maintenance);
     }
 
-    public LiveData<MaintenanceWithAlarms> getNextComingMaintenanceWithAlarm(int carId, Date currentdate){
-        return this.maintenanceRepository.getNextComingMaintenanceWithAlarm(carId, currentdate);
+    public LiveData<Maintenance> getNextComingMaintenance(int carId, Date currentdate){
+        return this.maintenanceRepository.getNextComingMaintenance(carId, currentdate);
     }
 
     public LiveData<Maintenance> getLastMaintenance(int carId){
@@ -52,6 +47,10 @@ public class MaintenanceViewModel extends ViewModel {
 
     public LiveData<Integer> getMaintenanceCountBetweenDateRange(int carId, Date starDate, Date endDate){
         return this.maintenanceRepository.getMaintenanceCountBetweenDateRange(carId, starDate, endDate);
+    }
+
+    public LiveData<Long> getMaintenanceCostBetweenDateRange(int carId, Date starDate, Date endDate){
+        return this.maintenanceRepository.getMaintenanceCostBetweenDateRange(carId, starDate, endDate);
     }
 
 //    public LiveData<List<TimeLine>> getAllMaintenanceTripsAndFuelUps(){

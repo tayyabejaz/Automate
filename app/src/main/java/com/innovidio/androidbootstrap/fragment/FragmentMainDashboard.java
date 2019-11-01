@@ -182,7 +182,6 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         });
 
         carwashDetailsBinding.btnDelete.setOnClickListener(view -> {
-
             maintenanceDeleteDialog.showDialog();
             exitDialog.dismiss();
         });

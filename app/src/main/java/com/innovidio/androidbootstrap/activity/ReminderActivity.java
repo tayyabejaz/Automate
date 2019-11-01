@@ -84,11 +84,7 @@ public class ReminderActivity extends DaggerAppCompatActivity implements OnAlarm
         alarmViewModel.getAllAlarms().observe(this, alarms -> {
             if (alarms != null) {
                 datalist = alarms;
-                Collections.sort(datalist, new Comparator<Alarm>() {
-                    public int compare(Alarm o1, Alarm o2) {
-                        return o2.getCreationDate().compareTo(o1.getCreationDate());
-                    }
-                });
+                Collections.sort(datalist, (o1, o2) -> o2.getCreationDate().compareTo(o1.getCreationDate()));
                 adapter.updateList(datalist);
                 checkScreenEmptyState();
             }

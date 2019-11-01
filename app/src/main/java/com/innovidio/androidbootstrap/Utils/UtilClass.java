@@ -504,4 +504,41 @@ public class UtilClass {
 //        mFirebaseAnalytics.logEvent(eventName, params);
 //    }
 
+
+    public static Date getCurrentMonthLastDayDate(){
+        Calendar calendarEnd = Calendar.getInstance();
+        int monthMaxDays = calendarEnd.getActualMaximum(Calendar.DAY_OF_MONTH);
+        calendarEnd.set(Calendar.DAY_OF_MONTH, monthMaxDays);
+        calendarEnd.set(Calendar.HOUR_OF_DAY, 0);
+        calendarEnd.set(Calendar.MINUTE, 0);
+        return calendarEnd.getTime();
+    }
+
+    public static Date getCurrentMonthFirstDayDate(){
+        Calendar calendarStart = Calendar.getInstance();   // this takes current date
+        calendarStart.set(Calendar.DAY_OF_MONTH, 1);
+        calendarStart.set(Calendar.HOUR_OF_DAY, 0);
+        calendarStart.set(Calendar.MINUTE, 0);
+        return calendarStart.getTime();
+    }
+
+    public static Date getCurrentDayFrom0AM(){
+        Calendar calendarStart = Calendar.getInstance();   // this takes current date
+        calendarStart.add(Calendar.DAY_OF_MONTH, 0);
+        calendarStart.set(Calendar.HOUR_OF_DAY, 0);
+        calendarStart.set(Calendar.MINUTE, 0);
+        calendarStart.set(Calendar.SECOND, 0);
+        return calendarStart.getTime();
+    }
+
+    public static Date getCurrentPreviousDay(){
+        Calendar calendarStart = Calendar.getInstance();   // this takes current date
+        calendarStart.add(Calendar.DAY_OF_MONTH, -5);
+        calendarStart.set(Calendar.HOUR_OF_DAY, 0);
+        calendarStart.set(Calendar.MINUTE, 0);
+        calendarStart.set(Calendar.SECOND, 0);
+        return calendarStart.getTime();
+    }
+
+
 }

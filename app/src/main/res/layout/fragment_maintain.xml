@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+    <variable
+        name="maintenanceData"
+        type="com.innovidio.androidbootstrap.entity.Maintenance" />
+
+        <variable
+            name="prefData"
+            type="com.innovidio.androidbootstrap.entity.Preferences" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -55,7 +66,8 @@
                         android:id="@+id/tv_last_maintenance_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Check Battery"
+                        android:text="@{maintenanceData.maintenanceName}"
+                        tools:text="Check Battery"
                         android:textColor="@color/whiteColor"
                         app:layout_constraintBottom_toTopOf="@id/tv_date"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -79,7 +91,8 @@
                         android:id="@+id/tv_date_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="15-10-2019"
+                        android:text="@{maintenanceData.saveDateInString}"
+                        tools:text="22-10-2019"
                         android:textColor="@color/whiteColor"
                         app:layout_constraintBottom_toTopOf="@id/tv_cost"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -101,7 +114,8 @@
                         android:id="@+id/tv_cost_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="6000 Rs"
+                        android:text="@{String.valueOf(maintenanceData.maintenanceCost)+' '+prefData.currency}"
+                        tools:text="6000Rs"
                         android:textColor="@color/whiteColor"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -158,28 +172,27 @@
                         android:id="@+id/tv_next_maintenance_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Oil Change"
+                        android:text=""
+                        tools:text="Oil Change"
                         android:textColor="@color/whiteColor"
                         app:layout_constraintBottom_toTopOf="@id/tv_days"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_next_maintenance"
-
-                        />
+                        app:layout_constraintTop_toBottomOf="@id/tv_next_maintenance"/>
 
                     <TextView
-                        android:id="@+id/tv_days"
+                        android:id="@+id/tv_days_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="30"
                         android:textColor="@color/whiteColor"
-                        app:layout_constraintBottom_toTopOf="@id/tv_days_value"
+                        app:layout_constraintBottom_toTopOf="@id/tv_days"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_next_maintenance_value" />
 
                     <TextView
-                        android:id="@+id/tv_days_value"
+                        android:id="@+id/tv_days"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="days Remaining"
@@ -187,7 +200,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_days" />
+                        app:layout_constraintTop_toBottomOf="@id/tv_days_value" />
 
 
                     <View
@@ -239,14 +252,12 @@
                         android:id="@+id/tv_total_maintenance_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="4"
+                        android:text="0"
                         android:textColor="@color/whiteColor"
                         app:layout_constraintBottom_toTopOf="@id/tv_total_cost"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_total_maintenance"
-
-                        />
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_maintenance" />
 
 
                     <TextView
@@ -264,7 +275,7 @@
                         android:id="@+id/tv_total_cost_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="6000 Rs"
+                        android:text="0"
                         android:textColor="@color/whiteColor"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
