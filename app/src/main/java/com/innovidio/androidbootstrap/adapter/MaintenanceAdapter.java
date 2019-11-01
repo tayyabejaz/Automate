@@ -92,7 +92,7 @@ public class MaintenanceAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         public void bind(Maintenance item) {
-            itemBinding.setTimeLineMaintenanceItem(item);
+            itemBinding.setMaintenanceItem(item);
             itemBinding.executePendingBindings();
         }
     }

@@ -141,6 +141,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         DialogFuelupDetailsBinding fuelupDetailsBinding;
         fuelupDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_fuelup_details, null, false);
         fuelupDetailsBinding.setFuelupdata(fuelUp);
+        fuelupDetailsBinding.setPrefData(prefRepo.getPreferences());
         View dialogView = fuelupDetailsBinding.getRoot();
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
@@ -172,6 +173,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         DialogCarwashDetailsBinding carwashDetailsBinding;
         carwashDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_carwash_details, null, false);
         carwashDetailsBinding.setCarwashdata(maintenance);
+        carwashDetailsBinding.setPrefData(prefRepo.getPreferences());
         View dialogView = carwashDetailsBinding.getRoot();
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
@@ -235,6 +237,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         DialogTripDetailsBinding dialogTripDetailsBinding;
         dialogTripDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_trip_details, null, false);
         dialogTripDetailsBinding.setTripdata(trip);
+        dialogTripDetailsBinding.setPrefData(prefRepo.getPreferences());
         View dialogView = dialogTripDetailsBinding.getRoot();
 
 

@@ -220,7 +220,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
 
         public void bind(Maintenance item) {
-            itemBinding.setTimeLineMaintenanceItem(item);
+            itemBinding.setMaintenanceItem(item);
             itemBinding.executePendingBindings();
         }
     }

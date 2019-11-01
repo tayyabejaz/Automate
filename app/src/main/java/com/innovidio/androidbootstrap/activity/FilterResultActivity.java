@@ -131,6 +131,7 @@ public class FilterResultActivity extends DaggerAppCompatActivity implements Tim
         DialogCarwashDetailsBinding carwashDetailsBinding;
         carwashDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_carwash_details, null, false);
         carwashDetailsBinding.setCarwashdata(maintenance);
+        carwashDetailsBinding.setPrefData(prefRepo.getPreferences());
         View dialogView = carwashDetailsBinding.getRoot();
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -193,6 +194,7 @@ public class FilterResultActivity extends DaggerAppCompatActivity implements Tim
         DialogTripDetailsBinding dialogTripDetailsBinding;
         dialogTripDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_trip_details, null, false);
         dialogTripDetailsBinding.setTripdata(trip);
+        dialogTripDetailsBinding.setPrefData(prefRepo.getPreferences());
         View dialogView = dialogTripDetailsBinding.getRoot();
 
 
@@ -228,6 +230,7 @@ public class FilterResultActivity extends DaggerAppCompatActivity implements Tim
         DialogFuelupDetailsBinding fuelupDetailsBinding;
         fuelupDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_fuelup_details, null, false);
         fuelupDetailsBinding.setFuelupdata(fuelUp);
+        fuelupDetailsBinding.setPrefData(prefRepo.getPreferences());
         View dialogView = fuelupDetailsBinding.getRoot();
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);

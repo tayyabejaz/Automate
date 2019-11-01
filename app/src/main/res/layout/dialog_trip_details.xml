@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools">
 
+
     <data>
+        <variable
+            name="prefData"
+            type="com.innovidio.androidbootstrap.entity.Preferences" />
         <variable
             name="tripdata"
             type="com.innovidio.androidbootstrap.entity.Trip" />
@@ -49,7 +53,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(tripdata.fuelCostPerUnit)}"
+                    android:text="@{(String.valueOf(tripdata.fuelCostPerUnit)) +' '+prefData.currency }"
                     tools:text="113 Rs"
                     android:padding="@dimen/_5sdp"
                     android:textColor="@color/blackColor"/>
@@ -87,7 +91,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(tripdata.totalExpenses)}"
+                    android:text="@{(String.valueOf(tripdata.totalExpenses) )+' '+prefData.currency}"
                     tools:text="2000 Rs"
                     android:padding="@dimen/_5sdp"
                     android:textColor="@color/blackColor"/>
@@ -125,7 +129,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(tripdata.noOfLitres)}"
+                    android:text="@{(String.valueOf(tripdata.noOfLitres)) +' '+prefData.fuelUnit}"
                     tools:text="17 L"
                     android:padding="@dimen/_5sdp"
                     android:textColor="@color/blackColor"/>
@@ -386,7 +390,7 @@
             <!-- Total Expenses Layout -->
             <LinearLayout
                 android:id="@+id/total_expenses_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="@dimen/_20sdp"
@@ -405,9 +409,10 @@
                     android:text="Overall Expense"/>
 
                 <TextView
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(tripdata.totalExpenses)}"
+                    android:text="@{prefData.currency+' '+(String.valueOf(tripdata.totalExpenses))}"
                     tools:text="RS 2000.00/-"
                     android:textStyle="bold"
                     android:padding="@dimen/_10sdp"

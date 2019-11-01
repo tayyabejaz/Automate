@@ -1,18 +1,21 @@
 package com.innovidio.androidbootstrap.Utils;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.innovidio.androidbootstrap.R;
 
-public abstract class CustomDeleteDialog {
+public abstract class CustomDeleteDialog{
 
 
     private Dialog dialog;
@@ -48,6 +51,7 @@ public abstract class CustomDeleteDialog {
         try {
             dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
             dialog.getWindow().getDecorView().setBackgroundResource(android.R.color.transparent);
+            dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
