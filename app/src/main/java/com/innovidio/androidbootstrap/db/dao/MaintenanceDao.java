@@ -50,11 +50,10 @@ public abstract class MaintenanceDao extends BaseDao<Maintenance>{
     @Query("SELECT * FROM Maintenance WHERE carId=:carId AND maintenanceType=:type")
     public abstract List<Maintenance> getAllMaintenanceWithTypeTimeLine(int carId, TimeLineItem.Type type);
 
-    // todo check / get next coming maintenance date from table
     @Query("SELECT * FROM Maintenance WHERE carId=:carId AND nextMaintenanceDate = (SELECT MIN (nextMaintenanceDate) FROM Maintenance WHERE nextMaintenanceDate>=:currentDate)")
     public abstract LiveData<Maintenance> getNextMaintenance(int carId, Date currentDate);
 
-    @Query("SELECT * FROM Maintenance WHERE carId=:carId AND id = (SELECT MAX(ID) FROM Trip)")
+    @Query("SELECT * FROM Maintenance WHERE carId=:carId AND id = (SELECT MAX(ID) FROM Maintenance)")
     public abstract  LiveData<Maintenance> getLastMaintenance(int carId);
 
     @Query("SELECT COUNT(id) FROM Maintenance WHERE carId=:carId AND saveDate BETWEEN :startDate AND :endDate")

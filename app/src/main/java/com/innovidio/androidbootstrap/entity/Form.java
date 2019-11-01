@@ -9,6 +9,8 @@ import androidx.room.TypeConverters;
 import com.innovidio.androidbootstrap.db.converters.DateConverter;
 import com.squareup.moshi.Json;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -29,6 +31,10 @@ public class Form {
     @ColumnInfo(name = "saveDate")
     @TypeConverters(DateConverter.class)
     private Date saveDate;
+
+    private int odoMeterReading;
+    private int totalCost;
+
 
     public Form() {
 
@@ -88,5 +94,32 @@ public class Form {
 
     public void setSaveDate(Date saveDate) {
         this.saveDate = saveDate;
+    }
+
+    public String getSaveDateInString() {
+        DateFormat format = new SimpleDateFormat("MMM dd");
+        return format.format(this.saveDate);
+
+    }
+
+    public String getSaveTimeInString() {
+        DateFormat format = new SimpleDateFormat("hh:mm");
+        return format.format(this.saveDate);
+    }
+
+    public int getOdoMeterReading() {
+        return odoMeterReading;
+    }
+
+    public void setOdoMeterReading(int odoMeterReading) {
+        this.odoMeterReading = odoMeterReading;
+    }
+
+    public int getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(int totalCost) {
+        this.totalCost = totalCost;
     }
 }

@@ -137,7 +137,7 @@
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="@{maintenancedata.maintenanceLocation}"
+                        android:text="@{formdata.location}"
                         android:textColor="@color/blackColor"
                         tools:text="Shell Petrol and CNG Station"
 
@@ -152,7 +152,7 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:orientation="horizontal"
-                    app:layout_constraintBottom_toTopOf="@id/total_expenses_layout"
+                    app:layout_constraintBottom_toTopOf="@id/tv_type_service"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/fuel_location">
@@ -170,11 +170,36 @@
                         android:layout_marginStart="@dimen/_5sdp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
-                        android:text="@{String.valueOf(maintenancedata.maintenanceOdometerReading)}"
+                        android:text="@{String.valueOf(formdata.odoMeterReading)}"
                         android:textColor="@color/blackColor"
                         tools:text="032450" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_type_service"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Type: Service"
+                    android:padding="@dimen/_5sdp"
+                    app:layout_constraintTop_toBottomOf="@id/fuel_odometer"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/rv_service_dialog"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_service_dialog"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:orientation="horizontal"
+                    tools:listitem="@layout/item_service_dialog_recycler"
+                    app:layout_constraintTop_toBottomOf="@id/tv_type_service"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
 
                 <LinearLayout
                     android:id="@+id/calender_layout"
@@ -193,7 +218,7 @@
 
                     <LinearLayout
                         android:id="@+id/date_view"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -212,7 +237,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{maintenancedata.saveDateInString}"
+                            android:text="@{formdata.saveDateInString}"
                             android:textColor="@color/blackColor"
                             android:textSize="@dimen/_12sdp"
                             tools:text="10-10-2019" />
@@ -230,7 +255,7 @@
 
                     <LinearLayout
                         android:id="@+id/time_view"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -249,7 +274,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{maintenancedata.saveTimeInString}"
+                            android:text="@{formdata.saveTimeInString}"
                             android:textColor="@color/blackColor"
                             android:textSize="@dimen/_12sdp"
                             tools:text="11:29" />
@@ -269,7 +294,7 @@
                     app:layout_constraintBottom_toTopOf="@id/btn_delete"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/fuel_odometer">
+                    app:layout_constraintTop_toBottomOf="@id/rv_service_dialog">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -283,7 +308,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="10dp"
-                        android:text="@{prefdata.currency + ' '+(String.valueOf(maintenancedata.maintenanceCost))}"
+                        android:text="@{prefdata.currency +' '+(String.valueOf(formdata.totalCost))}"
                         android:textColor="@color/blueDark"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -323,8 +348,8 @@
     <data>
 
         <variable
-            name="maintenancedata"
-            type="com.innovidio.androidbootstrap.entity.Maintenance" />
+            name="formdata"
+            type="com.innovidio.androidbootstrap.entity.Form" />
 
         <variable
             name="prefdata"

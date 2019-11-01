@@ -24,8 +24,10 @@ import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.interfaces.TimelineItemClickListener;
+import com.innovidio.androidbootstrap.repository.PreferencesRepository;
 import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
 import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
+import com.innovidio.androidbootstrap.viewmodel.PreferencesViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
 
@@ -46,6 +48,9 @@ public class FilterResultActivity extends DaggerAppCompatActivity implements Tim
 
     @Inject
     TimeLineViewModel timeLineViewModel;
+
+    @Inject
+    PreferencesRepository prefRepo;
 
     @Inject
     FuelUpViewModel fuelUpViewModel;
@@ -157,6 +162,7 @@ public class FilterResultActivity extends DaggerAppCompatActivity implements Tim
         DialogMaintenanceDetailsBinding maintenanceDetailsBinding;
         maintenanceDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_maintenance_details, null, false);
         maintenanceDetailsBinding.setMaintenancedata(maintenance);
+        maintenanceDetailsBinding.setPrefdata(prefRepo.getPreferences());
         View dialogView = maintenanceDetailsBinding.getRoot();
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -173,10 +179,6 @@ public class FilterResultActivity extends DaggerAppCompatActivity implements Tim
             maintenanceViewModel.deleteMaintenanceService(maintenance);
             exitDialog.dismiss();
         });
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        ServiceDialogAdapter adapter = new ServiceDialogAdapter();
-        maintenanceDetailsBinding.rvServiceDialog.setAdapter(adapter);
-        maintenanceDetailsBinding.rvServiceDialog.setLayoutManager(layoutManager);
 
         maintenanceDetailsBinding.btnEdit.setOnClickListener(view -> {
             startFormActivity(SERVICE_FORM);

@@ -32,6 +32,7 @@ import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.activity.FormActivity;
 import com.innovidio.androidbootstrap.activity.SplashActivity;
+import com.innovidio.androidbootstrap.alarms.SetAlarm;
 import com.innovidio.androidbootstrap.entity.models.FullAddress;
 import com.innovidio.androidbootstrap.activity.SpeedDashboardActivity;
 import com.innovidio.androidbootstrap.databinding.DialogDriveSelectionBinding;
@@ -549,10 +550,19 @@ public class UtilClass {
 
     public static Date getCurrentPreviousDay(){
         Calendar calendarStart = Calendar.getInstance();   // this takes current date
-        calendarStart.add(Calendar.DAY_OF_YEAR, -5);
-        calendarStart.set(Calendar.HOUR_OF_DAY, 0);
-        calendarStart.set(Calendar.MINUTE, 0);
-        calendarStart.set(Calendar.SECOND, 0);
+        calendarStart.add(Calendar.DATE, -5);
+//        calendarStart.set(Calendar.HOUR_OF_DAY, 0);
+//        calendarStart.set(Calendar.MINUTE, 0);
+//        calendarStart.set(Calendar.SECOND, 0);
+        return calendarStart.getTime();
+    }
+
+    public static Date getDateAfterAddingDaysInGivenDate(Date date, int days){
+        Calendar calendarStart = SetAlarm.toCalendar(date);
+        calendarStart.add(Calendar.DATE, days);
+//        calendarStart.set(Calendar.HOUR_OF_DAY, 0);
+//        calendarStart.set(Calendar.MINUTE, 0);
+//        calendarStart.set(Calendar.SECOND, 0);
         return calendarStart.getTime();
     }
 

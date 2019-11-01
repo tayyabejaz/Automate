@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.CustomDeleteDialog;
+import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.activity.FilterResultActivity;
 import com.innovidio.androidbootstrap.activity.FormActivity;
 import com.innovidio.androidbootstrap.adapter.ServiceDialogAdapter;
@@ -35,8 +36,10 @@ import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.interfaces.TimelineItemClickListener;
+import com.innovidio.androidbootstrap.repository.PreferencesRepository;
 import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
 import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
+import com.innovidio.androidbootstrap.viewmodel.PreferencesViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
 
@@ -69,6 +72,9 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
     MaintenanceViewModel maintenanceViewModel;
     @Inject
     TripViewModel tripViewModel;
+
+    @Inject
+    PreferencesRepository prefRepo;
 
     private CustomDeleteDialog tripDeleteDialog, maintenanceDeleteDialog, fuelDeleteDialog, carWashDeleteDialog;
 
@@ -153,7 +159,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         });
 
         fuelupDetailsBinding.btnEdit.setOnClickListener(view -> {
-            startFormActivity(FUEL_UP_FORM);
+            UtilClass.startFormActivity(getContext(), FUEL_UP_FORM);
             exitDialog.dismiss();
         });
 
@@ -184,7 +190,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         });
 
         carwashDetailsBinding.btnEdit.setOnClickListener(view -> {
-            startFormActivity(CAR_WASH_FORM);
+            UtilClass.startFormActivity(getContext(),CAR_WASH_FORM);
             exitDialog.dismiss();
         });
 
@@ -197,6 +203,8 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         DialogMaintenanceDetailsBinding maintenanceDetailsBinding;
         maintenanceDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_maintenance_details, null, false);
         maintenanceDetailsBinding.setMaintenancedata(maintenance);
+
+        maintenanceDetailsBinding.setPrefdata(prefRepo.getPreferences());
         View dialogView = maintenanceDetailsBinding.getRoot();
 
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
@@ -213,13 +221,8 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
             maintenanceDeleteDialog.showDialog();
             exitDialog.dismiss();
         });
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
-        ServiceDialogAdapter adapter = new ServiceDialogAdapter();
-        maintenanceDetailsBinding.rvServiceDialog.setAdapter(adapter);
-        maintenanceDetailsBinding.rvServiceDialog.setLayoutManager(layoutManager);
-
         maintenanceDetailsBinding.btnEdit.setOnClickListener(view -> {
-            startFormActivity(SERVICE_FORM);
+            UtilClass.startFormActivity(getContext(),SERVICE_FORM);
             exitDialog.dismiss();
         });
 
@@ -252,7 +255,7 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         });
 
         dialogTripDetailsBinding.btnEdit.setOnClickListener(view -> {
-            startFormActivity(TRIP_FORM);
+            UtilClass.startFormActivity(getContext(), TRIP_FORM);
             exitDialog.dismiss();
 
         });
@@ -271,12 +274,6 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         exitDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         exitDialog.setView(dialogView);
         exitDialog.show();
-    }
-
-    private void startFormActivity(String formType) {
-        Intent intent = new Intent(getContext(), FormActivity.class);
-        intent.putExtra(ACTIVITY, formType);
-        startActivity(intent);
     }
 
     @Override

@@ -61,7 +61,6 @@ public class SetAlarm {
         Toast.makeText(context, "Alarm Set.", Toast.LENGTH_LONG).show();
     }
 
-
     //   Calendar mCalendar = Calendar.getInstance();
     // mCalendar.set(Calendar.MONTH, 1);
     // mCalendar.set(Calendar.YEAR, 1);

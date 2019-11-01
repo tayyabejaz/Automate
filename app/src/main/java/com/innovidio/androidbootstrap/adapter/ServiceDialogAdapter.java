@@ -21,29 +21,15 @@ public class ServiceDialogAdapter extends RecyclerView.Adapter<ServiceDialogAdap
     private Context context;
     private List<Maintenance> dataList = new ArrayList<>();
 
-    public ServiceDialogAdapter() {
-    }
-
     public ServiceDialogAdapter(Context context, List<Maintenance> dataList) {
         this.context = context;
         this.dataList = dataList;
     }
 
-    private void init() {
-        for (int i = 0; i < 5; i++) {
-            Maintenance maintenance = new Maintenance();
-            maintenance.setMaintenanceName("Test Title");
-            maintenance.setMaintenanceCost(10000);
-            maintenance.setSaveDate(new Date());
-            maintenance.setNextMaintenanceDate(new Date());
-            dataList.add(maintenance);
-        }
-    }
 
     @Override
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        init();
     }
 
     @NonNull

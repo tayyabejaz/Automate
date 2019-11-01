@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text="Price"
+                android:text="@{String.valueOf(itemServiceData.maintenanceCost)}"
                 android:textColor="@color/blackColor"
                 tools:text="Price" />
         </LinearLayout>
