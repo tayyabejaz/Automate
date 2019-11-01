@@ -1,8 +1,11 @@
 package com.innovidio.androidbootstrap.fragment;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +20,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.Utils.CustomDeleteDialog;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.activity.FormActivity;
-import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
+import com.innovidio.androidbootstrap.adapter.MaintenanceAdapter;
+import com.innovidio.androidbootstrap.adapter.ServiceDialogAdapter;
+import com.innovidio.androidbootstrap.databinding.DialogFormMaintenanceDetailsBinding;
+import com.innovidio.androidbootstrap.databinding.DialogMaintenanceDetailsBinding;
 import com.innovidio.androidbootstrap.databinding.FragmentMaintainBinding;
+import com.innovidio.androidbootstrap.entity.Form;
+import com.innovidio.androidbootstrap.entity.FormWithMaintenance;
 import com.innovidio.androidbootstrap.entity.Maintenance;
-import com.innovidio.androidbootstrap.entity.MaintenanceWithAlarm;
-import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
+import com.innovidio.androidbootstrap.interfaces.MaintenanceItemClickListener;
 import com.innovidio.androidbootstrap.repository.PreferencesRepository;
+import com.innovidio.androidbootstrap.viewmodel.FormViewModel;
 import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
 
@@ -37,7 +46,9 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 
-public class FragmentMaintain extends DaggerFragment {
+import static com.innovidio.androidbootstrap.Constants.SERVICE_FORM;
+
+public class FragmentMaintain extends DaggerFragment implements MaintenanceItemClickListener {
 
     @Inject
     AppPreferences appPreferences;
@@ -49,11 +60,16 @@ public class FragmentMaintain extends DaggerFragment {
     MaintenanceViewModel maintenanceViewModel;
 
     @Inject
+    FormViewModel formViewModel;
+
+    @Inject
     PreferencesRepository prefRepo;
 
     private FragmentMaintainBinding binding;
-    private List<TimeLineItem> timeLineItemList = new ArrayList<>();
-    private TimelineAdapter timelineAdapter;
+    private List<FormWithMaintenance> timeLineItemList = new ArrayList<>();
+    private MaintenanceAdapter maintenanceAdapter;
+
+    private CustomDeleteDialog  maintenanceDeleteDialog;
 
     public FragmentMaintain() {
         // Required empty public constructor
@@ -73,8 +89,8 @@ public class FragmentMaintain extends DaggerFragment {
         super.onViewCreated(view, savedInstanceState);
 
         initializeAdapters();
-        timeLineFilteredData();
         initializeCardsData();
+        formWithMaintenance();
 
         binding.tvAddMaintenance.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), FormActivity.class);
@@ -84,20 +100,10 @@ public class FragmentMaintain extends DaggerFragment {
     }
 
     private void initializeAdapters() {
-        timelineAdapter = new TimelineAdapter(getActivity(), null, timeLineItemList, Constants.FILTERED_ADAPTER);
+        maintenanceAdapter = new MaintenanceAdapter(getActivity(), this::onMaintenanceClick, timeLineItemList, Constants.FILTERED_ADAPTER);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         binding.rvAddMaintenance.setLayoutManager(layoutManager);
-    }
-
-    private void timeLineFilteredData() {
-        timeLineViewModel.getFilteredTimelineMergerData(1, false, false, true, true).observe(this, timeLineItems -> {
-            if (timeLineItems != null && timeLineItems.size() > 0) {
-                timeLineItemList.addAll(timeLineItems);
-                timelineAdapter.updateData(timeLineItemList);
-                binding.rvAddMaintenance.setAdapter(timelineAdapter);
-
-            }
-        });
+        binding.rvAddMaintenance.setAdapter(maintenanceAdapter);
     }
 
 
@@ -153,4 +159,78 @@ public class FragmentMaintain extends DaggerFragment {
 
     }
 
+    private void formWithMaintenance(){
+        formViewModel.getAllFormWithMaintenance().observe(this, new Observer<List<FormWithMaintenance>>() {
+            @Override
+            public void onChanged(List<FormWithMaintenance> formWithMaintenances) {
+                if (formWithMaintenances!=null){
+                        timeLineItemList.addAll(formWithMaintenances);
+                        maintenanceAdapter.updateData(timeLineItemList);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onMaintenanceClick(FormWithMaintenance formWithMaintenance) {
+        showMaintenanceDialog(formWithMaintenance);
+    }
+
+    private void showMaintenanceDialog(FormWithMaintenance formWithMaintenance) {
+        Maintenance maintenance = formWithMaintenance.maintenanceList.get(0);
+        List<Maintenance> maintenanceList = formWithMaintenance.maintenanceList;
+        createMaintenanceDeleteDialog(formWithMaintenance.form);
+
+        DialogFormMaintenanceDetailsBinding maintenanceDetailsBinding;
+        maintenanceDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_form_maintenance_details, null, false);
+        maintenanceDetailsBinding.setFormdata(formWithMaintenance.form);
+        maintenanceDetailsBinding.setPrefdata(prefRepo.getPreferences());
+        View dialogView = maintenanceDetailsBinding.getRoot();
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        final AlertDialog exitDialog = dialogBuilder.create();
+        exitDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        exitDialog.setView(dialogView);
+
+        maintenanceDetailsBinding.btnClose.setOnClickListener(view -> {
+            exitDialog.dismiss();
+        });
+
+        maintenanceDetailsBinding.btnDelete.setOnClickListener(view -> {
+            maintenanceDeleteDialog.showDialog();
+            exitDialog.dismiss();
+        });
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false);
+        ServiceDialogAdapter adapter = new ServiceDialogAdapter(getContext(), maintenanceList);
+        maintenanceDetailsBinding.rvServiceDialog.setAdapter(adapter);
+        maintenanceDetailsBinding.rvServiceDialog.setLayoutManager(layoutManager);
+
+        maintenanceDetailsBinding.btnEdit.setOnClickListener(view -> {
+            UtilClass.startFormActivity(getContext(),SERVICE_FORM);
+            exitDialog.dismiss();
+        });
+
+        exitDialog.show();
+    }
+
+    private void createMaintenanceDeleteDialog(Form form) {
+
+        maintenanceDeleteDialog = new CustomDeleteDialog(getActivity(), "Confirm Delete", "Do you want to delete this 'Maintenance' entry?", "No", "Yes", R.drawable.automate_delete_maintenance_dialog_icon) {
+            @Override
+            public void onNegativeBtnClick(Dialog dialog) {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onPositiveBtnClick(Dialog dialog) {
+                formViewModel.deleteMaintenanceService(form);
+                // todo delete maintenace relvent to form also delete
+                dialog.dismiss();
+            }
+        };
+        maintenanceDeleteDialog.createDialog();
+
+    }
 }

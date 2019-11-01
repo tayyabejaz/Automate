@@ -36,6 +36,7 @@ import com.innovidio.androidbootstrap.db.dao.FuelDao;
 import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
 import com.innovidio.androidbootstrap.entity.Car;
+import com.innovidio.androidbootstrap.entity.FormWithMaintenance;
 import com.innovidio.androidbootstrap.entity.FuelUp;
 import com.innovidio.androidbootstrap.interfaces.SpinnerItemClickListener;
 import com.innovidio.androidbootstrap.network.dto.CarMakesByYear;
@@ -120,20 +121,8 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         initializeAdapters();
         initList();
         carApiQueries();
-        fuelUpData();
         getCarsData();
         checkLocationAndStoragePermissions();
-
-
-        // todo just to check if it works
-//        Form form = new Form();
-//        Maintenance maintenance = new Maintenance();
-//        List<Maintenance> maintenanceList = new ArrayList<>();
-//        maintenanceList.add(maintenance);
-//        FormWithMaintenance formWithMaintenance = new FormWithMaintenance();
-//        formWithMaintenance.form =  form;
-//        formWithMaintenance.setMaintenanceList(maintenanceList);
-//        formViewModel.insertFormWithMaintenance(formWithMaintenance);
 
 
         broadcastReceiver = new BroadcastReceiver() {
@@ -180,25 +169,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         mainBinding.spinnerCustomLayout.ivCancelLayout.setOnClickListener(this);
         mainBinding.spinnerCustomLayout.btnCarSpinnerLayout.setOnClickListener(this);
         mainBinding.toolbarNotificationIcon.setOnClickListener(this);
-    }
-
-    private void fuelUpData() {
-        Date currentMonth = null;
-        fuelUpViewModel.getMonthlyFuelUp(currentMonth).observe(this, new Observer<List<FuelUp>>() {
-            @Override
-            public void onChanged(List<FuelUp> fuelUps) {
-
-            }
-        });
-
-        fuelUpViewModel.getRecentFuelUp().observe(this, new Observer<FuelUp>() {
-            @Override
-            public void onChanged(FuelUp fuelUp) {
-                if (fuelUp != null) {
-                    Log.d(TAG, "Litters: " + fuelUp.getLiters());
-                }
-            }
-        });
     }
 
     private void carApiQueries() {

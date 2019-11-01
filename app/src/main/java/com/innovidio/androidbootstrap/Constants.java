@@ -56,6 +56,7 @@ public interface Constants {
     long DETECTION_INTERVAL_IN_MILLISECONDS = 30 * 1000;
     int CONFIDENCE = 70;
 
+    String CAR_WASH = "Car Wash";
     String ALARM_ID = "alarmId";
     String ALARM_MSG = "alarmMsg";
     String ALARM_TYPE = "alarmType";

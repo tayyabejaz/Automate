@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,6 +40,7 @@ import com.innovidio.androidbootstrap.interfaces.OnCarEditDeleteListener;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.viewmodel.AlarmViewModel;
 import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
+import com.innovidio.androidbootstrap.viewmodel.FormViewModel;
 import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
 import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
@@ -62,6 +64,8 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
     CarViewModel carViewModel;
     @Inject
     FuelUpViewModel fuelUpViewModel;
+    @Inject
+    FormViewModel formViewModel;
     @Inject
     MaintenanceViewModel maintenanceViewModel;
     @Inject
@@ -225,19 +229,21 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
     }
 
     private void runDummyData() {
-        for (int i = 0; i < 10; i++)
+        for (int i = 1; i <= 10; i++)
             addDummyValues(i);
+
+        Toast.makeText(getContext(), "Dummy Data added.", Toast.LENGTH_SHORT).show();
     }
 
     private void addDummyValues(int i) {
         Faker faker = new Faker();
-        if (i < 3) {
+        if (i < 4) {
             String[] makeList = getResources().getStringArray(R.array.makeList);
             String[] modelList = getResources().getStringArray(R.array.modelList);
             int[] yearList = getResources().getIntArray(R.array.yearList);
-            String makeName = makeList[i];
-            String modelName = modelList[i];
-            int yearName = yearList[i];
+            String makeName = makeList[i-1];
+            String modelName = modelList[i-1];
+            int yearName = yearList[i-1];
             Car car = new Car();
             car.setModelName(modelName);
             car.setManufacturer(makeName);
@@ -290,30 +296,36 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
         form.setEndDate(dateForm);
         form.setSaveDate(dateForm);
         form.setTitle(serviceName);
-
-
-        Maintenance maintenance = new Maintenance();
-        // maintenance.setId(122);
-        maintenance.setSaveDate(saveDate);
-        maintenance.setCarId(1);
-        maintenance.setMaintenanceName(serviceName);
-        maintenance.setMaintenanceCost(UtilClass.getRandomNo(1000, 10000));
-        maintenance.setMaintenanceLocation(faker.address.streetAddress());
-        maintenance.setMaintenanceOdometerReading(odoMeter);
-        maintenance.setAlarmON(true);
-        maintenance.setFormId(i);
-        if (UtilClass.getRandomNo(0, 10) % 2 == 0) {
-            maintenance.setMaintenanceType(TimeLineItem.Type.CAR_WASH);
-            maintenance.setMaintenanceName("Clean/Wash");
-        } else {
-            maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
+        form.setOdoMeterReading(odoMeter);
+        int limit =  UtilClass.getRandomNo(2, 6);
+        int totalCost =0;
+        for (int j=1; j<limit; j++){
+            Maintenance maintenance = new Maintenance();
+            // maintenance.setId(122);
+            maintenance.setSaveDate(saveDate);
+            maintenance.setCarId(1);
             maintenance.setMaintenanceName(serviceName);
+            maintenance.setMaintenanceCost(UtilClass.getRandomNo(1000, 10000));
+            maintenance.setMaintenanceLocation(faker.address.streetAddress());
+            maintenance.setMaintenanceOdometerReading(odoMeter);
+            maintenance.setAlarmON(true);
+            maintenance.setFormId(i);
+
+            if (UtilClass.getRandomNo(0, 10) % 2 == 0) {
+                maintenance.setMaintenanceType(TimeLineItem.Type.CAR_WASH);
+                maintenance.setMaintenanceName("Clean/Wash");
+            } else {
+                maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
+                maintenance.setMaintenanceName(serviceName);
+            }
+            maintenance.setNextMaintenanceDate(nextDate);
+            //maintenanceDao.insert(maintenance);
+            maintenanceViewModel.addMaintenanceService(maintenance);
+            totalCost+=maintenance.getMaintenanceCost();
         }
-        maintenance.setNextMaintenanceDate(nextDate);
 
-
-        //maintenanceDao.insert(maintenance);
-        maintenanceViewModel.addMaintenanceService(maintenance);
+        form.setTotalCost(totalCost);
+        formViewModel.addForm(form);
 
         Trip trip = new Trip();
         // trip.setId(22);

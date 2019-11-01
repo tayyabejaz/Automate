@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 
 import com.innovidio.androidbootstrap.AppPreferences;
+import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.adapter.GeneralCarSpinnerAdapter;
@@ -168,26 +169,8 @@ public class AddCarWashFragment extends DaggerFragment {
             carWashBinding.etCarwashCost.setError("Enter your Car Wash Cost");
             return false;
         }
-
         dateForEntry = carWashBinding.etCarwashDate.getText().toString();
         timeForEntry = carWashBinding.etCarwashTime.getText().toString();
-        maintenance.setMaintenanceOdometerReading(Integer.parseInt(carWashBinding.etOdometerReading.getText().toString()));
-        maintenance.setMaintenanceLocation(carWashBinding.etCarwashLocation.getText().toString());
-        maintenance.setMaintenanceCost(Integer.parseInt(carWashBinding.etCarwashCost.getText().toString()));
-
-        maintenance.setCarId(carID);
-        maintenance.setMaintenanceName("Car Wash");
-        maintenance.setMaintenanceLife(0);
-        maintenance.setMaintenanceType(TimeLineItem.Type.CAR_WASH);
-        Date nextDate = UtilClass.getCurrentPreviousDay(); //added previous day date for not come in next maintence
-        maintenance.setNextMaintenanceDate(nextDate);
-        maintenance.setAlarmON(false);
-
-        Date convertedDate = UtilClass.convertToDate(dateForEntry, timeForEntry);
-        if (convertedDate == null) {
-            convertedDate = new Date();
-        }
-        maintenance.setSaveDate(convertedDate);
 
         return true;
     }
@@ -206,12 +189,25 @@ public class AddCarWashFragment extends DaggerFragment {
     private void addMaintenance(int formID) {
         if (checkEmptyEntries()) {
             maintenance.setFormId(formID);
-            maintenance.setCarId(appPreferences.getInt(AppPreferences.Key.SELECTED_CAR_ID, 1));
-            maintenance.setMaintenanceName("Car Wash");
+            maintenance.setMaintenanceOdometerReading(Integer.parseInt(carWashBinding.etOdometerReading.getText().toString()));
+            maintenance.setMaintenanceLocation(carWashBinding.etCarwashLocation.getText().toString());
+            maintenance.setMaintenanceCost(Integer.parseInt(carWashBinding.etCarwashCost.getText().toString()));
+
+            maintenance.setCarId(carID);
+            maintenance.setMaintenanceName(Constants.CAR_WASH);
             maintenance.setMaintenanceLife(0);
             maintenance.setMaintenanceType(TimeLineItem.Type.CAR_WASH);
-            maintenance.setNextMaintenanceDate(new Date());
             maintenance.setAlarmON(false);
+
+            Date convertedDate = UtilClass.convertToDate(dateForEntry, timeForEntry);
+            if (convertedDate == null) {
+                convertedDate = new Date();
+            }
+            maintenance.setSaveDate(convertedDate);
+
+            Date nextDate = UtilClass.getDateAfterAddingDaysInGivenDate(convertedDate, -1); //added previous day date for not come in next maintence
+            maintenance.setNextMaintenanceDate(nextDate);
+
             maintenanceViewModel.addMaintenanceService(maintenance);
             Toast.makeText(getActivity(), "Data Submitted Successfully", Toast.LENGTH_SHORT).show();
 

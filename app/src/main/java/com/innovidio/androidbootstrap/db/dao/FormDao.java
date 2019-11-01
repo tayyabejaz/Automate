@@ -28,12 +28,13 @@ public abstract class FormDao extends BaseDao<Form>{
     @Query("SELECT * FROM Form  ORDER BY id DESC LIMIT 1")
     public abstract  LiveData<Form> getRecentForm();
 
-    @Query("SELECT * FROM Form")
+
     @Transaction
+    @Query("SELECT * FROM Form")
     public abstract LiveData<List<FormWithMaintenance>> getAllFormWithMaintenance();
 
-    @Query("SELECT * FROM Form WHERE id=:formId")
     @Transaction
+    @Query("SELECT * FROM Form WHERE id=:formId")
     public abstract LiveData<FormWithMaintenance> getFormWithMaintenance(int formId);
 
 

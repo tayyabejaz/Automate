@@ -15,7 +15,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -31,6 +30,7 @@ import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.activity.FormActivity;
 import com.innovidio.androidbootstrap.activity.SpeedDashboardActivity;
 import com.innovidio.androidbootstrap.activity.SplashActivity;
+import com.innovidio.androidbootstrap.alarms.SetAlarm;
 import com.innovidio.androidbootstrap.databinding.DialogDriveSelectionBinding;
 import com.innovidio.androidbootstrap.driveDetect.BackgroundDetectedActivitiesService;
 import com.innovidio.androidbootstrap.entity.Preferences;
@@ -529,12 +529,39 @@ public class UtilClass {
 
     public static Date getCurrentPreviousDay() {
         Calendar calendarStart = Calendar.getInstance();   // this takes current date
-        calendarStart.add(Calendar.DAY_OF_MONTH, -5);
-        calendarStart.set(Calendar.HOUR_OF_DAY, 0);
-        calendarStart.set(Calendar.MINUTE, 0);
-        calendarStart.set(Calendar.SECOND, 0);
+        calendarStart.add(Calendar.DATE, -5);
+//        calendarStart.set(Calendar.HOUR_OF_DAY, 0);
+//        calendarStart.set(Calendar.MINUTE, 0);
+//        calendarStart.set(Calendar.SECOND, 0);
         return calendarStart.getTime();
     }
 
+    public static Date getDateAfterAddingDaysInGivenDate(Date date, int days) {
+        Calendar calendarStart = SetAlarm.toCalendar(date);
+        calendarStart.add(Calendar.DATE, days);
+//        calendarStart.set(Calendar.HOUR_OF_DAY, 0);
+//        calendarStart.set(Calendar.MINUTE, 0);
+//        calendarStart.set(Calendar.SECOND, 0);
+        return calendarStart.getTime();
+    }
+
+    public static int dayConverter(int weeks, int year, int month) {
+        if (weeks != 0) {
+            weeks = weeks * 7;
+            return weeks;
+        }
+
+        if (month != 0) {
+            month = month * 30;
+            return month;
+        }
+
+        if (year != 0) {
+            year = year * 365;
+            return year;
+        }
+
+        return 0;
+    }
 
 }

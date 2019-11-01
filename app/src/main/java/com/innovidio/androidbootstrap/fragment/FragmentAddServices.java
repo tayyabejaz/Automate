@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.adapter.GeneralCarSpinnerAdapter;
+import com.innovidio.androidbootstrap.adapter.ServiceAdapter;
 import com.innovidio.androidbootstrap.adapter.SingleMaintenanceAdapter;
 import com.innovidio.androidbootstrap.databinding.DialogAddSingleExpenseBinding;
 import com.innovidio.androidbootstrap.databinding.DialogAddSingleMaintenanceBinding;
@@ -31,10 +32,12 @@ import com.innovidio.androidbootstrap.databinding.FragmentAddServicesBinding;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.interfaces.OnSingleServiceCardListener;
+import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -55,8 +58,9 @@ public class FragmentAddServices extends DaggerFragment implements OnSingleServi
     private ArrayList<Car> carList = new ArrayList<>();
     private Calendar calendar = Calendar.getInstance();
     private List<Maintenance> maintenances = new ArrayList<>();
-    private String life, sDate, sTime, maintenanceService;
+    private String life, sDate, sTime, maintenanceService, lifeSpan;
     private int carID, odometerReading, serviceLife, serviceCost;
+    private boolean isEmpty;
 
     public FragmentAddServices() {
         // Required empty public constructor
@@ -121,15 +125,18 @@ public class FragmentAddServices extends DaggerFragment implements OnSingleServi
         });
 
         servicesBinding.btnAddServices.setOnClickListener(view1 -> {
-            showSingleAddMaintenanceDialog(null);
+            String[] serviceArray = getActivity().getResources().getStringArray(R.array.service_list);
+            showSingleAddMaintenanceDialog(null, serviceArray);
         });
 
         servicesBinding.btnAddParts.setOnClickListener(view1 -> {
-            showSingleAddPartsDialog(null);
+            String[] partsArray = getActivity().getResources().getStringArray(R.array.parts_categories);
+            showSingleAddMaintenanceDialog(null, partsArray);
         });
 
         servicesBinding.btnAddExpenses.setOnClickListener(view1 -> {
-            showSingleAddExpenseDialog(null);
+            String[] otherExpensesArray = getActivity().getResources().getStringArray(R.array.otherexpenses_categories);
+            showSingleAddMaintenanceDialog(null, otherExpensesArray);
         });
     }
 
@@ -140,7 +147,7 @@ public class FragmentAddServices extends DaggerFragment implements OnSingleServi
         sTime = UtilClass.getCurrentTime();
     }
 
-    private void showSingleAddMaintenanceDialog(Maintenance maintenanceFromParameters) {
+    private void showSingleAddMaintenanceDialog(Maintenance maintenanceFromParameters, String[] servicesArray) {
 
         Maintenance maintenance = new Maintenance();
 
@@ -154,28 +161,29 @@ public class FragmentAddServices extends DaggerFragment implements OnSingleServi
         singleMaintenanceDialog.setView(dialogView);
         singleMaintenanceDialog.show();
 
+        ServiceAdapter adapterlist = new ServiceAdapter(getActivity(), servicesArray);
+        singleMaintenance.spinnerServiceList.setAdapter(adapterlist);
+        adapterlist.notifyDataSetChanged();
+
         singleMaintenance.spinnerServiceList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String name = adapterView.getItemAtPosition(i).toString();
                 Log.d("TAYYAB", "SERVICE NAME: " + name);
                 maintenanceService = name;
-
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
 
-
+        lifeSpan = "weeks";
         singleMaintenance.spinnerServiceTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                String lifeDays = adapterView.getItemAtPosition(i).toString();
-                Log.d("TAYYAB", "SERVICE NAME: " + lifeDays);
-                life = life + lifeDays;
+                lifeSpan = adapterView.getItemAtPosition(i).toString();
+                Log.d("TAYYAB", "SERVICE NAME: " + lifeSpan);
             }
 
             @Override
@@ -185,17 +193,70 @@ public class FragmentAddServices extends DaggerFragment implements OnSingleServi
         });
 
 
-        singleMaintenance.buttonAddMaintenance.setOnClickListener(view -> {
+        singleMaintenance.buttonAddMaintenance.setOnClickListener(view ->
+
+        {
+
             if (TextUtils.isEmpty(singleMaintenance.etServiceLife.getText().toString())) {
+                isEmpty = true;
                 singleMaintenance.etServiceLife.setError("Set your Service Life");
-            } else if (!TextUtils.isEmpty(singleMaintenance.etPrice.getText())) {
-                singleMaintenance.etPrice.setError("Enter the Price");
+            } else {
+                switch (lifeSpan) {
+                    case "weeks":
+                        int weeks = UtilClass.dayConverter(Integer.parseInt(singleMaintenance.etServiceLife.getText().toString()), 0, 0);
+                        maintenance.setMaintenanceLife(weeks);
+                        maintenance.setNextMaintenanceDate(UtilClass.getDateAfterAddingDaysInGivenDate(new Date(), weeks));
+                        break;
+
+                    case "month":
+                        int months = UtilClass.dayConverter(0, 0, Integer.parseInt(singleMaintenance.etServiceLife.getText().toString()));
+                        maintenance.setMaintenanceLife(months);
+                        maintenance.setNextMaintenanceDate(UtilClass.getDateAfterAddingDaysInGivenDate(new Date(), months));
+                        break;
+
+                    case "year":
+                        int years = UtilClass.dayConverter(0, Integer.parseInt(singleMaintenance.etServiceLife.getText().toString()), 0);
+                        maintenance.setMaintenanceLife(years);
+                        maintenance.setNextMaintenanceDate(UtilClass.getDateAfterAddingDaysInGivenDate(new Date(), years));
+                        break;
+                }
+                isEmpty = false;
             }
 
-            life = singleMaintenance.etServiceLife.getText().toString();
-            Log.d("TAYYAB", Integer.parseInt(singleMaintenance.etPrice.getText().toString()) + "");
 
-            singleMaintenanceDialog.dismiss();
+            if (TextUtils.isEmpty(singleMaintenance.etPrice.getText())) {
+                isEmpty = true;
+                singleMaintenance.etPrice.setError("Enter the Price");
+            } else {
+                isEmpty = false;
+                maintenance.setMaintenanceCost(Integer.parseInt(singleMaintenance.etPrice.getText().toString()));
+            }
+
+            if (maintenanceService.equals(" ")) {
+                isEmpty = true;
+            } else {
+                maintenance.setMaintenanceName(maintenanceService);
+            }
+
+            if (TextUtils.isEmpty(singleMaintenance.etOdometerReading.getText())) {
+                singleMaintenance.etOdometerReading.setError("Enter your Odometer reading at that Service");
+                isEmpty = true;
+            } else {
+                maintenance.setMaintenanceOdometerReading(Integer.parseInt(singleMaintenance.etOdometerReading.getText().toString()));
+                isEmpty = false;
+            }
+
+
+            if (isEmpty) {
+                Toast.makeText(getActivity(), "All fields are required", Toast.LENGTH_SHORT).show();
+            } else {
+                maintenance.setMaintenanceType(TimeLineItem.Type.MAINTENANCE);
+                maintenance.setSaveDate(new Date());
+                maintenance.setAlarmON(true);
+                maintenances.add(maintenance);
+                adapter.updateList(maintenances);
+                singleMaintenanceDialog.dismiss();
+            }
         });
 
 

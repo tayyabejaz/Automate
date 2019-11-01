@@ -89,21 +89,24 @@ public class FragmentDrive extends DaggerFragment {
         tripViewModel.getTripsCount(carId, startDate, endDate).observe(getActivity(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                binding.tvTotalTripValue.setText(integer.toString());
+                if (integer!=null)
+                    binding.tvTotalTripValue.setText(integer.toString());
             }
         });
 
         tripViewModel.getTripsCoverDistanceBetweenDateRange(carId, startDate, endDate).observe(getActivity(), new Observer<Long>() {
             @Override
             public void onChanged(Long longValue) {
-                binding.tvTotalDistanceValue.setText(longValue+" "+prefRepo.getDistanceUnit());
+                if (longValue!=null)
+                    binding.tvTotalDistanceValue.setText(longValue+" "+prefRepo.getDistanceUnit());
             }
         });
 
         fuelUpViewModel.getFuelUpCountBetweenDateRange(carId, startDate, endDate).observe(getActivity(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer intValue) {
-                binding.tvTotalFuelupsValue.setText(intValue.toString());
+                if (intValue!=null)
+                    binding.tvTotalFuelupsValue.setText(intValue.toString());
             }
         });
     }
