@@ -533,7 +533,7 @@ public class UtilClass {
 
     public static Date getCurrentPreviousDay(){
         Calendar calendarStart = Calendar.getInstance();   // this takes current date
-        calendarStart.add(Calendar.DAY_OF_MONTH, -5);
+        calendarStart.add(Calendar.DAY_OF_YEAR, -5);
         calendarStart.set(Calendar.HOUR_OF_DAY, 0);
         calendarStart.set(Calendar.MINUTE, 0);
         calendarStart.set(Calendar.SECOND, 0);
