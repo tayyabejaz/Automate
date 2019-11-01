@@ -27,12 +27,13 @@ public class Trip implements TimeLineItem {
 
     int carId;
     private String tripTitle;
-    private String destination;
-    // private String tripdate;
-    private String carname;
     @ColumnInfo(name = "tripType")
     @TypeConverters(TripTypeConverters.class)
     private TripType tripType;
+    private String origin;
+    private String destination;
+    private int intialOdometer;
+    private int finalOdometer;
     private int maxspeed;
     private int avgspeed;
     @ColumnInfo(name = "startTime")
@@ -44,11 +45,10 @@ public class Trip implements TimeLineItem {
     private Double distanceCovered;
     private Double fueleconomypertrip;
     private Double fuelCostPerUnit;
-    private Double totalExpenses;
     private int noOfLitres;
-    private String origin;
-    private int intialOdometer;
-    private int finalOdometer;
+    private Double totalExpenses;
+
+
     @Ignore
     private int totalTrips;
 
@@ -103,13 +103,6 @@ public class Trip implements TimeLineItem {
     public void setFinalOdometer(int finalOdometer) {
         this.finalOdometer = finalOdometer;
     }
-
-    //    @ColumnInfo(name = "startTime")
-//    @TypeConverters({TimestampConverter.class})
-//    private Date startTime;
-//    @ColumnInfo(name = "endTime")
-//    @TypeConverters({TimestampConverter.class})
-//    private Date endTime;
     // todo is save date added here or not?
     @ColumnInfo(name = "saveDate")
     @TypeConverters(DateConverter.class)
@@ -121,17 +114,13 @@ public class Trip implements TimeLineItem {
     }
 
     @Ignore
-    public Trip(String tripTitle, String destination, String carname, TripType triptype, int maxspeed, int avgspeed, Double distanceCovered, Double fueleconomypertrip, Date saveDate, Double fuelCostPerUnit, Double totalExpenses, int noOfLitres) {
+    public Trip(String tripTitle, String destination,TripType triptype, int maxspeed, int avgspeed, Double distanceCovered, Double fueleconomypertrip, Date saveDate, Double fuelCostPerUnit, Double totalExpenses, int noOfLitres) {
         this.tripTitle = tripTitle;
         this.destination = destination;
-        this.carname = carname;
         this.tripType = triptype;
         this.maxspeed = maxspeed;
         this.avgspeed = avgspeed;
         this.distanceCovered = distanceCovered;
-//        this.tripdate = tripdate;
-//        this.startTime = startTime;
-//        this.endTime = endtime;
         this.fueleconomypertrip = fueleconomypertrip;
         this.saveDate = saveDate;
         this.fuelCostPerUnit = fuelCostPerUnit;
@@ -163,9 +152,6 @@ public class Trip implements TimeLineItem {
         this.noOfLitres = noOfLitres;
     }
 
-    public String getCarname() {
-        return carname;
-    }
 
     public void setId(int id) {
         this.id = id;
@@ -179,16 +165,6 @@ public class Trip implements TimeLineItem {
         this.destination = destination;
     }
 
-//    public void setTripdate(String tripdate) {
-//        this.tripdate = tripdate;
-//    }
-
-//    private String getTripTypeInString(){
-//        return TripTypeConverters;
-//    }
-    public void setCarname(String carname) {
-        this.carname = carname;
-    }
 
     public void setTripType(TripType tripType) {
         this.tripType = tripType;
@@ -211,14 +187,6 @@ public class Trip implements TimeLineItem {
     }
 
 
-//    public void setStarttime(Date startTime) {
-//        this.startTime = startTime;
-//    }
-//
-//    public void setEndtime(Date endtime) {
-//        this.endTime = endtime;
-//    }
-
     public void setSaveDate(Date saveDate) {
         this.saveDate = saveDate;
     }
@@ -227,22 +195,10 @@ public class Trip implements TimeLineItem {
         return this.id;
     }
 
-    public String getcarname() {
-        return carname;
-    }
 
     public TripType getTripType() {
         return tripType;
     }
-
-
-//    public Date getStarttime() {
-//        return startTime;
-//    }
-//
-//    public Date getEndtime() {
-//        return endTime;
-//    }
 
     public int getMaxspeed() {
         return maxspeed;
@@ -255,10 +211,6 @@ public class Trip implements TimeLineItem {
     public Double getDistanceCovered() {
         return distanceCovered;
     }
-//
-//    public Date getTripdate() {
-//        return tripdate;
-//    }
 
     public Double getFueleconomypertrip() {
         return fueleconomypertrip;

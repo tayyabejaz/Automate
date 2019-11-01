@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+        <variable
+            name="userData"
+            type="com.innovidio.androidbootstrap.entity.User" />
+    </data>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -94,7 +99,8 @@
                         android:drawableLeft="@drawable/automate_location_icon"
                         android:drawablePadding="@dimen/_8sdp"
                         android:padding="@dimen/_5sdp"
-                        android:text="Lohore, Pakistan"
+                        android:text="@{userData.country}"
+                        tools:text="Lahore, Pakistan"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_user_name" />
@@ -105,7 +111,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:padding="@dimen/_5sdp"
-                        android:text="username123@gmail.com"
+                        android:text="@{userData.email}"
+                        tools:text="username123@gmail.com"
                         android:textColor="@color/blueTextColor"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +124,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
-                        android:text="User Name"
+                        android:text="@{userData.name}"
+                        tools:text="User Name"
                         android:textColor="@color/blackColor"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -405,6 +413,50 @@
                             app:layout_constraintTop_toBottomOf="@id/tv_demo_data"
 
                             />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ll_setAlram_demo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ll_generate_demo_data">
+
+                        <ImageView
+                            android:id="@+id/iv_demo_alarm"
+                            style="@style/imageviewSetting"
+                            android:src="@drawable/automate_bottom_nav_open_icon"
+                            android:tint="@color/blackColor"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/tv_demo_alarm"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_demo_alarm"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Demo Alarm after 3 mintues"
+                            android:textColor="@color/blackColor"
+                            android:textSize="@dimen/_14sdp"
+                            app:layout_constraintBottom_toTopOf="@id/tv_demo_alarm_description"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_demo_alarm"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_demo_alarm_description"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="This tab is used for Demo Alarm"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@id/tv_demo_alarm"
+                            app:layout_constraintStart_toStartOf="@id/tv_demo_alarm"
+                            app:layout_constraintTop_toBottomOf="@id/tv_demo_alarm" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

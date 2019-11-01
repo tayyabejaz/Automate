@@ -16,6 +16,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +27,10 @@ import androidx.core.os.ConfigurationCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.innovidio.androidbootstrap.AppPreferences;
+import com.innovidio.androidbootstrap.BuildConfig;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.activity.FormActivity;
 import com.innovidio.androidbootstrap.activity.SplashActivity;
 import com.innovidio.androidbootstrap.entity.models.FullAddress;
 import com.innovidio.androidbootstrap.activity.SpeedDashboardActivity;
@@ -59,6 +62,7 @@ import java.util.TreeMap;
 import static com.innovidio.androidbootstrap.AppPreferences.Key.SPEED_LIMIT;
 
 import static android.content.Context.ACTIVITY_SERVICE;
+import static com.innovidio.androidbootstrap.Constants.ACTIVITY;
 
 public class UtilClass {
 
@@ -80,6 +84,22 @@ public class UtilClass {
 
         String finalDate = dateInString + " " + timeInString;
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm", Locale.getDefault());
+
+        Date date = null;
+
+        try {
+            date = formatter.parse(finalDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+
+    }
+
+    public static Date convertToDate(String dateInString) {
+
+        String finalDate = dateInString;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
 
         Date date = null;
 
@@ -260,6 +280,11 @@ public class UtilClass {
         }
     }
 
+    public static void startFormActivity(Context context, String formType) {
+        Intent intent = new Intent(context, FormActivity.class);
+        intent.putExtra(ACTIVITY, formType);
+        context.startActivity(intent);
+    }
 
     private static void startDrive(Context context) {
         Intent i = new Intent(context, SpeedDashboardActivity.class);
@@ -457,6 +482,27 @@ public class UtilClass {
         i.putExtra(Intent.EXTRA_TEXT, sAux);
         context.startActivity(Intent.createChooser(i, "choose one"));
     }
+
+    public static void feedback_click(Context context) {
+        int versionCode = BuildConfig.VERSION_CODE;
+        String versionName = BuildConfig.VERSION_NAME;
+
+        // Preventing multiple clicks, using threshold of 1 second
+//        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+//            return;
+//        }
+//        mLastClickTime = SystemClock.elapsedRealtime();
+
+ //       Utility.firebaseCustomClickEvent(mContext, "email_support_click"); // send click event
+        //  Toast.makeText(context, "Feedback", Toast.LENGTH_SHORT).show();
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto", "contentarcadeapps@gmail.com", null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "App version: "+versionName + " Feedback!");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Please Give us the Feedback About this app." );
+        //  emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses); // String[] addresses
+        context.startActivity(Intent.createChooser(emailIntent, "Send email..."));
+    }
+
 
 //    public static void firebaseCustomClickEvent(Context context, String eventName){
 //        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);

@@ -79,9 +79,8 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         // Required empty public constructor
     }
 
-    private void init() {
+    public void init() {
         timeLineData();
-        // timeLineFilteredData();
 
         timelineAdapter = new TimelineAdapter(getContext(), this, timeLineItemList, 0);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -183,7 +182,6 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         });
 
         carwashDetailsBinding.btnDelete.setOnClickListener(view -> {
-
             maintenanceDeleteDialog.showDialog();
             exitDialog.dismiss();
         });

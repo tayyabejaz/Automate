@@ -17,6 +17,7 @@ import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.CustomDeleteDialog;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.adapter.SingleReminderAdapter;
+import com.innovidio.androidbootstrap.alarms.SetAlarm;
 import com.innovidio.androidbootstrap.databinding.ActivityReminderBinding;
 import com.innovidio.androidbootstrap.databinding.DialogAddReminderBinding;
 import com.innovidio.androidbootstrap.entity.Alarm;
@@ -26,6 +27,8 @@ import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -68,10 +71,14 @@ public class ReminderActivity extends DaggerAppCompatActivity implements OnAlarm
         super.onStart();
 
         checkScreenEmptyState();
-
         alarmViewModel.getAllAlarms().observe(this, alarms -> {
             if (alarms != null) {
                 datalist = alarms;
+                Collections.sort(datalist, new Comparator<Alarm>() {
+                    public int compare(Alarm o1, Alarm o2) {
+                        return o2.getCreationDate().compareTo(o1.getCreationDate());
+                    }
+                });
                 adapter.updateList(datalist);
                 checkScreenEmptyState();
             }
@@ -96,8 +103,6 @@ public class ReminderActivity extends DaggerAppCompatActivity implements OnAlarm
     }
 
     private void showAddReminderDialog(Alarm alarm) {
-
-        Alarm alarm1 = new Alarm();
         DialogAddReminderBinding binding;
         binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_add_reminder, null, false);
         View dialogView = binding.getRoot();
@@ -106,42 +111,56 @@ public class ReminderActivity extends DaggerAppCompatActivity implements OnAlarm
         addReminderDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         addReminderDialog.setView(dialogView);
         addReminderDialog.show();
+        if (alarm == null) {
+            alarm = new Alarm();
+            DatePickerDialog.OnDateSetListener date = (datePicker, i, i1, i2) -> {
+                todaysCalender.set(Calendar.YEAR, i);
+                todaysCalender.set(Calendar.MONTH, i1);
+                todaysCalender.set(Calendar.DAY_OF_MONTH, i2);
+                sDate = UtilClass.updateDate(todaysCalender, binding.etDate);
+            };
 
+            binding.etDate.setOnClickListener(view -> {
+                UtilClass.showDatePicker(this, todaysCalender, date);
+            });
 
-        DatePickerDialog.OnDateSetListener date = (datePicker, i, i1, i2) -> {
-            todaysCalender.set(Calendar.YEAR, i);
-            todaysCalender.set(Calendar.MONTH, i1);
-            todaysCalender.set(Calendar.DAY_OF_MONTH, i2);
-            sDate = UtilClass.updateDate(todaysCalender, binding.etDate);
-        };
+            TimePickerDialog.OnTimeSetListener time = (timePicker, i, i1) -> {
+                todaysCalender.set(Calendar.HOUR_OF_DAY, i);
+                todaysCalender.set(Calendar.MINUTE, i1);
+                sTime = UtilClass.updateTime(todaysCalender, binding.etTime);
+            };
 
-        binding.etDate.setOnClickListener(view -> {
-            UtilClass.showDatePicker(this, todaysCalender, date);
-        });
+            binding.etTime.setOnClickListener(view -> {
+                UtilClass.showTimePicker(this, todaysCalender, time);
+            });
 
-        TimePickerDialog.OnTimeSetListener time = (timePicker, i, i1) -> {
-            todaysCalender.set(Calendar.HOUR_OF_DAY, i);
-            todaysCalender.set(Calendar.MINUTE, i1);
-            sTime = UtilClass.updateTime(todaysCalender, binding.etTime);
-        };
+            Alarm finalAlarm = alarm;
+            binding.btnSetReminder.setOnClickListener(view -> {
+                finalAlarm.setExecutionTime(UtilClass.convertToDate(sDate, sTime));
+                finalAlarm.setActive(true);
+                finalAlarm.setAlarmType(Alarm.AlarmType.CUSTOM);
+                finalAlarm.setCreationDate(new Date());
+                finalAlarm.setExpired(false);
+                finalAlarm.setAlarmMessage(binding.etReminderName.getText().toString());
+                alarmViewModel.addAlarm(finalAlarm);
+                datalist.add(finalAlarm);
+                checkScreenEmptyState();
+                addReminderDialog.dismiss();
 
-        binding.etTime.setOnClickListener(view -> {
-            UtilClass.showTimePicker(this, todaysCalender, time);
-        });
+                alarmViewModel.getRecentAlarm().observe(this, alarm1 -> SetAlarm.addReminder(ReminderActivity.this, alarm1));
+            });
+        } else {
+            binding.etDate.setText(alarm.getExecutionDateInString());
+            binding.etTime.setText(alarm.getExecutionTimeInString());
+            binding.etReminderName.setText(alarm.getAlarmMessage());
 
-        binding.btnSetReminder.setOnClickListener(view -> {
-            alarm1.setExecutionTime(UtilClass.convertToDate(sDate, sTime));
-            alarm1.setActive(true);
-            alarm1.setAlarmType(Alarm.AlarmType.CUSTOM);
-            alarm1.setCreationDate(new Date());
-            alarm1.setAlarmMessage(binding.etReminderName.getText().toString());
-            alarmViewModel.addAlarm(alarm1);
-            datalist.add(alarm1);
-            checkScreenEmptyState();
-            addReminderDialog.dismiss();
-        });
+            Alarm finalAlarm1 = alarm;
+            binding.btnSetReminder.setOnClickListener(view -> {
+                alarmViewModel.updateAlarm(finalAlarm1);
+            });
+        }
+
     }
-
 
     private void createDeleteDialog(Alarm alarm) {
         deleteDialog = new CustomDeleteDialog(this, "Delete Reminder", "Are you sure you want to delete this reminder?", "No", "Yes", R.drawable.automate_delete_reminder_dialog_icon) {
@@ -154,7 +173,6 @@ public class ReminderActivity extends DaggerAppCompatActivity implements OnAlarm
             public void onPositiveBtnClick(Dialog dialog) {
                 alarmViewModel.deleteAlarm(alarm);
                 dialog.dismiss();
-
             }
         };
         deleteDialog.createDialog();

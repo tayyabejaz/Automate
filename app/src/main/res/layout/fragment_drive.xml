@@ -6,9 +6,6 @@
             name="tripdata"
             type="com.innovidio.androidbootstrap.entity.Trip" />
 
-        <variable
-            name="lastTrip"
-            type="com.innovidio.androidbootstrap.entity.Trip" />
 
         <variable
             name="fueldata"
@@ -333,7 +330,7 @@
                     android:id="@+id/tv_date_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{lastTrip.saveDateInString}"
+                    android:text="@{tripdata.saveDateInString}"
                     tools:text="15-10-2019"
                     android:textColor="@color/whiteColor"
                     app:layout_constraintBottom_toTopOf="@id/tv_triptype_title"
@@ -382,7 +379,7 @@
                     android:id="@+id/tv_car_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{lastTrip.carname}"
+                    android:text="@{tripdata.destination}"
                     tools:text="Honda Civic"
                     android:textColor="@color/whiteColor"
                     app:layout_constraintBottom_toTopOf="@id/tv_date_title"

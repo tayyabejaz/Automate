@@ -18,6 +18,7 @@ public class Alarm {
 
     @PrimaryKey(autoGenerate = true)
     private int alarmID;
+    private int carId;
     private int maintenanceId;
     private String alarmMessage;
     @ColumnInfo(name = "alarmType")
@@ -30,6 +31,7 @@ public class Alarm {
     @TypeConverters(DateConverter.class)
     private Date executionTime;
     private boolean isActive;
+    private boolean isExpired;
 
     public Alarm(){
 
@@ -48,6 +50,13 @@ public class Alarm {
         return alarmID;
     }
 
+    public int getCarId() {
+        return carId;
+    }
+
+    public void setCarId(int carId) {
+        this.carId = carId;
+    }
 
     public int getMaintenanceId() {
         return maintenanceId;
@@ -85,6 +94,17 @@ public class Alarm {
         return executionTime;
     }
 
+    public String getExecutionDateInString() {
+        DateFormat format = new SimpleDateFormat("MMM dd");
+        return format.format(this.executionTime);
+
+    }
+
+    public String getExecutionTimeInString() {
+        DateFormat format = new SimpleDateFormat("hh:mm");
+        return format.format(this.executionTime);
+    }
+
     public void setExecutionTime(Date executionTIme) {
         this.executionTime = executionTIme;
     }
@@ -97,14 +117,13 @@ public class Alarm {
         isActive = active;
     }
 
-    public String getDateInString(){
-        DateFormat format = new SimpleDateFormat("MMM dd");
-        return format.format(this.executionTime);
+    public boolean isExpired() {
+        return isExpired;
     }
 
-    public String getTimeInString(){
-        DateFormat format = new SimpleDateFormat("hh:mm");
-        return format.format(this.executionTime);
+    public void setExpired(boolean expired) {
+        isExpired = expired;
+
     }
 
     public enum AlarmType {

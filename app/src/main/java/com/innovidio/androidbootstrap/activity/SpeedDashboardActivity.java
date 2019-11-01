@@ -80,6 +80,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 
+import static com.innovidio.androidbootstrap.Constants.FUEL_UP_FORM;
 import static com.innovidio.androidbootstrap.Constants.KM;
 import static com.innovidio.androidbootstrap.Constants.KM_HR;
 import static com.innovidio.androidbootstrap.Constants.MILES;
@@ -184,7 +185,7 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
         Log.d("speedunits: ", prefRepo.getSpeedUnit() + "");
         Log.d("distanceunits: ", prefRepo.getDistanceUnit() + "");
 
-        prefRepo.setSpeedLimit(appPreferences.getInt(AppPreferences.Key.SPEED_LIMIT,50));
+        prefRepo.setSpeedLimit(appPreferences.getInt(AppPreferences.Key.SPEED_LIMIT, 50));
         speedLimit = prefRepo.getSpeedLimit();
 
         if (speedLimit == 0) {
@@ -595,26 +596,7 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
 //                break;
 
             case R.id.fuelup:
-                // todo fuelup dialog add here
-//                if (SharedPreferenceHelper.getInstance().getStringValue(Constants.anycaradded , "").equals("yes"))
-//                {
-//                    FuelUpDialog fuelUpDialog = new FuelUpDialog(SpeedDashboardActivity.this);
-//                    fuelUpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-//                    fuelUpDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//                    fuelUpDialog.getWindow().setGravity(Gravity.BOTTOM);
-//                    fuelUpDialog.show();
-//                }
-//                else
-//                {
-//                    Toast.makeText(SpeedDashboardActivity.this, "Please add your car first to fuel up", Toast.LENGTH_SHORT).show();
-//
-//                    ApiCarAddDialog apiCarAddDialog1 = new ApiCarAddDialog(SpeedDashboardActivity.this);
-//                    apiCarAddDialog1.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-//                    apiCarAddDialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//                    apiCarAddDialog1.getWindow().setGravity(Gravity.BOTTOM);
-//                    apiCarAddDialog1.show();
-//                }
-
+                UtilClass.startFormActivity(this, FUEL_UP_FORM);
                 break;
 
             case R.id.minimizeIcon:
@@ -628,7 +610,6 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
                     startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
                 } else {
 
-                    // FirebaseJobManager.getInstance().setReminderJob();
                     initializeView();
                 }
 
@@ -864,8 +845,6 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
     }
 
     private void createNotification(String speedLimit) {
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationChannel chan1 = new NotificationChannel(CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", NotificationManager.IMPORTANCE_DEFAULT);
@@ -962,12 +941,10 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
 
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
-
             //Check if the permission is granted or not.
             if (resultCode == RESULT_OK) {
                 initializeView();
@@ -1104,7 +1081,9 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
     }
 
     public void finishDriveDialog() {
-
+        if (mp != null && mp.isPlaying()) {
+            mp.stop();
+        }
         Trip trip = new Trip();
         DialogStopTripBinding binding;
         binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_stop_trip, null, false);
@@ -1142,7 +1121,7 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
             Date currentTime = Calendar.getInstance().getTime();
 
 
-            trip.setCarId(AppPreferences.SELECTED_CAR_ID);
+            trip.setCarId(appPreferences.getInt(AppPreferences.Key.SELECTED_CAR_ID, 1));
             trip.setTripType(tripType);
             trip.setStartTime(LocationViewModel.startTime);
             trip.setEndTime(currentTime); // or end time
@@ -1162,14 +1141,8 @@ public class SpeedDashboardActivity extends DaggerAppCompatActivity implements G
             binding.setTripData(trip);
 //            Toast.makeText(SpeedDashboardActivity.this, "Your trip is saved.", Toast.LENGTH_SHORT).show();
 
-//            Intent i = new Intent(SpeedDashboardActivity.this, MainActivity.class);
-//            startActivity(i);
-//            finish();
         } else if (maxSpeed == 0 && avgSpeed == 0 && distance == 0.0) {
 //            Toast.makeText(SpeedDashboardActivity.this, "Your trip is not saved.", Toast.LENGTH_SHORT).show();
-//            Intent i = new Intent(SpeedDashboardActivity.this, MainActivity.class);
-//            startActivity(i);
-//            finish();
         }
 
         binding.btnDialogSaveTrip.setOnClickListener(view -> {

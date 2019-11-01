@@ -23,7 +23,7 @@ public class User {
     private boolean anyViolation;
     private int noOfViolations;
     private String email;
-    private String userImageUrl="none";
+    private String userImageUrl = "none";
 
 
     public int getId() {

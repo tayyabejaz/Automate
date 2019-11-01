@@ -56,8 +56,12 @@ public class AlarmRepository {
 
     }
 
-    public LiveData<List<Alarm>> getAllAlarms(){
+    public List<Alarm> getAllAlarms(){
         return this.alarmDao.getAllAlarms();
+    }
+
+    public LiveData<List<Alarm>> getAllAlarmsLiveData(){
+        return this.alarmDao.getAllAlarmsLiveData();
     }
 
     public LiveData<Alarm> getAlarmById(int id){
@@ -66,5 +70,9 @@ public class AlarmRepository {
 
     public LiveData<List<Alarm>> getAlarmByType(int type){
         return this.alarmDao.getAlarmByType(type);
+    }
+
+    public LiveData<Alarm> getRecentAlarm(){
+        return this.alarmDao.getRecentAlarm();
     }
 }

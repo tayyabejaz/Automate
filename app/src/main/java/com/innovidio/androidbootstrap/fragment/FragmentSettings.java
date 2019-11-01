@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.innovidio.androidbootstrap.AppPreferences;
+import com.innovidio.androidbootstrap.BuildConfig;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.CustomDeleteDialog;
@@ -28,8 +30,10 @@ import com.innovidio.androidbootstrap.activity.PrivacyPolicyActivity;
 import com.innovidio.androidbootstrap.activity.UserPreferencesActivity;
 import com.innovidio.androidbootstrap.activity.UserProfileActivity;
 import com.innovidio.androidbootstrap.adapter.CustomMainSpinnerAdapter;
+import com.innovidio.androidbootstrap.alarms.SetAlarm;
 import com.innovidio.androidbootstrap.databinding.DialogCarDetailBinding;
 import com.innovidio.androidbootstrap.databinding.FragmentSettingsBinding;
+import com.innovidio.androidbootstrap.entity.Alarm;
 import com.innovidio.androidbootstrap.entity.Car;
 import com.innovidio.androidbootstrap.entity.Form;
 import com.innovidio.androidbootstrap.entity.FuelUp;
@@ -37,6 +41,7 @@ import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.interfaces.OnCarEditDeleteListener;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
+import com.innovidio.androidbootstrap.viewmodel.AlarmViewModel;
 import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
 import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
 import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
@@ -53,6 +58,8 @@ import io.bloco.faker.Faker;
 
 public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteListener {
 
+    @Inject
+    AlarmViewModel alarmViewModel;
     @Inject
     AppPreferences appPreferences;
     @Inject
@@ -104,6 +111,7 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
         //Creating a Dialog
         createDialogs();
         initializeAdapters();
+        setVersionInfo();
 
         settingsBinding.buttonEditProfile.setOnClickListener(view1 -> {
             startActivity(new Intent(getActivity(), UserProfileActivity.class));
@@ -132,6 +140,30 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
         settingsBinding.llShare.setOnClickListener(view1 -> {
             UtilClass.shareApp(getContext());
         });
+
+        settingsBinding.llSetAlramDemo.setOnClickListener(view1 -> {
+            Toast.makeText(getContext(), "Alarm Set", Toast.LENGTH_SHORT).show();
+            Alarm alarm = new Alarm();
+            alarm.setAlarmID(UtilClass.getRandomNo(1000, 2000));
+            alarm.setCarId(0);
+            alarm.setMaintenanceId(0);
+            alarm.setAlarmMessage("Dummy Alarm ");
+            alarm.setActive(true);
+            alarm.setAlarmType(Alarm.AlarmType.CUSTOM);
+            alarm.setCreationDate(new Date());
+            alarm.setExecutionTime(SetAlarm.addTimeInDate(1,0,0,0,0));
+            alarmViewModel.addAlarm(alarm);
+
+            SetAlarm.addReminder(getContext(), alarm);
+        });
+
+    }
+
+    private void setVersionInfo(){
+        int versionCode = BuildConfig.VERSION_CODE;
+        String versionName = BuildConfig.VERSION_NAME;
+        settingsBinding.tvVersionCodeValue.setText(versionCode+"");
+        settingsBinding.tvVersionValue.setText(versionName);
     }
 
     private void createDialogs() {
@@ -320,7 +352,6 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
         trip.setAvgspeed(UtilClass.getRandomNo(50, 80));
         trip.setCarId(1);
         trip.setOrigin(faker.address.city());
-        trip.setCarname("Honda Civic 2018");
         trip.setDestination(faker.address.city());
         trip.setIntialOdometer(odoMeter + UtilClass.getRandomNo(1000, 2000));
         odoMeter += odoMeter + UtilClass.getRandomNo(1000, 2000);
@@ -343,6 +374,22 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
 
         // tripDao.insert(trip);
         tripViewModel.addTrip(trip);
+
+
+        if (i<4){
+            Alarm alarm = new Alarm();
+            alarm.setAlarmID(i+1);
+            alarm.setMaintenanceId(0);
+            alarm.setAlarmMessage("Time to eat "+ faker.food.dish());
+            alarm.setActive(true);
+            alarm.setAlarmType(Alarm.AlarmType.CUSTOM);
+            alarm.setCreationDate(new Date());
+            alarm.setExecutionTime(SetAlarm.addTimeInDate(i+1,0,0,0,0));
+            alarmViewModel.addAlarm(alarm);
+
+            SetAlarm.addReminder(getContext(), alarm);
+        }
+
     }
 }
 

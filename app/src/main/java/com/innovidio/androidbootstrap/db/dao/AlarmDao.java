@@ -6,6 +6,7 @@ import androidx.room.Dao;
 import androidx.room.Query;
 
 import com.innovidio.androidbootstrap.entity.Alarm;
+import com.innovidio.androidbootstrap.entity.Form;
 
 import java.util.List;
 
@@ -21,9 +22,16 @@ public abstract class AlarmDao extends BaseDao<Alarm> {
 
 
     @Query("SELECT * FROM Alarm")
-    public abstract LiveData<List<Alarm>> getAllAlarms();
+    public abstract LiveData<List<Alarm>> getAllAlarmsLiveData();
+
+    @Query("SELECT * FROM Alarm")
+    public abstract List<Alarm> getAllAlarms();
 
     @Query("SELECT * FROM Alarm WHERE alarmID =:id")
     public abstract LiveData<Alarm> getAlarmByAlarmId(int id);
+
+    @Query("SELECT * FROM Alarm  ORDER BY alarmID DESC LIMIT 1")
+    public abstract  LiveData<Alarm> getRecentAlarm();
+
 }
 

@@ -57,6 +57,9 @@ public interface Constants {
     int CONFIDENCE = 70;
 
     String ALARM_ID = "alarmId";
+    String ALARM_MSG = "alarmMsg";
+    String ALARM_TYPE = "alarmType";
+    String ALARM_MAINTENANCE_ID = "alarmMaintenanceId";
 
 }
 
