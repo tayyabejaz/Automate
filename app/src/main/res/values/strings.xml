@@ -105,6 +105,7 @@
     </string-array>
 
     <string-array name="service_list">
+        <item> </item>
         <item>Check Battery and Contacts</item>
         <item>Check Exhaust System</item>
         <item>Check Lubrication System</item>
@@ -139,7 +140,9 @@
         <item>Check/Inspect Suspension System</item>
         <item>Rotate and Balance Tires</item>
     </string-array>
+
     <string-array name="parts_categories">
+        <item> </item>
         <item>Oil and Oil Filter</item>
         <item>Windshield Wiper Blades</item>
         <item>Air Filter</item>
@@ -154,7 +157,9 @@
         <item>Water pump</item>
         <item>Muffler</item>
     </string-array>
+
     <string-array name="otherexpenses_categories">
+        <item> </item>
         <item>Car Insurance</item>
         <item>Tracker Navigation</item>
         <item>Installments</item>
@@ -165,10 +170,5 @@
         <item>weeks</item>
         <item>month</item>
         <item>year</item>
-    </string-array>
-    <string-array name="calendar_list">
-        <item> Months </item>
-        <item> Days </item>
-        <item> Years </item>
     </string-array>
 </resources>

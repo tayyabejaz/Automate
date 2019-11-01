@@ -91,10 +91,12 @@ public class AddCarWashFragment extends DaggerFragment {
         initializeAdapter();
 
         carViewModel.getAllCars().observe(this, cars -> {
-            if (cars.size() > 0) {
-                carDataList.addAll(cars);
-                carAdapter.notifyDataSetChanged();
-                carID = cars.get(0).getId();
+            if (cars != null) {
+                if (cars.size() > 0) {
+                    carDataList.addAll(cars);
+                    carAdapter.notifyDataSetChanged();
+                    carID = cars.get(0).getId();
+                }
             }
         });
         //TIME PICKER
@@ -192,7 +194,7 @@ public class AddCarWashFragment extends DaggerFragment {
 
     private Form createForm() {
         Form form = new Form();
-        form.setCarId(appPreferences.getInt(AppPreferences.Key.SELECTED_CAR_ID,1));
+        form.setCarId(appPreferences.getInt(AppPreferences.Key.SELECTED_CAR_ID, 1));
         form.setStartDate(new Date());
         form.setEndDate(new Date());
         form.setSaveDate(new Date());

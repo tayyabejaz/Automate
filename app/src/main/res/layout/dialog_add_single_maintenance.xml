@@ -11,7 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="@dimen/_2sdp"
-            android:src="@drawable/automate_add_button_background"
+            android:src="@drawable/automate_maintenance_dialgoue_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
-            app:cardBackgroundColor="@color/whiteColor"
+            app:cardBackgroundColor="@color/mainDashboardGray"
             app:cardCornerRadius="@dimen/_10sdp"
             app:cardElevation="0dp"
             app:cardUseCompatPadding="true"
@@ -37,7 +37,7 @@
                 <Button
                     android:id="@+id/button_add_maintenance"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_height="@dimen/_35sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_20sdp"
                     android:background="@drawable/app_button_background"
@@ -55,6 +55,7 @@
                     android:hint="Enter Price"
                     android:paddingStart="@dimen/_20sdp"
                     android:paddingEnd="@dimen/_20sdp"
+                    android:inputType="number"
                     app:layout_constraintBottom_toTopOf="@id/button_add_maintenance"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -108,6 +109,7 @@
                     android:hint="Enter Odometer Reading"
                     android:paddingStart="@dimen/_20sdp"
                     android:paddingEnd="@dimen/_20sdp"
+                    android:inputType="number"
                     app:layout_constraintTop_toBottomOf="@id/ll_service_list"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -130,6 +132,7 @@
                         style="@style/EditText_In_Forms"
                         android:layout_width="0dp"
                         android:hint="Service Life"
+                        android:inputType="number"
                         android:layout_weight="1"
                         android:paddingStart="@dimen/_20sdp"
                         android:paddingEnd="@dimen/_20sdp" />
@@ -138,13 +141,14 @@
                         android:id="@+id/ll_service_time"
                         style="@style/EditText_In_Forms"
                         android:layout_width="0dp"
-                        android:layout_weight="1">
+                        android:layout_weight="1"
+                        >
 
                         <Spinner
                             android:id="@+id/spinner_service_time"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:entries="@array/calendar_list"
+                            android:entries="@array/lifetime_categories"
                             android:paddingStart="@dimen/_10sdp"
                             android:paddingEnd="@dimen/_10sdp"
                             app:layout_constraintBottom_toBottomOf="parent"

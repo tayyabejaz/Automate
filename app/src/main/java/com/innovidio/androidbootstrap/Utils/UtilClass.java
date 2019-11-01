@@ -15,8 +15,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,9 +29,8 @@ import com.innovidio.androidbootstrap.BuildConfig;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.activity.FormActivity;
-import com.innovidio.androidbootstrap.activity.SplashActivity;
-import com.innovidio.androidbootstrap.entity.models.FullAddress;
 import com.innovidio.androidbootstrap.activity.SpeedDashboardActivity;
+import com.innovidio.androidbootstrap.activity.SplashActivity;
 import com.innovidio.androidbootstrap.databinding.DialogDriveSelectionBinding;
 import com.innovidio.androidbootstrap.driveDetect.BackgroundDetectedActivitiesService;
 import com.innovidio.androidbootstrap.entity.Preferences;
@@ -59,9 +56,8 @@ import java.util.SortedMap;
 import java.util.TimeZone;
 import java.util.TreeMap;
 
-import static com.innovidio.androidbootstrap.AppPreferences.Key.SPEED_LIMIT;
-
 import static android.content.Context.ACTIVITY_SERVICE;
+import static com.innovidio.androidbootstrap.AppPreferences.Key.SPEED_LIMIT;
 import static com.innovidio.androidbootstrap.Constants.ACTIVITY;
 
 public class UtilClass {
@@ -112,7 +108,6 @@ public class UtilClass {
 
     }
 
-
     public static void showTimePicker(Context context, Calendar calendarInstance, TimePickerDialog.OnTimeSetListener time) {
         new TimePickerDialog(context, time, calendarInstance.get(Calendar.HOUR_OF_DAY), calendarInstance.get(Calendar.MINUTE), true).show();
     }
@@ -120,7 +115,6 @@ public class UtilClass {
     public static void showDatePicker(Context context, Calendar calenderInstance, DatePickerDialog.OnDateSetListener date) {
         new DatePickerDialog(context, date, calenderInstance.get(Calendar.YEAR), calenderInstance.get(Calendar.MONTH), calenderInstance.get(Calendar.DAY_OF_MONTH)).show();
     }
-
 
     public static int getRandomNo(int min, int max) {
 //        final int min = 20;
@@ -292,7 +286,6 @@ public class UtilClass {
         context.startActivity(i);
     }
 
-
     public static void startTracking(Context context) {
         Intent intent = new Intent(context, BackgroundDetectedActivitiesService.class);
         context.startService(intent);
@@ -303,6 +296,17 @@ public class UtilClass {
         context.stopService(intent);
     }
 
+    public static String getCurrentTime() {
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+        return df.format(c);
+    }
+
+    public static String getTodayDate() {
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        return df.format(c);
+    }
 
     public static Date getTime(String time) {
         Date startTimeDate = null, endTimeDate = null;
@@ -324,13 +328,11 @@ public class UtilClass {
         return startTime;
     }
 
-
     public static Double getRoundFigureValue(Double number) {
         NumberFormat formatter = new DecimalFormat("#0.00");
         Double roundFigureNo = Double.parseDouble(formatter.format(number));
         return roundFigureNo;
     }
-
 
     public static Preferences getDefaultPreferences() {
         Preferences preferences = new Preferences();
@@ -345,7 +347,6 @@ public class UtilClass {
         preferences.setFuelUnitPrice(113.09d);
         return preferences;
     }
-
 
     public static ArrayList<String> getCountriesListFromLocale() {
         Locale[] locales = Locale.getAvailableLocales();
@@ -378,7 +379,6 @@ public class UtilClass {
         return locale.getDisplayCountry();
     }
 
-
     static class Utils {
         public static SortedMap<Currency, Locale> currencyLocaleMap;
 
@@ -405,7 +405,6 @@ public class UtilClass {
         }
     }
 
-
     public static ArrayList<String> getCurrenciesList() {
         // reference  https://android-er.blogspot.com/2014/05/display-available-currencies.html
         Set<Currency> availableCurrenciesSet;
@@ -426,16 +425,15 @@ public class UtilClass {
         return currenciesList;
     }
 
-
     public static void clearAppData(Context context) {
         try {
             // clearing app data
             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
-                ((ActivityManager)context.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
+                ((ActivityManager) context.getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
             } else {
                 String packageName = context.getApplicationContext().getPackageName();
                 Runtime runtime = Runtime.getRuntime();
-                runtime.exec("pm clear "+packageName);
+                runtime.exec("pm clear " + packageName);
             }
 
         } catch (Exception e) {
@@ -452,17 +450,17 @@ public class UtilClass {
         System.exit(0);
     }
 
-    public static void gotoPrivacyPolicy(Context context, String url){
-        try{
+    public static void gotoPrivacyPolicy(Context context, String url) {
+        try {
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             context.startActivity(i);
-        }catch (ActivityNotFoundException ex){
-            Toast.makeText(context, "Not Found any Browser.\n"+ex, Toast.LENGTH_SHORT).show();
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(context, "Not Found any Browser.\n" + ex, Toast.LENGTH_SHORT).show();
         }
     }
 
-    public static void rateUs(Context context){
+    public static void rateUs(Context context) {
         context.startActivity(new Intent(Intent.ACTION_VIEW, Uri
                 .parse("market://details?id=" + context.getPackageName())));
     }
@@ -493,35 +491,17 @@ public class UtilClass {
 //        }
 //        mLastClickTime = SystemClock.elapsedRealtime();
 
- //       Utility.firebaseCustomClickEvent(mContext, "email_support_click"); // send click event
+        //       Utility.firebaseCustomClickEvent(mContext, "email_support_click"); // send click event
         //  Toast.makeText(context, "Feedback", Toast.LENGTH_SHORT).show();
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                 "mailto", "contentarcadeapps@gmail.com", null));
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "App version: "+versionName + " Feedback!");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Please Give us the Feedback About this app." );
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "App version: " + versionName + " Feedback!");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Please Give us the Feedback About this app.");
         //  emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses); // String[] addresses
         context.startActivity(Intent.createChooser(emailIntent, "Send email..."));
     }
 
-
-//    public static void firebaseCustomClickEvent(Context context, String eventName){
-//        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
-//        Bundle params = new Bundle();
-//        params.putString("cur_time", getCurrentTime());
-//        // params.putString("msg", msg);
-//        mFirebaseAnalytics.logEvent(eventName, params);
-//    }
-//
-//    public static void firebaseCustomClickEvent(Context context, String eventName, String msg){
-//        FirebaseAnalytics mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
-//        Bundle params = new Bundle();
-//        params.putString("cur_time", getCurrentTime());
-//        params.putString("msg", msg);
-//        mFirebaseAnalytics.logEvent(eventName, params);
-//    }
-
-
-    public static Date getCurrentMonthLastDayDate(){
+    public static Date getCurrentMonthLastDayDate() {
         Calendar calendarEnd = Calendar.getInstance();
         int monthMaxDays = calendarEnd.getActualMaximum(Calendar.DAY_OF_MONTH);
         calendarEnd.set(Calendar.DAY_OF_MONTH, monthMaxDays);
@@ -530,7 +510,7 @@ public class UtilClass {
         return calendarEnd.getTime();
     }
 
-    public static Date getCurrentMonthFirstDayDate(){
+    public static Date getCurrentMonthFirstDayDate() {
         Calendar calendarStart = Calendar.getInstance();   // this takes current date
         calendarStart.set(Calendar.DAY_OF_MONTH, 1);
         calendarStart.set(Calendar.HOUR_OF_DAY, 0);
@@ -538,7 +518,7 @@ public class UtilClass {
         return calendarStart.getTime();
     }
 
-    public static Date getCurrentDayFrom0AM(){
+    public static Date getCurrentDayFrom0AM() {
         Calendar calendarStart = Calendar.getInstance();   // this takes current date
         calendarStart.add(Calendar.DAY_OF_MONTH, 0);
         calendarStart.set(Calendar.HOUR_OF_DAY, 0);
@@ -547,7 +527,7 @@ public class UtilClass {
         return calendarStart.getTime();
     }
 
-    public static Date getCurrentPreviousDay(){
+    public static Date getCurrentPreviousDay() {
         Calendar calendarStart = Calendar.getInstance();   // this takes current date
         calendarStart.add(Calendar.DAY_OF_MONTH, -5);
         calendarStart.set(Calendar.HOUR_OF_DAY, 0);

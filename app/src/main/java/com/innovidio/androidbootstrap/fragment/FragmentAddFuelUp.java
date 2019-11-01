@@ -90,10 +90,12 @@ public class FragmentAddFuelUp extends DaggerFragment {
         super.onViewCreated(view, savedInstanceState);
 
         carViewModel.getAllCars().observe(this, cars -> {
-            if (cars.size() > 0) {
-                carDataList.addAll(cars);
-                carAdapter.notifyDataSetChanged();
-                carID = cars.get(0).getId();
+            if (cars != null) {
+                if (cars.size() > 0) {
+                    carDataList.addAll(cars);
+                    carAdapter.notifyDataSetChanged();
+                    carID = cars.get(0).getId();
+                }
             }
         });
 

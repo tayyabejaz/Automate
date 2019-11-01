@@ -171,13 +171,16 @@ public class FragmentAddNewCar extends DaggerFragment implements ActivityBtnClic
         carQueryViewModel.getCarModelsByYearAndMake(year, make).observe(this, carModelNames -> {
             if (carModelNames != null) {
                 modelData.clear();
-                Log.e("FromFragment", "CarModelName: " + carModelNames.get(0).getModelName());
                 for (int i = 0; i < carModelNames.size(); i++) {
                     modelData.add(carModelNames.get(i).getModelName());
                 }
                 adapterModel.notifyDataSetChanged();
                 binding.spinnerModelOfCar.setAdapter(adapterModel);
-                model = modelData.get(0);
+                if (modelData != null) {
+                    if (modelData.size() > 0) {
+                        model = modelData.get(0);
+                    }
+                }
             }
         });
     }
