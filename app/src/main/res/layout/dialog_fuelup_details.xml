@@ -208,7 +208,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="10dp"
-                        android:text="@{String.valueOf(fuelupdata.perunitfuelprice)}"
+                        android:text="@{String.valueOf(fuelupdata.perunitfuelprice) +' '+prefData.currency}"
                         android:textColor="@color/blackColor"
                         tools:text="113 Rs" />
 
@@ -235,7 +235,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="10dp"
-                        android:text="@{String.valueOf(fuelupdata.totalprice)}"
+                        android:text="@{String.valueOf(fuelupdata.totalprice) +' '+prefData.currency}"
                         android:textColor="@color/blackColor"
                         tools:text="2000 Rs" />
 
@@ -256,13 +256,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="10dp"
-                        android:text="No. of Liters" />
+                        android:text="Fuel Quantity"
+                        tools:text="Fuel Quantity"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="10dp"
-                        android:text="@{String.valueOf(fuelupdata.liters)}"
+                        android:text="@{String.valueOf(fuelupdata.liters) +' '+prefData.fuelUnit}"
                         android:textColor="@color/blackColor"
                         tools:text="17 L" />
 
@@ -354,7 +355,7 @@
 
                 <LinearLayout
                     android:id="@+id/total_expenses_layout"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
@@ -373,10 +374,11 @@
                         android:text="Overall Expense" />
 
                     <TextView
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="10dp"
-                        android:text="@{@string/currency_unit(String.valueOf(fuelupdata.totalprice))}"
+                        android:text="@{prefData.currency + ' ' +(String.valueOf(fuelupdata.totalprice))}"
                         android:textColor="@color/blueDark"
                         android:textSize="30sp"
                         android:textStyle="bold"
@@ -428,6 +430,10 @@
         <variable
             name="fuelupdata"
             type="com.innovidio.androidbootstrap.entity.FuelUp" />
+
+        <variable
+            name="prefData"
+            type="com.innovidio.androidbootstrap.entity.Preferences" />
     </data>
 
 </layout>

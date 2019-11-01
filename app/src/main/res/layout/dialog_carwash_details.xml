@@ -4,6 +4,10 @@
         <variable
             name="carwashdata"
             type="com.innovidio.androidbootstrap.entity.Maintenance" />
+
+        <variable
+            name="prefData"
+            type="com.innovidio.androidbootstrap.entity.Preferences" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -317,7 +321,7 @@
 
             <LinearLayout
                 android:id="@+id/total_expenses_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="20dp"
@@ -336,9 +340,10 @@
                     android:text="Overall Expense"/>
 
                 <TextView
+                    android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(carwashdata.maintenanceCost)}"
+                    android:text="@{prefData.currency+' '+String.valueOf(carwashdata.maintenanceCost)}"
                     tools:text="RS 2000.00/-"
                     android:textStyle="bold"
                     android:padding="@dimen/_10sdp"
