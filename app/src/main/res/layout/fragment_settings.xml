@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+    <data>
+        <variable
+            name="userData"
+            type="com.innovidio.androidbootstrap.entity.User" />
+    </data>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -94,7 +99,8 @@
                         android:drawableLeft="@drawable/automate_location_icon"
                         android:drawablePadding="@dimen/_8sdp"
                         android:padding="@dimen/_5sdp"
-                        android:text="Lohore, Pakistan"
+                        android:text="@{userData.country}"
+                        tools:text="Lahore, Pakistan"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_user_name" />
@@ -105,7 +111,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:padding="@dimen/_5sdp"
-                        android:text="username123@gmail.com"
+                        android:text="@{userData.email}"
+                        tools:text="username123@gmail.com"
                         android:textColor="@color/blueTextColor"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +124,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
-                        android:text="User Name"
+                        android:text="@{userData.name}"
+                        tools:text="User Name"
                         android:textColor="@color/blackColor"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

@@ -66,6 +66,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/ll_select_car"
                     style="@style/EditText_In_Forms"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toTopOf="@id/et_date"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

@@ -93,6 +93,14 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         super.onViewCreated(view, savedInstanceState);
         init();
         initializeListeners();
+        initializeDialogs();
+    }
+
+    private void initializeDialogs() {
+        createCarWashDeleteDialog(null);
+        createMaintenanceDeleteDialog(null);
+        createTripDeleteDialog(null);
+        createFuelUpDeleteDialog(null);
     }
 
     @Override
@@ -105,7 +113,6 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         return v;
     }
 
-
     private void timeLineData() {
         timeLineViewModel.getAllTimelineMergerData().observe(this, timeLineItems -> {
             if (timeLineItems != null && timeLineItems.size() > 0) {
@@ -116,16 +123,6 @@ public class FragmentMainDashboard extends DaggerFragment implements TimelineIte
         });
     }
 
-    private void timeLineFilteredData() {
-        timeLineViewModel.getFilteredTimelineMergerData(1, true, true, false, false).observe(this, timeLineItems -> {
-            if (timeLineItems != null && timeLineItems.size() > 0) {
-
-                timeLineItemList.addAll(timeLineItems);
-                //   timeLineItemList = Sorting.sortList(timeLineItemList);
-                timelineAdapter.updateData(timeLineItemList);
-            }
-        });
-    }
 
     private void initializeListeners() {
         binding.topFragmentedLayout.firstAddFuel.setOnClickListener(this);

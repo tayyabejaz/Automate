@@ -96,6 +96,22 @@ public class UtilClass {
 
     }
 
+    public static Date convertToDate(String dateInString) {
+
+        String finalDate = dateInString;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+
+        Date date = null;
+
+        try {
+            date = formatter.parse(finalDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+
+    }
+
 
     public static void showTimePicker(Context context, Calendar calendarInstance, TimePickerDialog.OnTimeSetListener time) {
         new TimePickerDialog(context, time, calendarInstance.get(Calendar.HOUR_OF_DAY), calendarInstance.get(Calendar.MINUTE), true).show();

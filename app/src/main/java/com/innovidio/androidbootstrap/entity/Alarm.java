@@ -123,6 +123,7 @@ public class Alarm {
 
     public void setExpired(boolean expired) {
         isExpired = expired;
+
     }
 
     public enum AlarmType {

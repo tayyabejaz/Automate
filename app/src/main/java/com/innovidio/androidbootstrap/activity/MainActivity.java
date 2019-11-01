@@ -2,7 +2,6 @@ package com.innovidio.androidbootstrap.activity;
 
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +9,6 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -34,17 +32,12 @@ import com.innovidio.androidbootstrap.Utils.IconProvider;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.adapter.CustomMainSpinnerAdapter;
 import com.innovidio.androidbootstrap.databinding.ActivityMainBinding;
-import com.innovidio.androidbootstrap.databinding.DialogFilterListBinding;
 import com.innovidio.androidbootstrap.db.dao.FuelDao;
 import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
 import com.innovidio.androidbootstrap.db.dao.TripDao;
 import com.innovidio.androidbootstrap.entity.Car;
-import com.innovidio.androidbootstrap.entity.Form;
 import com.innovidio.androidbootstrap.entity.FuelUp;
-import com.innovidio.androidbootstrap.entity.Maintenance;
-import com.innovidio.androidbootstrap.entity.Trip;
 import com.innovidio.androidbootstrap.interfaces.SpinnerItemClickListener;
-import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.network.dto.CarMakesByYear;
 import com.innovidio.androidbootstrap.network.dto.CarModelName;
 import com.innovidio.androidbootstrap.network.dto.CarTrimsInfo;
@@ -63,10 +56,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
-import io.bloco.faker.Faker;
 
 import static com.innovidio.androidbootstrap.AppPreferences.Key.SELECTED_CAR_ID;
-import static com.innovidio.androidbootstrap.Constants.ACTIVITY;
 import static com.innovidio.androidbootstrap.Constants.CAR_WASH_FORM;
 import static com.innovidio.androidbootstrap.Constants.FUEL_UP_FORM;
 import static com.innovidio.androidbootstrap.Constants.SERVICE_FORM;
@@ -280,14 +271,17 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 break;
 
             case R.id.iv_add:
+                //Animating the Other Layout
+                if (isDown) {
+                    slideBackToTop(mainBinding.flCustomSpinnerLayout, mainBinding.mainActivitySpinner, 700);
+                    isDown = !isDown;
+                }
 
                 if (isUp) {
                     slideDown(mainBinding.animatedLayout, 700);
-                    // myButton.setText("Slide up");
                 } else {
                     mainBinding.animatedLayout.bringToFront();
-                    slideUp(mainBinding.animatedLayout);
-                    // myButton.setText("Slide down");
+                    slideUp(mainBinding.animatedLayout, 700);
                 }
                 isUp = !isUp;
                 break;
@@ -301,7 +295,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 break;
 
             case R.id.iv_add_service:
-                UtilClass.startFormActivity(this,SERVICE_FORM);
+                UtilClass.startFormActivity(this, SERVICE_FORM);
                 break;
 
             case R.id.iv_add_trip:
@@ -309,12 +303,18 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 break;
 
             case R.id.main_activity_spinner:
+                //Animating the Other Layout
+                if (isUp) {
+                    slideDown(mainBinding.animatedLayout, 700);
+                    isUp = !isUp;
+                }
+
                 if (isDown) {
-//                    mainBinding.flCustomSpinnerLayout.bringToFront();
-                    slideBackToTop(mainBinding.flCustomSpinnerLayout, mainBinding.mainActivitySpinner, 500);
+                    slideBackToTop(mainBinding.flCustomSpinnerLayout, mainBinding.mainActivitySpinner, 700);
                 } else {
                     mainBinding.flCustomSpinnerLayout.bringToFront();
-                    slideFromTop(mainBinding.flCustomSpinnerLayout, 500);
+                    mainBinding.toolbar.bringToFront();
+                    slideFromTop(mainBinding.flCustomSpinnerLayout, 700);
                 }
                 isDown = !isDown;
                 break;
@@ -347,7 +347,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
             customMainSpinnerAdapter.updateAdapterList(carArrayList);
         });
 
-        carViewModel.getCarById(appPreferences.getInt(SELECTED_CAR_ID,1)).observe(this, new Observer<Car>() {
+        carViewModel.getCarById(appPreferences.getInt(SELECTED_CAR_ID, 1)).observe(this, new Observer<Car>() {
             @Override
             public void onChanged(Car car) {
                 if (car != null) {
@@ -363,7 +363,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         appPreferences.put(SELECTED_CAR_ID, car.getId());
     }
 
-    public void slideUp(View view) {
+    public void slideUp(View view, int duration) {
         startAnimation();
         // reference link https://stackoverflow.com/questions/19765938/show-and-hide-a-view-with-a-slide-up-down-animation
         view.setVisibility(View.VISIBLE);
@@ -372,9 +372,25 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 0,                 // toXDelta
                 view.getHeight() - 10,  // fromYDelta
                 0);                // toYDelta
-        animate.setDuration(700);
-        animate.setFillAfter(true);
+        animate.setDuration(duration);
         view.startAnimation(animate);
+        animate.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                viewVisibility(false);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
     }
 
     // slide the view from its current position to below itself
@@ -384,16 +400,32 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 0,                 // fromXDelta
                 0,                 // toXDelta
                 0,                 // fromYDelta
-                view.getHeight() + 150); // toYDelta
+                view.getHeight() + 250); // toYDelta
 
         animate.setDuration(duration);
-        animate.setFillAfter(true);
         view.startAnimation(animate);
         view.setVisibility(View.GONE);
+
+        animate.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                viewVisibility(true);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
     }
 
     public void slideBackToTop(View view, View view2, int duration) {
-
         view.setVisibility(View.GONE);
         TranslateAnimation animate = new TranslateAnimation(
                 0,                 // fromXDelta
@@ -402,7 +434,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
                 -view.getHeight() - 150);                // toYDelta
 
         animate.setDuration(duration);
-        animate.setFillAfter(true);
         view.startAnimation(animate);
     }
 
@@ -416,7 +447,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         ); // toYDelta
 
         animate.setDuration(duration);
-        animate.setFillAfter(true);
         view.startAnimation(animate);
     }
 
@@ -459,55 +489,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         setSpinnerItem(car);
     }
 
-    private void showFilterDialog() {
-        DialogFilterListBinding binding;
-        binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_filter_list, null, false);
-        View dialogView = binding.getRoot();
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
-        final AlertDialog exitDialog = dialogBuilder.create();
-        exitDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        exitDialog.setView(dialogView);
-        exitDialog.show();
-
-        Intent filterIntent = new Intent(MainActivity.this, FilterResultActivity.class);
-
-        binding.checkboxCarwash.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                filterIntent.putExtra(Constants.FILTER_CARWASH, true);
-            } else {
-                filterIntent.removeExtra(Constants.FILTER_CARWASH);
-            }
-        });
-
-        binding.checkboxFuelups.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                filterIntent.putExtra(Constants.FILTER_FUEL_UPS, true);
-            } else {
-                filterIntent.removeExtra(Constants.FILTER_FUEL_UPS);
-            }
-        });
-
-        binding.checkboxMaintenance.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                filterIntent.putExtra(Constants.FILTER_MAINTENANCE, true);
-            } else {
-                filterIntent.removeExtra(Constants.FILTER_MAINTENANCE);
-            }
-        });
-
-        binding.checkboxTrips.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                filterIntent.putExtra(Constants.FILTER_TRIPS, true);
-            } else {
-                filterIntent.removeExtra(Constants.FILTER_TRIPS);
-            }
-        });
-
-        binding.btnFilteredResult.setOnClickListener(view -> {
-            startActivity(filterIntent);
-        });
-    }
-
     // fencing api code
     // todo fencing api
 
@@ -535,10 +516,7 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
         }
     }
 
-
     private void handleUserActivity(int type, int confidence) {
-
-
         switch (type) {
             case DetectedActivity.IN_VEHICLE:
             case DetectedActivity.RUNNING: {
@@ -588,7 +566,6 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
     @Override
     protected void onPause() {
         super.onPause();
-
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
     }
 
@@ -623,5 +600,18 @@ public class MainActivity extends DaggerAppCompatActivity implements View.OnClic
 
     }
 
+    private void viewVisibility(boolean isVisible) {
+        if (isVisible) {
+            mainBinding.bottomNav.llDashboard.setVisibility(View.VISIBLE);
+            mainBinding.bottomNav.llMaintain.setVisibility(View.VISIBLE);
+            mainBinding.bottomNav.llDrive.setVisibility(View.VISIBLE);
+            mainBinding.bottomNav.llSettings.setVisibility(View.VISIBLE);
+        } else {
+            mainBinding.bottomNav.llDashboard.setVisibility(View.INVISIBLE);
+            mainBinding.bottomNav.llMaintain.setVisibility(View.INVISIBLE);
+            mainBinding.bottomNav.llDrive.setVisibility(View.INVISIBLE);
+            mainBinding.bottomNav.llSettings.setVisibility(View.INVISIBLE);
+        }
+    }
 
 }

@@ -4,14 +4,10 @@ package com.innovidio.androidbootstrap.fragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -96,18 +92,6 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        try {
-            PackageInfo pInfo = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0);
-           String version = pInfo.versionName;
-           settingsBinding.tvVersionValue.setText(version);
-            int versionCode = pInfo.versionCode;
-            settingsBinding.tvVersionCodeValue.setText(String.valueOf(versionCode));
-
-        } catch(PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            Log.d("TAYYAB", "PackageManager Catch : "+e.toString());
-        }
-
         //Creating a Dialog
         createDialogs();
         initializeAdapters();
@@ -143,10 +127,10 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
 
     }
 
-    private void setVersionInfo(){
+    private void setVersionInfo() {
         int versionCode = BuildConfig.VERSION_CODE;
         String versionName = BuildConfig.VERSION_NAME;
-        settingsBinding.tvVersionCodeValue.setText(versionCode+"");
+        settingsBinding.tvVersionCodeValue.setText(versionCode + "");
         settingsBinding.tvVersionValue.setText(versionName);
     }
 
@@ -360,15 +344,15 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
         tripViewModel.addTrip(trip);
 
 
-        if (i<4){
+        if (i < 4) {
             Alarm alarm = new Alarm();
-            alarm.setAlarmID(i+1);
+            alarm.setAlarmID(i + 1);
             alarm.setMaintenanceId(0);
-            alarm.setAlarmMessage("Time to eat "+ faker.food.dish());
+            alarm.setAlarmMessage("Time to eat " + faker.food.dish());
             alarm.setActive(true);
             alarm.setAlarmType(Alarm.AlarmType.CUSTOM);
             alarm.setCreationDate(new Date());
-            alarm.setExecutionTime(SetAlarm.addTimeInDate(i+1,0,0,0,0));
+            alarm.setExecutionTime(SetAlarm.addTimeInDate(i + 1, 0, 0, 0, 0));
             alarmViewModel.addAlarm(alarm);
 
             SetAlarm.addReminder(getContext(), alarm);

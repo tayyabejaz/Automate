@@ -25,6 +25,7 @@
                     android:id="@+id/et_user_name"
                     style="@style/EditText_In_Forms"
                     android:hint="Enter your name"
+                    android:inputType="text"
                     android:paddingStart="@dimen/_25sdp"
                     app:layout_constraintBottom_toTopOf="@id/et_user_country"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -35,6 +36,7 @@
                     android:id="@+id/et_user_country"
                     style="@style/EditText_In_Forms"
                     android:hint="Enter your country"
+                    android:inputType="text"
                     android:paddingStart="@dimen/_25sdp"
                     app:layout_constraintBottom_toTopOf="@id/et_user_email"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -46,12 +48,13 @@
                     style="@style/EditText_In_Forms"
                     android:hint="Enter your email"
                     android:paddingStart="@dimen/_25sdp"
+                    android:inputType="textEmailAddress"
                     app:layout_constraintBottom_toTopOf="@id/card_driving_license"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_user_country" />
 
-                <EditText
+                <TextView
                     android:id="@+id/et_expiry_date"
                     style="@style/EditText_In_Forms"
                     android:hint="Enter License Expiry Date"
@@ -182,6 +185,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:orientation="horizontal"
+                            android:checkedButton="@id/rb_no"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -246,6 +250,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/btn_user_done"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_10sdp"
