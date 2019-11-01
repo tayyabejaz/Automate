@@ -10,21 +10,40 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
 import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.databinding.FragmentDriveBinding;
+import com.innovidio.androidbootstrap.entity.Trip;
+import com.innovidio.androidbootstrap.repository.PreferencesRepository;
+import com.innovidio.androidbootstrap.viewmodel.FuelUpViewModel;
+import com.innovidio.androidbootstrap.viewmodel.TripViewModel;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.inject.Inject;
+
+import dagger.android.support.DaggerFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentDrive extends Fragment {
+public class FragmentDrive extends DaggerFragment {
 
     @Inject
     AppPreferences appPreferences;
+
+    @Inject
+    TripViewModel tripViewModel;
+
+    @Inject
+    FuelUpViewModel fuelUpViewModel;
+
+    @Inject
+    PreferencesRepository prefRepo;
 
     private FragmentDriveBinding binding;
 
@@ -49,6 +68,43 @@ public class FragmentDrive extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         binding.tvGoButton.setOnClickListener(v -> {
             UtilClass.showStartTripDialog(getActivity());
+        });
+
+        initilizeCardsData();
+    }
+
+    private void initilizeCardsData(){
+        int carId = appPreferences.getInt(AppPreferences.Key.SELECTED_CAR_ID, 1);
+        tripViewModel.getLastTrip(carId).observe(getActivity(), new Observer<Trip>() {
+            @Override
+            public void onChanged(Trip trip) {
+                binding.setTripdata(trip);
+            }
+        });
+
+
+        Date startDate = UtilClass.getCurrentMonthFirstDayDate();
+        Date endDate =  UtilClass.getCurrentMonthLastDayDate();
+
+        tripViewModel.getTripsCount(carId, startDate, endDate).observe(getActivity(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                binding.tvTotalTripValue.setText(integer.toString());
+            }
+        });
+
+        tripViewModel.getTripsCoverDistanceBetweenDateRange(carId, startDate, endDate).observe(getActivity(), new Observer<Long>() {
+            @Override
+            public void onChanged(Long longValue) {
+                binding.tvTotalDistanceValue.setText(longValue+" "+prefRepo.getDistanceUnit());
+            }
+        });
+
+        fuelUpViewModel.getFuelUpCountBetweenDateRange(carId, startDate, endDate).observe(getActivity(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer intValue) {
+                binding.tvTotalFuelupsValue.setText(intValue.toString());
+            }
         });
     }
 

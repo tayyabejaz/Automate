@@ -5,7 +5,7 @@ import androidx.room.Relation;
 
 import java.util.List;
 
-public class MaintenanceWithAlarms {
+public class MaintenanceWithAlarm {
     @Embedded
     public Maintenance carMaintenance;
     @Relation(parentColumn = "id", entityColumn = "maintenanceId", entity = Alarm.class)

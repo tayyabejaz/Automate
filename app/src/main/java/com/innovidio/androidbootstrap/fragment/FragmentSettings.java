@@ -141,22 +141,6 @@ public class FragmentSettings extends DaggerFragment implements OnCarEditDeleteL
             UtilClass.shareApp(getContext());
         });
 
-        settingsBinding.llSetAlramDemo.setOnClickListener(view1 -> {
-            Toast.makeText(getContext(), "Alarm Set", Toast.LENGTH_SHORT).show();
-            Alarm alarm = new Alarm();
-            alarm.setAlarmID(UtilClass.getRandomNo(1000, 2000));
-            alarm.setCarId(0);
-            alarm.setMaintenanceId(0);
-            alarm.setAlarmMessage("Dummy Alarm ");
-            alarm.setActive(true);
-            alarm.setAlarmType(Alarm.AlarmType.CUSTOM);
-            alarm.setCreationDate(new Date());
-            alarm.setExecutionTime(SetAlarm.addTimeInDate(1,0,0,0,0));
-            alarmViewModel.addAlarm(alarm);
-
-            SetAlarm.addReminder(getContext(), alarm);
-        });
-
     }
 
     private void setVersionInfo(){

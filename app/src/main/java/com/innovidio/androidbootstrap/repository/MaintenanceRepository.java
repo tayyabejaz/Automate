@@ -3,12 +3,10 @@ package com.innovidio.androidbootstrap.repository;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.innovidio.androidbootstrap.db.dao.MaintenanceDao;
 import com.innovidio.androidbootstrap.entity.Maintenance;
-import com.innovidio.androidbootstrap.entity.MaintenanceWithAlarms;
-import com.innovidio.androidbootstrap.entity.models.TimeLine;
+import com.innovidio.androidbootstrap.entity.MaintenanceWithAlarm;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 
 import java.util.Date;
@@ -62,7 +60,7 @@ public class MaintenanceRepository {
         }.execute();
     }
 
-//    public LiveData<List<MaintenanceWithAlarms>> getAllMaintenanceTripsAndFuelUps(){
+//    public LiveData<List<MaintenanceWithAlarm>> getAllMaintenanceTripsAndFuelUps(){
 //        return this.maintenanceDao.getAllFromMaintenanceTripsAndFuelUp();
 //    }
 
@@ -78,8 +76,8 @@ public class MaintenanceRepository {
         return this.maintenanceDao.getAllMaintenanceWithTypeTimeLine(carId, type);
     }
 
-    public LiveData<MaintenanceWithAlarms> getNextComingMaintenanceWithAlarm(int carId, Date currentDate){
-        return this.maintenanceDao.getNextMaintenanceWithAlarm(carId, currentDate);
+    public LiveData<Maintenance> getNextComingMaintenance(int carId, Date currentDate){
+        return this.maintenanceDao.getNextMaintenance(carId, currentDate);
     }
 
     public LiveData<Maintenance> getLastMaintenance(int carId){
@@ -88,6 +86,10 @@ public class MaintenanceRepository {
 
     public LiveData<Integer> getMaintenanceCountBetweenDateRange(int carId, Date starDate, Date endDate){
         return this.maintenanceDao.getMaintenanceCountBetweenDateRange(carId, starDate, endDate);
+    }
+
+    public LiveData<Long> getMaintenanceCostBetweenDateRange(int carId, Date starDate, Date endDate){
+        return this.maintenanceDao.getMaintenanceCostBetweenDateRange(carId, starDate, endDate);
     }
 }
 

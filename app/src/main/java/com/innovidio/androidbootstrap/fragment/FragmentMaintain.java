@@ -10,19 +10,28 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.Constants;
 import com.innovidio.androidbootstrap.R;
+import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.activity.FormActivity;
 import com.innovidio.androidbootstrap.adapter.TimelineAdapter;
 import com.innovidio.androidbootstrap.databinding.FragmentMaintainBinding;
+import com.innovidio.androidbootstrap.entity.Maintenance;
+import com.innovidio.androidbootstrap.entity.MaintenanceWithAlarm;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
+import com.innovidio.androidbootstrap.repository.PreferencesRepository;
+import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
 import com.innovidio.androidbootstrap.viewmodel.TimeLineViewModel;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -31,7 +40,16 @@ import dagger.android.support.DaggerFragment;
 public class FragmentMaintain extends DaggerFragment {
 
     @Inject
+    AppPreferences appPreferences;
+
+    @Inject
     TimeLineViewModel timeLineViewModel;
+
+    @Inject
+    MaintenanceViewModel maintenanceViewModel;
+
+    @Inject
+    PreferencesRepository prefRepo;
 
     private FragmentMaintainBinding binding;
     private List<TimeLineItem> timeLineItemList = new ArrayList<>();
@@ -56,6 +74,7 @@ public class FragmentMaintain extends DaggerFragment {
 
         initializeAdapters();
         timeLineFilteredData();
+        initializeCardsData();
 
         binding.tvAddMaintenance.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), FormActivity.class);
@@ -79,6 +98,59 @@ public class FragmentMaintain extends DaggerFragment {
 
             }
         });
+    }
+
+
+    private void initializeCardsData(){
+        int carId = appPreferences.getInt(AppPreferences.Key.SELECTED_CAR_ID, 1);
+
+        Date curDate =  new Date();
+        Date todayDate =  UtilClass.getCurrentDayFrom0AM();
+        Date startDate = UtilClass.getCurrentMonthFirstDayDate();
+        Date endDate =  UtilClass.getCurrentMonthLastDayDate();
+
+
+        binding.setPrefData(prefRepo.getPreferences());
+
+        maintenanceViewModel.getLastMaintenance(carId).observe(getActivity(), new Observer<Maintenance>() {
+            @Override
+            public void onChanged(Maintenance maintenance) {
+                if(maintenance!=null) {
+                    binding.setMaintenanceData(maintenance);
+                }
+            }
+        });
+
+        maintenanceViewModel.getNextComingMaintenance(carId,todayDate).observe(getActivity(), new Observer<Maintenance>() {
+            @Override
+            public void onChanged(Maintenance maintenance) {
+                if(maintenance!=null) {
+                    binding.tvNextMaintenanceValue.setText(maintenance.getMaintenanceName());
+                    long diff = maintenance.getNextMaintenanceDate().getTime() - todayDate.getTime();
+                    long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+                    binding.tvDaysValue.setText(days + "");
+                }
+            }
+        });
+
+
+        maintenanceViewModel.getMaintenanceCountBetweenDateRange(carId, todayDate, curDate).observe(getActivity(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if(integer!=null)
+                    binding.tvTotalMaintenanceValue.setText(integer.toString());
+            }
+        });
+
+        maintenanceViewModel.getMaintenanceCostBetweenDateRange(carId, todayDate, curDate).observe(getActivity(), new Observer<Long>() {
+            @Override
+            public void onChanged(Long integer) {
+                if(integer!=null)
+                    binding.tvTotalCostValue.setText(integer.toString() + " "+ prefRepo.getCurrency());
+            }
+        });
+
     }
 
 }

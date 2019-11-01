@@ -177,7 +177,8 @@ public class AddCarWashFragment extends DaggerFragment {
         maintenance.setMaintenanceName("Car Wash");
         maintenance.setMaintenanceLife(0);
         maintenance.setMaintenanceType(TimeLineItem.Type.CAR_WASH);
-        maintenance.setNextMaintenanceDate(new Date());
+        Date nextDate = UtilClass.getCurrentPreviousDay(); //added previous day date for not come in next maintence
+        maintenance.setNextMaintenanceDate(nextDate);
         maintenance.setAlarmON(false);
 
         Date convertedDate = UtilClass.convertToDate(dateForEntry, timeForEntry);

@@ -48,7 +48,6 @@ public class Trip implements TimeLineItem {
     private int noOfLitres;
     private Double totalExpenses;
 
-
     @Ignore
     private int totalTrips;
 
