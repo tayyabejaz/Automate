@@ -17,23 +17,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.innovidio.androidbootstrap.AppPreferences;
 import com.innovidio.androidbootstrap.R;
 import com.innovidio.androidbootstrap.Utils.UtilClass;
 import com.innovidio.androidbootstrap.adapter.GeneralCarSpinnerAdapter;
 import com.innovidio.androidbootstrap.adapter.ServiceAdapter;
 import com.innovidio.androidbootstrap.adapter.SingleMaintenanceAdapter;
-import com.innovidio.androidbootstrap.databinding.DialogAddSingleExpenseBinding;
 import com.innovidio.androidbootstrap.databinding.DialogAddSingleMaintenanceBinding;
-import com.innovidio.androidbootstrap.databinding.DialogAddSinglePartBinding;
 import com.innovidio.androidbootstrap.databinding.FragmentAddServicesBinding;
 import com.innovidio.androidbootstrap.entity.Car;
+import com.innovidio.androidbootstrap.entity.Form;
 import com.innovidio.androidbootstrap.entity.Maintenance;
 import com.innovidio.androidbootstrap.interfaces.OnSingleServiceCardListener;
 import com.innovidio.androidbootstrap.interfaces.TimeLineItem;
 import com.innovidio.androidbootstrap.viewmodel.CarViewModel;
+import com.innovidio.androidbootstrap.viewmodel.FormViewModel;
+import com.innovidio.androidbootstrap.viewmodel.MaintenanceViewModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,6 +56,15 @@ public class FragmentAddServices extends DaggerFragment implements OnSingleServi
     @Inject
     CarViewModel carViewModel;
 
+    @Inject
+    FormViewModel formViewModel;
+
+    @Inject
+    AppPreferences appPreferences;
+
+    @Inject
+    MaintenanceViewModel maintenanceViewModel;
+
     private FragmentAddServicesBinding servicesBinding;
     private SingleMaintenanceAdapter adapter;
     private GeneralCarSpinnerAdapter carAdapter;
@@ -59,7 +72,7 @@ public class FragmentAddServices extends DaggerFragment implements OnSingleServi
     private Calendar calendar = Calendar.getInstance();
     private List<Maintenance> maintenances = new ArrayList<>();
     private String life, sDate, sTime, maintenanceService, lifeSpan;
-    private int carID, odometerReading, serviceLife, serviceCost;
+    private int carID, totalCostOfServices = 0;
     private boolean isEmpty;
 
     public FragmentAddServices() {
@@ -118,9 +131,17 @@ public class FragmentAddServices extends DaggerFragment implements OnSingleServi
 
         servicesBinding.btnSaveCarWashData.setOnClickListener(view1 -> {
             if (checkEmptyEntries()) {
-                Maintenance maintenance = new Maintenance();
+                LiveData<Boolean> booleanLiveData = formViewModel.addForm(createForm());
+                booleanLiveData.observe(this, formSaved -> {
+                    if (formSaved) {
+                        LiveData<Form> lastForm = formViewModel.getLastForm();
+                        lastForm.observe(getActivity(), form -> {
+                            addMaintenance(form.getId(), maintenances);
+                        });
+                    }
+                });
             } else {
-
+                Toast.makeText(getActivity(), "All Fields are required", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -262,51 +283,6 @@ public class FragmentAddServices extends DaggerFragment implements OnSingleServi
 
     }
 
-    private void showSingleAddPartsDialog(Maintenance maintenanceFromParameters) {
-        if (maintenanceFromParameters == null) {
-            DialogAddSinglePartBinding dialogTripDetailsBinding;
-            dialogTripDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_add_single_part, null, false);
-            View dialogView = dialogTripDetailsBinding.getRoot();
-
-
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-            final AlertDialog singlePartDialog = dialogBuilder.create();
-            singlePartDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-            singlePartDialog.setView(dialogView);
-
-            dialogTripDetailsBinding.buttonAdMaintenance.setOnClickListener(view -> {
-                //TODO: Add Parts
-            });
-
-            singlePartDialog.show();
-        } else {
-            //TODO: UPDATE PART MAINTENANCE
-        }
-
-    }
-
-    private void showSingleAddExpenseDialog(Maintenance maintenanceFromParameters) {
-        if (maintenanceFromParameters == null) {
-            DialogAddSingleExpenseBinding dialogTripDetailsBinding;
-            dialogTripDetailsBinding = DataBindingUtil.inflate(LayoutInflater.from(getActivity()), R.layout.dialog_add_single_expense, null, false);
-            View dialogView = dialogTripDetailsBinding.getRoot();
-
-
-            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-            final AlertDialog singleExpenseDialog = dialogBuilder.create();
-            singleExpenseDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-            singleExpenseDialog.setView(dialogView);
-
-            dialogTripDetailsBinding.buttonAdMaintenance.setOnClickListener(view -> {
-                //TODO: Add Maintenance
-            });
-
-            singleExpenseDialog.show();
-        }
-
-    }
 
     private void initializeAdapters() {
         adapter = new SingleMaintenanceAdapter(getActivity(), this, maintenances);
@@ -334,6 +310,46 @@ public class FragmentAddServices extends DaggerFragment implements OnSingleServi
             servicesBinding.etLocation.setError("Enter your Maintenance Location");
             return false;
         }
+        return true;
+    }
+
+    private Form createForm() {
+        Form form = new Form();
+        form.setCarId(carID);
+        form.setStartDate(new Date());
+        form.setEndDate(new Date());
+        form.setSaveDate(new Date());
+        form.setLocation(servicesBinding.etLocation.getText().toString());
+        form.setTitle("Maintenance");
+        return form;
+    }
+
+    private void addMaintenance(int formID, List<Maintenance> maintenances) {
+
+        for (int i = 0; i < maintenances.size(); i++) {
+
+            maintenances.get(i).setFormId(formID);
+            maintenances.get(i).setMaintenanceLocation(servicesBinding.etLocation.getText().toString());
+            maintenances.get(i).setCarId(carID);
+            totalCostOfServices = totalCostOfServices + maintenances.get(i).getMaintenanceCost();
+
+            maintenanceViewModel.addMaintenanceService(maintenances.get(i));
+
+            Toast.makeText(getActivity(), "Data Submitted Successfully", Toast.LENGTH_SHORT).show();
+
+            //TODO: Show Successful dialog
+//            getActivity().finish();
+        }
+        updatePriceToForm(formID,totalCostOfServices);
+
+    }
+
+    private boolean updatePriceToForm(int formid, int totalCost) {
+        
+        formViewModel.getFormById(formid).observe(this, form -> {
+            if (form != null)
+                form.setTotalCost(totalCost);
+        });
         return true;
     }
 
